@@ -3,15 +3,19 @@ import {isObject} from './utils.js';
 
 (async () => {
 
-    const shouldPrintLessonPlan = true;
+    const schoolPlanPage = 'https://zamkowa15.edu.pl/plan/plan.html';
+    const linksFrameName = 'list';
+    const planFrameName = 'plan';
     const weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'];
+    const shouldPrintLessonPlan = true;
+
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.goto('https://zamkowa15.edu.pl/plan/plan.html');
+    await page.goto(schoolPlanPage);
 
     // wait for frame1 content to load
-    const frame1 = await page.waitForSelector('frame[name="list"]');
+    const frame1 = await page.waitForSelector(`frame[name="${linksFrameName}"]`);
     const frame1Content = await frame1.contentFrame();
 
     let classesLessonsData = {};
@@ -29,12 +33,12 @@ import {isObject} from './utils.js';
 
     // iterate over links in frame1
     for(let link of links) {
-        await frame1Content.goto(link);
-        console.log(link);
+        //console.log(link);
             
         // switch to frame2
-        const frame2 = await page.waitForSelector('frame[name="plan"]');
+        const frame2 = await page.waitForSelector(`frame[name="${planFrameName}"]`);
         const frame2Content = await frame2.contentFrame();
+        await frame2Content.goto(link);
 
         // wait for frame2 content to load
         await frame2Content.waitForSelector('.tabtytul');
