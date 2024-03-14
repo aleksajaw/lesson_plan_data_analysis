@@ -22,14 +22,14 @@ import {isObject} from './utils.js';
     
     // get links from frame1
     const links = await frame1Content.evaluate(() => {
-        let linksList = document.querySelectorAll('body > ul > li > a');
+        let linksList = [document.querySelectorAll('body > ul > li > a')[2]];
         let linksArray = Array.from(linksList).map(link => link.href);
         return linksArray;
     });
 
-    for(let link of links) {
+    /*for(let link of links) {
         console.log(link);
-    }
+    }*/
 
     // iterate over links in frame1
     for(let link of links) {
@@ -43,7 +43,7 @@ import {isObject} from './utils.js';
         // wait for frame2 content to load
         await frame2Content.waitForSelector('.tabtytul');
         let classSymbol = await frame2Content.evaluate(() => {
-                                return document.querySelector('.tabtytul .tytulnapis').textContent;
+                                return document.querySelector('.tabtytul .tytulnapis').textContent.trim();
                             })
 
         // wait for frame2 content to change
@@ -54,9 +54,10 @@ import {isObject} from './utils.js';
             let headingCells = document.querySelectorAll('.tabela tr th');
             let headingsWithIndexes = {};
             headingCells.forEach((heading, i) => {
-                let headingIndex = weekDays.indexOf(heading.textContent.toLowerCase());
+                let headingIndex = weekDays.indexOf(heading.textContent.trim().toLowerCase());
                 if (headingIndex != -1) {
-                    headingsWithIndexes[i+1] = heading.textContent;
+                    // i is the nr of the col in a row of using headingCells
+                    headingsWithIndexes[i+1] = heading.textContent.trim();
                 }
             })
             return headingsWithIndexes;
@@ -71,7 +72,7 @@ import {isObject} from './utils.js';
 
             const day = daysInUse[key];
             const dayNr = key;
-            const lessonData = await frame2Content.evaluate((dayNr) => {
+            const lessonDataRow = await frame2Content.evaluate((dayNr) => {
                 
                 const lessonsInDay = document.querySelectorAll(`.tabela tr:not(:first-child) td:nth-child(${dayNr})`);
                 const lessons = [];
@@ -80,18 +81,25 @@ import {isObject} from './utils.js';
                     let parentTr = cell.parentNode;
                     let tdNr = parentTr.querySelector('td.nr');
                     let tdG = parentTr.querySelector('td.g');
-                    let spanP = cell.querySelectorAll('span.p')[0];
-                    let spanN = cell.querySelectorAll('span.n')[0];
-                    let spanS = cell.querySelectorAll('span.s')[0];
+                    let spanP = cell.querySelectorAll('span.p');
+                    let spanN = cell.querySelectorAll('span.n');
+                    let spanS = cell.querySelectorAll('span.s');
                     
+                    lessonDataTemp = [];
+
+                    
+                    for(let i=0; i < Math.max(spanP.length, spanN.length, spanS.length); i++) {
+                        lessonDataTemp.push({
+                            lessonSymbol: !!spanP && spanP[i] ? spanP[i].textContent.trim() : '',
+                            teacherSymbol: !!spanN && spanN[i] ? spanN[i].textContent.trim() : '',
+                            classroomNumber: !!spanS && spanS[i] ? spanS[i].textContent.trim() : ''
+                        });
+                    }
+
                     lessons.push({
-                        lessonNr: tdNr ? tdNr.textContent : '',
-                        lessonG: tdG ? tdG.textContent : '',
-                        lessonData: {
-                            lessonSymbol: spanP ? spanP.textContent : '',
-                            teacherSymbol: spanN ? spanN.textContent : '',
-                            classroomNumber: spanS ? spanS.textContent : ''
-                        }
+                        lessonNr: !!tdNr ? tdNr.textContent.trim() : '',
+                        lessonG: !!tdG ? tdG.textContent.trim() : '',
+                        lessonData: !!lessonDataTemp ? lessonDataTemp : []
                     });
                 });
                 
@@ -99,49 +107,68 @@ import {isObject} from './utils.js';
             
             }, dayNr);
             
-            classLessonsData[day] = lessonData;
+            classLessonsData[day] = lessonDataRow;
         }
         
         //console.log('Dane lekcji:', classLessonsData);
         classesLessonsData[classSymbol] = classLessonsData;
 
-        // class loop
+        // class in classesLessonsData loop
+        // give class: {}
         if (isObject(classesLessonsData)) {
             for (const [key, value] of Object.entries(classesLessonsData)) {
 
                 let classStr = key;
                 if(shouldPrintLessonPlan) console.log(`\n\n--------------------${classStr}--------------------`)
 
-                //day loop
+                // day in class loop
+                // give day: {}
                 if (isObject(value)) {
                     for (const [key2, value2] of Object.entries(value)) {
                         let dayStr = key2;
                         if(shouldPrintLessonPlan) console.log(`\n${dayStr.toUpperCase()}:`);
 
-                        //lesson loop
+                        // lesson in day loop
+                        // give lesson: {}
                         if (isObject(value2)) {
                             for (const [key3, value3] of Object.entries(value2)) {
                                 let fullLessonStr = '';
 
-                                //lesson elements loop
+                                // elements in lesson loop
+                                // give desired cells (string or array type)
                                 if (isObject(value3)) {
                                     let keysWhiteSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
                                     let currSpaceBefore = 0;
 
                                     for (const [key4, value4] of Object.entries(value3)) {
-                                        if (isObject(value4)) {
-                                            for (const [key5, value5] of Object.entries(value4)) {
-                                                let whiteSpacesAmount = keysWhiteSpacesAmount[key5] - value5.length;
-                                                currSpaceBefore += keysWhiteSpacesAmount[key5];
-                                                let whiteSpaces = ' '.repeat(/*currSpaceBefore + */whiteSpacesAmount);
-                                                fullLessonStr += ' ' + value5 + whiteSpaces + ' ';
-                                            }
+                                        
+                                        // condition for lesson(s): symbol, teacher & classroom
+                                        // in one time for class
+                                        // #1 (array of objects)
+                                        if (Array.isArray(value4)) {
+                                            let counter = 0;
+                                            for (const lessonProp of value4) {
+                                                
+                                                if(isObject(lessonProp)){
 
+                                                    if(counter>0) {
+                                                        fullLessonStr += '\n' + ' '.repeat(currSpaceBefore);
+                                                    }
+                                                    for (const [key5, value5] of Object.entries(lessonProp)) {
+                                                        let whiteSpacesAmount = keysWhiteSpacesAmount[key5] - value5.length;
+                                                        let whiteSpaces = ' '.repeat(whiteSpacesAmount);
+                                                        fullLessonStr += whiteSpaces + value5 + ' ';
+                                                    }
+                                                    counter++;
+                                                }
+                                            }
+                                        
+                                        // #2 (string type) lesson(s) nr & hour
                                         } else {
                                             let whiteSpacesAmount = keysWhiteSpacesAmount[key4] - value4.length;
-                                            currSpaceBefore += keysWhiteSpacesAmount[key4];
+                                            currSpaceBefore += keysWhiteSpacesAmount[key4]+1;
                                             let whiteSpaces = ' '.repeat(whiteSpacesAmount);
-                                            fullLessonStr += ' ' + value4 + whiteSpaces + ' ';
+                                            fullLessonStr += whiteSpaces + value4 + ' ';
                                         }
                                     }
                                     if(shouldPrintLessonPlan) console.log(fullLessonStr);
