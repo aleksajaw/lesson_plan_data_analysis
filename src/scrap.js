@@ -1,91 +1,140 @@
 import puppeteer from 'puppeteer';
+import {isObject} from './utils.js';
 
 (async () => {
 
+    const planPrinting = true;
     const weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'];
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     await page.goto('https://zamkowa15.edu.pl/plan/plan.html');
 
-    const title = await page.title();
-    console.log('Tytuł strony:', title);
+    // wait for frame1 content to load
+    const frame1 = await page.waitForSelector('frame[name="list"]');
+    const frame1Content = await frame1.contentFrame();
 
+    // switch to frame2
+    const frame2 = await page.waitForSelector('frame[name="plan"]');
+    const frame2Content = await frame2.contentFrame();
+
+    let classesLessonsData = {};
     
-    // frame1 contains the list of classes
-    const frame1 = await page.waitForFrame(async frame => {
-                        return frame.name() === 'list';
-                    });
-
-    let links = await frame1.evaluate((xxx) => {
+    // get links from frame1
+    const links = await frame1Content.evaluate(() => {
         let linksList = document.querySelectorAll('body > ul > li > a');
-        let linksArray = [];
-        for(let link of linksList) {
-            linksArray.push(link.textContent);
-        }
+        let linksArray = Array.from(linksList).map(link => link.href);
         return linksArray;
-    })
+    });
 
-
-    //const linkElement = await frame1.click('body > ul > li > a');
-    
-    // frame2 contains the class lesson plan
-    const frame2 = await page.waitForFrame(async frame => {
-                        return frame.name() === 'plan';
-                    });
-        
-    // check, which of them are in use
-    let days2 = await frame2.evaluate((weekDays) => {
-            
-        let headingCells = document.querySelectorAll('.tabela tr th');
-        let headingsWithIndexes = {};
-        headingCells.forEach((heading, i) => {
-            let headingIndex = weekDays.indexOf(heading.textContent.toLowerCase());
-            if (headingIndex != -1) {
-                headingsWithIndexes[i+1] = heading.textContent;
-            }
-        })
-        return headingsWithIndexes;
-    }, weekDays)
-
-
-    // extract lesson data from the class lesson plan by day (column)
-    const classLessonsData = {};
-
-    for (const [key, value] of Object.entries(days2)) {
-
-        const day = days2[key];
-        const dayNr = key;
-        const lessonData = await frame2.evaluate((dayNr) => {
-
-            const lessonsInDay = document.querySelectorAll(`.tabela tr:not(:first-child) td:nth-child(${dayNr})`);
-            const lessons = [];
-
-            lessonsInDay.forEach(cell => {
-                let parentTr = cell.parentNode;
-                let tdNr = parentTr.querySelector('td.nr');
-                let tdG = parentTr.querySelector('td.g');
-                let spanP = cell.querySelector('span.p');
-                let spanN = cell.querySelector('span.n');
-                let spanS = cell.querySelector('span.s');
-
-                lessons.push({
-                    lessonNr: tdNr ? tdNr.textContent : '',
-                    lessonG: tdG ? tdG.textContent : '',
-                    lessonSymbol: spanP ? spanP.textContent : '',
-                    teacherSymbol: spanN ? spanN.textContent : '',
-                    classroomNumber: spanS ? spanS.textContent : ''
-                });
-            });
-
-            return lessons;
-
-        }, dayNr);
-            
-        classLessonsData[day] = lessonData;
+    for(let link of links) {
+        console.log(link);
     }
+    // iterate over links in frame1
+    for(let link of links) {
+        await frame1Content.goto(link);
+        console.log(link);
+        // wait for frame2 content to change
+        await frame2Content.waitForSelector('.tabela');
 
-    console.log('Dane lekcji:', classLessonsData);
+        // get data from frame2
+        const daysInUse = await frame2Content.evaluate((weekDays) => {
+            let headingCells = document.querySelectorAll('.tabela tr th');
+            let headingsWithIndexes = {};
+            headingCells.forEach((heading, i) => {
+                let headingIndex = weekDays.indexOf(heading.textContent.toLowerCase());
+                if (headingIndex != -1) {
+                    headingsWithIndexes[i+1] = heading.textContent;
+                }
+            })
+            return headingsWithIndexes;
+        }, weekDays)
+
+
+        let classLessonsData = {};        
+
+        // wait for frame3 content to change
+        const frame3 = await page.waitForSelector('frame[name="plan"]');
+        const frame3Content = await frame3.contentFrame();
+
+        // wait for frame2 content to change
+        await frame2Content.waitForSelector('.tabtytul');
+        let classSymbol = await frame3Content.evaluate(() => {
+                            return document.querySelector('.tabtytul .tytulnapis').textContent;
+                          })
+
+        // create lessonsData by days
+        for (const [key, value] of Object.entries(daysInUse)) {
+
+            const day = daysInUse[key];
+            const dayNr = key;
+            const lessonData = await frame2Content.evaluate((dayNr) => {
+                
+                const lessonsInDay = document.querySelectorAll(`.tabela tr:not(:first-child) td:nth-child(${dayNr})`);
+                const lessons = [];
+
+                lessonsInDay.forEach(cell => {
+                    let parentTr = cell.parentNode;
+                    let tdNr = parentTr.querySelector('td.nr');
+                    let tdG = parentTr.querySelector('td.g');
+                    let spanP = cell.querySelector('span.p');
+                    let spanN = cell.querySelector('span.n');
+                    let spanS = cell.querySelector('span.s');
+                    
+                    lessons.push({
+                        lessonNr: tdNr ? tdNr.textContent : '',
+                        lessonG: tdG ? tdG.textContent : '',
+                        lessonSymbol: spanP ? spanP.textContent : '',
+                        teacherSymbol: spanN ? spanN.textContent : '',
+                        classroomNumber: spanS ? spanS.textContent : ''
+                    });
+                });
+                
+                return lessons;
+            
+            }, dayNr);
+            
+            classLessonsData[day] = lessonData;
+        }
+        
+        //console.log('Dane lekcji:', classLessonsData);
+        classesLessonsData[classSymbol] = classLessonsData;
+
+        // class loop
+        if (isObject(classesLessonsData)) {
+            for (const [key, value] of Object.entries(classesLessonsData)) {
+
+                let classStr = key;
+                if(planPrinting) console.log(`\n\n--------------------${classStr}--------------------`)
+
+                //day loop
+                if (isObject(value)) {
+                    for (const [key2, value2] of Object.entries(value)) {
+                        let dayStr = key2;
+                        if(planPrinting) console.log(`\n${dayStr.toUpperCase()}:`);
+
+                        //lesson loop
+                        if (isObject(value2)) {
+                            for (const [key3, value3] of Object.entries(value2)) {
+                                let fullLessonStr = '';
+
+                                //lesson elements loop
+                                if (isObject(value3)) {
+                                    let keysWhiteSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 13, teacherSymbol: 5, classroomNumber: 5};
+                                    for (const [key4, value4] of Object.entries(value3)) {
+                                        let whiteSpacesAmount = keysWhiteSpacesAmount[key4] - value4.length;
+                                        let whiteSpaces = ' '.repeat(whiteSpacesAmount);
+                                        fullLessonStr += ' ' + value4 + whiteSpaces + ' ';
+                                    }
+                                    if(planPrinting) console.log(fullLessonStr);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     await browser.close();
 
