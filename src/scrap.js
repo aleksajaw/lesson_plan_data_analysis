@@ -22,7 +22,7 @@ import {isObject} from './utils.js';
     
     // get links from frame1
     const links = await frame1Content.evaluate(() => {
-        let linksList = [document.querySelectorAll('body > ul > li > a')[2]];
+        let linksList = document.querySelectorAll('body > ul > li > a');
         let linksArray = Array.from(linksList).map(link => link.href);
         return linksArray;
     });
