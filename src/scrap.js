@@ -80,16 +80,18 @@ import {isObject} from './utils.js';
                     let parentTr = cell.parentNode;
                     let tdNr = parentTr.querySelector('td.nr');
                     let tdG = parentTr.querySelector('td.g');
-                    let spanP = cell.querySelector('span.p');
-                    let spanN = cell.querySelector('span.n');
-                    let spanS = cell.querySelector('span.s');
+                    let spanP = cell.querySelectorAll('span.p')[0];
+                    let spanN = cell.querySelectorAll('span.n')[0];
+                    let spanS = cell.querySelectorAll('span.s')[0];
                     
                     lessons.push({
                         lessonNr: tdNr ? tdNr.textContent : '',
                         lessonG: tdG ? tdG.textContent : '',
-                        lessonSymbol: spanP ? spanP.textContent : '',
-                        teacherSymbol: spanN ? spanN.textContent : '',
-                        classroomNumber: spanS ? spanS.textContent : ''
+                        lessonData: {
+                            lessonSymbol: spanP ? spanP.textContent : '',
+                            teacherSymbol: spanN ? spanN.textContent : '',
+                            classroomNumber: spanS ? spanS.textContent : ''
+                        }
                     });
                 });
                 
@@ -124,10 +126,23 @@ import {isObject} from './utils.js';
                                 //lesson elements loop
                                 if (isObject(value3)) {
                                     let keysWhiteSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
+                                    let currSpaceBefore = 0;
+
                                     for (const [key4, value4] of Object.entries(value3)) {
-                                        let whiteSpacesAmount = keysWhiteSpacesAmount[key4] - value4.length;
-                                        let whiteSpaces = ' '.repeat(whiteSpacesAmount);
-                                        fullLessonStr += ' ' + value4 + whiteSpaces + ' ';
+                                        if (isObject(value4)) {
+                                            for (const [key5, value5] of Object.entries(value4)) {
+                                                let whiteSpacesAmount = keysWhiteSpacesAmount[key5] - value5.length;
+                                                currSpaceBefore += keysWhiteSpacesAmount[key5];
+                                                let whiteSpaces = ' '.repeat(/*currSpaceBefore + */whiteSpacesAmount);
+                                                fullLessonStr += ' ' + value5 + whiteSpaces + ' ';
+                                            }
+
+                                        } else {
+                                            let whiteSpacesAmount = keysWhiteSpacesAmount[key4] - value4.length;
+                                            currSpaceBefore += keysWhiteSpacesAmount[key4];
+                                            let whiteSpaces = ' '.repeat(whiteSpacesAmount);
+                                            fullLessonStr += ' ' + value4 + whiteSpaces + ' ';
+                                        }
                                     }
                                     if(shouldPrintLessonPlan) console.log(fullLessonStr);
                                 }
