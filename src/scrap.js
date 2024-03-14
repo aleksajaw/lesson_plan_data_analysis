@@ -3,7 +3,7 @@ import {isObject} from './utils.js';
 
 (async () => {
 
-    const planPrinting = true;
+    const shouldPrintLessonPlan = true;
     const weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'];
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -105,13 +105,13 @@ import {isObject} from './utils.js';
             for (const [key, value] of Object.entries(classesLessonsData)) {
 
                 let classStr = key;
-                if(planPrinting) console.log(`\n\n--------------------${classStr}--------------------`)
+                if(shouldPrintLessonPlan) console.log(`\n\n--------------------${classStr}--------------------`)
 
                 //day loop
                 if (isObject(value)) {
                     for (const [key2, value2] of Object.entries(value)) {
                         let dayStr = key2;
-                        if(planPrinting) console.log(`\n${dayStr.toUpperCase()}:`);
+                        if(shouldPrintLessonPlan) console.log(`\n${dayStr.toUpperCase()}:`);
 
                         //lesson loop
                         if (isObject(value2)) {
@@ -126,7 +126,7 @@ import {isObject} from './utils.js';
                                         let whiteSpaces = ' '.repeat(whiteSpacesAmount);
                                         fullLessonStr += ' ' + value4 + whiteSpaces + ' ';
                                     }
-                                    if(planPrinting) console.log(fullLessonStr);
+                                    if(shouldPrintLessonPlan) console.log(fullLessonStr);
                                 }
                             }
                         }
