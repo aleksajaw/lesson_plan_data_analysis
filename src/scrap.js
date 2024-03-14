@@ -123,7 +123,7 @@ import {isObject} from './utils.js';
 
                                 //lesson elements loop
                                 if (isObject(value3)) {
-                                    let keysWhiteSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 13, teacherSymbol: 5, classroomNumber: 5};
+                                    let keysWhiteSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
                                     for (const [key4, value4] of Object.entries(value3)) {
                                         let whiteSpacesAmount = keysWhiteSpacesAmount[key4] - value4.length;
                                         let whiteSpaces = ' '.repeat(whiteSpacesAmount);
