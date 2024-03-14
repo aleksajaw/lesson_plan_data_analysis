@@ -14,10 +14,6 @@ import {isObject} from './utils.js';
     const frame1 = await page.waitForSelector('frame[name="list"]');
     const frame1Content = await frame1.contentFrame();
 
-    // switch to frame2
-    const frame2 = await page.waitForSelector('frame[name="plan"]');
-    const frame2Content = await frame2.contentFrame();
-
     let classesLessonsData = {};
     
     // get links from frame1
@@ -30,10 +26,22 @@ import {isObject} from './utils.js';
     for(let link of links) {
         console.log(link);
     }
+
     // iterate over links in frame1
     for(let link of links) {
         await frame1Content.goto(link);
         console.log(link);
+            
+        // switch to frame2
+        const frame2 = await page.waitForSelector('frame[name="plan"]');
+        const frame2Content = await frame2.contentFrame();
+
+        // wait for frame2 content to load
+        await frame2Content.waitForSelector('.tabtytul');
+        let classSymbol = await frame2Content.evaluate(() => {
+                                return document.querySelector('.tabtytul .tytulnapis').textContent;
+                            })
+
         // wait for frame2 content to change
         await frame2Content.waitForSelector('.tabela');
 
@@ -53,15 +61,6 @@ import {isObject} from './utils.js';
 
         let classLessonsData = {};        
 
-        // wait for frame3 content to change
-        const frame3 = await page.waitForSelector('frame[name="plan"]');
-        const frame3Content = await frame3.contentFrame();
-
-        // wait for frame2 content to change
-        await frame2Content.waitForSelector('.tabtytul');
-        let classSymbol = await frame3Content.evaluate(() => {
-                            return document.querySelector('.tabtytul .tytulnapis').textContent;
-                          })
 
         // create lessonsData by days
         for (const [key, value] of Object.entries(daysInUse)) {
