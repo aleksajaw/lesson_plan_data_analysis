@@ -8,6 +8,7 @@ import {isObject} from './utils.js';
     const planFrameName = 'plan';
     const weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'];
     const shouldPrintLessonPlan = true;
+    const keysSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -137,7 +138,6 @@ import {isObject} from './utils.js';
                                 // elements in lesson loop
                                 // give desired cells (string or array type)
                                 if (isObject(value3)) {
-                                    let keysWhiteSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
                                     let currSpaceBefore = 0;
 
                                     for (const [key4, value4] of Object.entries(value3)) {
@@ -155,9 +155,9 @@ import {isObject} from './utils.js';
                                                         fullLessonStr += '\n' + ' '.repeat(currSpaceBefore);
                                                     }
                                                     for (const [key5, value5] of Object.entries(lessonProp)) {
-                                                        let whiteSpacesAmount = keysWhiteSpacesAmount[key5] - value5.length;
-                                                        let whiteSpaces = ' '.repeat(whiteSpacesAmount);
-                                                        fullLessonStr += whiteSpaces + value5 + ' ';
+                                                        let spacesAmount = keysSpacesAmount[key5] - value5.length;
+                                                        let spaces = ' '.repeat(spacesAmount);
+                                                        fullLessonStr += spaces + value5 + ' ';
                                                     }
                                                     counter++;
                                                 }
@@ -165,10 +165,10 @@ import {isObject} from './utils.js';
                                         
                                         // #2 (string type) lesson(s) nr & hour
                                         } else {
-                                            let whiteSpacesAmount = keysWhiteSpacesAmount[key4] - value4.length;
-                                            currSpaceBefore += keysWhiteSpacesAmount[key4]+1;
-                                            let whiteSpaces = ' '.repeat(whiteSpacesAmount);
-                                            fullLessonStr += whiteSpaces + value4 + ' ';
+                                            let spacesAmount = keysSpacesAmount[key4] - value4.length;
+                                            currSpaceBefore += keysSpacesAmount[key4]+1;
+                                            let spaces = ' '.repeat(spacesAmount);
+                                            fullLessonStr += spaces + value4 + ' ';
                                         }
                                     }
                                     if(shouldPrintLessonPlan) console.log(fullLessonStr);
