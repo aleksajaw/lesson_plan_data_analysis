@@ -218,6 +218,9 @@ import fs from 'fs';
             fs.writeFile('output.txt', fullLessonsStr, (err) => {
                 if (err) throw err;
             })
+            fs.writeFile('output_raw.txt', JSON.stringify(sortedClassesLessonsData['1A']), (err) => {
+                if (err) throw err;
+            });
         }
         if(shouldPrintPlanToConsole.class) console.log(fullLessonsStr);
     }
