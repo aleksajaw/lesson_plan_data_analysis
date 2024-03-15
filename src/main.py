@@ -39,7 +39,6 @@ class Lesson:
         self.lessonHour = lessonHour
         self.schoolClassGroup = schoolClassGroup
         self.schoolClass = schoolClass
-        self.schedule = []
 
     @staticmethod
     def _generateId():
