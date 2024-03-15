@@ -11,7 +11,7 @@ import fs from 'fs';
     const weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'];
     const shouldPrintPlanToConsole = true;
     const shouldWritePlanToTxt = true;
-    const keysSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
+    const keysSpacesAmount = { lessonNr: 3, lessonHour: 13, subjectSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -69,7 +69,7 @@ import fs from 'fs';
         }, weekDays)
 
 
-        let classLessonsData = {};        
+        let classDaysData = {};        
 
 
         // create lessonsData by days
@@ -90,12 +90,12 @@ import fs from 'fs';
                     let spanN = cell.querySelectorAll('span.n');
                     let spanS = cell.querySelectorAll('span.s');
                     
-                    lessonDataTemp = [];
+                    lessonSubjectInfoTemp = [];
 
                     
                     for(let i=0; i < Math.max(spanP.length, spanN.length, spanS.length); i++) {
-                        lessonDataTemp.push({
-                            lessonSymbol: !!spanP && spanP[i] ? spanP[i].textContent.trim() : '',
+                        lessonSubjectInfoTemp.push({
+                            subjectSymbol: !!spanP && spanP[i] ? spanP[i].textContent.trim() : '',
                             teacherSymbol: !!spanN && spanN[i] ? spanN[i].textContent.trim() : '',
                             classroomNumber: !!spanS && spanS[i] ? spanS[i].textContent.trim() : ''
                         });
@@ -103,8 +103,8 @@ import fs from 'fs';
 
                     lessons.push({
                         lessonNr: !!tdNr ? tdNr.textContent.trim() : '',
-                        lessonG: !!tdG ? tdG.textContent.trim() : '',
-                        lessonData: !!lessonDataTemp ? lessonDataTemp : []
+                        lessonHour: !!tdG ? tdG.textContent.trim() : '',
+                        lessonSubjectInfo: !!lessonSubjectInfoTemp ? lessonSubjectInfoTemp : []
                     });
                 });
                 
@@ -112,74 +112,76 @@ import fs from 'fs';
             
             }, dayNr);
             
-            classLessonsData[day] = lessonDataRow;
+            classDaysData[day] = lessonDataRow;
         }
         
-        //console.log('Dane lekcji:', classLessonsData);
         classesLessonsData[classSymbol['short']] = {    fullClassSymbol: classSymbol.fullClassSymbol,
-                                                        classLessonsData    };
+                                                        classDaysData   };
     }
 
-    // class in classesLessonsData loop
-    // give class: {}
+    // uses classes
+    // classesLessonData: { class name: {} }
     if (isObject(classesLessonsData)) {
         let fullLessonsStr = '';
+        // classes   loop
+        for (const [className, classPlanData] of Object.entries(classesLessonsData)) {
 
-        for (const [key, value] of Object.entries(classesLessonsData)) {
+            //const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
+            const titleLine = '-'.repeat((55 - className.length)/2);
+            fullLessonsStr += `\n\n\n${titleLine + className + titleLine}`;
 
-            let classStr = key;
-            const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
-            const titleLine = '-'.repeat((55 - fullSymbol.length)/2);
-            fullLessonsStr += `\n\n\n${titleLine + fullSymbol + titleLine}`;
+            let classDays = classPlanData['classDaysData'];
+            // uses class days
+            // class name: { classDaysData: {} }
+            // classDaysData: { day name: [] }
+            if (isObject(classDays)) {
+                // days in the class   loop
+                for (const [classDay, classDayLessons] of Object.entries(classDays)) {
 
-            // day in class loop
-            // give day: {}
-            if (isObject(value['classLessonsData'])) {
-                for (const [key2, value2] of Object.entries(value['classLessonsData'])) {
-
-                    let dayStr = key2;
-                    fullLessonsStr += `\n\n${dayStr.toUpperCase()}:`;
-
-                    // lesson in day loop
-                    // give lesson: {}
-                    if (isObject(value2)) {
-                        for (const [key3, value3] of Object.entries(value2)) {
+                    fullLessonsStr += `\n\n${classDay.toUpperCase()}:`;
+                    
+                    // uses day lessons
+                    // day name: [ {} ]
+                    if (Array.isArray(classDayLessons)) {
+                        // lessons in day   loop
+                        for (const lessonDataVal of classDayLessons) {
                             fullLessonsStr += '\n';
 
-                            // elements in lesson loop
-                            // give desired cells (string or array type)
-                            if (isObject(value3)) {
+                            // uses lesson data
+                            // lesson row of the class day as {}
+                            if (isObject(lessonDataVal)) {
                                 let currSpaceBefore = 0;
-
-                                for (const [key4, value4] of Object.entries(value3)) {
-                                        
-                                    // condition for lesson(s): symbol, teacher & classroom
-                                    // in one time for class
-                                    // #1 (array of objects)
-                                    if (Array.isArray(value4)) {
+                                // lesson(s) in one row for the class   loop
+                                for (const [lessonPropName, lessonProp] of Object.entries(lessonDataVal)) {
+                                    
+                                    // condition for lesson's object containing subject, teacher & classroom
+                                    // in one time (cell) for the class
+                                    // #1   day name: [{ lessonSubjectInfo: [{}] }]
+                                    if (Array.isArray(lessonProp)) {
                                         let counter = 0;
-                                        for (const lessonProp of value4) {
-                                                
-                                            if(isObject(lessonProp)){
+                                        // subjects info in one cell   loop
+                                        for (const lessonPropEl of lessonProp) {
 
+                                            if(isObject(lessonPropEl)){
                                                 if(counter>0) {
                                                     fullLessonsStr += '\n' + ' '.repeat(currSpaceBefore);
                                                 }
-                                                for (const [key5, value5] of Object.entries(lessonProp)) {
-                                                    let spacesAmount = keysSpacesAmount[key5] - value5.length;
+                                                for (const [lessonPropElName, lessonPropElVal] of Object.entries(lessonPropEl)) {
+                                                    let spacesAmount = keysSpacesAmount[lessonPropElName] - lessonPropElVal.length;
                                                     let spaces = ' '.repeat(spacesAmount);
-                                                    fullLessonsStr += spaces + value5 + ' ';
+                                                    fullLessonsStr += spaces + lessonPropElVal + ' ';
                                                 }
                                                 counter++;
                                             }
                                         }
-                                        
-                                    // #2 (string type) lesson(s) nr & hour
-                                    } else {
-                                        let spacesAmount = keysSpacesAmount[key4] - value4.length;
-                                        currSpaceBefore += keysSpacesAmount[key4]+1;
+                                       
+                                    // lesson nr and hour for lesson row
+                                    // #2   day name: [{ lessonNr: '', lessonHour: '' }]
+                                    } else if (typeof lessonProp === 'string') {
+                                        let spacesAmount = keysSpacesAmount[lessonPropName] - lessonProp.length;
+                                        currSpaceBefore += keysSpacesAmount[lessonPropName]+1;
                                         let spaces = ' '.repeat(spacesAmount);
-                                        fullLessonsStr += spaces + value4 + ' ';
+                                        fullLessonsStr += spaces + lessonProp + ' ';
                                     }
                                 }
                             }
