@@ -1,5 +1,7 @@
 import puppeteer from 'puppeteer';
 import {isObject} from './utils.js';
+import fs from 'fs';
+
 
 (async () => {
 
@@ -7,7 +9,8 @@ import {isObject} from './utils.js';
     const linksFrameName = 'list';
     const planFrameName = 'plan';
     const weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'];
-    const shouldPrintLessonPlan = true;
+    const shouldPrintPlanToConsole = true;
+    const shouldWritePlanToTxt = true;
     const keysSpacesAmount = { lessonNr: 3, lessonG: 13, lessonSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
 
     const browser = await puppeteer.launch();
@@ -120,14 +123,14 @@ import {isObject} from './utils.js';
     // class in classesLessonsData loop
     // give class: {}
     if (isObject(classesLessonsData)) {
+        let fullLessonsStr = '';
+
         for (const [key, value] of Object.entries(classesLessonsData)) {
 
             let classStr = key;
-            if(shouldPrintLessonPlan) {
-                const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
-                const titleLine = '-'.repeat((55 - fullSymbol.length)/2);
-                console.log(`\n\n${titleLine + fullSymbol + titleLine}`)
-            }
+            const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
+            const titleLine = '-'.repeat((55 - fullSymbol.length)/2);
+            fullLessonsStr += `\n\n\n${titleLine + fullSymbol + titleLine}`;
 
             // day in class loop
             // give day: {}
@@ -135,14 +138,13 @@ import {isObject} from './utils.js';
                 for (const [key2, value2] of Object.entries(value['classLessonsData'])) {
 
                     let dayStr = key2;
-                    if(shouldPrintLessonPlan)
-                        console.log(`\n${dayStr.toUpperCase()}:`);
+                    fullLessonsStr += `\n\n${dayStr.toUpperCase()}:`;
 
                     // lesson in day loop
                     // give lesson: {}
                     if (isObject(value2)) {
                         for (const [key3, value3] of Object.entries(value2)) {
-                            let fullLessonStr = '';
+                            fullLessonsStr += '\n';
 
                             // elements in lesson loop
                             // give desired cells (string or array type)
@@ -161,12 +163,12 @@ import {isObject} from './utils.js';
                                             if(isObject(lessonProp)){
 
                                                 if(counter>0) {
-                                                    fullLessonStr += '\n' + ' '.repeat(currSpaceBefore);
+                                                    fullLessonsStr += '\n' + ' '.repeat(currSpaceBefore);
                                                 }
                                                 for (const [key5, value5] of Object.entries(lessonProp)) {
                                                     let spacesAmount = keysSpacesAmount[key5] - value5.length;
                                                     let spaces = ' '.repeat(spacesAmount);
-                                                    fullLessonStr += spaces + value5 + ' ';
+                                                    fullLessonsStr += spaces + value5 + ' ';
                                                 }
                                                 counter++;
                                             }
@@ -177,17 +179,21 @@ import {isObject} from './utils.js';
                                         let spacesAmount = keysSpacesAmount[key4] - value4.length;
                                         currSpaceBefore += keysSpacesAmount[key4]+1;
                                         let spaces = ' '.repeat(spacesAmount);
-                                        fullLessonStr += spaces + value4 + ' ';
+                                        fullLessonsStr += spaces + value4 + ' ';
                                     }
                                 }
-                                if(shouldPrintLessonPlan)
-                                    console.log(fullLessonStr);
                             }
                         }
                     }
                 }
             }
         }
+        if(shouldWritePlanToTxt) {
+            fs.writeFile('output.txt', fullLessonsStr, (err) => {
+                if (err) throw err;
+            })
+        }
+        if(shouldPrintPlanToConsole) console.log(fullLessonsStr);
     }
 
     await browser.close();
