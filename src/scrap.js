@@ -135,12 +135,20 @@ import fs from 'fs';
                                                     classDaysData   };
     }
 
+
+    // ascending sort classes by class symbol
+    // sort by e.g. [ '1A', {class data} ]
+    const sortedClassesLessonsData = Object.fromEntries(
+        Object.entries(classesLessonsData).sort((a, b) => a[0].localeCompare(b[0]))
+    );
+
+
     // uses classes
     // classesLessonData: { class name: {} }
-    if (isObject(classesLessonsData)) {
+    if (isObject(sortedClassesLessonsData)) {
         let fullLessonsStr = '';
         // classes   loop
-        for (const [className, classPlanData] of Object.entries(classesLessonsData)) {
+        for (const [className, classPlanData] of Object.entries(sortedClassesLessonsData)) {
 
             //const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
             const titleLine = '-'.repeat((55 - className.length)/2);
