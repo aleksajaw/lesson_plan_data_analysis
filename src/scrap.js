@@ -115,73 +115,73 @@ import {isObject} from './utils.js';
         //console.log('Dane lekcji:', classLessonsData);
         classesLessonsData[classSymbol['short']] = {    fullClassSymbol: classSymbol.fullClassSymbol,
                                                         classLessonsData    };
+    }
 
-        // class in classesLessonsData loop
-        // give class: {}
-        if (isObject(classesLessonsData)) {
-            for (const [key, value] of Object.entries(classesLessonsData)) {
+    // class in classesLessonsData loop
+    // give class: {}
+    if (isObject(classesLessonsData)) {
+        for (const [key, value] of Object.entries(classesLessonsData)) {
 
-                let classStr = key;
-                if(shouldPrintLessonPlan) {
-                    const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
-                    const titleLine = '-'.repeat((55 - fullSymbol.length)/2);
-                    console.log(`\n\n${titleLine + fullSymbol + titleLine}`)
-                }
+            let classStr = key;
+            if(shouldPrintLessonPlan) {
+                const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
+                const titleLine = '-'.repeat((55 - fullSymbol.length)/2);
+                console.log(`\n\n${titleLine + fullSymbol + titleLine}`)
+            }
 
-                // day in class loop
-                // give day: {}
-                if (isObject(value['classLessonsData'])) {
-                    for (const [key2, value2] of Object.entries(value['classLessonsData'])) {
+            // day in class loop
+            // give day: {}
+            if (isObject(value['classLessonsData'])) {
+                for (const [key2, value2] of Object.entries(value['classLessonsData'])) {
 
-                        let dayStr = key2;
-                        if(shouldPrintLessonPlan)
-                            console.log(`\n${dayStr.toUpperCase()}:`);
+                    let dayStr = key2;
+                    if(shouldPrintLessonPlan)
+                        console.log(`\n${dayStr.toUpperCase()}:`);
 
-                        // lesson in day loop
-                        // give lesson: {}
-                        if (isObject(value2)) {
-                            for (const [key3, value3] of Object.entries(value2)) {
-                                let fullLessonStr = '';
+                    // lesson in day loop
+                    // give lesson: {}
+                    if (isObject(value2)) {
+                        for (const [key3, value3] of Object.entries(value2)) {
+                            let fullLessonStr = '';
 
-                                // elements in lesson loop
-                                // give desired cells (string or array type)
-                                if (isObject(value3)) {
-                                    let currSpaceBefore = 0;
+                            // elements in lesson loop
+                            // give desired cells (string or array type)
+                            if (isObject(value3)) {
+                                let currSpaceBefore = 0;
 
-                                    for (const [key4, value4] of Object.entries(value3)) {
-                                            
-                                        // condition for lesson(s): symbol, teacher & classroom
-                                        // in one time for class
-                                        // #1 (array of objects)
-                                        if (Array.isArray(value4)) {
-                                            let counter = 0;
-                                            for (const lessonProp of value4) {
-                                                    
-                                                if(isObject(lessonProp)){
+                                for (const [key4, value4] of Object.entries(value3)) {
+                                        
+                                    // condition for lesson(s): symbol, teacher & classroom
+                                    // in one time for class
+                                    // #1 (array of objects)
+                                    if (Array.isArray(value4)) {
+                                        let counter = 0;
+                                        for (const lessonProp of value4) {
+                                                
+                                            if(isObject(lessonProp)){
 
-                                                    if(counter>0) {
-                                                        fullLessonStr += '\n' + ' '.repeat(currSpaceBefore);
-                                                    }
-                                                    for (const [key5, value5] of Object.entries(lessonProp)) {
-                                                        let spacesAmount = keysSpacesAmount[key5] - value5.length;
-                                                        let spaces = ' '.repeat(spacesAmount);
-                                                        fullLessonStr += spaces + value5 + ' ';
-                                                    }
-                                                    counter++;
+                                                if(counter>0) {
+                                                    fullLessonStr += '\n' + ' '.repeat(currSpaceBefore);
                                                 }
+                                                for (const [key5, value5] of Object.entries(lessonProp)) {
+                                                    let spacesAmount = keysSpacesAmount[key5] - value5.length;
+                                                    let spaces = ' '.repeat(spacesAmount);
+                                                    fullLessonStr += spaces + value5 + ' ';
+                                                }
+                                                counter++;
                                             }
-                                            
-                                        // #2 (string type) lesson(s) nr & hour
-                                        } else {
-                                            let spacesAmount = keysSpacesAmount[key4] - value4.length;
-                                            currSpaceBefore += keysSpacesAmount[key4]+1;
-                                            let spaces = ' '.repeat(spacesAmount);
-                                            fullLessonStr += spaces + value4 + ' ';
                                         }
+                                        
+                                    // #2 (string type) lesson(s) nr & hour
+                                    } else {
+                                        let spacesAmount = keysSpacesAmount[key4] - value4.length;
+                                        currSpaceBefore += keysSpacesAmount[key4]+1;
+                                        let spaces = ' '.repeat(spacesAmount);
+                                        fullLessonStr += spaces + value4 + ' ';
                                     }
-                                    if(shouldPrintLessonPlan)
-                                        console.log(fullLessonStr);
                                 }
+                                if(shouldPrintLessonPlan)
+                                    console.log(fullLessonStr);
                             }
                         }
                     }
