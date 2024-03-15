@@ -50,7 +50,7 @@ import fs from 'fs';
         // switch to frame2
         const frame2 = await page.waitForSelector(`frame[name="${planFrameName}"]`);
         const frame2Content = await frame2.contentFrame();
-        await frame2Content.goto(link['href']);
+        await frame2Content.goto(link.href);
 
         /*// wait for frame2 content to load
         await frame2Content.waitForSelector('.tabtytul');
@@ -58,7 +58,12 @@ import fs from 'fs';
                                 let symbolTemp = document.querySelector('.tabtytul .tytulnapis').textContent.trim();
                                 return { short: symbolTemp.split(' ')[0], fullClassSymbol: symbolTemp };
                             })*/
-        let classSymbol = {short: link['text'].split(' ')[0], full: link['text']};
+        let classSymbol = {
+            year: link.text[0],
+            letter: link.text.slice(1),
+            short: link.text.split(' ')[0],
+            full: link.text
+        };
 
         // wait for frame2 content to change
         await frame2Content.waitForSelector('.tabela');
@@ -124,8 +129,10 @@ import fs from 'fs';
             classDaysData[day] = lessonDataRow;
         }
         
-        classesLessonsData[classSymbol['short']] = {    fullClassSymbol: classSymbol.full,
-                                                        classDaysData   };
+        classesLessonsData[classSymbol.short] = {   classYear: classSymbol.year,
+                                                    classLetter: classSymbol.letter,
+                                                    fullClassSymbol: classSymbol.full,
+                                                    classDaysData   };
     }
 
     // uses classes
@@ -139,7 +146,7 @@ import fs from 'fs';
             const titleLine = '-'.repeat((55 - className.length)/2);
             fullLessonsStr += `\n\n\n${titleLine + className + titleLine}`;
 
-            let classDays = classPlanData['classDaysData'];
+            let classDays = classPlanData.classDaysData;
             // uses class days
             // class name: { classDaysData: {} }
             // classDaysData: { day name: [] }
@@ -199,12 +206,12 @@ import fs from 'fs';
                 }
             }
         }
-        if(shouldWritePlanToTxt['class']) {
+        if(shouldWritePlanToTxt.class) {
             fs.writeFile('output.txt', fullLessonsStr, (err) => {
                 if (err) throw err;
             })
         }
-        if(shouldPrintPlanToConsole['class']) console.log(fullLessonsStr);
+        if(shouldPrintPlanToConsole.class) console.log(fullLessonsStr);
     }
 
     await browser.close();
