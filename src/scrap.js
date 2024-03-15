@@ -44,7 +44,8 @@ import {isObject} from './utils.js';
         // wait for frame2 content to load
         await frame2Content.waitForSelector('.tabtytul');
         let classSymbol = await frame2Content.evaluate(() => {
-                                return document.querySelector('.tabtytul .tytulnapis').textContent.trim();
+                                let symbolTemp = document.querySelector('.tabtytul .tytulnapis').textContent.trim();
+                                return { short: symbolTemp.split(' ')[0], fullClassSymbol: symbolTemp };
                             })
 
         // wait for frame2 content to change
@@ -112,7 +113,8 @@ import {isObject} from './utils.js';
         }
         
         //console.log('Dane lekcji:', classLessonsData);
-        classesLessonsData[classSymbol] = classLessonsData;
+        classesLessonsData[classSymbol['short']] = {    fullClassSymbol: classSymbol.fullClassSymbol,
+                                                        classLessonsData    };
 
         // class in classesLessonsData loop
         // give class: {}
@@ -120,14 +122,20 @@ import {isObject} from './utils.js';
             for (const [key, value] of Object.entries(classesLessonsData)) {
 
                 let classStr = key;
-                if(shouldPrintLessonPlan) console.log(`\n\n--------------------${classStr}--------------------`)
+                if(shouldPrintLessonPlan) {
+                    const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
+                    const titleLine = '-'.repeat((55 - fullSymbol.length)/2);
+                    console.log(`\n\n${titleLine + fullSymbol + titleLine}`)
+                }
 
                 // day in class loop
                 // give day: {}
-                if (isObject(value)) {
-                    for (const [key2, value2] of Object.entries(value)) {
+                if (isObject(value['classLessonsData'])) {
+                    for (const [key2, value2] of Object.entries(value['classLessonsData'])) {
+
                         let dayStr = key2;
-                        if(shouldPrintLessonPlan) console.log(`\n${dayStr.toUpperCase()}:`);
+                        if(shouldPrintLessonPlan)
+                            console.log(`\n${dayStr.toUpperCase()}:`);
 
                         // lesson in day loop
                         // give lesson: {}
@@ -141,14 +149,14 @@ import {isObject} from './utils.js';
                                     let currSpaceBefore = 0;
 
                                     for (const [key4, value4] of Object.entries(value3)) {
-                                        
+                                            
                                         // condition for lesson(s): symbol, teacher & classroom
                                         // in one time for class
                                         // #1 (array of objects)
                                         if (Array.isArray(value4)) {
                                             let counter = 0;
                                             for (const lessonProp of value4) {
-                                                
+                                                    
                                                 if(isObject(lessonProp)){
 
                                                     if(counter>0) {
@@ -162,7 +170,7 @@ import {isObject} from './utils.js';
                                                     counter++;
                                                 }
                                             }
-                                        
+                                            
                                         // #2 (string type) lesson(s) nr & hour
                                         } else {
                                             let spacesAmount = keysSpacesAmount[key4] - value4.length;
@@ -171,7 +179,8 @@ import {isObject} from './utils.js';
                                             fullLessonStr += spaces + value4 + ' ';
                                         }
                                     }
-                                    if(shouldPrintLessonPlan) console.log(fullLessonStr);
+                                    if(shouldPrintLessonPlan)
+                                        console.log(fullLessonStr);
                                 }
                             }
                         }
