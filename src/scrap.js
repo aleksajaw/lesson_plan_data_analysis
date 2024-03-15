@@ -9,8 +9,16 @@ import fs from 'fs';
     const linksFrameName = 'list';
     const planFrameName = 'plan';
     const weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'];
-    const shouldPrintPlanToConsole = true;
-    const shouldWritePlanToTxt = true;
+    const shouldPrintPlanToConsole = {
+        class: false,
+        teacher: true,
+        classroom: true
+    };
+    const shouldWritePlanToTxt = {
+        class: true,
+        teacher: true,
+        classroom: true
+    };
     const keysSpacesAmount = { lessonNr: 3, lessonHour: 13, subjectSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
 
     const browser = await puppeteer.launch();
@@ -191,12 +199,12 @@ import fs from 'fs';
                 }
             }
         }
-        if(shouldWritePlanToTxt) {
+        if(shouldWritePlanToTxt['class']) {
             fs.writeFile('output.txt', fullLessonsStr, (err) => {
                 if (err) throw err;
             })
         }
-        if(shouldPrintPlanToConsole) console.log(fullLessonsStr);
+        if(shouldPrintPlanToConsole['class']) console.log(fullLessonsStr);
     }
 
     await browser.close();
