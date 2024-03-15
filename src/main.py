@@ -18,9 +18,9 @@ class Break:
 
 
 class LessonHour:
-    def __init__(self, id=None, lessonNumber=None, startTime=None, endTime=None):
+    def __init__(self, id=None, lessonNr=None, startTime=None, endTime=None):
         self.id = id if id is not None else self._generateId()
-        self.lessonNumber = lessonNumber
+        self.lessonNr = lessonNr
         self.startTime = startTime
         self.endTime = endTime
 
@@ -31,14 +31,14 @@ class LessonHour:
 
 
 class Lesson:
-    def __init__(self, id=None, subject=None, teacher=None, classroom=None, lessonHour=None, schoolClassGroup=None, schoolClass=None):
+    def __init__(self, id=None, subjectId=None, teacherId=None, classroomId=None, lessonHourId=None, schoolClassGroupId=None, schoolClassId=None):
         self.id = id if id is not None else self._generateId()
-        self.subject = subject
-        self.teacher = teacher
-        self.classroom = classroom
-        self.lessonHour = lessonHour
-        self.schoolClassGroup = schoolClassGroup
-        self.schoolClass = schoolClass
+        self.subjectId = subjectId
+        self.teacherId = teacherId
+        self.classroomId = classroomId
+        self.lessonHourId = lessonHourId
+        self.schoolClassGroupId = schoolClassGroupId
+        self.schoolClassId = schoolClassId
 
     @staticmethod
     def _generateId():
@@ -55,8 +55,8 @@ class Schedule:
     def _generateId():
         return str(uuid.uuid4())
 
-    def addEvent(self, lesson, lessonHourNumber):
-        self.timetable.append((lesson, lessonHourNumber))
+    def addEvent(self, lesson):
+        self.timetable.append(lesson)
 
 
 
@@ -71,6 +71,8 @@ class School:
         self.phone = phone
         self.numberOfStudents = numberOfStudents
         self.classrooms = []
+        self.teachers = []
+        self.subjects = []
 
     @staticmethod
     def _generateId():
@@ -111,12 +113,12 @@ class Classroom:
 
 
 class SchoolClass:
-    def __init__(self, id=None, name=None, symbol=None, type=None, school=None, numberOfStudents=None):
+    def __init__(self, id=None, name=None, symbol=None, type=None, schoolClassGroups=None, numberOfStudents=None):
         self.id = id if id is not None else self._generateId()
         self.name = name
         self.symbol = symbol
         self.type = type
-        self.school = school
+        self.schoolClassGroups = []
         self.numberOfStudents = numberOfStudents
 
     @staticmethod
@@ -126,12 +128,12 @@ class SchoolClass:
 
 
 class SchoolClassGroup:
-    def __init__(self, id=None, name=None, symbol=None, type=None, schoolClass=None, numberOfStudents=None):
+    def __init__(self, id=None, name=None, symbol=None, type=None, schoolClassId=None, numberOfStudents=None):
         self.id = id if id is not None else self._generateId()
         self.name = name
         self.symbol = symbol
         self.type = type
-        self.schoolClass = schoolClass
+        self.schoolClassId = schoolClassId
         self.numberOfStudents = numberOfStudents
 
     @staticmethod
