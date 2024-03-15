@@ -23,11 +23,11 @@ import fs from 'fs';
     const frame1Content = await frame1.contentFrame();
 
     let classesLessonsData = {};
-    
+
     // get links from frame1
     const links = await frame1Content.evaluate(() => {
         let linksList = document.querySelectorAll('body > ul > li > a');
-        let linksArray = Array.from(linksList).map(link => link.href);
+        let linksArray = Array.from(linksList).map(link => ({href: link.href, text: link.textContent.trim()}));
         return linksArray;
     });
 
@@ -42,14 +42,15 @@ import fs from 'fs';
         // switch to frame2
         const frame2 = await page.waitForSelector(`frame[name="${planFrameName}"]`);
         const frame2Content = await frame2.contentFrame();
-        await frame2Content.goto(link);
+        await frame2Content.goto(link['href']);
 
-        // wait for frame2 content to load
+        /*// wait for frame2 content to load
         await frame2Content.waitForSelector('.tabtytul');
         let classSymbol = await frame2Content.evaluate(() => {
                                 let symbolTemp = document.querySelector('.tabtytul .tytulnapis').textContent.trim();
                                 return { short: symbolTemp.split(' ')[0], fullClassSymbol: symbolTemp };
-                            })
+                            })*/
+        let classSymbol = {short: link['text'].split(' ')[0], full: link['text']};
 
         // wait for frame2 content to change
         await frame2Content.waitForSelector('.tabela');
@@ -115,7 +116,7 @@ import fs from 'fs';
             classDaysData[day] = lessonDataRow;
         }
         
-        classesLessonsData[classSymbol['short']] = {    fullClassSymbol: classSymbol.fullClassSymbol,
+        classesLessonsData[classSymbol['short']] = {    fullClassSymbol: classSymbol.full,
                                                         classDaysData   };
     }
 
