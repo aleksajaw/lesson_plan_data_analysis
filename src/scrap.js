@@ -19,7 +19,7 @@ import fs from 'fs';
         teacher: true,
         classroom: true
     };
-    const keysSpacesAmount = { lessonNr: 3, lessonHour: 13, subjectSymbol: 15, teacherSymbol: 5, classroomNumber: 5};
+    const keysSpacesAmount = { lessonNr: 3, lessonHour: 13, subjectSymbol: 15, teacherSymbol: 5, classroomNr: 5};
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -111,7 +111,7 @@ import fs from 'fs';
                         lessonSubjectInfoTemp.push({
                             subjectSymbol: !!spanP && spanP[i] ? spanP[i].textContent.trim() : '',
                             teacherSymbol: !!spanN && spanN[i] ? spanN[i].textContent.trim() : '',
-                            classroomNumber: !!spanS && spanS[i] ? spanS[i].textContent.trim() : ''
+                            classroomNr: !!spanS && spanS[i] ? spanS[i].textContent.trim() : ''
                         });
                     }
 
