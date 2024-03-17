@@ -4,6 +4,9 @@ class Profile {
         this.long = long;
         this.short = short;
     }
+    getShort(){
+        return this.short;
+    }
 }
 
 class TechnicalProfile extends Profile {
@@ -18,6 +21,12 @@ class MultitradeProfile extends Profile {
     }
 }
 
+class HighSchoolProfile extends Profile {
+    constructor(long, short) {
+        super('lo', long, short);
+    }
+}
+
 const classProfiles = {
     ek: new TechnicalProfile('Technik ekonomista', 'ekonomik'),
     fry: new TechnicalProfile('Technik usług fryzjerskich', 'fryzjer'),
@@ -26,7 +35,8 @@ const classProfiles = {
     hot: new TechnicalProfile('Technik hotelarstwa', 'hotelarz'),
     log: new TechnicalProfile('Technik logistyk', 'logistyk'),
     ra: new TechnicalProfile('Technik rachunkowości', 'rachunkowość'),
-    wz: new MultitradeProfile('Oddział wielozawodowy', 'klasa wielozawodowa')
+    sport: new HighSchoolProfile('Klasa sportowa', 'sportowa'),
+    wz: new MultitradeProfile('Oddział wielozawodowy', 'wielozawodowa')
 };
 
 export {Profile, TechnicalProfile, MultitradeProfile, classProfiles};
