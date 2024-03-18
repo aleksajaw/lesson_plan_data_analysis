@@ -1,3 +1,6 @@
+import fs from 'fs';
+import {outputsPath} from './constants.js';
+
 function isObject(obj) {
     return typeof obj === 'object' && !!obj;
 }
@@ -18,4 +21,53 @@ function correctNumNotation(val) {
     return val<10 ? `0${val}` : val;
 }
 
-export {isObject};
+function compareFileChangeTime(a, b, folderPath = `${outputsPath}`) {
+    const fileAInfo = fs.statSync(`${folderPath + a}`);
+    const fileBInfo = fs.statSync(`${folderPath + b}`)
+
+    return fileBInfo.ctime.getTime() - fileAInfo.ctime.getTime();
+}
+
+function findLatestFileInGroup(group, fNameBase) {
+    let sortedGroup = group;
+    if (group.length > 1) {
+        let filteredFilesList = group.filter(   fName => fName.includes(fNameBase)  );
+        sortedGroup = !filteredFilesList.length ? []
+                                                : filteredFilesList.sort(  (a,b) => compareFileChangeTime(a,b) ); 
+    }
+    return sortedGroup[0] || '';
+}
+
+function writeLessonsToJSONFile(lessonsObj = {}) {
+    const lessonsInJSON = JSON.stringify(lessonsObj);
+    const filesList = fs.readdirSync(outputsPath);
+    const baseFileName = 'sortedClassesLessonsData.json';
+    let fileName = findLatestFileInGroup(filesList, baseFileName);
+    const doesFileExist = !!fileName ? fs.existsSync(outputsPath + fileName) : false;
+    let doAChange = !doesFileExist;
+
+    if(doesFileExist) {
+        const lastFileData = fs.readFileSync(`${outputsPath + fileName}`, 'utf8', (err, data) => {
+                                if (err) throw err;
+                            });
+
+        doAChange = lessonsInJSON !== lastFileData;
+    }
+
+    if (doAChange)
+        fileName = getNowFormattedDate() + '_' + baseFileName;
+    else {
+        console.log('Nothing to change.');
+    }
+
+    if(!doesFileExist || doAChange) {
+        fs.writeFileSync(`${outputsPath + fileName}`, lessonsInJSON, (err) => {
+            if (err) throw err;
+            else {
+                console.log('File saved.');
+            }
+        });
+    }
+}
+
+export {isObject, writeLessonsToJSONFile};
