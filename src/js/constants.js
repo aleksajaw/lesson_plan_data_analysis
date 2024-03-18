@@ -13,6 +13,11 @@ const shouldWritePlanToTxt = {
     teacher: true,
     classroom: true
 };
+const shouldWritePlanToJSON = {
+    class: true,
+    teacher: true,
+    classroom: true
+};
 const keysSpacesAmount = {
     lessonNr: 3,
     lessonHour: 13,
@@ -21,4 +26,4 @@ const keysSpacesAmount = {
     classroomNr: 5
 };
 
-export {schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToTxt, keysSpacesAmount};
+export {schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount};

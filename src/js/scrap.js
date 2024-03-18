@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import {isObject} from './utils.js';
 import fs from 'fs';
 import {Profile, TechnicalProfile, MultitradeProfile, classProfiles} from './classes.js';
-import {schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToTxt, keysSpacesAmount} from './constants.js';
+import {schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount} from './constants.js';
 
 (async () => {
 
@@ -215,7 +215,9 @@ import {schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlan
             fs.writeFile('../outputs/output.txt', fullLessonsStr, (err) => {
                 if (err) throw err;
             })
-            fs.writeFile('../outputs/output_raw.txt', JSON.stringify(sortedClassesLessonsData['1A']), (err) => {
+        }
+        if(shouldWritePlanToJSON.class) {
+            fs.writeFile('../outputs/sortedClassesLessonsData.json', JSON.stringify(sortedClassesLessonsData), (err) => {
                 if (err) throw err;
             });
         }
