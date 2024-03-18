@@ -56,7 +56,7 @@ function writeLessonsToJSONFile(lessonsObj = {}) {
     if (doAChange)
         fileName = getNowFormattedDate() + '_' + baseNameForLessonsJSON;
     else {
-        console.log('Nothing to change.');
+        console.log('Nothing to update.');
     }
 
     if(!doesFileExist || doAChange) {
