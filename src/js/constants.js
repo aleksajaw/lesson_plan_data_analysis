@@ -1,3 +1,4 @@
+const outputsPath = '../outputs/';
 const schoolPlanPage = 'https://zamkowa15.edu.pl/plan/plan.html';
 const linksFrameName = 'list';
 const planFrameName = 'plan';
@@ -26,4 +27,6 @@ const keysSpacesAmount = {
     classroomNr: 5
 };
 
-export {schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount};
+export {
+    outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount
+};
