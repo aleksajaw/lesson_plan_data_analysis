@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer';
-import {isObject} from './utils.js';
+import {isObject, writeLessonsToJSONFile} from './utils.js';
 import fs from 'fs';
 import {Profile, TechnicalProfile, MultitradeProfile, classProfiles} from './classes.js';
-import {schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount} from './constants.js';
+import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount} from './constants.js';
 
 (async () => {
 
@@ -212,14 +212,12 @@ import {schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlan
             }
         }
         if(shouldWritePlanToTxt.class) {
-            fs.writeFile('../outputs/output.txt', fullLessonsStr, (err) => {
+            fs.writeFileSync(`${outputsPath}output.txt`, fullLessonsStr, (err) => {
                 if (err) throw err;
             })
         }
         if(shouldWritePlanToJSON.class) {
-            fs.writeFile('../outputs/sortedClassesLessonsData.json', JSON.stringify(sortedClassesLessonsData), (err) => {
-                if (err) throw err;
-            });
+            writeLessonsToJSONFile(sortedClassesLessonsData);
         }
         if(shouldPrintPlanToConsole.class) console.log(fullLessonsStr);
     }
