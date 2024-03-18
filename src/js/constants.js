@@ -1,4 +1,5 @@
 const outputsPath = '../outputs/';
+const baseNameForLessonsJSON = 'sortedClassesLessonsData.json';
 const schoolPlanPage = 'https://zamkowa15.edu.pl/plan/plan.html';
 const linksFrameName = 'list';
 const planFrameName = 'plan';
@@ -28,5 +29,5 @@ const keysSpacesAmount = {
 };
 
 export {
-    outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount
+    outputsPath, baseNameForLessonsJSON, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount
 };

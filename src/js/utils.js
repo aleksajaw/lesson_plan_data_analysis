@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {outputsPath} from './constants.js';
+import {outputsPath, baseNameForLessonsJSON} from './constants.js';
 
 function isObject(obj) {
     return typeof obj === 'object' && !!obj;
@@ -41,8 +41,7 @@ function findLatestFileInGroup(group, fNameBase) {
 function writeLessonsToJSONFile(lessonsObj = {}) {
     const lessonsInJSON = JSON.stringify(lessonsObj);
     const filesList = fs.readdirSync(outputsPath);
-    const baseFileName = 'sortedClassesLessonsData.json';
-    let fileName = findLatestFileInGroup(filesList, baseFileName);
+    let fileName = findLatestFileInGroup(filesList, baseNameForLessonsJSON);
     const doesFileExist = !!fileName ? fs.existsSync(outputsPath + fileName) : false;
     let doAChange = !doesFileExist;
 
@@ -55,7 +54,7 @@ function writeLessonsToJSONFile(lessonsObj = {}) {
     }
 
     if (doAChange)
-        fileName = getNowFormattedDate() + '_' + baseFileName;
+        fileName = getNowFormattedDate() + '_' + baseNameForLessonsJSON;
     else {
         console.log('Nothing to change.');
     }
