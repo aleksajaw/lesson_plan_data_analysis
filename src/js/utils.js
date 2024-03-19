@@ -29,14 +29,23 @@ function compareFileChangeTime(a, b, folderPath = `${outputsPath}`) {
 }
 
 function findLatestFileWithBaseNameInFolder(fNameBase = baseNameForLessonsJSON, path = outputsPath) {
-    let group = fs.readdirSync(path);
-    let sortedGroup = group;
-    if (group.length > 1) {
-        let filteredFilesList = group.filter(   fName => fName.includes(fNameBase)  );
-        sortedGroup = !filteredFilesList.length ? []
-                                                : filteredFilesList.sort(  (a,b) => compareFileChangeTime(a,b) ); 
+    let groupInFolder = fs.readdirSync(path);
+    let desiredFile = { name: '', content: '' };
+
+    if (groupInFolder.length > 0) {
+        let filteredFilesList = groupInFolder.filter( fName => fName.includes(fNameBase) );
+
+        let sortedGroup = !filteredFilesList.length ? []
+                                                    : filteredFilesList.sort( (a,b) => compareFileChangeTime(a,b) );
+
+        if (sortedGroup.length == 1 ) {
+            desiredFile = { name: sortedGroup[0],
+                            content: fs.readFileSync(`${path + sortedGroup[0]}`, 'utf8', (err, data) => {
+                                        if (err) throw err;
+                                    }) }
+        }
     }
-    return sortedGroup[0] || '';
+    return desiredFile;
 }
 
 function doesFileExistInFolder(fileName='', path = outputsPath) {
@@ -45,7 +54,7 @@ function doesFileExistInFolder(fileName='', path = outputsPath) {
 
 function writeLessonsToJSONFile(lessonsObj = {}) {
     const lessonsInJSON = JSON.stringify(lessonsObj);
-    let fileName = findLatestFileWithBaseNameInFolder();
+    let fileName = findLatestFileWithBaseNameInFolder().name;
     const doesFileExist = !!fileName;
     let doAChange = !doesFileExist;
 
