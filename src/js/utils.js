@@ -28,7 +28,8 @@ function compareFileChangeTime(a, b, folderPath = `${outputsPath}`) {
     return fileBInfo.ctime.getTime() - fileAInfo.ctime.getTime();
 }
 
-function findLatestFileInGroup(group, fNameBase) {
+function findLatestFileWithBaseNameInFolder(fNameBase = baseNameForLessonsJSON, path = outputsPath) {
+    let group = fs.readdirSync(path);
     let sortedGroup = group;
     if (group.length > 1) {
         let filteredFilesList = group.filter(   fName => fName.includes(fNameBase)  );
@@ -38,27 +39,27 @@ function findLatestFileInGroup(group, fNameBase) {
     return sortedGroup[0] || '';
 }
 
+function doesFileExistInFolder(fileName='', path = outputsPath) {
+    return !fileName ? false : fs.existsSync(path + fileName);
+}
+
 function writeLessonsToJSONFile(lessonsObj = {}) {
     const lessonsInJSON = JSON.stringify(lessonsObj);
-    const filesList = fs.readdirSync(outputsPath);
-    let fileName = findLatestFileInGroup(filesList, baseNameForLessonsJSON);
-    const doesFileExist = !!fileName ? fs.existsSync(outputsPath + fileName) : false;
+    let fileName = findLatestFileWithBaseNameInFolder();
+    const doesFileExist = !!fileName;
     let doAChange = !doesFileExist;
 
     if(doesFileExist) {
         const lastFileData = fs.readFileSync(`${outputsPath + fileName}`, 'utf8', (err, data) => {
                                 if (err) throw err;
                             });
-
         doAChange = lessonsInJSON !== lastFileData;
     }
-
     if (doAChange)
         fileName = getNowFormattedDate() + '_' + baseNameForLessonsJSON;
     else {
         console.log('Nothing to update.');
     }
-
     if(!doesFileExist || doAChange) {
         fs.writeFileSync(`${outputsPath + fileName}`, lessonsInJSON, (err) => {
             if (err) throw err;
@@ -69,4 +70,4 @@ function writeLessonsToJSONFile(lessonsObj = {}) {
     }
 }
 
-export {isObject, writeLessonsToJSONFile};
+export {isObject, findLatestFileWithBaseNameInFolder, doesFileExistInFolder, writeLessonsToJSONFile};
