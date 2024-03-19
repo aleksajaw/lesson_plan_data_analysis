@@ -44,16 +44,16 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                                 return { short: symbolTemp.split(' ')[0], fullClassSymbol: symbolTemp };
                             })*/
         let partOfClassProfile = link.text.split(' ')[1];
-        let profilesForClass = !!partOfClassProfile
-                                                    ? ( ( partOfClassProfile.replace(/\d+/g,'') ).split('/') )
+        let profilesForClass = !partOfClassProfile  ? []
+                                                    : ( ( partOfClassProfile.replace(/\d+/g,'') ).split('/') )
                                                             .map( profile =>
                                                                     classProfiles[profile]  ? classProfiles[profile].getShort()
-                                                                                            : `${'no "' + profile + '" profile'}`    )
-                                                    : [];
+                                                                                            : `${'no "' + profile + '" profile'}` );
+        let shorterClassSymbol = link.text.split(' ')[0];
         let classSymbol = {
             year: link.text[0],
-            letter: link.text.replace(/\d+/g,''),
-            short: link.text.split(' ')[0],
+            letter: shorterClassSymbol.replace(/\d+/g,''),
+            short: shorterClassSymbol,
             full: link.text,
             profile: profilesForClass
         };
