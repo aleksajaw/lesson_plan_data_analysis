@@ -52,7 +52,7 @@ function compareFileChangeTime(a, b, folderPath=outputsPath) {
     const fileAInfo = fs.statSync(`${folderPath + a}`);
     const fileBInfo = fs.statSync(`${folderPath + b}`)
 
-    return fileBInfo.ctime.getTime() - fileAInfo.ctime.getTime();
+    return fileBInfo.birthtime.getTime() - fileAInfo.birthtime.getTime();
 }
 
 function findLatestFileWithBaseNameInFolder(fNameBase='', path='') {
@@ -77,6 +77,16 @@ function findLatestFileWithBaseNameInFolder(fNameBase='', path='') {
 
 function doesFileExistInFolder(fileName='', path=outputsPath) {
     return !fileName ? false : fs.existsSync(path + fileName);
+}
+
+function createFolderIfDoesntExist(folderName='', path=outputsPath) {
+    try {
+        if (!fs.existsSync(path+folderName)) {
+          fs.mkdirSync(path+folderName);
+        }
+      } catch (err) {
+        console.error(err);
+      }
 }
 
 function sortLessonsData(lessonsObj={}) {
@@ -212,4 +222,4 @@ function writeFormattedLessonsToTxtFile(lessonsData=null, formattedDate='', sort
     return writeLessonsToFile(fullLessonsStr, baseNameForFormattedLessonsTxt, '', formattedDate, 'txt');
 }
 
-export {firstLetterToLowerCase, firstLetterToUpperCase, isObject, isType, getNowFormattedDate,findLatestFileWithBaseNameInFolder, doesFileExistInFolder, sortLessonsData, convertLessonsToStr, writeLessonsToJSONFile, writeFormattedLessonsToTxtFile};
+export {firstLetterToLowerCase, firstLetterToUpperCase, isObject, isType, getNowFormattedDate,findLatestFileWithBaseNameInFolder, doesFileExistInFolder, createFolderIfDoesntExist, sortLessonsData, convertLessonsToStr, writeLessonsToJSONFile, writeFormattedLessonsToTxtFile};
