@@ -19,17 +19,17 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
 
     // get links from frame1
     const links = await frame1Content.evaluate(() => {
-        let linksList = document.querySelectorAll('body > ul > li > a');
-        let linksArray = Array.from(linksList).map(link => ({href: link.href, text: link.textContent.trim()}));
+        const linksList = document.querySelectorAll('body > ul > li > a');
+        const linksArray = Array.from(linksList).map(link => ({href: link.href, text: link.textContent.trim()}));
         return linksArray;
     });
 
-    /*for(let link of links) {
+    /*for(const link of links) {
         console.log(link);
     }*/
 
     // iterate over links in frame1
-    for(let link of links) {
+    for(const link of links) {
         //console.log(link);
             
         // switch to frame2
@@ -39,18 +39,18 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
 
         /*// wait for frame2 content to load
         await frame2Content.waitForSelector('.tabtytul');
-        let classSymbol = await frame2Content.evaluate(() => {
-                                let symbolTemp = document.querySelector('.tabtytul .tytulnapis').textContent.trim();
+        const classSymbol = await frame2Content.evaluate(() => {
+                                const symbolTemp = document.querySelector('.tabtytul .tytulnapis').textContent.trim();
                                 return { short: symbolTemp.split(' ')[0], fullClassSymbol: symbolTemp };
                             })*/
-        let partOfClassProfile = link.text.split(' ')[1];
-        let profilesForClass = !partOfClassProfile  ? []
+        const partOfClassProfile = link.text.split(' ')[1];
+        const profilesForClass = !partOfClassProfile  ? []
                                                     : ( ( partOfClassProfile.replace(/\d+/g,'') ).split('/') )
                                                             .map( profile =>
                                                                     classProfiles[profile]  ? classProfiles[profile].getShort()
                                                                                             : `${'no "' + profile + '" profile'}` );
-        let shorterClassSymbol = link.text.split(' ')[0];
-        let classSymbol = {
+        const shorterClassSymbol = link.text.split(' ')[0];
+        const classSymbol = {
             year: link.text[0],
             letter: shorterClassSymbol.replace(/\d+/g,''),
             short: shorterClassSymbol,
@@ -63,10 +63,10 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
 
         // get data from frame2
         const daysInUse = await frame2Content.evaluate((weekDays) => {
-            let headingCells = document.querySelectorAll('.tabela tr th');
-            let headingsWithIndexes = {};
+            const headingCells = document.querySelectorAll('.tabela tr th');
+            const headingsWithIndexes = {};
             headingCells.forEach((heading, i) => {
-                let headingIndex = weekDays.indexOf(heading.textContent.trim().toLowerCase());
+                const headingIndex = weekDays.indexOf(heading.textContent.trim().toLowerCase());
                 if (headingIndex != -1) {
                     // i is the nr of the col in a row of using headingCells
                     headingsWithIndexes[i+1] = heading.textContent.trim();
@@ -90,12 +90,12 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                 const lessons = [];
 
                 lessonsInDay.forEach(cell => {
-                    let parentTr = cell.parentNode;
-                    let tdNr = parentTr.querySelector('td.nr');
-                    let tdG = parentTr.querySelector('td.g');
-                    let spanP = cell.querySelectorAll('span.p');
-                    let spanN = cell.querySelectorAll('span.n');
-                    let spanS = cell.querySelectorAll('span.s');
+                    const parentTr = cell.parentNode;
+                    const tdNr = parentTr.querySelector('td.nr');
+                    const tdG = parentTr.querySelector('td.g');
+                    const spanP = cell.querySelectorAll('span.p');
+                    const spanN = cell.querySelectorAll('span.n');
+                    const spanS = cell.querySelectorAll('span.s');
                     
                     lessonSubjectInfoTemp = [];
 
@@ -152,7 +152,7 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
             const titleLine = '-'.repeat((maxTitleLength - classTitle.length)/2);
             fullLessonsStr += `\n\n\n${titleLine + classTitle + titleLine}`;
 
-            let classDays = classPlanData.classDaysData;
+            const classDays = classPlanData.classDaysData;
             // uses class days
             // class name: { classDaysData: {} }
             // classDaysData: { day name: [] }
@@ -189,8 +189,8 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                                                     fullLessonsStr += '\n' + ' '.repeat(currSpaceBefore);
                                                 }
                                                 for (const [lessonPropElName, lessonPropElVal] of Object.entries(lessonPropEl)) {
-                                                    let spacesAmount = keysSpacesAmount[lessonPropElName] - lessonPropElVal.length;
-                                                    let spaces = ' '.repeat(spacesAmount);
+                                                    const spacesAmount = keysSpacesAmount[lessonPropElName] - lessonPropElVal.length;
+                                                    const spaces = ' '.repeat(spacesAmount);
                                                     fullLessonsStr += spaces + lessonPropElVal + ' ';
                                                 }
                                                 counter++;
@@ -200,9 +200,9 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                                     // lesson nr and hour for lesson row
                                     // #2   day name: [{ lessonNr: '', lessonHour: '' }]
                                     } else if (typeof lessonProp === 'string') {
-                                        let spacesAmount = keysSpacesAmount[lessonPropName] - lessonProp.length;
+                                        const spacesAmount = keysSpacesAmount[lessonPropName] - lessonProp.length;
                                         currSpaceBefore += keysSpacesAmount[lessonPropName]+1;
-                                        let spaces = ' '.repeat(spacesAmount);
+                                        const spaces = ' '.repeat(spacesAmount);
                                         fullLessonsStr += spaces + lessonProp + ' ';
                                     }
                                 }

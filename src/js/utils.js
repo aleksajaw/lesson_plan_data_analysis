@@ -6,13 +6,13 @@ function isObject(obj) {
 }
 
 function getNowFormattedDate() {
-    let today = new Date();
-    let YYYY = today.getFullYear();
-    let MM = correctNumNotation(today.getMonth()+1);
-    let DD = correctNumNotation(today.getDate());
-    let HH = correctNumNotation(today.getHours());
-    let mm = correctNumNotation(today.getMinutes());
-    let ss = correctNumNotation(today.getSeconds());
+    const today = new Date();
+    const YYYY = today.getFullYear();
+    const MM = correctNumNotation(today.getMonth()+1);
+    const DD = correctNumNotation(today.getDate());
+    const HH = correctNumNotation(today.getHours());
+    const mm = correctNumNotation(today.getMinutes());
+    const ss = correctNumNotation(today.getSeconds());
 
     return `${YYYY + MM + DD + '_' + HH + mm + ss}`;
 }
@@ -29,13 +29,13 @@ function compareFileChangeTime(a, b, folderPath = `${outputsPath}`) {
 }
 
 function findLatestFileWithBaseNameInFolder(fNameBase = baseNameForLessonsJSON, path = outputsPath) {
-    let groupInFolder = fs.readdirSync(path);
+    const groupInFolder = fs.readdirSync(path);
     let desiredFile = { name: '', content: '' };
 
     if (groupInFolder.length > 0) {
-        let filteredFilesList = groupInFolder.filter( fName => fName.includes(fNameBase) );
+        const filteredFilesList = groupInFolder.filter( fName => fName.includes(fNameBase) );
 
-        let sortedGroup = !filteredFilesList.length ? []
+        const sortedGroup = !filteredFilesList.length ? []
                                                     : filteredFilesList.sort( (a,b) => compareFileChangeTime(a,b) );
 
         if (sortedGroup.length == 1 ) {
