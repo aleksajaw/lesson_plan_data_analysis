@@ -145,8 +145,9 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
         for (const [className, classPlanData] of Object.entries(sortedClassesLessonsData)) {
 
             //const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
-            const classProfileTitle = !!classPlanData.classProfile.length ? '  (' + (classPlanData.classProfile).join(', ') + ')' : '';
-            const classTitle = `${className + classProfileTitle}`;
+            let classTitle = className;
+            if(classPlanData.classProfile.length>0)
+                classTitle += '(' + (classPlanData.classProfile).join(', ') + ')';
             const maxTitleLength = Math.max(55, (classTitle.length + 2));
             const titleLine = '-'.repeat((maxTitleLength - classTitle.length)/2);
             fullLessonsStr += `\n\n\n${titleLine + classTitle + titleLine}`;
