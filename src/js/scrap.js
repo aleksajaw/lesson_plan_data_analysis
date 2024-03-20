@@ -38,6 +38,12 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                                     .split('/')
                                         .map( profile => classProfiles[profile]?.getShort()
                                                         || (!profile ? 'no profile' : `no ${profile} profile`) );
+        // ignore specific classes without profiles
+        // that cannot be precisely identified
+        // and properly used for future analysis
+        if(profilesForClass[0] === 'no profile')
+            continue;
+ 
         const shorterClassSymbol = link.text.split(' ')[0];
         const classSymbol = {
                                 year: link.text[0],
