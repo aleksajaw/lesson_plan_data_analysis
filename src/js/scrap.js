@@ -136,7 +136,7 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
 
             let classTitle = className;
             if(classPlanData.classProfile.length>0)
-                classTitle += '(' + (classPlanData.classProfile).join(', ') + ')';
+                classTitle += ' (' + (classPlanData.classProfile).join(', ') + ')';
             const maxTitleLength = Math.max(55, (classTitle.length + 2));
             const titleLine = '-'.repeat((maxTitleLength - classTitle.length)/2);
             fullLessonsStr += `\n\n\n${titleLine + classTitle + titleLine}`;
@@ -202,7 +202,7 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
             }
         }
         if(shouldWritePlanToTxt.class)
-            fs.writeFileSync(`${outputsPath}output.txt`, fullLessonsStr, (err) => {
+            fs.writeFileSync(`${outputsPath}scrapjs_output.txt`, fullLessonsStr, (err) => {
                 if (err) throw err;
             })
 
