@@ -3,8 +3,8 @@ from utils import *
 
 
 class Break:
-    def __init__(self, id=None, name=None, breakNumber=None, startTime=None, endTime=None):
-        self.id = id if id is not None else self._generateId()
+    def __init__(self, id, name, breakNumber, startTime, endTime):
+        self.id = id or self._generateId()
         self.name = name
         self.breakNumber = breakNumber
         self.startTime = startTime
@@ -17,8 +17,8 @@ class Break:
 
 
 class LessonHour:
-    def __init__(self, id=None, lessonNr=None, startTime=None, endTime=None):
-        self.id = id if id is not None else self._generateId()
+    def __init__(self, id, lessonNr, startTime, endTime):
+        self.id = id or self._generateId()
         self.lessonNr = lessonNr
         self.startTime = startTime
         self.endTime = endTime
@@ -27,11 +27,9 @@ class LessonHour:
     def _generateId():
         return str(uuid.uuid4())
 
-
-
 class Lesson:
-    def __init__(self, id=None, subjectId=None, teacherId=None, classroomId=None, lessonHourId=None, schoolClassGroupId=None, schoolClassId=None):
-        self.id = id if id is not None else self._generateId()
+    def __init__(self, id, subjectId, teacherId, classroomId, lessonHourId, schoolClassGroupId, schoolClassId):
+        self.id = id or self._generateId()
         self.subjectId = subjectId
         self.teacherId = teacherId
         self.classroomId = classroomId
@@ -46,8 +44,8 @@ class Lesson:
 
 
 class Schedule:
-    def __init__(self, id=None):
-        self.id = id if id is not None else self._generateId()
+    def __init__(self, id):
+        self.id = id or self._generateId()
         self.timetable = []
 
     @staticmethod
@@ -60,15 +58,13 @@ class Schedule:
 
 
 class School:
-    def __init__(self, id=None, name=None, symbol=None, type=None, address=None, email=None, phone=None, numberOfStudents=None):
-        self.id = id if id is not None else self._generateId()
+    def __init__(self, id, name, symbol):
+        #, type, nrOfStudents
+        self.id = id or self._generateId()
         self.name = name
         self.symbol = symbol
-        self.type = type
-        self.address = address
-        self.email = email
-        self.phone = phone
-        self.numberOfStudents = numberOfStudents
+        '''self.type = type
+        self.nrOfStudents = nrOfStudents'''
         self.classrooms = []
         self.teachers = []
         self.subjects = []
@@ -83,11 +79,11 @@ class School:
 
 
 class Teacher:
-    def __init__(self, id=None, name=None, symbol=None, type=None, possibleClassrooms=None):
-        self.id = id if id is not None else self._generateId()
-        self.name = name
+    def __init__(self, id, symbol, possibleClassrooms):
+        #, type
+        self.id = id or self._generateId()
         self.symbol = symbol
-        self.type = type
+        '''self.type = type'''
         self.possibleClassrooms = possibleClassrooms or []
 
     @staticmethod
@@ -97,13 +93,14 @@ class Teacher:
 
 
 class Classroom:
-    def __init__(self, id=None, name=None, symbol=None, type=None, capacity=None, substitute=None):
-        self.id = id if id is not None else self._generateId()
-        self.name = name
+    def __init__(self, id, symbol):
+        #, name, type, capacity, substitute
+        self.id = id or self._generateId()
         self.symbol = symbol
+        '''self.name = name
         self.type = type
         self.capacity = capacity
-        self.substitute = substitute
+        self.substitutes = substitutes'''
 
     @staticmethod
     def _generateId():
@@ -112,13 +109,14 @@ class Classroom:
 
 
 class SchoolClass:
-    def __init__(self, id=None, name=None, symbol=None, type=None, schoolClassGroups=None, numberOfStudents=None):
-        self.id = id if id is not None else self._generateId()
-        self.name = name
+    def __init__(self, id, name, symbol):
+        #, type, schoolClassGroups, nrOfStudents
+        self.id = id or self._generateId()
         self.symbol = symbol
-        self.type = type
+        self.name = name
+        '''self.type = type
         self.schoolClassGroups = []
-        self.numberOfStudents = numberOfStudents
+        self.nrOfStudents = nrOfStudents'''
 
     @staticmethod
     def _generateId():
@@ -127,19 +125,20 @@ class SchoolClass:
 
 
 class SchoolClassGroup:
-    def __init__(self, id=None, name=None, symbol=None, type=None, schoolClassId=None, numberOfStudents=None):
-        self.id = id if id is not None else self._generateId()
-        self.name = name
+    def __init__(self, id, symbol, schoolClassId):
+        #, name, type, nrOfStudents
+        self.id = id if id else self._generateId()
         self.symbol = symbol
-        self.type = type
         self.schoolClassId = schoolClassId
-        self.numberOfStudents = numberOfStudents
+        '''self.name = name
+        self.type = type
+        self.nrOfStudents = nrOfStudents'''
 
     @staticmethod
     def _generateId():
         return str(uuid.uuid4())
 
-    def isLanguage(self):
+    '''def isLanguage(self):
         isType(self, "Language")
 
     def isPE(self):
@@ -152,27 +151,28 @@ class SchoolClassGroup:
         isType(self, "Boys")
 
     def isVocational(self):
-        isType(self, "Vocational")
+        isType(self, "Vocational")'''
 
 
 
 class Subject:
-    def __init__(self, id=None, name=None, symbol=None, type=None, occurrenceMethods=None, possibleSchoolClass=None, possibleClassGroup=None, possibleTeachers=None, possibleClassrooms=None):
-        self.id = id if id is not None else self._generateId()
-        self.name = name
+    def __init__(self, id, symbol):
+        #, name, type, occurrenceMethods, possibleSchoolClasses, possibleClassGroups, possibleTeachers, possibleClassrooms
+        self.id = id if id else self._generateId()
         self.symbol = symbol
+        '''self.name = name
         self.type = type
         self.occurrenceMethods = occurrenceMethods or {"single": 1, "double": 0, "triple": 0}
-        self.possibleSchoolClass = possibleSchoolClass
-        self.possibleClassGroup = possibleClassGroup
+        self.possibleSchoolClasses = possibleSchoolClasses
+        self.possibleClassGroups = possibleClassGroups
         self.possibleTeachers = possibleTeachers or []
-        self.possibleClassrooms = possibleClassrooms or []
+        self.possibleClassrooms = possibleClassrooms or []'''
 
     @staticmethod
     def _generateId():
         return str(uuid.uuid4())
 
-    def hasSingleOccurrence(self):
+    '''def hasSingleOccurrence(self):
         return self.occurrenceMethods.get("single", 0) > 0
 
     def hasDoubleOccurrence(self):
@@ -188,5 +188,40 @@ class Subject:
         isType(self, "Scientific")
 
     def isArtistic(self):
-        isType(self, "Artistic")
+        isType(self, "Artistic")'''
 
+
+
+class Profile:
+    def __init__(self, type, long, short):
+        self.type = type
+        self.long = long
+        self.short = short
+
+    def getShort(self):
+        return self.short
+
+class TechnicalProfile(Profile):
+    def __init__(self, long, short):
+        super().__init__('t', long, short)
+
+class MultitradeProfile(Profile):
+    def __init__(self, long, short):
+        super().__init__('z', long, short)
+
+class HighSchoolProfile(Profile):
+    def __init__(self, long, short):
+        super().__init__('lo', long, short)
+
+
+classProfiles = {
+    'ek': TechnicalProfile('Technik ekonomista', 'ekonomik'),
+    'fry': TechnicalProfile('Technik usług fryzjerskich', 'fryzjer'),
+    'gas': TechnicalProfile('Technik żywienia i usług gastronomicznych', 'gastronom'),
+    'ha': TechnicalProfile('Technik handlowiec', 'handlowiec'),
+    'hot': TechnicalProfile('Technik hotelarstwa', 'hotelarz'),
+    'log': TechnicalProfile('Technik logistyk', 'logistyk'),
+    'ra': TechnicalProfile('Technik rachunkowości', 'rachunkowość'),
+    'sport': HighSchoolProfile('Klasa sportowa', 'sportowa'),
+    'wz': MultitradeProfile('Oddział wielozawodowy', 'wielozawodowa')
+}
