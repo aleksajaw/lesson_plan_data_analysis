@@ -1,8 +1,35 @@
 import fs from 'fs';
 import {outputsPath, baseNameForLessonsJSON} from './constants.js';
 
+function firstLetterToCase(str, caseType = 'Upper') {
+    if (!!str && !!caseType) {
+        const strToEval = 'str.charAt(0).to' + caseType + 'Case()';
+        str = eval(strToEval) + str.slice(1);
+    }
+    return str;
+}
+
+function firstLetterToLowerCase(str) {
+    return firstLetterToCase(str, 'Lower');
+}
+
+function firstLetterToUpperCase(str) {
+    return firstLetterToCase(str, 'Upper');
+}
+
 function isObject(obj) {
     return typeof obj === 'object' && !!obj;
+}
+
+function isType(obj, value, name='') {
+    let typeName = 'type';
+    if (!name)
+        name = obj.constructor.name || '';
+    if (!!name) {
+        name = firstLetterToLowerCase(name);
+        typeName = name + 'Type';
+    }
+    return obj[typeName] == value
 }
 
 function getNowFormattedDate() {
@@ -79,4 +106,4 @@ function writeLessonsToJSONFile(lessonsObj = {}) {
     }
 }
 
-export {isObject, findLatestFileWithBaseNameInFolder, doesFileExistInFolder, writeLessonsToJSONFile};
+export {firstLetterToLowerCase, firstLetterToUpperCase, isObject, isType, findLatestFileWithBaseNameInFolder, doesFileExistInFolder, writeLessonsToJSONFile};
