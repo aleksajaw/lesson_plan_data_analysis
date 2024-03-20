@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import {isObject, writeLessonsToJSONFile} from './utils.js';
+import {isObject, getNowFormattedDate, sortLessonsData, convertLessonsToStr, writeLessonsToJSONFile, writeFormattedLessonsToTxtFile} from './utils.js';
 import fs from 'fs';
 import {Profile, TechnicalProfile, MultitradeProfile, classProfiles} from './classes.js';
 import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount} from './constants.js';
@@ -37,7 +37,7 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
         const profilesForClass = (partOfClassProfile?.replace(/\d+/g,'') || '')
                                     .split('/')
                                         .map( profile => classProfiles[profile]?.getShort()
-                                                        || `${'no "' + profile + '" profile'}` );
+                                                        || (!profile ? 'no profile' : `no ${profile} profile`) );
         const shorterClassSymbol = link.text.split(' ')[0];
         const classSymbol = {
                                 year: link.text[0],
@@ -120,98 +120,18 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
     }
 
 
-    // ascending sort classes by class symbol
-    // sort by e.g. [ '1A', {class data} ]
-    const sortedClassesLessonsData = Object.fromEntries(
-        Object.entries(classesLessonsData).sort((a, b) => a[0].localeCompare(b[0]))
-    );
+    const currFormattedDate = getNowFormattedDate();
+    const sortedClassesLessonsData = sortLessonsData(classesLessonsData);
+    const fullLessonsStr = convertLessonsToStr(sortedClassesLessonsData);
 
+    if(shouldWritePlanToTxt.class)
+        writeFormattedLessonsToTxtFile(fullLessonsStr, currFormattedDate, true)
 
-    // uses classes
-    // classesLessonData: { class name: {} }
-    if (isObject(sortedClassesLessonsData)) {
-        let fullLessonsStr = '';
-        // classes   loop
-        for (const [className, classPlanData] of Object.entries(sortedClassesLessonsData)) {
+    if(shouldWritePlanToJSON.class)
+        writeLessonsToJSONFile(sortedClassesLessonsData, currFormattedDate, true);
 
-            let classTitle = className;
-            if(classPlanData.classProfile.length>0)
-                classTitle += ' (' + (classPlanData.classProfile).join(', ') + ')';
-            const maxTitleLength = Math.max(55, (classTitle.length + 2));
-            const titleLine = '-'.repeat((maxTitleLength - classTitle.length)/2);
-            fullLessonsStr += `\n\n\n${titleLine + classTitle + titleLine}`;
-
-            const classDays = classPlanData.classDaysData;
-            // uses class days
-            // class name: { classDaysData: {} }
-            // classDaysData: { day name: [] }
-            if (isObject(classDays)) {
-                // days in the class   loop
-                for (const [classDay, classDayLessons] of Object.entries(classDays)) {
-
-                    fullLessonsStr += `\n\n${classDay.toUpperCase()}:`;
-                    
-                    // uses day lessons
-                    // day name: [ {} ]
-                    if (Array.isArray(classDayLessons)) {
-                        // lessons in day   loop
-                        for (const lessonDataVal of classDayLessons) {
-                            fullLessonsStr += '\n';
-
-                            // uses lesson data
-                            // lesson row of the class day as {}
-                            if (isObject(lessonDataVal)) {
-                                let currSpaceBefore = 0;
-                                // lesson(s) in one row for the class   loop
-                                for (const [lessonPropName, lessonProp] of Object.entries(lessonDataVal)) {
-                                    
-                                    // condition for lesson's object containing subject, teacher & classroom
-                                    // in one time (cell) for the class
-                                    // #1   day name: [{ lessonSubjectInfo: [{}] }]
-                                    if (Array.isArray(lessonProp)) {
-                                        let counter = 0;
-                                        // subjects info in one cell   loop
-                                        for (const lessonPropEl of lessonProp) {
-
-                                            if(isObject(lessonPropEl)){
-                                                if(counter>0) {
-                                                    fullLessonsStr += '\n' + ' '.repeat(currSpaceBefore);
-                                                }
-                                                for (const [lessonPropElName, lessonPropElVal] of Object.entries(lessonPropEl)) {
-                                                    const spacesAmount = keysSpacesAmount[lessonPropElName] - lessonPropElVal.length;
-                                                    const spaces = ' '.repeat(spacesAmount);
-                                                    fullLessonsStr += spaces + lessonPropElVal + ' ';
-                                                }
-                                                counter++;
-                                            }
-                                        }
-                                       
-                                    // lesson nr and hour for lesson row
-                                    // #2   day name: [{ lessonNr: '', lessonHour: '' }]
-                                    } else if (typeof lessonProp === 'string') {
-                                        const spacesAmount = keysSpacesAmount[lessonPropName] - lessonProp.length;
-                                        currSpaceBefore += keysSpacesAmount[lessonPropName]+1;
-                                        const spaces = ' '.repeat(spacesAmount);
-                                        fullLessonsStr += spaces + lessonProp + ' ';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(shouldWritePlanToTxt.class)
-            fs.writeFileSync(`${outputsPath}scrapjs_output.txt`, fullLessonsStr, (err) => {
-                if (err) throw err;
-            })
-
-        if(shouldWritePlanToJSON.class)
-            writeLessonsToJSONFile(sortedClassesLessonsData);
-
-        if(shouldPrintPlanToConsole.class)
-            console.log(fullLessonsStr);
-    }
+    if(shouldPrintPlanToConsole.class)
+        console.log(fullLessonsStr);
 
     await browser.close();
 
