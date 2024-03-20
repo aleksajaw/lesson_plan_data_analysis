@@ -32,6 +32,10 @@ function isType(obj, value, name='') {
     return obj[typeName] == value
 }
 
+function correctNumNotation(val) {
+    return val<10 ? `0${val}` : val;
+}
+
 function getNowFormattedDate() {
     const today = new Date();
     const YYYY = today.getFullYear();
@@ -42,10 +46,16 @@ function getNowFormattedDate() {
     const ss = correctNumNotation(today.getSeconds());
 
     return `${YYYY + MM + DD + '_' + HH + mm + ss}`;
-}
-
-function correctNumNotation(val) {
-    return val<10 ? `0${val}` : val;
+    /*const today = new Date();
+    const objForLoop = {YYYY: 'FullYear', MM:'Month', DD:'Date', HH:'Hours', mm:'Minutes', ss:'Seconds'};
+    let formattedDate = '';
+    Object.entries(objForLoop).forEach( (elPair) => {
+        let strToEval = 'today.get' + elPair[1] + '()';
+        if (elPair[0]==='MM') strToEval += '+1';
+        else if (elPair[0]==='HH') formattedDate += '_';
+        formattedDate += correctNumNotation(eval(strToEval));
+    })
+    return formattedDate;*/
 }
 
 function compareFileChangeTime(a, b, folderPath = `${outputsPath}`) {
