@@ -46,16 +46,6 @@ function getNowFormattedDate() {
     const ss = correctNumNotation(today.getSeconds());
 
     return `${YYYY + MM + DD + '_' + HH + mm + ss}`;
-    /*const today = new Date();
-    const objForLoop = {YYYY: 'FullYear', MM:'Month', DD:'Date', HH:'Hours', mm:'Minutes', ss:'Seconds'};
-    let formattedDate = '';
-    Object.entries(objForLoop).forEach( (elPair) => {
-        let strToEval = 'today.get' + elPair[1] + '()';
-        if (elPair[0]==='MM') strToEval += '+1';
-        else if (elPair[0]==='HH') formattedDate += '_';
-        formattedDate += correctNumNotation(eval(strToEval));
-    })
-    return formattedDate;*/
 }
 
 function compareFileChangeTime(a, b, folderPath = `${outputsPath}`) {

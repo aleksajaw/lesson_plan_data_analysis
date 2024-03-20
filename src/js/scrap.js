@@ -24,25 +24,15 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
         return linksArray;
     });
 
-    /*for(const link of links) {
-        console.log(link);
-    }*/
 
     // iterate over links in frame1
     for(const link of links) {
-        //console.log(link);
             
         // switch to frame2
         const frame2 = await page.waitForSelector(`frame[name="${planFrameName}"]`);
         const frame2Content = await frame2.contentFrame();
         await frame2Content.goto(link.href);
 
-        /*// wait for frame2 content to load
-        await frame2Content.waitForSelector('.tabtytul');
-        const classSymbol = await frame2Content.evaluate(() => {
-                                const symbolTemp = document.querySelector('.tabtytul .tytulnapis').textContent.trim();
-                                return { short: symbolTemp.split(' ')[0], fullClassSymbol: symbolTemp };
-                            })*/
         const partOfClassProfile = link.text.split(' ')[1];
         const profilesForClass = (partOfClassProfile?.replace(/\d+/g,'') || '')
                                     .split('/')
@@ -99,14 +89,8 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                     const spanS = cell.querySelectorAll('span.s');
                     
                     let lessonSubjectInfoTemp = [];
-
                     
                     for(let i=0; i < Math.max(spanP.length, spanN.length, spanS.length); i++) {
-                        /*lessonSubjectInfoTemp.push({
-                            subjectSymbol: spanP?.[i]?.textContent.trim() || '',
-                            teacherSymbol: spanN?.[i]?.textContent.trim() || '',
-                            classroomNr: spanS?.[i]?.textContent.trim() || ''
-                        });*/
                         const subjectSymbol = spanP?.[i]?.textContent.trim() || '';
                         const teacherSymbol = spanN?.[i]?.textContent.trim() || '';
                         const classroomNr = spanS?.[i]?.textContent.trim() || '';
@@ -114,11 +98,6 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                         lessonSubjectInfoTemp.push({subjectSymbol, teacherSymbol, classroomNr});
                     }
 
-                    /*lessons.push({
-                        lessonNr: tdNr?.textContent.trim() || '',
-                        lessonHour: tdG?.textContent.trim() || '',
-                        lessonSubjectInfo: lessonSubjectInfoTemp || []
-                    });*/
                     const lessonNr = tdNr?.textContent.trim() || '';
                     const lessonHour = tdG?.textContent.trim() || '';
                     const lessonSubjectInfo = lessonSubjectInfoTemp || [];
@@ -155,7 +134,6 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
         // classes   loop
         for (const [className, classPlanData] of Object.entries(sortedClassesLessonsData)) {
 
-            //const fullSymbol = classesLessonsData[classStr].fullClassSymbol;
             let classTitle = className;
             if(classPlanData.classProfile.length>0)
                 classTitle += '(' + (classPlanData.classProfile).join(', ') + ')';
