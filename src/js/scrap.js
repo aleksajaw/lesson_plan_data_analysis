@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import {isObject, getNowFormattedDate, sortLessonsData, convertLessonsToStr, writeLessonsToJSONFile, writeFormattedLessonsToTxtFile} from './utils.js';
+import {isObject, getNowFormattedDate, createFolderIfDoesntExist, sortLessonsData, convertLessonsToStr, writeLessonsToJSONFile, writeFormattedLessonsToTxtFile} from './utils.js';
 import fs from 'fs';
 import {Profile, TechnicalProfile, MultitradeProfile, classProfiles} from './classes.js';
 import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount} from './constants.js';
@@ -55,6 +55,8 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
 
         // wait for frame2 content to change
         await frame2Content.waitForSelector('.tabela');
+        // create outputs folder if doesn't exist
+        createFolderIfDoesntExist('');
 
         // get data from frame2
         const daysInUse = await frame2Content.evaluate((weekDays) => {
