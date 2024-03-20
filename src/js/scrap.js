@@ -9,6 +9,7 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
+    //await page.setViewport({ width: 1080, height: 720 });
     await page.goto(schoolPlanPage);
 
     // wait for frame1 content to load
@@ -57,6 +58,8 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
         await frame2Content.waitForSelector('.tabela');
         // create outputs folder if doesn't exist
         createFolderIfDoesntExist('');
+        //createFolderIfDoesntExist('lessons_screenshots');
+        //await frame2.screenshot({'path': outputsPath + 'lessons_screenshots/' + classSymbol.short + 'screenshot.png'});
 
         // get data from frame2
         const daysInUse = await frame2Content.evaluate((weekDays) => {
