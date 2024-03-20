@@ -72,8 +72,7 @@ function findLatestFileWithBaseNameInFolder(fNameBase = baseNameForLessonsJSON, 
     if (groupInFolder.length > 0) {
         const filteredFilesList = groupInFolder.filter( fName => fName.includes(fNameBase) );
 
-        const sortedGroup = !filteredFilesList.length ? []
-                                                    : filteredFilesList.sort( (a,b) => compareFileChangeTime(a,b) );
+        const sortedGroup = filteredFilesList?.sort( (a,b) => compareFileChangeTime(a,b) ) || [];
 
         if (sortedGroup.length == 1 ) {
             desiredFile = { name: sortedGroup[0],

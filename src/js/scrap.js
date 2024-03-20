@@ -44,35 +44,36 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                                 return { short: symbolTemp.split(' ')[0], fullClassSymbol: symbolTemp };
                             })*/
         const partOfClassProfile = link.text.split(' ')[1];
-        const profilesForClass = !partOfClassProfile  ? []
-                                                    : ( ( partOfClassProfile.replace(/\d+/g,'') ).split('/') )
-                                                            .map( profile =>
-                                                                    classProfiles[profile]  ? classProfiles[profile].getShort()
-                                                                                            : `${'no "' + profile + '" profile'}` );
+        const profilesForClass = (partOfClassProfile?.replace(/\d+/g,'') || '')
+                                    .split('/')
+                                        .map( profile => classProfiles[profile]?.getShort()
+                                                        || `${'no "' + profile + '" profile'}` );
         const shorterClassSymbol = link.text.split(' ')[0];
         const classSymbol = {
-            year: link.text[0],
-            letter: shorterClassSymbol.replace(/\d+/g,''),
-            short: shorterClassSymbol,
-            full: link.text,
-            profile: profilesForClass
-        };
+                                year: link.text[0],
+                                letter: shorterClassSymbol.replace(/\d+/g,''),
+                                short: shorterClassSymbol,
+                                full: link.text,
+                                profile: profilesForClass
+                            };
 
         // wait for frame2 content to change
         await frame2Content.waitForSelector('.tabela');
 
         // get data from frame2
         const daysInUse = await frame2Content.evaluate((weekDays) => {
-            const headingCells = document.querySelectorAll('.tabela tr th');
-            const headingsWithIndexes = {};
-            headingCells.forEach((heading, i) => {
-                const headingIndex = weekDays.indexOf(heading.textContent.trim().toLowerCase());
-                if (headingIndex != -1) {
-                    // i is the nr of the col in a row of using headingCells
-                    headingsWithIndexes[i+1] = heading.textContent.trim();
-                }
+
+            const allHeadingCells = document.querySelectorAll('.tabela tr th');
+            const headingsWithCorrectIndexes = {};
+
+            allHeadingCells.forEach((heading, i) => {
+                const headingText = heading.textContent.trim();
+                const isWeekDay = weekDays.includes(headingText.toLowerCase());
+                if (isWeekDay)
+                    headingsWithCorrectIndexes[i+1] = headingText;
             })
-            return headingsWithIndexes;
+
+            return headingsWithCorrectIndexes;
         }, weekDays)
 
 
@@ -97,22 +98,32 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                     const spanN = cell.querySelectorAll('span.n');
                     const spanS = cell.querySelectorAll('span.s');
                     
-                    lessonSubjectInfoTemp = [];
+                    let lessonSubjectInfoTemp = [];
 
                     
                     for(let i=0; i < Math.max(spanP.length, spanN.length, spanS.length); i++) {
-                        lessonSubjectInfoTemp.push({
-                            subjectSymbol: !!spanP && spanP[i] ? spanP[i].textContent.trim() : '',
-                            teacherSymbol: !!spanN && spanN[i] ? spanN[i].textContent.trim() : '',
-                            classroomNr: !!spanS && spanS[i] ? spanS[i].textContent.trim() : ''
-                        });
+                        /*lessonSubjectInfoTemp.push({
+                            subjectSymbol: spanP?.[i]?.textContent.trim() || '',
+                            teacherSymbol: spanN?.[i]?.textContent.trim() || '',
+                            classroomNr: spanS?.[i]?.textContent.trim() || ''
+                        });*/
+                        const subjectSymbol = spanP?.[i]?.textContent.trim() || '';
+                        const teacherSymbol = spanN?.[i]?.textContent.trim() || '';
+                        const classroomNr = spanS?.[i]?.textContent.trim() || '';
+
+                        lessonSubjectInfoTemp.push({subjectSymbol, teacherSymbol, classroomNr});
                     }
 
-                    lessons.push({
-                        lessonNr: !!tdNr ? tdNr.textContent.trim() : '',
-                        lessonHour: !!tdG ? tdG.textContent.trim() : '',
-                        lessonSubjectInfo: !!lessonSubjectInfoTemp ? lessonSubjectInfoTemp : []
-                    });
+                    /*lessons.push({
+                        lessonNr: tdNr?.textContent.trim() || '',
+                        lessonHour: tdG?.textContent.trim() || '',
+                        lessonSubjectInfo: lessonSubjectInfoTemp || []
+                    });*/
+                    const lessonNr = tdNr?.textContent.trim() || '';
+                    const lessonHour = tdG?.textContent.trim() || '';
+                    const lessonSubjectInfo = lessonSubjectInfoTemp || [];
+                    
+                    lessons.push({lessonNr, lessonHour,lessonSubjectInfo});
                 });
                 
                 return lessons;
@@ -212,15 +223,16 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
                 }
             }
         }
-        if(shouldWritePlanToTxt.class) {
+        if(shouldWritePlanToTxt.class)
             fs.writeFileSync(`${outputsPath}output.txt`, fullLessonsStr, (err) => {
                 if (err) throw err;
             })
-        }
-        if(shouldWritePlanToJSON.class) {
+
+        if(shouldWritePlanToJSON.class)
             writeLessonsToJSONFile(sortedClassesLessonsData);
-        }
-        if(shouldPrintPlanToConsole.class) console.log(fullLessonsStr);
+
+        if(shouldPrintPlanToConsole.class)
+            console.log(fullLessonsStr);
     }
 
     await browser.close();
