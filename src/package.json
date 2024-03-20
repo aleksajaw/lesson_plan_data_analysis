@@ -2,6 +2,7 @@
     "type": "module",
     "dependencies": {
         "fs": "^0.0.1-security",
-        "puppeteer": "^22.5.0"
+        "puppeteer": "^22.5.0",
+        "uuidv4": "^6.2.13"
     }
 }
