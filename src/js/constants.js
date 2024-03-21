@@ -1,6 +1,8 @@
 const outputsPath = '../outputs/';
 const baseNameForLessonsJSON = 'sortedClassesLessonsData.json';
 const baseNameForFormattedLessonsTxt = 'formattedLessons.txt';
+const baseNameForSimpleFormattedLessonsTxt = 'simpleFormattedLessons.txt';
+const baseNameForLessonsCSV = 'lessons.csv';
 const schoolPlanPage = 'https://zamkowa15.edu.pl/plan/plan.html';
 const linksFrameName = 'list';
 const planFrameName = 'plan';
@@ -21,6 +23,11 @@ const shouldWritePlanToJSON = {
     teacher: true,
     classroom: true
 };
+const shouldWritePlanToCSV = {
+    class: true,
+    teacher: true,
+    classroom: true
+};
 const keysSpacesAmount = {
     lessonNr: 3,
     lessonHour: 13,
@@ -30,5 +37,5 @@ const keysSpacesAmount = {
 };
 
 export {
-    outputsPath, baseNameForLessonsJSON, baseNameForFormattedLessonsTxt, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount
+    outputsPath, baseNameForLessonsJSON, baseNameForFormattedLessonsTxt, baseNameForSimpleFormattedLessonsTxt, baseNameForLessonsCSV, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToCSV, shouldWritePlanToTxt, keysSpacesAmount
 };
