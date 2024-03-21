@@ -1,0 +1,1397 @@
+
+
+--------------------1A 1ek/fry--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45         religia    DD   116 
+  2    8:50- 9:35      jęz.polski    GM    11 
+  3    9:40-10:25      jęz.polski    GM    11 
+  4   10:40-11:25          fizyka    AD     7 
+  5   11:30-12:15         matem.r    BJ     1 
+  6   12:20-13:05          w.f-ek    RB    s3 
+                        t.fry-fry    PL   101 
+  7   13:10-13:55       t.fry-fry    PL   101 
+  8   14:10-14:55 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+
+WTOREK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25        plastyka    UL   110 
+  4   10:40-11:25      matematyka    BJ   201 
+  5   11:30-12:15         religia    DD   116 
+  6   12:20-13:05           e.d.b    WG   201 
+  7   13:10-13:55        historia    SZ   208 
+  8   14:10-14:55          w.f-ek    RB    s2 
+                          w.f-fry    KZ    s1 
+  9   15:00-15:45          w.f-ek    RB    s2 
+                          w.f-fry    KZ    s1 
+ 10   15:50-16:35     pr.t.biu-ek    KT   109 
+ 11   16:40-17:25     pr.t.biu-ek    KT   109 
+
+ŚRODA
+  1    8:00- 8:45         wło-fry    ZM   207 
+  2    8:50- 9:35          wło-ek    ZM   207 
+                          ang-fry    PJ   201 
+  3    9:40-10:25        historia    SZ   110 
+  4   10:40-11:25       pod.ek-ek    SI   202 
+                    p.i.d.fry-fry    PL   115 
+  5   11:30-12:15        infor-ek    ML   109 
+                       pr.est-fry    PL   115 
+  6   12:20-13:05         stat-ek    KF   101 
+                        infor-fry    ML   109 
+  7   13:10-13:55        biologia    ST   112 
+  8   14:10-14:55      matematyka    BJ     2 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+
+CZWARTEK
+  1    8:00- 8:45           z.z.w    GM    11 
+  2    8:50- 9:35      jęz.polski    GM    11 
+  3    9:40-10:25      pra.d.g-ek    PA   101 
+                      higiena-fry    PL   102 
+  4   10:40-11:25       pod.ek-ek    SI   208 
+                      pod.fry-fry    PL   _08 
+  5   11:30-12:15          chemia    MK     7 
+  6   12:20-13:05        b.h.p-ek    PA   201 
+                          w.f-fry    KZ    s1 
+  7   13:10-13:55          ang-ek    PJ   210 
+                       pr.fry-fry    PL   _08 
+  8   14:10-14:55     pr.t.biu-ek    KT   109 
+                       pr.fry-fry    PL   _08 
+  9   15:00-15:45     pr.t.biu-ek    KT   109 
+                       pr.fry-fry    PL   _08 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+
+PIĄTEK
+  1    8:00- 8:45          ang-ek    PJ   201 
+                          wło-fry    ZM   202 
+  2    8:50- 9:35          wło-ek    ZM   202 
+                          ang-fry    PJ   201 
+  3    9:40-10:25       geografia    KR   103 
+  4   10:40-11:25   dok.zd.gos-ek    BW   209 
+                      pod.fry-fry    PL   _08 
+  5   11:30-12:15      f.p.gos-ek    BW   209 
+                        t.fry-fry    PL   _08 
+  6   12:20-13:05           h.i.t    PA    11 
+  7   13:10-13:55      pr.fry-fry    PL   _08 
+  8   14:10-14:55      pr.fry-fry    PL   _08 
+  9   15:00-15:45      pr.fry-fry    PL   _08 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+
+
+--------------------1B 1gas--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45        historia    SZ   110 
+  2    8:50- 9:35      jęz.polski    IB   111 
+  3    9:40-10:25      jęz.polski    IB   111 
+  4   10:40-11:25         pod.gas    MW     1 
+  5   11:30-12:15         w.f-j.1    MP    s1 
+                       pr.gas-gas    LU   _01 
+  6   12:20-13:05         w.f-j.1    MP    s1 
+                       pr.gas-gas    LU   _01 
+  7   13:10-13:55         wło-j.1    PK   202 
+                       pr.gas-gas    LU   _01 
+  8   14:10-14:55         ang-j.1    PS   210 
+                       pr.gas-gas    LU   _01 
+  9   15:00-15:45 
+
+WTOREK
+  1    8:00- 8:45           k.p.s    SI   208 
+  2    8:50- 9:35           o.m.z    SI   208 
+  3    9:40-10:25      matematyka    KJ     2 
+  4   10:40-11:25        plastyka    UL   110 
+  5   11:30-12:15      pr.gas-gas    LU   _01 
+  6   12:20-13:05      pr.gas-gas    LU   _01 
+  7   13:10-13:55      pr.gas-gas    LU   _01 
+  8   14:10-14:55      pr.gas-gas    LU   _01 
+  9   15:00-15:45 
+
+ŚRODA
+  1    8:00- 8:45         wło-j.1    PK   202 
+                          ang-j.2    PS   210 
+  2    8:50- 9:35         ang-j.1    PS   210 
+                          w.f-j.2    KZ    s1 
+  3    9:40-10:25       infor-j.1    ML   109 
+                          wło-j.2    PK   202 
+  4   10:40-11:25         w.f-j.1    MP    s1 
+                        infor-j.2    ML   109 
+  5   11:30-12:15           h.i.t    PA   103 
+  6   12:20-13:05        historia    SZ   203 
+  7   13:10-13:55      matematyka    KJ   110 
+  8   14:10-14:55           b.h.p    PA   110 
+  9   15:00-15:45         religia    SM   116 
+
+CZWARTEK
+  1    8:00- 8:45      pr.gas-gas    LU   _01 
+  2    8:50- 9:35      pr.gas-gas    LU   _01 
+                          wło-j.2    PK   203 
+  3    9:40-10:25      pr.gas-gas    LU   _01 
+                          w.f-j.2    KZ    s1 
+  4   10:40-11:25      pr.gas-gas    LU   _01 
+                          w.f-j.2    KZ    s1 
+  5   11:30-12:15         pod.gas    MW     1 
+  6   12:20-13:05         pod.gas    MW     1 
+  7   13:10-13:55           z.z.w    PS   208 
+  8   14:10-14:55          chemia    MK     7 
+  9   15:00-15:45 
+
+PIĄTEK
+  1    8:00- 8:45         ang-j.2    PS   210 
+  2    8:50- 9:35     pr.wyp.tech    LU     1 
+  3    9:40-10:25         matem.r    KJ   110 
+  4   10:40-11:25      jęz.polski    IB   111 
+  5   11:30-12:15          fizyka    AD     7 
+  6   12:20-13:05        biologia    ST   112 
+  7   13:10-13:55           e.d.b    WG   103 
+  8   14:10-14:55       geografia    PT   203 
+  9   15:00-15:45         religia    SM   116 
+
+
+--------------------1C 1hot--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45          ang-j1    PJ   210 
+                           w.f-j2    KZ    s1 
+  2    8:50- 9:35        infor-j1    ML   109 
+                           w.f-j2    KZ    s1 
+  3    9:40-10:25    pr.ob.kon-j1    PT   _02 
+                         infor-j2    ML   109 
+  4   10:40-11:25         o.p.hot    PT   203 
+  5   11:30-12:15         religia    SM   115 
+  6   12:20-13:05         matem.r    BJ     1 
+  7   13:10-13:55          w.f-j1    RB    s1 
+                     pr.ob.kon-j2    PT   _02 
+  8   14:10-14:55           o.m.z    PT   203 
+
+WTOREK
+  1    8:00- 8:45        plastyka    UL   110 
+  2    8:50- 9:35           h.i.t    PA   201 
+  3    9:40-10:25          fizyka    AD     7 
+  4   10:40-11:25        mark.hot    PT   203 
+  5   11:30-12:15        biologia    ST   112 
+  6   12:20-13:05          chemia    MK   103 
+  7   13:10-13:55      jęz.polski    SD   110 
+  8   14:10-14:55        historia    SZ   208 
+
+ŚRODA
+  1    8:00- 8:45    pr.ob.inf-j1    MŚ   _07 
+                        pr.hot-j2    PT   203 
+  2    8:50- 9:35    pr.ob.inf-j1    MŚ   _07 
+                      dz.w.rec-j2    PT   203 
+  3    9:40-10:25       pr.hot-j1    PT   203 
+                     pr.ob.inf-j2    MŚ   101 
+  4   10:40-11:25     dz.w.rec-j1    PT   203 
+                     pr.ob.inf-j2    MŚ   101 
+  5   11:30-12:15        historia    SZ   112 
+  6   12:20-13:05           b.h.p    PA   110 
+  7   13:10-13:55      jęz.polski    SD   208 
+  8   14:10-14:55      jęz.polski    SD   208 
+
+CZWARTEK
+  1    8:00- 8:45          wło-j2    ZM   202 
+  2    8:50- 9:35          wło-j1    ZM   202 
+                           w.f-j2    KZ    s1 
+  3    9:40-10:25           k.p.s    SI   208 
+  4   10:40-11:25      matematyka    BJ     2 
+  5   11:30-12:15           e.d.b    WG   110 
+  6   12:20-13:05       geografia    KR   103 
+  7   13:10-13:55          ob.kon    LU   111 
+  8   14:10-14:55          ang-j2    PJ   210 
+
+PIĄTEK
+  1    8:00- 8:45          w.f-j1    RB    s1 
+  2    8:50- 9:35          w.f-j1    RB    s1 
+  3    9:40-10:25          ang-j1    PJ   209 
+                           wło-j2    ZM   202 
+  4   10:40-11:25          wło-j1    ZM   202 
+                           ang-j2    PJ   116 
+  5   11:30-12:15           z.z.w    PT   203 
+  6   12:20-13:05         religia    SM   116 
+  7   13:10-13:55      matematyka    BJ     2 
+  8   14:10-14:55 
+
+
+--------------------1d 1wz--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25         w.f-2/2    RT    s3 
+  4   10:40-11:25         ang-1/2    PJ   210 
+                          w.f-2/2    RT    s3 
+  5   11:30-12:15  matematyka-mat    AD     7 
+  6   12:20-13:05       geografia    PT   203 
+  7   13:10-13:55         religia    SM   115 
+  8   14:10-14:55  jęz.polski-pol    SZ   110 
+  9   15:00-15:45           h.i.t    SZ   110 
+ 10   15:50-16:35           b.i.z    MŚ     7 
+
+WTOREK
+  1    8:00- 8:45         ang-2/2    PJ   102 
+  2    8:50- 9:35  jęz.polski-pol    SZ   203 
+  3    9:40-10:25        historia    SZ   203 
+  4   10:40-11:25        biologia    ST   112 
+  5   11:30-12:15           b.i.z    MŚ   208 
+  6   12:20-13:05  matematyka-mat    AD     7 
+  7   13:10-13:55           e.d.b    WG   201 
+  8   14:10-14:55           z.z.w    ST   112 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+
+ŚRODA
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15         ang-1/2    PJ   201 
+                          w.f-2/2    RT    s2 
+  6   12:20-13:05         religia    SM   115 
+  7   13:10-13:55       infor-1/2    ML   109 
+                          ang-2/2    PJ   201 
+  8   14:10-14:55         w.f-1/2    RB    s1 
+                        infor-2/2    ML   109 
+  9   15:00-15:45         w.f-1/2    RB    s1 
+ 10   15:50-16:35         w.f-1/2    RB    s1 
+
+CZWARTEK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+
+PIĄTEK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+
+
+--------------------1L 1log--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45          w.f-j2    RT    s2 
+  2    8:50- 9:35          w.f-j2    RT    s2 
+  3    9:40-10:25           b.h.p    PA   201 
+  4   10:40-11:25         o.p.mag    AJ     2 
+  5   11:30-12:15         o.p.mag    AJ     2 
+  6   12:20-13:05          fizyka    AD     7 
+  7   13:10-13:55       geografia    KR   103 
+  8   14:10-14:55         matem.r    BJ     2 
+  9   15:00-15:45         religia    SM   116 
+
+WTOREK
+  1    8:00- 8:45        historia    SZ   203 
+  2    8:50- 9:35        plastyka    UL   110 
+  3    9:40-10:25         pod.log    SI   208 
+  4   10:40-11:25        infor-j1    ML   109 
+                           ang-j2    PJ   102 
+  5   11:30-12:15          w.f-j1    MP    s1 
+                         infor-j2    ML   109 
+  6   12:20-13:05      jęz.polski    IB   111 
+  7   13:10-13:55           z.z.w    KR   103 
+  8   14:10-14:55      matematyka    BJ   110 
+  9   15:00-15:45 
+
+ŚRODA
+  1    8:00- 8:45         o.p.mag    AJ   110 
+  2    8:50- 9:35         o.p.mag    AJ   110 
+  3    9:40-10:25          ang-j1    PJ   201 
+                           wło-j2    ZM   207 
+  4   10:40-11:25          wło-j1    ZM   207 
+                           ang-j2    PJ   201 
+  5   11:30-12:15      jęz.polski    IB   111 
+  6   12:20-13:05      jęz.polski    IB   111 
+  7   13:10-13:55        historia    SZ   203 
+  8   14:10-14:55           k.p.s    SI   203 
+  9   15:00-15:45 
+
+CZWARTEK
+  1    8:00- 8:45          w.f-j1    MP    s3 
+  2    8:50- 9:35          w.f-j1    MP    s3 
+  3    9:40-10:25          wło-j1    ZM   207 
+                           w.f-j2    RT    s2 
+  4   10:40-11:25          ang-j1    PJ   202 
+                           wło-j2    ZM   207 
+  5   11:30-12:15           o.m.z    SI   208 
+  6   12:20-13:05           e.d.b    WG   110 
+  7   13:10-13:55          chemia    MK     2 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+PIĄTEK
+  1    8:00- 8:45           h.i.t    PA   112 
+  2    8:50- 9:35      matematyka    BJ   110 
+  3    9:40-10:25         pod.log    SI   201 
+  4   10:40-11:25         pod.log    SI   201 
+  5   11:30-12:15         religia    SM   116 
+  6   12:20-13:05           k.p.s    SI   110 
+  7   13:10-13:55        biologia    ST   112 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+
+--------------------2A 2ra/fry--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45        historia    PA   201 
+  2    8:50- 9:35         religia    DD   116 
+  3    9:40-10:25             w.f    KZ   st2 
+  4   10:40-11:25      matematyka    KJ   110 
+  5   11:30-12:15      geogr.r-ra    KR   103 
+                        infor-fry    ML   109 
+  6   12:20-13:05        infor-ra    ML   109 
+                        t.fry-fry    MA   _02 
+  7   13:10-13:55     pod.stat-ra    KF   109 
+                       pr.fry-fry    MA   _08 
+  8   14:10-14:55      pr.fry-fry    MA   _08 
+  9   15:00-15:45      pr.fry-fry    MA   _08 
+ 10   15:50-16:35 
+
+WTOREK
+  1    8:00- 8:45          fizyka    AD     7 
+  2    8:50- 9:35      jęz.polski    GM    11 
+  3    9:40-10:25          chemia    MK   103 
+  4   10:40-11:25         religia    DD   116 
+  5   11:30-12:15     rach.fin-ra    BW   209 
+                      pod.fry-fry    PL   _08 
+  6   12:20-13:05  pro.gos.fin-ra    BW   209 
+                      pod.fry-fry    PL   _08 
+  7   13:10-13:55  pro.gos.fin-ra    BW   209 
+                       pr.fry-fry    MA   _08 
+  8   14:10-14:55      pr.fry-fry    MA   _08 
+  9   15:00-15:45      pr.fry-fry    MA   _08 
+ 10   15:50-16:35 
+
+ŚRODA
+  1    8:00- 8:45        historia    PA   208 
+  2    8:50- 9:35      jęz.polski    GM    11 
+  3    9:40-10:25      jęz.polski    GM    11 
+  4   10:40-11:25             wło    PK   208 
+  5   11:30-12:15         matem.r    KJ   110 
+  6   12:20-13:05             ang    PJ   201 
+  7   13:10-13:55     ka.i.pła-ra    KF   101 
+                        t.fry-fry    MA   207 
+  8   14:10-14:55   pr.s.k-pła-ra    KF   101 
+                    p.i.d.fry-fry    PL   115 
+  9   15:00-15:45   pr.s.k-pła-ra    KF   101 
+                       pr.est-fry    PL   115 
+ 10   15:50-16:35           z.z.w    KF   101 
+
+CZWARTEK
+  1    8:00- 8:45  pro.gos.fin-ra    BW   209 
+                       pr.fry-fry    MA   _08 
+  2    8:50- 9:35  pro.gos.fin-ra    BW   209 
+                       pr.fry-fry    MA   _08 
+  3    9:40-10:25      dz.gosp-ra    BW   209 
+                       pr.fry-fry    MA   _08 
+  4   10:40-11:25           h.i.t    PA   201 
+  5   11:30-12:15     biologia-ra    ST   112 
+                      higiena-fry    PL   _08 
+  6   12:20-13:05             ang    PJ   208 
+  7   13:10-13:55    geografia-ra    KR   103 
+                     biologia-fry    ST   112 
+  8   14:10-14:55             w.f    KZ    s1 
+  9   15:00-15:45             w.f    KZ    s1 
+ 10   15:50-16:35 
+
+PIĄTEK
+  1    8:00- 8:45      pr.fry-fry    MA   _08 
+  2    8:50- 9:35   pr.s.k-pła-ra    KF   101 
+                       pr.fry-fry    MA   _08 
+  3    9:40-10:25   pr.s.k-pła-ra    KF   101 
+                       pr.fry-fry    MA   _08 
+  4   10:40-11:25      matematyka    KJ   110 
+  5   11:30-12:15        k.p.s-ra    SI   202 
+                    geografia-fry    KR   103 
+  6   12:20-13:05             wło    PK   208 
+  7   13:10-13:55         pod.prz    BW   201 
+  8   14:10-14:55      biol.r-fry    ST   112 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+
+
+--------------------2B 2gas--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45      pr.gas-gas    SS   _01 
+  2    8:50- 9:35      pr.gas-gas    SS   _01 
+                           ang-j2    KK   115 
+  3    9:40-10:25      pr.gas-gas    SS   _01 
+                           wło-j2    PK   202 
+  4   10:40-11:25      pr.gas-gas    SS   _01 
+                         infor-j2    ML   109 
+  5   11:30-12:15      jęz.polski    GM    11 
+  6   12:20-13:05         pod.gas    SS   208 
+  7   13:10-13:55        historia    PA   201 
+  8   14:10-14:55          fizyka    AD     7 
+  9   15:00-15:45      matematyka    BJ     2 
+ 10   15:50-16:35          w.f-j1    MG    s2 
+                           w.f-j2    RB    s1 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+WTOREK
+  1    8:00- 8:45      pr.gas-gas    SS   _01 
+  2    8:50- 9:35          wło-j1    PK   202 
+                       pr.gas-gas    SS   _01 
+  3    9:40-10:25        infor-j1    ML   109 
+                       pr.gas-gas    SS   _01 
+  4   10:40-11:25          w.f-j1    MG    s1 
+                       pr.gas-gas    SS   _01 
+  5   11:30-12:15           z.z.w    SS   110 
+  6   12:20-13:05         pod.prz    SS   110 
+  7   13:10-13:55          chemia    MK     7 
+  8   14:10-14:55     religia-rel    SM   116 
+  9   15:00-15:45     religia-rel    SM   116 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+ŚRODA
+  1    8:00- 8:45 
+  2    8:50- 9:35          ang-j1    KK   115 
+  3    9:40-10:25          w.f-j1    MG    s1 
+  4   10:40-11:25        biologia    ST   112 
+  5   11:30-12:15       geografia    PT   203 
+  6   12:20-13:05      matematyka    BJ     2 
+  7   13:10-13:55         pod.gas    SS   111 
+  8   14:10-14:55         pod.gas    SS   111 
+  9   15:00-15:45      pr.gas-gas    SS   _01 
+ 10   15:50-16:35      pr.gas-gas    SS   _01 
+ 11   16:40-17:25      pr.gas-gas    SS   _01 
+ 12   17:30-18:15      pr.gas-gas    SS   _01 
+
+CZWARTEK
+  1    8:00- 8:45        historia    PA   115 
+  2    8:50- 9:35           k.p.s    SI   208 
+  3    9:40-10:25      jęz.polski    GM    11 
+  4   10:40-11:25      jęz.polski    GM    11 
+  5   11:30-12:15          ob.kon    LU     2 
+  6   12:20-13:05          biol.r    ST   112 
+  7   13:10-13:55      pr.gas-gas    SS   _01 
+                           wło-j2    PK   202 
+  8   14:10-14:55      pr.gas-gas    SS   _01 
+                           ang-j2    KK   115 
+  9   15:00-15:45      pr.gas-gas    SS   _01 
+                           w.f-j2    RB    s2 
+ 10   15:50-16:35      pr.gas-gas    SS   _01 
+                           w.f-j2    RB    s2 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+PIĄTEK
+  1    8:00- 8:45      pr.gas-gas    SS   _01 
+  2    8:50- 9:35      pr.gas-gas    SS   _01 
+  3    9:40-10:25      pr.gas-gas    SS   _01 
+  4   10:40-11:25      pr.gas-gas    SS   _01 
+  5   11:30-12:15           h.i.t    PA    11 
+  6   12:20-13:05         matem.r    BJ     2 
+  7   13:10-13:55          wło-j1    PK   202 
+                       pr.gas-gas    SS   _01 
+  8   14:10-14:55          ang-j1    KK   115 
+                       pr.gas-gas    SS   _01 
+  9   15:00-15:45      pr.gas-gas    SS   _01 
+ 10   15:50-16:35      pr.gas-gas    SS   _01 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+
+--------------------2C 2hot--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45 
+  2    8:50- 9:35         geogr.r    KR   103 
+  3    9:40-10:25         matem.r    AC     1 
+  4   10:40-11:25        historia    PA   201 
+  5   11:30-12:15             ang    KY   207 
+  6   12:20-13:05             wło    PK   207 
+  7   13:10-13:55        biologia    ST   112 
+  8   14:10-14:55         religia    SM   116 
+  9   15:00-15:45 
+
+WTOREK
+  1    8:00- 8:45        infor-j1    ML   109 
+                       ang-hot-j2    KY   207 
+  2    8:50- 9:35      ang-hot-j1    KY   207 
+                         infor-j2    ML   109 
+  3    9:40-10:25           h.i.t    PA   201 
+  4   10:40-11:25          chemia    MK   103 
+  5   11:30-12:15           o.m.z    PT   203 
+  6   12:20-13:05         o.p.hot    PT   203 
+  7   13:10-13:55             w.f    RB    s1 
+  8   14:10-14:55      jęz.polski    SD   111 
+  9   15:00-15:45      jęz.polski    SD   111 
+
+ŚRODA
+  1    8:00- 8:45 
+  2    8:50- 9:35          fizyka    AD     7 
+  3    9:40-10:25      matematyka    AC     1 
+  4   10:40-11:25      matematyka    AC     1 
+  5   11:30-12:15             wło    PK   207 
+  6   12:20-13:05             w.f    RB    s1 
+  7   13:10-13:55             w.f    RB    s1 
+  8   14:10-14:55         religia    SM   116 
+  9   15:00-15:45      jęz.polski    SD   208 
+
+CZWARTEK
+  1    8:00- 8:45      ang-hot-j2    KY   203 
+  2    8:50- 9:35    pr.ob.kon-j2    MO   _02 
+  3    9:40-10:25      ang-hot-j1    KY   203 
+                     pr.ob.kon-j2    MO   _02 
+  4   10:40-11:25    pr.ob.kon-j1    MO   _02 
+                     pr.ob.inf-j2    DS   109 
+  5   11:30-12:15    pr.ob.kon-j1    MO   _02 
+                     pr.ob.inf-j2    DS   109 
+  6   12:20-13:05    pr.ob.inf-j1    DS   109 
+                      dz.w.rec-j2    PT   203 
+  7   13:10-13:55    pr.ob.inf-j1    DS   109 
+                        pr.hot-j2    PT   203 
+  8   14:10-14:55     dz.w.rec-j1    PT   203 
+  9   15:00-15:45       pr.hot-j1    PT   203 
+
+PIĄTEK
+  1    8:00- 8:45       geografia    KR   103 
+  2    8:50- 9:35        historia    PA   208 
+  3    9:40-10:25        mark.hot    PT   203 
+  4   10:40-11:25             ang    KY   207 
+  5   11:30-12:15          ob.kon    MO     1 
+  6   12:20-13:05         pod.prz    BW     1 
+  7   13:10-13:55           k.p.s    SI   110 
+  8   14:10-14:55           z.z.w    MO     1 
+  9   15:00-15:45 
+
+
+--------------------2d 2wz--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+WTOREK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+ŚRODA
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+CZWARTEK
+  1    8:00- 8:45         w.f-2/2    JB    s2 
+  2    8:50- 9:35         w.f-2/2    JB    s2 
+  3    9:40-10:25           z.z.w    JB     1 
+  4   10:40-11:25      matematyka    AD     7 
+  5   11:30-12:15      jęz.polski    IB   111 
+  6   12:20-13:05        historia    SZ     2 
+  7   13:10-13:55         w.f-1/2    JB    s3 
+                          ang-2/2    KK   115 
+  8   14:10-14:55         w.f-1/2    JB    s3 
+  9   15:00-15:45         ang-1/2    KK   115 
+
+PIĄTEK
+  1    8:00- 8:45      jęz.polski    IB   111 
+  2    8:50- 9:35        biologia    ST   112 
+  3    9:40-10:25         w.f-1/2    JB    s1 
+                          ang-2/2    KK   115 
+  4   10:40-11:25      matematyka    AD     7 
+  5   11:30-12:15         ang-1/2    KK   _02 
+                          w.f-2/2    JB    s2 
+  6   12:20-13:05       geografia    PT   203 
+  7   13:10-13:55         religia    SM   116 
+  8   14:10-14:55         religia    SM   116 
+  9   15:00-15:45 
+
+
+--------------------2e 2wz--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+
+WTOREK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+
+ŚRODA
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+
+CZWARTEK
+  1    8:00- 8:45         religia    SM   116 
+  2    8:50- 9:35         religia    SM   116 
+  3    9:40-10:25           z.z.w    JT   115 
+  4   10:40-11:25         w.f-1/2    RT    s2 
+                          ang-2/2    JT   115 
+  5   11:30-12:15         ang-1/2    JT   115 
+                          w.f-2/2    KZ    s1 
+  6   12:20-13:05      matematyka    AD    11 
+  7   13:10-13:55      jęz.polski    GM    11 
+  8   14:10-14:55        biologia    ST   112 
+
+PIĄTEK
+  1    8:00- 8:45        historia    SZ   115 
+  2    8:50- 9:35      matematyka    AD     7 
+  3    9:40-10:25      jęz.polski    GM    11 
+  4   10:40-11:25         ang-1/2    JT   210 
+                          w.f-2/2    KZ    s1 
+  5   11:30-12:15         w.f-1/2    RT    s3 
+                          w.f-2/2    KZ    s1 
+  6   12:20-13:05         w.f-1/2    RT    s3 
+                          ang-2/2    JT   210 
+  7   13:10-13:55       geografia    PT   203 
+  8   14:10-14:55 
+
+
+--------------------2L 2log--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45    p.i.w.zap-j2    AJ   _07 
+  2    8:50- 9:35    p.i.w.zap-j2    AJ   _07 
+  3    9:40-10:25          w.f-j1    JB    s1 
+                    przech.zap-j2    AJ   _07 
+  4   10:40-11:25          w.f-j1    JB    s1 
+                           wło-j2    PK   202 
+  5   11:30-12:15        historia    PA   201 
+  6   12:20-13:05         religia    SM   115 
+  7   13:10-13:55         pod.log    BJ     1 
+  8   14:10-14:55      jęz.polski    GM    11 
+  9   15:00-15:45          ang-j1    PS   210 
+
+WTOREK
+  1    8:00- 8:45    p.i.w.zap-j1    AJ   _07 
+  2    8:50- 9:35    p.i.w.zap-j1    AJ   _07 
+                           w.f-j2    MG    s2 
+  3    9:40-10:25   przech.zap-j1    AJ   _07 
+                           w.f-j2    MG    s2 
+  4   10:40-11:25          fizyka    AD     7 
+  5   11:30-12:15         pod.log    BJ   201 
+  6   12:20-13:05         religia    SM   116 
+  7   13:10-13:55      matematyka    PE     2 
+  8   14:10-14:55         geogr.r    KR   103 
+  9   15:00-15:45 
+
+ŚRODA
+  1    8:00- 8:45           z.z.w    PE     2 
+  2    8:50- 9:35          wło-j1    PK   202 
+                         infor-j2    ML   109 
+  3    9:40-10:25          w.f-j1    JB    s2 
+                           ang-j2    PS   210 
+  4   10:40-11:25       geografia    KR   103 
+  5   11:30-12:15         matem.r    PE     7 
+  6   12:20-13:05      jęz.polski    GM    11 
+  7   13:10-13:55      jęz.polski    GM    11 
+  8   14:10-14:55        biologia    ST   112 
+  9   15:00-15:45           b.h.p    PA   103 
+
+CZWARTEK
+  1    8:00- 8:45          w.f-j2    MG    s1 
+  2    8:50- 9:35          chemia    MK     7 
+  3    9:40-10:25          wło-j1    PK   202 
+                           ang-j2    PS   210 
+  4   10:40-11:25      matematyka    PE   110 
+  5   11:30-12:15         pod.prz    BW   203 
+  6   12:20-13:05          ang-j1    PS   210 
+                           wło-j2    PK   202 
+  7   13:10-13:55        historia    PA   201 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+PIĄTEK
+  1    8:00- 8:45      zab.maj-j1    MŚ   109 
+                     p.i.w.zap-j2    AJ   _07 
+  2    8:50- 9:35      zab.maj-j1    MŚ   109 
+                     p.i.w.zap-j2    AJ   _07 
+  3    9:40-10:25      zab.maj-j1    MŚ   109 
+                    przech.zap-j2    AJ   _07 
+  4   10:40-11:25           h.i.t    PA   208 
+  5   11:30-12:15         pod.log    BJ     2 
+  6   12:20-13:05    p.i.w.zap-j1    AJ   _07 
+                       zab.maj-j2    MŚ   109 
+  7   13:10-13:55    p.i.w.zap-j1    AJ   _07 
+                       zab.maj-j2    MŚ   109 
+  8   14:10-14:55   przech.zap-j1    AJ   _07 
+                       zab.maj-j2    MŚ   109 
+  9   15:00-15:45        infor-j1    ML   109 
+
+
+--------------------2S 2sport--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45             w.f    MP   st1 
+  2    8:50- 9:35             w.f    MP   st1 
+  3    9:40-10:25             w.f    MP   st1 
+  4   10:40-11:25           z.z.w    MP    11 
+  5   11:30-12:15             wło    PK   203 
+  6   12:20-13:05       geografia    KR   103 
+  7   13:10-13:55           ang.r    KY   207 
+  8   14:10-14:55           ang.r    KY   207 
+  9   15:00-15:45       infor-1/2    MŚ   101 
+
+WTOREK
+  1    8:00- 8:45       zaj.sport    MP   st1 
+  2    8:50- 9:35       zaj.sport    MP   st1 
+  3    9:40-10:25       zaj.sport    MP   st1 
+  4   10:40-11:25             ang    KY   207 
+  5   11:30-12:15          chemia    MK   103 
+  6   12:20-13:05      jęz.polski    GM    11 
+  7   13:10-13:55      jęz.polski    GM    11 
+  8   14:10-14:55         pod.prz    BW   203 
+  9   15:00-15:45          biol.r    ST   112 
+
+ŚRODA
+  1    8:00- 8:45         geogr.r    KR   103 
+  2    8:50- 9:35           h.i.t    PA   208 
+  3    9:40-10:25        historia    PA   208 
+  4   10:40-11:25      jęz.polski    GM    11 
+  5   11:30-12:15             ang    KY   208 
+  6   12:20-13:05        biologia    ST   112 
+  7   13:10-13:55      matematyka    BJ     2 
+  8   14:10-14:55       infor-2/2    MŚ   _07 
+  9   15:00-15:45 
+
+CZWARTEK
+  1    8:00- 8:45      matematyka    BJ   201 
+  2    8:50- 9:35      matematyka    BJ   201 
+  3    9:40-10:25         geogr.r    KR   103 
+  4   10:40-11:25       geografia    KR   103 
+  5   11:30-12:15        historia    PA   201 
+  6   12:20-13:05          chemia    MK     7 
+  7   13:10-13:55          fizyka    AD     7 
+  8   14:10-14:55         religia    DD   116 
+  9   15:00-15:45        biologia    ST   112 
+
+PIĄTEK
+  1    8:00- 8:45      jęz.polski    GM    11 
+  2    8:50- 9:35             ang    KY    11 
+  3    9:40-10:25         religia    DD   116 
+  4   10:40-11:25      matematyka    BJ     2 
+  5   11:30-12:15             wło    PK   208 
+  6   12:20-13:05       zaj.sport    MP   st1 
+  7   13:10-13:55       zaj.sport    MP   st1 
+  8   14:10-14:55       zaj.sport    MP   st1 
+  9   15:00-15:45       zaj.sport    MP   st1 
+
+
+--------------------3A 3ra/log--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45      matematyka    AC     1 
+  2    8:50- 9:35      matematyka    AC     1 
+  3    9:40-10:25          w.f-ra    MG    s2 
+                          ang-log    PJ   210 
+  4   10:40-11:25          w.f-ra    MG    s2 
+                         niem-log    SZ   102 
+  5   11:30-12:15         niem-ra    SZ   102 
+                      ang-log-log    PJ   210 
+  6   12:20-13:05      pr.rach-ra    BW   209 
+                      o.k.i.k-log    SI   _07 
+  7   13:10-13:55      pr.rach-ra    BW   209 
+                      o.k.i.k-log    SI   _07 
+  8   14:10-14:55         geogr.r    KR   103 
+  9   15:00-15:45        biologia    ST   112 
+
+WTOREK
+  1    8:00- 8:45         religia    DD   116 
+  2    8:50- 9:35          ang-ra    PJ   102 
+                          w.f-log    JB    s1 
+  3    9:40-10:25  pro.gos.fin-ra    BW   209 
+                      ang-log-log    PJ   102 
+  4   10:40-11:25  pro.gos.fin-ra    BW   209 
+                    p.i.w.zap-log    AJ   _07 
+  5   11:30-12:15     ka.i.pła-ra    KF   101 
+                    p.i.w.zap-log    AJ   _07 
+  6   12:20-13:05     ka.i.pła-ra    KF   101 
+                        infor-log    MŚ   109 
+  7   13:10-13:55      jęz.polski    IB   111 
+  8   14:10-14:55        infor-ra    MŚ   109 
+  9   15:00-15:45 
+
+ŚRODA
+  1    8:00- 8:45         matem.r    AC     1 
+  2    8:50- 9:35      matematyka    AC     1 
+  3    9:40-10:25  pro.gos.fin-ra    BW   209 
+                   pl.p.trans-log    BJ   _07 
+  4   10:40-11:25          w.f-ra    MG    s2 
+                   pl.p.trans-log    BJ   _07 
+  5   11:30-12:15         religia    DD   116 
+  6   12:20-13:05       geografia    KR   103 
+  7   13:10-13:55        historia    PA   103 
+  8   14:10-14:55          ang-ra    PJ   201 
+  9   15:00-15:45 
+
+CZWARTEK
+  1    8:00- 8:45          chemia    MK     7 
+  2    8:50- 9:35      jęz.polski    IB   111 
+  3    9:40-10:25      jęz.polski    IB   111 
+  4   10:40-11:25         pod.prz    BW     1 
+  5   11:30-12:15         niem-ra    SZ   209 
+                          ang-log    PJ   202 
+  6   12:20-13:05  przech.zap-log    AJ   _07 
+  7   13:10-13:55  przech.zap-log    AJ   _07 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+PIĄTEK
+  1    8:00- 8:45     rach.fin-ra    BW   209 
+                          w.f-log    JB    s2 
+  2    8:50- 9:35     rach.fin-ra    BW   209 
+                          w.f-log    JB    s2 
+  3    9:40-10:25           z.z.w    BW     2 
+  4   10:40-11:25   pr.s.k-pła-ra    KF   101 
+                   przech.zap-log    AJ   _07 
+  5   11:30-12:15   pr.s.k-pła-ra    KF   101 
+                   przech.zap-log    AJ   _07 
+  6   12:20-13:05   pr.s.k-pła-ra    KF   101 
+                         niem-log    SZ   102 
+  7   13:10-13:55          fizyka    AD     7 
+  8   14:10-14:55        historia    PA   103 
+  9   15:00-15:45 
+
+
+--------------------3B 3gas/fry--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45       geografia    KR   103 
+  2    8:50- 9:35        historia    PA   201 
+  3    9:40-10:25         religia    SM   115 
+  4   10:40-11:25         religia    SM   115 
+  5   11:30-12:15      jęz.polski    IB   111 
+  6   12:20-13:05      matematyka    PE     2 
+  7   13:10-13:55      matematyka    PE     2 
+  8   14:10-14:55        biologia    ST   112 
+  9   15:00-15:45     pod.żyw-gas    MW     1 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+WTOREK
+  1    8:00- 8:45         w.f-gas    JB    s1 
+  2    8:50- 9:35      matematyka    PE     2 
+  3    9:40-10:25      jęz.polski    IB   111 
+  4   10:40-11:25      jęz.polski    IB   111 
+  5   11:30-12:15         ang-gas    KY   207 
+                         niem-fry    SZ   102 
+  6   12:20-13:05    us.w.gas-gas    AJ     1 
+                          ang-fry    KY   207 
+  7   13:10-13:55          biol.r    ST   112 
+  8   14:10-14:55          chemia    MK     7 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+ŚRODA
+  1    8:00- 8:45      pr.gas-gas    LU   _01 
+                       pr.fry-fry    MA   _08 
+  2    8:50- 9:35      pr.gas-gas    LU   _01 
+                       pr.fry-fry    MA   _08 
+  3    9:40-10:25      pr.gas-gas    LU   _01 
+                    pr.ob.kon-gas    IJ   _02 
+                       pr.fry-fry    MA   _08 
+  4   10:40-11:25      pr.gas-gas    LU   _01 
+                    pr.ob.kon-gas    IJ   _02 
+                        t.fry-fry    MA   _08 
+  5   11:30-12:15   pr.ob.kon-gas    IJ   _02 
+                       pr.gas-gas    LU   _01 
+                        t.fry-fry    MA   _08 
+  6   12:20-13:05   pr.ob.kon-gas    IJ   _02 
+                       pr.gas-gas    LU   _01 
+                    p.i.d.fry-fry    PL   _08 
+  7   13:10-13:55   pr.ob.inf-gas    MŚ   _07 
+                       pr.gas-gas    LU   _01 
+                     pr.p.est-fry    PL   _08 
+  8   14:10-14:55      pr.gas-gas    LU   _01 
+                       pr.fry-fry    MA   _08 
+  9   15:00-15:45   pr.ob.inf-gas    MŚ   109 
+                       pr.fry-fry    MA   _08 
+ 10   15:50-16:35      pr.fry-fry    MA   _08 
+ 11   16:40-17:25     pr.kosm-fry    KT   _09 
+ 12   17:30-18:15     pr.kosm-fry    KT   _09 
+
+CZWARTEK
+  1    8:00- 8:45     pod.gas-gas    MW     1 
+  2    8:50- 9:35     pod.gas-gas    MW     1 
+  3    9:40-10:25          fizyka    AD     7 
+  4   10:40-11:25         ang-gas    KY   203 
+                        t.fry-fry    MA   209 
+  5   11:30-12:15         w.f-gas    JB    s3 
+                          ang-fry    KY   207 
+  6   12:20-13:05         w.f-gas    JB    s3 
+                          w.f-fry    RB    s2 
+  7   13:10-13:55        niem-gas    SZ   102 
+                          w.f-fry    RB    s2 
+  8   14:10-14:55      ob.kon-gas    LU     1 
+                          w.f-fry    RB    s2 
+  9   15:00-15:45           z.z.w    LU     1 
+ 10   15:50-16:35     pr.kosm-fry    KT   _09 
+ 11   16:40-17:25     pr.kosm-fry    KT   _09 
+ 12   17:30-18:15 
+
+PIĄTEK
+  1    8:00- 8:45       k.p.s-fry    KT   203 
+  2    8:50- 9:35       k.p.s-fry    KT   203 
+  3    9:40-10:25        historia    PA   208 
+  4   10:40-11:25       infor-gas    MŚ   109 
+                         niem-fry    SZ   102 
+  5   11:30-12:15        niem-gas    SZ   102 
+                        infor-fry    MŚ   109 
+  6   12:20-13:05         pod.prz    SS   201 
+  7   13:10-13:55         matem.r    PE     1 
+  8   14:10-14:55 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+
+--------------------3d 3wz--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+
+WTOREK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+
+ŚRODA
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25 
+  5   11:30-12:15 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+
+CZWARTEK
+  1    8:00- 8:45 
+  2    8:50- 9:35          w.f-Ch    MG   st1 
+  3    9:40-10:25          w.f-Ch    MG    s3 
+  4   10:40-11:25          w.f-Ch    MG    s3 
+  5   11:30-12:15          ang-Ch    KK   102 
+  6   12:20-13:05      jęz.polski    IB   111 
+  7   13:10-13:55           w.o.s    WG   110 
+  8   14:10-14:55        historia    PA   201 
+  9   15:00-15:45         religia    DD   116 
+ 10   15:50-16:35         religia    DD   116 
+
+PIĄTEK
+  1    8:00- 8:45      matematyka    AD     7 
+  2    8:50- 9:35           z.z.w    KK   115 
+  3    9:40-10:25        biologia    ST   112 
+  4   10:40-11:25       geografia    PT   203 
+  5   11:30-12:15      jęz.polski    IB   111 
+  6   12:20-13:05          ang-Dz    KK   115 
+  7   13:10-13:55          w.f-Dz    KZ    s1 
+  8   14:10-14:55          w.f-Dz    KZ    s1 
+  9   15:00-15:45          w.f-Dz    KZ    s1 
+ 10   15:50-16:35 
+
+
+--------------------4A 4ek/log--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45      jęz.polski    IB   111 
+  2    8:50- 9:35      matematyka    PE     2 
+  3    9:40-10:25      matematyka    PE     2 
+  4   10:40-11:25   dok.zd.gos-ek    BW   209 
+                   or.proc.tr-log    SI   _07 
+  5   11:30-12:15   dok.zd.gos-ek    BW   209 
+                   or.proc.tr-log    SI   _07 
+  6   12:20-13:05          ang-ek    PS   210 
+                         niem-log    SZ   102 
+  7   13:10-13:55         niem-ek    SZ   102 
+                          ang-log    PS   210 
+  8   14:10-14:55        historia    PA   201 
+  9   15:00-15:45         geogr.r    KR   103 
+
+WTOREK
+  1    8:00- 8:45      pr.stat-ek    KF   101 
+  2    8:50- 9:35      pr.stat-ek    KF   101 
+                      ang-log-log    PS   210 
+  3    9:40-10:25      pr.stat-ek    KF   101 
+                      ang-log-log    PS   210 
+  4   10:40-11:25       ang-ek-ek    PS   210 
+                          w.f-log    MP    s2 
+  5   11:30-12:15          fizyka    AD     7 
+  6   12:20-13:05          w.f-ek    MG    s2 
+                   pl.p.trans-log    BJ   _07 
+  7   13:10-13:55          w.f-ek    MG    s2 
+                   pl.p.trans-log    BJ   _07 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+ŚRODA
+  1    8:00- 8:45  pro.gos.fin-ek    BW   209 
+                          w.f-log    MP   st1 
+  2    8:50- 9:35  pro.gos.fin-ek    BW   209 
+                          w.f-log    MP   st1 
+  3    9:40-10:25       geografia    KR   103 
+  4   10:40-11:25  pro.gos.fin-ek    BW   209 
+                          ang-log    PS   210 
+  5   11:30-12:15        o.m.z-ek    SI   202 
+                          ang-log    PS   210 
+  6   12:20-13:05          ang-ek    PS   210 
+                   or.proc.tr-log    SI   209 
+  7   13:10-13:55          ang-ek    PS   210 
+                   or.proc.tr-log    SI   209 
+  8   14:10-14:55          chemia    IJ     7 
+  9   15:00-15:45 
+
+CZWARTEK
+  1    8:00- 8:45         matem.r    PE   110 
+  2    8:50- 9:35         matem.r    PE   110 
+  3    9:40-10:25         religia    DD   116 
+  4   10:40-11:25   pr.s.k-pła-ek    KF   101 
+                      o.k.i.k-log    AJ   _07 
+  5   11:30-12:15   pr.s.k-pła-ek    KF   101 
+                      o.k.i.k-log    AJ   _07 
+  6   12:20-13:05   pr.s.k-pła-ek    KF   101 
+                  dok.r.pr.tr-log    SI   209 
+  7   13:10-13:55          w.f-ek    MG   st1 
+                  dok.r.pr.tr-log    SI   209 
+  8   14:10-14:55 dok.r.pr.tr-log    SI   209 
+  9   15:00-15:45 
+
+PIĄTEK
+  1    8:00- 8:45         religia    DD   116 
+  2    8:50- 9:35      jęz.polski    IB   111 
+  3    9:40-10:25      jęz.polski    IB   111 
+  4   10:40-11:25      matematyka    PE     1 
+  5   11:30-12:15        biologia    ST   112 
+  6   12:20-13:05           w.o.s    WG   103 
+  7   13:10-13:55           z.z.w    PA    11 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+
+--------------------4B 4gas/fry--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45      pr.fry-fry    PL   _08 
+  2    8:50- 9:35      pr.fry-fry    PL   _08 
+  3    9:40-10:25      pr.fry-fry    PL   _08 
+  4   10:40-11:25       t.fry-fry    PL   _08 
+  5   11:30-12:15      ob.kon-gas    PT   _02 
+                        t.fry-fry    PL   _08 
+  6   12:20-13:05      jęz.polski    IB   111 
+  7   13:10-13:55      jęz.polski    IB   111 
+  8   14:10-14:55     pod.żyw-gas    MW     1 
+                          w.f-fry    RB    s1 
+  9   15:00-15:45      pr.gas-gas    LU   _01 
+                    pr.ob.kon-gas    PT   _02 
+                          w.f-fry    RB    s1 
+ 10   15:50-16:35      pr.gas-gas    LU   _01 
+                    pr.ob.kon-gas    PT   _02 
+ 11   16:40-17:25      pr.gas-gas    LU   _01 
+                    pr.ob.inf-gas    MŚ   109 
+ 12   17:30-18:15      pr.gas-gas    LU   _01 
+
+WTOREK
+  1    8:00- 8:45   pr.ob.kon-gas    PT   _02 
+                       pr.fry-fry    PL   _08 
+  2    8:50- 9:35   pr.ob.kon-gas    PT   _02 
+                       pr.fry-fry    PL   _08 
+  3    9:40-10:25         w.f-gas    RT    s1 
+                       pr.fry-fry    PL   _08 
+  4   10:40-11:25         matem.r    MB     2 
+  5   11:30-12:15         matem.r    MB     2 
+  6   12:20-13:05           z.z.w    SZ   208 
+  7   13:10-13:55    us.w.gas-gas    AJ     1 
+                   pr.k.p.fry-fry    PL   109 
+  8   14:10-14:55    us.w.gas-gas    AJ     1 
+                    p.i.d.fry-fry    PL   115 
+  9   15:00-15:45   pr.ob.inf-gas    MŚ   109 
+                       pr.gas-gas    LU   _01 
+                     pr.p.est-fry    PL   115 
+ 10   15:50-16:35      pr.gas-gas    LU   _01 
+ 11   16:40-17:25      pr.gas-gas    LU   _01 
+ 12   17:30-18:15      pr.gas-gas    LU   _01 
+
+ŚRODA
+  1    8:00- 8:45 
+  2    8:50- 9:35          ang-j1    JT   116 
+  3    9:40-10:25          ang-j1    JT   116 
+  4   10:40-11:25      jęz.polski    IB   111 
+  5   11:30-12:15      matematyka    MB     1 
+  6   12:20-13:05      matematyka    MB     1 
+  7   13:10-13:55          chemia    IJ     7 
+  8   14:10-14:55       geografia    KR   103 
+  9   15:00-15:45          biol.r    ST   112 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+CZWARTEK
+  1    8:00- 8:45         niem-j1    SZ   102 
+                           ang-j2    JT   210 
+  2    8:50- 9:35          ang-j1    JT   210 
+                          niem-j2    SZ   102 
+  3    9:40-10:25        historia    WG   110 
+  4   10:40-11:25        biologia    ST   112 
+  5   11:30-12:15     religia-rel    DD   116 
+  6   12:20-13:05     religia-rel    DD   116 
+  7   13:10-13:55     pod.gas-gas    MW     1 
+  8   14:10-14:55 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+PIĄTEK
+  1    8:00- 8:45      matematyka    MB   208 
+  2    8:50- 9:35     ang-gas-gas    JT   207 
+                        k.p.s-fry    SI   _02 
+  3    9:40-10:25         w.f-gas    RT    s3 
+                      ang-fry-fry    JT   207 
+  4   10:40-11:25         w.f-gas    RT    s3 
+                          w.f-fry    RB    s2 
+  5   11:30-12:15           w.o.s    WG   201 
+  6   12:20-13:05          fizyka    AD     7 
+  7   13:10-13:55          ang-j2    JT   210 
+  8   14:10-14:55          ang-j2    JT   210 
+  9   15:00-15:45 
+ 10   15:50-16:35 
+ 11   16:40-17:25 
+ 12   17:30-18:15 
+
+
+--------------------5A 5ek/log--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45          w.f-ek    JB    s3 
+  2    8:50- 9:35          w.f-ek    JB    s3 
+  3    9:40-10:25         geogr.r    KR   103 
+  4   10:40-11:25         religia    DD   116 
+  5   11:30-12:15      matematyka    KJ   110 
+  6   12:20-13:05         matem.r    KJ   110 
+  7   13:10-13:55 
+  8   14:10-14:55 
+
+WTOREK
+  1    8:00- 8:45      matematyka    KJ     2 
+  2    8:50- 9:35         religia    DD   116 
+  3    9:40-10:25         religia    DD   116 
+  4   10:40-11:25      matematyka    KJ   208 
+  5   11:30-12:15      jęz.polski    IB   111 
+  6   12:20-13:05          ang-ek    PS   210 
+                          w.f-log    MP    s3 
+  7   13:10-13:55          ang-ek    PS   210 
+                          w.f-log    MP    s3 
+  8   14:10-14:55         w.f-log    MP    s3 
+
+ŚRODA
+  1    8:00- 8:45          w.f-ek    JB    s2 
+  2    8:50- 9:35 
+  3    9:40-10:25      jęz.polski    IB   111 
+  4   10:40-11:25        historia    PA   110 
+  5   11:30-12:15         w.f-log    MP    s3 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+
+CZWARTEK
+  1    8:00- 8:45         geogr.r    KR   103 
+  2    8:50- 9:35         geogr.r    KR   103 
+  3    9:40-10:25           z.z.w    AJ     2 
+  4   10:40-11:25         ang-log    PS   210 
+  5   11:30-12:15         ang-log    PS   210 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+
+PIĄTEK
+  1    8:00- 8:45 
+  2    8:50- 9:35          ang-ek    PS   210 
+                         niem-log    SZ   102 
+  3    9:40-10:25         niem-ek    SZ   102 
+                          ang-log    PS   210 
+  4   10:40-11:25           w.o.s    WG   103 
+  5   11:30-12:15      matematyka    KJ   110 
+  6   12:20-13:05      jęz.polski    IB   111 
+  7   13:10-13:55      jęz.polski    IB   111 
+  8   14:10-14:55 
+
+
+--------------------5B 5gas/fry--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45 
+  2    8:50- 9:35          ang-j2    JT   102 
+  3    9:40-10:25         niem-j1    SZ   110 
+                           ang-j2    JT   102 
+  4   10:40-11:25      jęz.polski    IB   111 
+  5   11:30-12:15         religia    DD   116 
+  6   12:20-13:05           z.z.w    MG    11 
+  7   13:10-13:55         w.f-fry    MG    s2 
+  8   14:10-14:55         w.f-fry    MG    s2 
+  9   15:00-15:45 
+
+WTOREK
+  1    8:00- 8:45      jęz.polski    IB   111 
+  2    8:50- 9:35      jęz.polski    IB   111 
+  3    9:40-10:25        historia    WG   112 
+  4   10:40-11:25      matematyka    JI     1 
+  5   11:30-12:15      matematyka    JI     1 
+  6   12:20-13:05          ang-j1    JT   115 
+  7   13:10-13:55          ang-j1    JT   115 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+ŚRODA
+  1    8:00- 8:45         w.f-gas    MG    s3 
+  2    8:50- 9:35 
+  3    9:40-10:25          biol.r    ST   112 
+  4   10:40-11:25          ang-j1    JT     7 
+                          niem-j2    SZ   116 
+  5   11:30-12:15      matematyka    JI     2 
+  6   12:20-13:05         religia    DD   116 
+  7   13:10-13:55         religia    DD   116 
+  8   14:10-14:55         w.f-fry    MG    s2 
+  9   15:00-15:45         w.f-fry    MG    s2 
+
+CZWARTEK
+  1    8:00- 8:45 
+  2    8:50- 9:35      matematyka    JI     2 
+  3    9:40-10:25          biol.r    ST   112 
+  4   10:40-11:25      jęz.polski    IB   111 
+  5   11:30-12:15         w.f-gas    MG   st1 
+  6   12:20-13:05         w.f-gas    MG   st1 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+PIĄTEK
+  1    8:00- 8:45 
+  2    8:50- 9:35         matem.r    JI     2 
+  3    9:40-10:25           w.o.s    WG     7 
+  4   10:40-11:25          biol.r    ST   112 
+  5   11:30-12:15          ang-j2    JT   210 
+  6   12:20-13:05 
+  7   13:10-13:55 
+  8   14:10-14:55 
+  9   15:00-15:45 
+
+
+--------------------5C 5hot/ha--------------------
+
+PONIEDZIAŁEK
+  1    8:00- 8:45 
+  2    8:50- 9:35 
+  3    9:40-10:25 
+  4   10:40-11:25             ang    KY   207 
+  5   11:30-12:15             w.f    MG    s2 
+  6   12:20-13:05         religia    DD   116 
+  7   13:10-13:55         religia    DD   116 
+
+WTOREK
+  1    8:00- 8:45 
+  2    8:50- 9:35        historia    WG   112 
+  3    9:40-10:25      matematyka    JI     1 
+  4   10:40-11:25  jęz.polski-pol    GM    11 
+  5   11:30-12:15  jęz.polski-pol    GM    11 
+  6   12:20-13:05 
+  7   13:10-13:55 
+
+ŚRODA
+  1    8:00- 8:45 
+  2    8:50- 9:35         geogr.r    KR   103 
+  3    9:40-10:25      matematyka    JI     2 
+  4   10:40-11:25      matematyka    JI     2 
+  5   11:30-12:15             w.f    MG    s1 
+  6   12:20-13:05             w.f    MG    s3 
+  7   13:10-13:55 
+
+CZWARTEK
+  1    8:00- 8:45      matematyka    JI     2 
+  2    8:50- 9:35           z.z.w    KY   207 
+  3    9:40-10:25            niem    KK   201 
+  4   10:40-11:25           w.o.s    WG   116 
+  5   11:30-12:15         geogr.r    KR   103 
+  6   12:20-13:05  jęz.polski-pol    GM   207 
+  7   13:10-13:55         religia    DD   116 
+
+PIĄTEK
+  1    8:00- 8:45         matem.r    JI     2 
+  2    8:50- 9:35         geogr.r    KR   103 
+  3    9:40-10:25             w.f    MG    s2 
+  4   10:40-11:25  jęz.polski-pol    GM    11 
+  5   11:30-12:15             ang    KY   207 
+  6   12:20-13:05             ang    KY   207 
+  7   13:10-13:55 
