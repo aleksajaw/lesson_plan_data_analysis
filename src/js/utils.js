@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {outputsPath, baseNameForLessonsJSON,baseNameForFormattedLessonsTxt, keysSpacesAmount} from './constants.js';
+import {outputsPath, baseNameForLessonsJSON, baseNameForSimpleFormattedLessonsTxt, baseNameForFormattedLessonsTxt, baseNameForLessonsCSV, keysSpacesAmount} from './constants.js';
 
 function firstLetterToCase(str, caseType = 'Upper') {
     if (!!str && !!caseType) {
@@ -97,7 +97,7 @@ function sortLessonsData(lessonsObj={}) {
     );
 }
 
-function convertLessonsToStr(lessonsObj={}) {
+function convertLessonsObjToFormattedStr(lessonsObj={}) {
     let fullLessonsStr = '';
     // uses classes
     // classesLessonData: { class name: {} }
@@ -176,6 +176,60 @@ function convertLessonsToStr(lessonsObj={}) {
     return fullLessonsStr;
 }
 
+function convertLessonsTableObjToFormattedStr(lessonsObj={}) {
+    let fullLessonsStr = '';
+    if(isObject(lessonsObj)) {
+        for (let planOwner in lessonsObj) {
+            
+            let lessonsData = lessonsObj[planOwner];
+            fullLessonsStr += "\n\n--------------------" + planOwner + "--------------------\n";
+
+            for (let i = 2; i < lessonsData[0].length; i++) {
+                fullLessonsStr += '\n' + lessonsData[0][i].toUpperCase() + '\n';
+
+                for (let j = 1; j < lessonsData.length; j++) {
+                    const lesson = lessonsData[j];
+                    const lessonNr = lesson[0].padStart(keysSpacesAmount['lessonNr']);
+                    const lessonHour= lesson[1].padStart(keysSpacesAmount['lessonHour']);
+                    const subjects = lesson[i];
+                    const basicRowText = lessonNr + ' ' + lessonHour + ' ';
+                    fullLessonsStr += basicRowText;
+
+                    if (!!subjects) {
+                        const lessonsInOneCell = subjects.split('  |  ');
+                        const formattedLessonsInOneCell = lessonsInOneCell.map(subjectInfo => {
+                                                    const elements = subjectInfo.split(' ');
+                                                    const subject = elements[0].padStart(keysSpacesAmount['subjectSymbol']);
+                                                    const teacher = elements[1].padStart(keysSpacesAmount['teacherSymbol']);
+                                                    const classroom = elements[2].padStart(keysSpacesAmount['classroomNr']);
+                                                    return subject + ' ' + teacher + ' ' + classroom + ' ';
+                                                });
+                        fullLessonsStr += formattedLessonsInOneCell.join('\n' + ' '.repeat(basicRowText.length));
+                    }
+                    fullLessonsStr += '\n';
+                }
+            }
+        }
+    }
+    return fullLessonsStr;
+}
+
+function convertLessonsToCSV(lessonsData) {
+    let csvStr = "";
+
+    for (const sheetName in lessonsData) {
+        csvStr += `,,,"${sheetName}",,,\n`;
+
+        const sheetData = lessonsData[sheetName];
+
+        for (const row of sheetData) {
+            csvStr += row.map(cell => `"${cell}"`).join(",") + "\n";
+        }
+        csvStr += "\n";
+    }
+    return csvStr;
+}
+
 function writeLessonsToFile(lessonsData=null, fileBaseName='', path='', formattedDate='', fileType='') {
     fileBaseName = fileBaseName || baseNameForLessonsJSON;
     path = path || outputsPath;
@@ -206,20 +260,40 @@ function writeLessonsToFile(lessonsData=null, fileBaseName='', path='', formatte
     }
 }
 
-function writeLessonsToJSONFile(lessonsData={}, formattedDate='', sorted=false) {
+function writeLessonsToJSON(lessonsData={}, formattedDate='', sorted=false) {
     const sortedLessonsData = sorted ? lessonsData
                                      : sortLessonsData(lessonsData);
     return writeLessonsToFile(sortedLessonsData, baseNameForLessonsJSON, '', formattedDate, 'json')
 }
 
-function writeFormattedLessonsToTxtFile(lessonsData=null, formattedDate='', sorted=false) {
+function writeLessonsObjToFormattedTxt(lessonsData=null, formattedDate='', sorted=false) {
     let fullLessonsStr = lessonsData || '';
     if(isObject(lessonsData)) {
         const sortedLessonsData = sorted ? lessonsData
                                          : sortLessonsData(lessonsData);
-        fullLessonsStr = convertLessonsToStr(sortedLessonsData);
+        fullLessonsStr = convertLessonsObjToFormattedStr(sortedLessonsData);
     }
     return writeLessonsToFile(fullLessonsStr, baseNameForFormattedLessonsTxt, '', formattedDate, 'txt');
 }
 
-export {firstLetterToLowerCase, firstLetterToUpperCase, isObject, isType, getNowFormattedDate,findLatestFileWithBaseNameInFolder, doesFileExistInFolder, createFolderIfDoesntExist, sortLessonsData, convertLessonsToStr, writeLessonsToJSONFile, writeFormattedLessonsToTxtFile};
+function writeLessonsTableObjToFormattedTxt(lessonsData=null, formattedDate='', sorted=false) {
+    let fullLessonsStr = lessonsData || '';
+    if(isObject(lessonsData)) {
+        const sortedLessonsData = sorted ? lessonsData
+                                         : sortLessonsData(lessonsData);
+        fullLessonsStr = convertLessonsTableObjToFormattedStr(sortedLessonsData);
+    }
+    return writeLessonsToFile(fullLessonsStr, baseNameForSimpleFormattedLessonsTxt, '', formattedDate, 'txt');
+}
+
+function writeLessonsToCSV(lessonsData=null, formattedDate='', sorted=false) {
+    let fullLessonsStr = lessonsData || '';
+    if(isObject(lessonsData)) {
+        const sortedLessonsData = sorted ? lessonsData
+                                         : sortLessonsData(lessonsData);
+        fullLessonsStr = convertLessonsToCSV(sortedLessonsData);
+    }
+    return writeLessonsToFile(fullLessonsStr, baseNameForLessonsCSV, '', formattedDate, 'csv');
+}
+
+export {firstLetterToLowerCase, firstLetterToUpperCase, isObject, isType, getNowFormattedDate, findLatestFileWithBaseNameInFolder, doesFileExistInFolder, createFolderIfDoesntExist, sortLessonsData, convertLessonsObjToFormattedStr, convertLessonsTableObjToFormattedStr, convertLessonsToCSV, writeLessonsToJSON, writeLessonsObjToFormattedTxt, writeLessonsTableObjToFormattedTxt, writeLessonsToCSV};

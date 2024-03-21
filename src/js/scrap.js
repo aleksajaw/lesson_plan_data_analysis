@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import {isObject, getNowFormattedDate, createFolderIfDoesntExist, sortLessonsData, convertLessonsToStr, writeLessonsToJSONFile, writeFormattedLessonsToTxtFile} from './utils.js';
+import {isObject, getNowFormattedDate, createFolderIfDoesntExist, sortLessonsData, convertLessonsObjToFormattedStr, writeLessonsToJSON, writeLessonsObjToFormattedTxt} from './utils.js';
 import fs from 'fs';
 import {Profile, TechnicalProfile, MultitradeProfile, classProfiles} from './classes.js';
 import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount} from './constants.js';
@@ -133,13 +133,13 @@ import { outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, s
 
     const currFormattedDate = getNowFormattedDate();
     const sortedClassesLessonsData = sortLessonsData(classesLessonsData);
-    const fullLessonsStr = convertLessonsToStr(sortedClassesLessonsData);
+    const fullLessonsStr = convertLessonsObjToFormattedStr(sortedClassesLessonsData);
 
     if(shouldWritePlanToTxt.class)
-        writeFormattedLessonsToTxtFile(fullLessonsStr, currFormattedDate, true)
+        writeLessonsObjToFormattedTxt(fullLessonsStr, currFormattedDate, true)
 
     if(shouldWritePlanToJSON.class)
-        writeLessonsToJSONFile(sortedClassesLessonsData, currFormattedDate, true);
+        writeLessonsToJSON(sortedClassesLessonsData, currFormattedDate, true);
 
     if(shouldPrintPlanToConsole.class)
         console.log(fullLessonsStr);
