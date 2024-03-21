@@ -263,7 +263,13 @@ function writeLessonsToFile(lessonsData=null, fileBaseName='', path='', formatte
 function writeLessonsToJSON(lessonsData={}, formattedDate='', sorted=false) {
     const sortedLessonsData = sorted ? lessonsData
                                      : sortLessonsData(lessonsData);
-    return writeLessonsToFile(sortedLessonsData, baseNameForLessonsJSON, '', formattedDate, 'json')
+    let fileName = baseNameForLessonsJSON;
+    if(!lessonsData[Object.keys(lessonsData)[0]].classDaysData) {
+        fileName = fileName.split('.');
+        fileName[0] = fileName[0]+'2';
+        fileName = fileName.join('.');
+    }
+    return writeLessonsToFile(sortedLessonsData, fileName, '', formattedDate, 'json')
 }
 
 function writeLessonsObjToFormattedTxt(lessonsData=null, formattedDate='', sorted=false) {
