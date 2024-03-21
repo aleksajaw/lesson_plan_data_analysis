@@ -106,64 +106,64 @@ function convertLessonsObjToFormattedStr(lessonsObj={}) {
         for (const [className, classPlanData] of Object.entries(lessonsObj)) {
 
             let classTitle = className;
-            if(classPlanData.classProfile.length>0)
-                classTitle += ' (' + (classPlanData.classProfile).join(', ') + ')';
-            const maxTitleLength = Math.max(55, (classTitle.length + 2));
-            const titleLine = '-'.repeat((maxTitleLength - classTitle.length)/2);
-            fullLessonsStr += `\n\n\n${titleLine + classTitle + titleLine}`;
+            if(!!classPlanData.classProfile) {
+                if(classPlanData.classProfile.length>0)
+                    classTitle += ' (' + (classPlanData.classProfile).join(', ') + ')';
+                const maxTitleLength = Math.max(55, (classTitle.length + 2));
+                const titleLine = '-'.repeat((maxTitleLength - classTitle.length)/2);
+                fullLessonsStr += `\n\n\n${titleLine + classTitle + titleLine}`;
 
-            const classDays = classPlanData.classDaysData;
-            // uses class days
-            // class name: { classDaysData: {} }
-            // classDaysData: { day name: [] }
-            if (isObject(classDays)) {
-                // days in the class   loop
-                for (const [classDay, classDayLessons] of Object.entries(classDays)) {
+                const classDays = classPlanData.classDaysData;
+                // uses class days
+                // class name: { classDaysData: {} }
+                // classDaysData: { day name: [] }
+                if (isObject(classDays)) {
+                    // days in the class   loop
+                    for (const [classDay, classDayLessons] of Object.entries(classDays)) {
 
-                    fullLessonsStr += `\n\n${classDay.toUpperCase()}:`;
-                    
-                    // uses day lessons
-                    // day name: [ {} ]
-                    if (Array.isArray(classDayLessons)) {
-                        // lessons in day   loop
-                        for (const lessonDataVal of classDayLessons) {
-                            fullLessonsStr += '\n';
+                        fullLessonsStr += `\n\n${classDay.toUpperCase()}:`;
+                        
+                        // uses day lessons
+                        // day name: [ {} ]
+                        if (Array.isArray(classDayLessons)) {
+                            // lessons in day   loop
+                            for (const lessonDataVal of classDayLessons) {
+                                fullLessonsStr += '\n';
 
-                            // uses lesson data
-                            // lesson row of the class day as {}
-                            if (isObject(lessonDataVal)) {
-                                let currSpaceBefore = 0;
-                                // lesson(s) in one row for the class   loop
-                                for (const [lessonPropName, lessonProp] of Object.entries(lessonDataVal)) {
-                                    
-                                    // condition for lesson's object containing subject, teacher & classroom
-                                    // in one time (cell) for the class
-                                    // #1   day name: [{ lessonSubjectInfo: [{}] }]
-                                    if (Array.isArray(lessonProp)) {
-                                        let counter = 0;
-                                        // subjects info in one cell   loop
-                                        for (const lessonPropEl of lessonProp) {
+                                // uses lesson data
+                                // lesson row of the class day as {}
+                                if (isObject(lessonDataVal)) {
+                                    let currSpaceBefore = 0;
+                                    // lesson(s) in one row for the class   loop
+                                    for (const [lessonPropName, lessonProp] of Object.entries(lessonDataVal)) {
+                                        
+                                        // condition for lesson's object containing subject, teacher & classroom
+                                        // in one time (cell) for the class
+                                        // #1   day name: [{ lessonSubjectInfo: [{}] }]
+                                        if (Array.isArray(lessonProp)) {
+                                            let counter = 0;
+                                            // subjects info in one cell   loop
+                                            for (const lessonPropEl of lessonProp) {
 
-                                            if(isObject(lessonPropEl)){
-                                                if(counter>0) {
-                                                    fullLessonsStr += '\n' + ' '.repeat(currSpaceBefore);
+                                                if(isObject(lessonPropEl)){
+                                                    if(counter>0) {
+                                                        fullLessonsStr += '\n' + ' '.repeat(currSpaceBefore);
+                                                    }
+                                                    for (const [lessonPropElName, lessonPropElVal] of Object.entries(lessonPropEl)) {
+                                                        const placeAmount = keysSpacesAmount[lessonPropElName];
+                                                        fullLessonsStr += lessonPropElVal.padStart(placeAmount) + ' ';
+                                                    }
+                                                    counter++;
                                                 }
-                                                for (const [lessonPropElName, lessonPropElVal] of Object.entries(lessonPropEl)) {
-                                                    const spacesAmount = keysSpacesAmount[lessonPropElName] - lessonPropElVal.length;
-                                                    const spaces = ' '.repeat(spacesAmount);
-                                                    fullLessonsStr += spaces + lessonPropElVal + ' ';
-                                                }
-                                                counter++;
                                             }
+                                        
+                                        // lesson nr and hour for lesson row
+                                        // #2   day name: [{ lessonNr: '', lessonHour: '' }]
+                                        } else if (typeof lessonProp === 'string') {
+                                            const placeAmount = keysSpacesAmount[lessonPropName];
+                                            fullLessonsStr += lessonProp.padStart(placeAmount) + ' ';
+                                            currSpaceBefore += placeAmount+1;
                                         }
-                                    
-                                    // lesson nr and hour for lesson row
-                                    // #2   day name: [{ lessonNr: '', lessonHour: '' }]
-                                    } else if (typeof lessonProp === 'string') {
-                                        const spacesAmount = keysSpacesAmount[lessonPropName] - lessonProp.length;
-                                        currSpaceBefore += keysSpacesAmount[lessonPropName]+1;
-                                        const spaces = ' '.repeat(spacesAmount);
-                                        fullLessonsStr += spaces + lessonProp + ' ';
                                     }
                                 }
                             }
