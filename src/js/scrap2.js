@@ -15,8 +15,6 @@ import { schoolPlanPage, linksFrameName, planFrameName, shouldPrintPlanToConsole
     const frame1 = await page.waitForSelector(`frame[name="${linksFrameName}"]`);
     const frame1Content = await frame1.contentFrame();
 
-    let classesLessonsData = {};
-
     // get links from frame1
     const links = await frame1Content.evaluate(() => {
         const linksList = document.querySelectorAll('body > ul > li > a');
@@ -69,15 +67,19 @@ import { schoolPlanPage, linksFrameName, planFrameName, shouldPrintPlanToConsole
                                             const spans = col.querySelectorAll('span');
                                             const maxElLength = spans.length;
 
+                                            // fixing used content of table cells; irregular amount of spans
+                                            // it could be 0 (text outside any spans)
                                             if(!maxElLength) {
                                                 colValue += col.textContent.trim();
 
+                                            // or 4 (1 parent, 3 children)
                                             } else if(maxElLength%4===0) {
                                                 for(let i=1; i<=maxElLength; i=i+4) {
                                                     if(i!=1)colValue += '  |  ';
                                                     colValue += spans[i-1].textContent;
                                                 }
 
+                                            // or 3 (0 parent, 3 children)
                                             } else if (maxElLength%3===0) {
                                                 colValue = col.textContent
                                             }
