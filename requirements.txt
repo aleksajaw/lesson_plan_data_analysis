@@ -2,10 +2,11 @@ backports.statistics==0.1.0
 beautifulsoup4==4.12.3
 Cython==3.0.11
 dl==0.1.0
-matplotlib==3.7.5
-numpy==1.24.4
+matplotlib==3.9.2
+numpy==2.0.0
 ordereddict==1.1
 pandas==2.2.3
+openpyxl=3.1.5
 pyppeteer==2.0.0
 pywin32==306
 Requests==2.32.3
