@@ -1,6 +1,6 @@
 outputsPath = '../outputs/'
 baseNameForLessonsJSON = 'sortedClassesLessonsData.json'
-schoolPlanPage = 'https://zamkowa15.edu.pl/plan/plan.html'
+planStartUrl = 'https://zamkowa15.edu.pl/plan/plan.html'
 linksFrameName = 'list'
 planFrameName = 'plan'
 weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek']
