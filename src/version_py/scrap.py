@@ -13,9 +13,10 @@ classList = []
 for link in listFrameLinks:
     
     currClassName = link.get_text(strip=True)
+    classLink = link.get('href')
     classList.append(currClassName)
 
-    print(currClassName,':', convertToFrameUrl(baseUrl, link.get('href')))
+    print(currClassName,':', convertToFrameUrl(baseUrl, classLink))
     
     table = findInFrame('table', {'class': 'tabela'}, 'plan', planStartUrl)
 
@@ -30,26 +31,39 @@ for link in listFrameLinks:
 
 excelFileName = 'schedule.xlsx'
 engineName = 'openpyxl'
+draftSheetName = 'draft_sheet'
+
 
 if not ( os.path.isfile(excelFileName) ):
   writer = pd.ExcelWriter(excelFileName, engine=engineName)
-  empty_dataframe=pd.DataFrame()
-  empty_dataframe.to_excel(writer, sheet_name='empty')
+  draftDf=pd.DataFrame()
+  draftDf.to_excel(writer, sheet_name=draftSheetName, index=False)
   writer.close()
 
-else:
 
-  try:  
-    with pd.ExcelWriter(excelFileName, engine=engineName) as writer:
-      df=pd.DataFrame([1,2,3,4])
-      df.to_excel(writer, sheet_name='empty', index=False, header=False)
+try:  
+  with pd.ExcelWriter(excelFileName, mode='a', if_sheet_exists='replace', engine=engineName) as writer:
 
-    '''for key in classesData:
+    workbook = writer.book
+    
+    for key in classesData:
+
       classData = classesData[key]
-      print(key)
-      print(classData)
-      df = pd.DataFrame(classData)
-      df.to_excel(writer, sheet_name=key[0], index=False)'''
+      msgStr = key+': '
 
-  except Exception as e:
-    print(f"Error reading the Excel file: {e}")
+      try:
+        cols = classData[0]
+        df = pd.DataFrame(classData[1:], columns=classData[0])
+        df.to_excel(writer, sheet_name=key, index=False)
+        print(f'{key}: data loaded.')
+
+      except Exception as e:
+        print(f'{key}: error occurred while loading data.')
+
+    if (draftSheetName in workbook.sheetnames) & (len(workbook.sheetnames)):
+      del workbook[draftSheetName]
+      print('Draft sheet deleted.')
+
+
+except Exception as e:
+  print(f"Error reading the Excel file: {e}")
