@@ -8,7 +8,7 @@ def isType(obj, value):
 
 
 def getResponse(url=''):
-    print('url: ', url)
+    print('Get response from: ', url,'.')
     return requests.get(url)
 
 def getSoup(url=planStartUrl):
@@ -32,5 +32,6 @@ def findInFrame(elTag='', elAttr={}, frameName='', url='', findAll=False):
         foundFrame = urlSoup.find('frame', {'name': frameName})
         frameSrc = foundFrame['src'] if foundFrame else None
         frameSoup = getSoup(convertToFrameUrl(url, frameSrc))
+        print()
         return frameSoup.find_all(elTag, elAttr) if findAll else frameSoup.find(elTag, elAttr)
     return None
