@@ -1,7 +1,7 @@
 import pandas as pd
 from constants import *
 from utils import *
-
+import os.path
 
 baseUrl = getWithoutLastPart(planStartUrl)
 
@@ -28,9 +28,28 @@ for link in listFrameLinks:
     classesData[currClassName.replace('/', ' ')] = classData
 
 
-# Convert the list of lists into a DataFrame
-#df = pd.DataFrame(classesData, columns=classesData[0])
+excelFileName = 'schedule.xlsx'
+engineName = 'openpyxl'
 
-# Export DataFrame to Excel
-#excelFile = 'schedule2.xlsx'
-#df.to_excel(excelFile, sheet_name='1A', index=False)
+if not ( os.path.isfile(excelFileName) ):
+  writer = pd.ExcelWriter(excelFileName, engine=engineName)
+  empty_dataframe=pd.DataFrame()
+  empty_dataframe.to_excel(writer, sheet_name='empty')
+  writer.close()
+
+else:
+
+  try:  
+    with pd.ExcelWriter(excelFileName, engine=engineName) as writer:
+      df=pd.DataFrame([1,2,3,4])
+      df.to_excel(writer, sheet_name='empty', index=False, header=False)
+
+    '''for key in classesData:
+      classData = classesData[key]
+      print(key)
+      print(classData)
+      df = pd.DataFrame(classData)
+      df.to_excel(writer, sheet_name=key[0], index=False)'''
+
+  except Exception as e:
+    print(f"Error reading the Excel file: {e}")
