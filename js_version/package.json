@@ -1,8 +1,26 @@
 {
   "type": "module",
   "dependencies": {
-      "fs": "^0.0.1-security",
-      "puppeteer": "^22.5.0",
-      "uuidv4": "^6.2.13"
-  }
+    "fs": "^0.0.1-security",
+    "puppeteer": "^22.5.0",
+    "uuidv4": "^6.2.13"
+  },
+  "name": "js_version",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aleksajaw/lesson_plan_data_analysis.git"
+  },
+  "author": "Aleksandra Jaworska",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aleksajaw/lesson_plan_data_analysis/issues"
+  },
+  "homepage": "https://github.com/aleksajaw/lesson_plan_data_analysis#readme",
+  "description": ""
 }
