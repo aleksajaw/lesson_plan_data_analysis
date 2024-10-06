@@ -10,13 +10,17 @@ listFrameLinks = findInFrame('a', {'target': 'plan'}, 'list', planStartUrl, True
 classesData = {}
 classList = []
 
+
 for link in listFrameLinks:
     
     currClassName = link.get_text(strip=True)
     classLink = link.get('href')
     classList.append(currClassName)
-
-    print(currClassName,':', convertToFrameUrl(baseUrl, classLink))
+    classFrameLink = convertToFrameUrl(baseUrl, classLink)
+    #print(currClassName)
+    #print(classFrameLink)
+    #print(getElPath(link, 'href'))
+    #print()
     
     table = findInFrame('table', {'class': 'tabela'}, 'plan', planStartUrl)
 
