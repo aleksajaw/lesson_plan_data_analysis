@@ -1,15 +1,6 @@
-import requests
 from bs4 import BeautifulSoup
 from constants import *
-
-
-def isType(obj, value):
-    return obj.type == value
-
-
-def getResponse(url=''):
-    #print('Get response from: ', url,'.')
-    return requests.get(url)
+from requests_utils import *
 
 
 def getSoup(url=planStartUrl):
