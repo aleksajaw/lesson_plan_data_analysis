@@ -1,4 +1,8 @@
-outputsPath = '../schedules/'
+import sys
+import os
+
+dirPath = os.path.dirname(os.path.abspath(__file__))
+outputsPath = f'{dirPath}/schedules/'
 baseNameForLessonsJSON = 'sortedClassesLessonsData.json'
 planStartUrl = 'https://zamkowa15.edu.pl/plan/plan.html'
 linksFrameName = 'list'
