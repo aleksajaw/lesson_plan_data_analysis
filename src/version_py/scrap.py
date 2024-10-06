@@ -2,35 +2,62 @@ import pandas as pd
 from constants import *
 from utils import *
 import os.path
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-baseUrl = getWithoutLastPart(planStartUrl)
 
-listFrameLinks = findInFrame('a', {'target': 'plan'}, 'list', planStartUrl, True) or []
+driver = webdriver.Chrome()
+wait = WebDriverWait(driver, 10)
+driverLocationStates = ['default', 'list', 'plan']
 
+driver.get(planStartUrl)
+currDriverLocation = driverLocationStates[0]
+
+listFrame = driver.find_element(By.NAME, 'list')
+planFrame = driver.find_element(By.NAME, 'plan')
+
+driver.switch_to.frame(listFrame)
+currDriverLocation = driverLocationStates[1]
+
+classList = driver.find_elements(By.CSS_SELECTOR, 'a[target="plan"]')
 classesData = {}
-classList = []
 
+for link in classList:
 
-for link in listFrameLinks:
+    if(currDriverLocation!='list'):
+      wait.until(EC.presence_of_element_located((By.NAME, 'list')))
+      driver.switch_to.frame(listFrame)
+    currDriverLocation = driverLocationStates[1]
+
+    link.click()
+    className2 = link.text
+
+    driver.switch_to.default_content()
+    currDriverLocation = driverLocationStates[0]
+
+    wait.until(EC.presence_of_element_located((By.NAME, 'plan')))
+    driver.switch_to.frame(planFrame)
+    currDriverLocation = driverLocationStates[2]
     
-    currClassName = link.get_text(strip=True)
-    classLink = link.get('href')
-    classList.append(currClassName)
-    classFrameLink = convertToFrameUrl(baseUrl, classLink)
-    #print(currClassName)
-    #print(classFrameLink)
-    #print(getElPath(link, 'href'))
-    #print()
-    
-    table = findInFrame('table', {'class': 'tabela'}, 'plan', planStartUrl)
+    table = driver.find_element(By.CLASS_NAME, 'tabela')
 
+    #print(table.get_attribute("outerHTML"))
     classData = []
-    for row in table.find_all('tr'):
-        rowData = [cell.get_text(strip=True) for cell in row.find_all(['td', 'th'])]
+    rows = table.find_elements(By.TAG_NAME, 'tr')
+
+    for row in rows:
+        cols = row.find_elements(By.XPATH, './/td | .//th')
+        rowData = []
+        for col in cols:
+           rowData.append(col.text)
         if rowData:
             classData.append(rowData)
 
-    classesData[currClassName.replace('/', ' ')] = classData
+    classesData[className2.replace('/', ' ')] = classData
+
+    driver.switch_to.parent_frame()
 
 
 excelFileName = 'schedule.xlsx'
