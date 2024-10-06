@@ -9,7 +9,7 @@ scheduleExcelPath = outputsPath + scheduleExcelName
 
 
 def doesSheetExist(workbook=pd.ExcelWriter.book, sheetName=''):
-    return sheetName in workbook.sheetnames & len(workbook.sheetnames)
+    return bool((sheetName in workbook.sheetnames) & len(workbook.sheetnames))
 
 
 def createDraftSheet(excelFilePath=scheduleExcelPath):
@@ -25,8 +25,8 @@ def createDraftSheetIfNecessary():
 
 
 def delDraftIfNecessary(workbook=pd.ExcelWriter.book):
-    if (len(workbook.sheetnames)>1 & doesSheetExist(workbook, draftSheetName)):
-        deleteExcelSheet(draftSheetName)
+    if ((len(workbook.sheetnames)>1) & doesSheetExist(workbook, draftSheetName)):
+        deleteExcelSheet(workbook, draftSheetName)
 
 
 def writingToExcel(writer=pd.ExcelWriter, sheetName='', dataToEnter=None):
