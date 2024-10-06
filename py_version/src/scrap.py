@@ -61,19 +61,20 @@ for link in classList:
 
 
 excelFileName = 'schedule.xlsx'
+excelFilePath = outputsPath + excelFileName
 engineName = 'openpyxl'
 draftSheetName = 'draft_sheet'
 
 
-if not ( os.path.isfile(excelFileName) ):
-  writer = pd.ExcelWriter(excelFileName, engine=engineName)
+if not ( os.path.isfile(excelFilePath) ):
+  writer = pd.ExcelWriter(excelFilePath, engine=engineName)
   draftDf=pd.DataFrame()
   draftDf.to_excel(writer, sheet_name=draftSheetName, index=False)
   writer.close()
 
 
 try:  
-  with pd.ExcelWriter(excelFileName, mode='a', if_sheet_exists='replace', engine=engineName) as writer:
+  with pd.ExcelWriter(excelFilePath, mode='a', if_sheet_exists='replace', engine=engineName) as writer:
 
     workbook = writer.book
     

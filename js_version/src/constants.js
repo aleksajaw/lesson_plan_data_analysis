@@ -1,4 +1,4 @@
-const outputsPath = '../outputs/';
+const outputsPath = '../schedules/';
 const baseNameForLessonsJSON = 'sortedClassesLessonsData.json';
 const baseNameForFormattedLessonsTxt = 'formattedLessons.txt';
 const baseNameForSimpleFormattedLessonsTxt = 'simpleFormattedLessons.txt';

@@ -1,4 +1,4 @@
-outputsPath = '../outputs/'
+outputsPath = '../schedules/'
 baseNameForLessonsJSON = 'sortedClassesLessonsData.json'
 planStartUrl = 'https://zamkowa15.edu.pl/plan/plan.html'
 linksFrameName = 'list'
