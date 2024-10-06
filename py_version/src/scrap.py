@@ -1,7 +1,6 @@
 import pandas as pd
 from constants import *
 from utils import *
-import os.path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -60,42 +59,26 @@ for link in classList:
     driver.switch_to.parent_frame()
 
 
-excelFileName = 'schedule.xlsx'
-excelFilePath = outputsPath + excelFileName
-engineName = 'openpyxl'
-draftSheetName = 'draft_sheet'
-
-
-if not ( os.path.isfile(excelFilePath) ):
-  writer = pd.ExcelWriter(excelFilePath, engine=engineName)
-  draftDf=pd.DataFrame()
-  draftDf.to_excel(writer, sheet_name=draftSheetName, index=False)
-  writer.close()
+createDraftSheetIfNecessary()
 
 
 try:  
-  with pd.ExcelWriter(excelFilePath, mode='a', if_sheet_exists='replace', engine=engineName) as writer:
+    with pd.ExcelWriter(scheduleExcelPath, mode='a', if_sheet_exists='replace', engine=engineName) as writer:
 
-    workbook = writer.book
-    
-    for key in classesData:
-
-      classData = classesData[key]
-      msgStr = key+': '
-
+      workbook = writer.book
+      
       try:
-        cols = classData[0]
-        df = pd.DataFrame(classData[1:], columns=classData[0])
-        df.to_excel(writer, sheet_name=key, index=False)
-        print(f'{key}: data loaded.')
+        for key in classesData:
 
-      except Exception as e:
-        print(f'{key}: error occurred while loading data.')
+          classData = classesData[key]
 
-    if (draftSheetName in workbook.sheetnames) & (len(workbook.sheetnames)):
-      del workbook[draftSheetName]
-      print('Draft sheet deleted.')
+          writingToExcel(writer, key, classData)
+
+        delDraftIfNecessary(workbook)
+
+      except Exception as e: 
+        print(f"Error writing data to the Excel file: {e}")
 
 
 except Exception as e:
-  print(f"Error reading the Excel file: {e}")
+    print(f"Error reading the Excel file: {e}")
