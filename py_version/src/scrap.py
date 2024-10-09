@@ -5,6 +5,10 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import json
+
+
+classesData = {}
 
 
 driver = webdriver.Chrome()
@@ -21,7 +25,7 @@ driver.switch_to.frame(listFrame)
 currDriverLocation = driverLocationStates[1]
 
 classList = driver.find_elements(By.CSS_SELECTOR, 'a[target="plan"]')
-classesData = {}
+
 
 for link in classList:
 
@@ -50,7 +54,8 @@ for link in classList:
         cols = row.find_elements(By.XPATH, './/td | .//th')
         rowData = []
         for col in cols:
-           rowData.append(col.text)
+            colContent = int(col.text) if str.isdigit(col.text) else col.text
+            rowData.append(colContent)
         if rowData:
             classData.append(rowData)
 
@@ -59,26 +64,36 @@ for link in classList:
     driver.switch_to.parent_frame()
 
 
+classesDataJSON = json.dumps(classesData, indent=4)
+classesDataDfs = convertToObjOfDfs(classesData)
+classesDataDfsJSON = convertObjOfDfsToJSON(classesDataDfs)
+
+
 createDraftSheetIfNecessary()
 
 
-try:  
+try:
+
     with pd.ExcelWriter(scheduleExcelPath, mode='a', if_sheet_exists='replace', engine=engineName) as writer:
 
-      workbook = writer.book
-      
-      try:
-        for key in classesData:
+        workbook = writer.book
+        currExcelAsJSON = convertCurrExcelToDfsJSON()
 
-          classData = classesData[key]
+        try:
+            if not (currExcelAsJSON == classesDataDfsJSON):
+                writingObjOfDfsToExcel(writer, classesDataDfs)
+                
+            else:
+                print('Nothing to be updated in Excel file.')
 
-          writingToExcel(writer, key, classData)
+            delDraftIfNecessary(workbook)
 
-        delDraftIfNecessary(workbook)
+            compareAndUpdateFile(scheduleExcelJSONPath, currExcelAsJSON)
+            compareAndUpdateFile(scheduleDfsJSONPath, classesDataDfsJSON)
+            compareAndUpdateFile(scheduleJSONPath, classesDataJSON)
 
-      except Exception as e: 
-        print(f"Error writing data to the Excel file: {e}")
-
+        except Exception as e: 
+            print(f"Error writing data to the Excel file: {e}")
 
 except Exception as e:
     print(f"Error reading the Excel file: {e}")
