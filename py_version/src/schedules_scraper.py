@@ -126,14 +126,14 @@ def scrapeClassTables():
                     linesInRowCounter += 1
 
 
-                if linesInRowCounter >1:
+                '''if linesInRowCounter >1:
 
                     for i in range(linesInRowCounter):
                         checkingRowNr = currRowNr + i
 
                         for j in range(2):
                             if(finalRows[checkingRowNr][j]==''):
-                                finalRows[checkingRowNr][j] = finalRows[checkingRowNr-1][j]
+                                finalRows[checkingRowNr][j] = finalRows[checkingRowNr-1][j]'''
 
                 maxRowCounter = max(maxRowCounter, linesInRowCounter)
                 colsCounter = currColNr + maxColCounter
