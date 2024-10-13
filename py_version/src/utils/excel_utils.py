@@ -6,10 +6,8 @@ from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
 from openpyxl.cell import cell as openpyxl_cell
 
 
-def doesSheetExist(workbook=ExcelWriter.book, sheetName=''):
-    return bool(sheetName in workbook.sheetnames and len(workbook.sheetnames)>0)
 
-
+###   DRAFTS   ###
 def createDraftSheet(excelFilePath=scheduleExcelPath):
     writer = ExcelWriter(excelFilePath, engine=excelEngineName)
     draftDf = DataFrame()
@@ -17,14 +15,46 @@ def createDraftSheet(excelFilePath=scheduleExcelPath):
     writer.close()
 
 
+
 def createDraftSheetIfNecessary():
     if not doesFileExist(scheduleExcelPath):
         createDraftSheet()
 
 
+
 def delDraftIfNecessary(workbook=ExcelWriter.book):
     if ((len(workbook.sheetnames)>1) & doesSheetExist(workbook, draftSheetName)):
         deleteExcelSheet(workbook, draftSheetName)
+
+
+
+###   SHEET OPERATIONS   ###
+def doesSheetExist(workbook=ExcelWriter.book, sheetName=''):
+    return bool(sheetName in workbook.sheetnames and len(workbook.sheetnames)>0)
+
+
+
+def deleteExcelSheet(workbook=ExcelWriter.book, sheetName=''):
+    try:
+        del workbook[sheetName]
+        msgText = f'The sheet {sheetName} deleted.'
+
+    except Exception as e:
+        msgText = f'Error deleting the sheet {sheetName}: {e}'
+
+    print(msgText)
+
+
+
+def writeToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
+    try:
+        df = convertToDf(dataToEnter)
+        df.to_excel(writer, sheet_name=sheetName)
+        print(f'Data for sheet {sheetName} loaded.')
+
+    except Exception as e:
+        print(f'Error loading data to {sheetName}: {e}')
+
 
 
 def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = True):
@@ -40,50 +70,11 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = Tru
         print(f'Error loading complete classes data: {e}')
 
 
-def writeToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
-    try:
-        df = convertToDf(dataToEnter)
-        df.to_excel(writer, sheet_name=sheetName)
-        print(f'Data for sheet {sheetName} loaded.')
 
-    except Exception as e:
-        print(f'Error loading data to {sheetName}: {e}')
+###    CONVERTERS    ###
 
 
-def deleteExcelSheet(workbook=ExcelWriter.book, sheetName=''):
-    try:
-        del workbook[sheetName]
-        msgText = f'The sheet {sheetName} deleted.'
-
-    except Exception as e:
-        msgText = f'Error deleting the sheet {sheetName}: {e}'
-
-    print(msgText)
-
-
-def convertCurrExcelToDfsJSON():
-    excelJSON = {}
-
-    try:
-        excelDfs = read_excel(scheduleExcelPath, sheet_name=None)
-        excelJSON = convertObjOfDfsToJSON(excelDfs)
-
-    except Exception as e:
-        print(f'Error converting existing schedule Excel file to JSON: {e}')
-
-    return excelJSON 
-
-
-# CONVERTERS #
-def convertObjOfDfsToJSON(dataToConvert=None):
-    objOfDfsJSON = {}
-
-    for sheet_name, df in dataToConvert.items():
-        objOfDfsJSON[sheet_name] = df.to_json(orient='split')
-
-    return json.dumps(objOfDfsJSON, indent=4)
-
-
+# DATA   =>   DATA FRAME
 def convertToDf(dataToConvert=None):
     df = None
 
@@ -106,6 +97,8 @@ def convertToDf(dataToConvert=None):
     return df
 
 
+
+# DATA   =>   OBJECT OF DATA FRAMES 
 def convertToObjOfDfs(dataToConvert=None):
     if dataToConvert:
         return {sheet_name: convertToDf(dataToConvert[sheet_name]) for sheet_name in dataToConvert}
@@ -114,31 +107,65 @@ def convertToObjOfDfs(dataToConvert=None):
         return DataFrame()
 
 
+
+# OBJECT OF DATA FRAMES   =>   JSON
+def convertObjOfDfsToJSON(dataToConvert=None):
+    objOfDfsJSON = {}
+
+    for sheet_name, df in dataToConvert.items():
+        objOfDfsJSON[sheet_name] = df.to_json(orient='split')
+
+    return json.dumps(objOfDfsJSON, indent=4)
+
+
+
+# EXCEL CONTENT   =>   OBJECT OF DATA FRAMES
+#                    =>   JSON
+def convertCurrExcelToDfsJSON():
+    excelJSON = {}
+
+    try:
+        excelDfs = read_excel(scheduleExcelPath, sheet_name=None)
+        excelJSON = convertObjOfDfsToJSON(excelDfs)
+
+    except Exception as e:
+        print(f'Error converting existing schedule Excel file to JSON: {e}')
+
+    return excelJSON 
+
+
+
+# '1'   =>   1
 def convertDigitInStrToInt(text=''):
-    return int(text) if str.isdigit(text) else text
+    return int(text)  if str.isdigit(text)  else text
 
 
+
+# <br>
+# <br />   =>   \n
 def convertBrInText(text=''):
     if isinstance(text, str):
-        if '<br>' in text:
-            text.replace("<br>", "\n")
-
-        elif '<br />' in text:
-            text.replace("<br />", "\n")
+        text = text.replace("<br>", "\n").replace("<br />", "\n")
 
     return text
 
 
+
+# <p>
+#   <span>hello</span> <span>world!&nbsp;</span>
+# </p>
+#   =>   helloworld!
 def splitHTMLAndRemoveTags(HTMLText=''):
-    HTMLText = re.sub(r'&nbsp;|\s+', '', HTMLText)
-    parts = re.split(r'(<[^>]+>)', HTMLText)
+    HTMLTextStripped = re.sub(r'&nbsp;|\s+', '', HTMLText)
+    tagParts = re.split(r'(<[^>]+>)', HTMLTextStripped)
     textParts = []
 
-    for part in parts:
+    for part in tagParts:
         if part and not part.startswith('<'):
-            textParts.append(convertDigitInStrToInt(part))
+            textParts.append( convertDigitInStrToInt(part) )
 
     return textParts
+
 
 
 def get1stNotMergedCell(group=[]):
