@@ -35,6 +35,8 @@ def doesSheetExist(workbook=ExcelWriter.book, sheetName=''):
 
 
 def deleteExcelSheet(workbook=ExcelWriter.book, sheetName=''):
+    msgText = ''
+
     try:
         del workbook[sheetName]
         msgText = f'The sheet {sheetName} deleted.'
@@ -47,27 +49,35 @@ def deleteExcelSheet(workbook=ExcelWriter.book, sheetName=''):
 
 
 def writeToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
+    msgText = ''
+
     try:
         df = convertToDf(dataToEnter)
         df.to_excel(writer, sheet_name=sheetName)
-        print(f'Data for sheet {sheetName} loaded.')
+        msgText = f'Data for sheet {sheetName} loaded.'
 
     except Exception as e:
-        print(f'Error loading data to {sheetName}: {e}')
+        msgText = f'Error loading data to {sheetName}: {e}'
+
+    print(msgText)
 
 
 
 def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = True):
+    msgText = ''
+
     try:
         classDfs = convertToObjOfDfs(dataToEnter) if not isConverted else dataToEnter
 
         for className in classDfs:
             classDfs[className].to_excel(writer, sheet_name=className)
 
-        print('Data loaded to the schedule Excel file.')
+        msgText = 'Data loaded to the schedule Excel file.'
 
     except Exception as e:
-        print(f'Error loading complete classes data: {e}')
+        msgText = f'Error loading complete classes data: {e}'
+    
+    print(msgText)
 
 
 
@@ -123,13 +133,16 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 #                    =>   JSON
 def convertCurrExcelToDfsJSON():
     excelJSON = {}
+    msgText = ''
 
     try:
         excelDfs = read_excel(scheduleExcelPath, sheet_name=None)
         excelJSON = convertObjOfDfsToJSON(excelDfs)
 
     except Exception as e:
-        print(f'Error converting existing schedule Excel file to JSON: {e}')
+        msgText = f'Error converting existing schedule Excel file to JSON: {e}'
+
+    print(msgText)
 
     return excelJSON 
 
