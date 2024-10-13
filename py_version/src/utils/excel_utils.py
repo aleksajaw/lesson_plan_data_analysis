@@ -137,6 +137,7 @@ def convertCurrExcelToDfsJSON():
 
     try:
         excelDfs = read_excel(scheduleExcelPath, sheet_name=None)
+        #print('excelDfs', excelDfs)
         excelJSON = convertObjOfDfsToJSON(excelDfs)
 
     except Exception as e:

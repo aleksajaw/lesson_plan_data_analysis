@@ -37,6 +37,8 @@ def createOrEditExcelFile():
             try:
                 if not (currExcelAsJSON == classesDataDfsJSON):
                     writeObjOfDfsToExcel(writer, classesDataDfs)
+                    #print('currExcelAsJSON', currExcelAsJSON)
+                    #print('classesDataDfsJSON', classesDataDfsJSON)
                     currExcelAsJSON = classesDataDfsJSON
 
                 else:
