@@ -1,6 +1,7 @@
 from constants import scheduleExcelPath, excelEngineName, draftSheetName
 from files_utils import doesFileExist
 import json
+import re
 from pandas import ExcelWriter, DataFrame, read_excel
 
 
@@ -118,3 +119,30 @@ def convertToObjOfDfs(dataToConvert=None):
 
     else:
         return DataFrame()
+
+
+def convertDigitInStrToInt(text=''):
+    return int(text) if str.isdigit(text) else text
+
+
+def convertBrInText(text=''):
+    if isinstance(text, str):
+        if '<br>' in text:
+            text.replace("<br>", "\n")
+
+        elif '<br />' in text:
+            text.replace("<br />", "\n")
+
+    return text
+
+
+def splitHTMLAndRemoveTags(HTMLText=''):
+    HTMLText = re.sub(r'&nbsp;|\s+', '', HTMLText)
+    parts = re.split(r'(<[^>]+>)', HTMLText)
+    textParts = []
+
+    for part in parts:
+        if part and not part.startswith('<'):
+            textParts.append(convertDigitInStrToInt(part))
+
+    return textParts
