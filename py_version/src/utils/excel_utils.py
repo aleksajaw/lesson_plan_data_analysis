@@ -104,7 +104,7 @@ def convertToObjOfDfs(dataToConvert=None):
         return {sheet_name: convertToDf(dataToConvert[sheet_name]) for sheet_name in dataToConvert}
 
     else:
-        return DataFrame()
+        return {draftSheetName: DataFrame()}
 
 
 
