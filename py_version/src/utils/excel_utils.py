@@ -1,8 +1,8 @@
-from constants import scheduleExcelPath, excelEngineName, draftSheetName
+from constants import scheduleExcelPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes
 from files_utils import doesFileExist
 import json
 import re
-from pandas import ExcelWriter, DataFrame, read_excel
+from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
 from openpyxl.cell import cell as openpyxl_cell
 
 
@@ -13,7 +13,7 @@ def doesSheetExist(workbook=ExcelWriter.book, sheetName=''):
 def createDraftSheet(excelFilePath=scheduleExcelPath):
     writer = ExcelWriter(excelFilePath, engine=excelEngineName)
     draftDf = DataFrame()
-    draftDf.to_excel(writer, sheet_name=draftSheetName, index=False)
+    draftDf.to_excel(writer, sheet_name=draftSheetName)
     writer.close()
 
 
@@ -32,7 +32,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = Tru
         classDfs = convertToObjOfDfs(dataToEnter) if not isConverted else dataToEnter
 
         for className in classDfs:
-            classDfs[className].to_excel(writer, sheet_name=className, index=False)
+            classDfs[className].to_excel(writer, sheet_name=className)
 
         print('Data loaded to the schedule Excel file.')
 
@@ -43,7 +43,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = Tru
 def writingToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
     try:
         df = convertToDf(dataToEnter)
-        df.to_excel(writer, sheet_name=sheetName, index=False)
+        df.to_excel(writer, sheet_name=sheetName)
         print(f'Data for sheet {sheetName} loaded.')
 
     except Exception as e:
@@ -88,10 +88,20 @@ def convertToDf(dataToConvert=None):
     df = None
 
     if(dataToConvert):
-        lessonsCols = dataToConvert[0][:2] + [day for day in dataToConvert[0][2:] for _ in range(3)]
+
+        # multi-dimensional column names
+        lessonColumns = MultiIndex.from_tuples(tuples = dfColNamesTuples)
+
+        # old columns version
+        #lessonColumns = dataToConvert[0]
+
+        # schedule without column names
         lessonRows = dataToConvert[1:]
 
-        df = DataFrame(data=lessonRows, columns=lessonsCols)
+        df = DataFrame(data=lessonRows, columns=lessonColumns)
+
+        # set actual columns as row indexes
+        df.set_index(keys=timeIndexes, inplace=True)
 
     return df
 
