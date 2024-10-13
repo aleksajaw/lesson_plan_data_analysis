@@ -1,5 +1,5 @@
 from constants import scheduleExcelPath, excelEngineName, scheduleExcelJSONPath, scheduleDfsJSONPath, scheduleJSONPath
-from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writingObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, get1stNotMergedCell
+from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, get1stNotMergedCell
 #, colLetterToNr
 import json
 from openpyxl import load_workbook
@@ -36,7 +36,7 @@ def createOrEditExcelFile():
 
             try:
                 if not (currExcelAsJSON == classesDataDfsJSON):
-                    writingObjOfDfsToExcel(writer, classesDataDfs)
+                    writeObjOfDfsToExcel(writer, classesDataDfs)
                     currExcelAsJSON = classesDataDfsJSON
 
                 else:

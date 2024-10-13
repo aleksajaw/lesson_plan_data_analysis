@@ -27,7 +27,7 @@ def delDraftIfNecessary(workbook=ExcelWriter.book):
         deleteExcelSheet(workbook, draftSheetName)
 
 
-def writingObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = True):
+def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = True):
     try:
         classDfs = convertToObjOfDfs(dataToEnter) if not isConverted else dataToEnter
 
