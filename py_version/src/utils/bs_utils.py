@@ -1,26 +1,26 @@
 from bs4 import BeautifulSoup
-from constants import planUrl
+from constants import planURL
 from requests_utils import getResponse, getWithoutLastPart
 
 
-def getSoup(url=planUrl):
+def getSoup(url=planURL):
     response = getResponse(url)
     return BeautifulSoup(response.content, 'html.parser') if response else None
 
 
-def convertToFrameUrl(url='', frameSrc=''):
-    frameUrl = getWithoutLastPart(url) + '/' + frameSrc
-    return frameUrl
+def convertToFrameURL(url='', frameSrc=''):
+    frameURL = getWithoutLastPart(url) + '/' + frameSrc
+    return frameURL
 
 
 def getFrameSoup(url, urlSoup, frameName=''):
     foundFrame = urlSoup.find('frame', {'name': frameName})
     frameSrc = foundFrame['src'] if foundFrame else None
-    return getSoup(convertToFrameUrl(url, frameSrc))
+    return getSoup(convertToFrameURL(url, frameSrc))
 
 
 def findInFrame(elTag='', elAttr={}, frameName='', url='', findAll=False):
-    url = url or planUrl
+    url = url or planURL
     urlSoup = getSoup(url)
     if urlSoup:
         frameSoup = getFrameSoup(url, urlSoup, frameName)
@@ -30,7 +30,7 @@ def findInFrame(elTag='', elAttr={}, frameName='', url='', findAll=False):
 
 
 def findInSource(elTag='', elAttr={}, url='', findAll=True, urlSoup=None):
-    url = url or planUrl
+    url = url or planURL
     if not urlSoup: urlSoup = getSoup(url)
     if urlSoup:
       if findAll:

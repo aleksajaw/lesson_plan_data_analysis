@@ -1,4 +1,4 @@
-from constants import planUrl, scheduleExcelPath, excelEngineName, scheduleExcelJSONPath, scheduleDfsJSONPath, scheduleJSONPath
+from constants import planURL, scheduleExcelPath, excelEngineName, scheduleExcelJSONPath, scheduleDfsJSONPath, scheduleJSONPath
 from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writingObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile
 import json
 from pandas import ExcelWriter
@@ -15,7 +15,7 @@ driver = webdriver.Chrome()
 wait = WebDriverWait(driver, 10)
 driverLocationStates = ['default', 'list', 'plan']
 
-driver.get(planUrl)
+driver.get(planURL)
 currDriverLocation = driverLocationStates[0]
 
 listFrame = driver.find_element(By.NAME, 'list')

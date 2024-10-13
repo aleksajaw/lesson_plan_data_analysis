@@ -1,9 +1,16 @@
 # INITIAL VARIABLES
-planUrl = 'https://zamkowa15.edu.pl/plan/plan.html'
+schoolURL = 'https://zamkowa15.edu.pl'
+planURL = schoolURL + '/plan/plan.html'
+
+# frame name attributes
 linksFrameName = 'list'
 planFrameName = 'plan'
+
+# table week days
 weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek']
 
+# driver constant
+driverLocationStates = ['default', 'list', 'plan']
 
 # VARIABLES FOR EXCEL CREATOR
 #excelEngineName = 'xlsxwriter'

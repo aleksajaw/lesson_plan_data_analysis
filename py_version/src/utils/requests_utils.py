@@ -1,5 +1,5 @@
 import requests
-from constants import planUrl
+from constants import planURL
 
 
 def getResponse(url=''):
@@ -8,12 +8,12 @@ def getResponse(url=''):
 
 
 def getWithoutLastPart(url=''):
-    url = url or planUrl
+    url = url or planURL
     urlParts = url.split('/')
-    slicedUrlParts = urlParts[slice(len(urlParts)-1)]
-    return '/'.join(slicedUrlParts)
+    slicedURLParts = urlParts[slice(len(urlParts)-1)]
+    return '/'.join(slicedURLParts)
 
 
-def convertToFrameUrl(url='', frameSrc=''):
-    frameUrl = getWithoutLastPart(url) + '/' + frameSrc
-    return frameUrl
+def convertToFrameURL(url='', frameSrc=''):
+    frameURL = getWithoutLastPart(url) + '/' + frameSrc
+    return frameURL
