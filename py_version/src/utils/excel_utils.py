@@ -40,7 +40,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = Tru
         print(f'Error loading complete classes data: {e}')
 
 
-def writingToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
+def writeToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
     try:
         df = convertToDf(dataToEnter)
         df.to_excel(writer, sheet_name=sheetName)
