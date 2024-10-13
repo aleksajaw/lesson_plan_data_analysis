@@ -106,9 +106,10 @@ def convertToDf(dataToConvert=None):
     df = None
 
     if(dataToConvert):
-        rows=dataToConvert[1:]
-        cols=dataToConvert[0]
-        df = DataFrame(data=rows, columns=cols)
+        lessonsCols = dataToConvert[0][:2] + [day for day in dataToConvert[0][2:] for _ in range(3)]
+        lessonRows = dataToConvert[1:]
+
+        df = DataFrame(data=lessonRows, columns=lessonsCols)
 
     return df
 
