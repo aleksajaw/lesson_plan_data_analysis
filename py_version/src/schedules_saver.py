@@ -1,5 +1,5 @@
 from constants import scheduleExcelPath, excelEngineName, scheduleExcelJSONPath, scheduleDfsJSONPath, scheduleJSONPath
-from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writingObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile
+from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writingObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, get1stNotMergedCell
 #, colLetterToNr
 import json
 from openpyxl import load_workbook
@@ -62,7 +62,7 @@ def createOrEditExcelFile():
 
             for col in ws.columns:
 
-                colLetter = col[0].column_letter
+                colLetter = get1stNotMergedCell(col).column_letter
                 colIndex = column_index_from_string(colLetter)
                 
                 # init content length for specific column in worksheet

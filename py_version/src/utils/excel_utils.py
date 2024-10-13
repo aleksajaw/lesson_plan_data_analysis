@@ -3,6 +3,7 @@ from files_utils import doesFileExist
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel
+from openpyxl.cell import cell as openpyxl_cell
 
 
 def doesSheetExist(workbook=ExcelWriter.book, sheetName=''):
@@ -128,3 +129,15 @@ def splitHTMLAndRemoveTags(HTMLText=''):
             textParts.append(convertDigitInStrToInt(part))
 
     return textParts
+
+
+def get1stNotMergedCell(group=[]):
+    foundNotMergedCell = False
+    i = -1
+
+    while not foundNotMergedCell:
+        i+=1
+        if not isinstance(group[i], openpyxl_cell.MergedCell):
+            foundNotMergedCell = True
+
+    return group[i] if i>=0 else None
