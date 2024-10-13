@@ -32,6 +32,8 @@ def compareAndUpdateFile(filePath='',dataToCompare=''):
                 if not (file.read()==dataToCompare):
                     file.seek(0)
                     file.write(dataToCompare)
+                    # make sure to delete old redundant value
+                    file.truncate()
                     file.close()
                     print(f'{filePath} updated with new data.')
 
@@ -94,7 +96,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
     objOfDfsJSON = {}
 
     for sheet_name, df in dataToConvert.items():
-        objOfDfsJSON[sheet_name] = df.to_json(orient='records')
+        objOfDfsJSON[sheet_name] = df.to_json(orient='split')
 
     return json.dumps(objOfDfsJSON, indent=4)
 
