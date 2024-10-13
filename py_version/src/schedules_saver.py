@@ -3,7 +3,7 @@ from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNe
 #, colLetterToNr
 import json
 from openpyxl import load_workbook
-from openpyxl.styles import Alignment
+from openpyxl.styles import Alignment as openpyxlAlignment
 from openpyxl.utils import column_index_from_string
 from pandas import ExcelWriter
 
@@ -61,6 +61,7 @@ def createOrEditExcelFile():
             colsLength = {}
 
             for col in ws.columns:
+
                 colLetter = col[0].column_letter
                 colIndex = column_index_from_string(colLetter)
                 
@@ -77,19 +78,23 @@ def createOrEditExcelFile():
                     
                     try:
                         if isinstance(cell.value, str) and '\n' in cell.value:
+
                           linesCount = cell.value.count('\n') + 1
                           rowsLines[cell.row] = max(maxRowLines, linesCount)
                           temp = cell.value.split('\n')
+
                           for t in temp:
                               colsLength[cell.column] = max(maxColLength, len(str(t)))
+
                         else:
                           colsLength[cell.column] = max(maxColLength, len(str(cell.value)))
 
-                        cell.alignment = Alignment(wrap_text=True, horizontal='center', vertical='center') 
+                        cell.alignment = openpyxlAlignment(wrap_text=True, horizontal='center', vertical='center') 
                     except:
                         pass
 
-                ws.column_dimensions[colLetter].width = colsLength[column_index_from_string(colLetter)] + 1
+                ws.column_dimensions[colLetter].width = colsLength[colIndex] + 1
+
 
         wb.save(scheduleExcelPath)
         
