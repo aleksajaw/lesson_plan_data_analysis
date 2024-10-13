@@ -1,18 +1,11 @@
 from bs4 import BeautifulSoup
-from constants import *
-from requests_utils import *
+from constants import planUrl
+from requests_utils import getResponse, getWithoutLastPart
 
 
-def getSoup(url=planStartUrl):
+def getSoup(url=planUrl):
     response = getResponse(url)
     return BeautifulSoup(response.content, 'html.parser') if response else None
-
-
-def getWithoutLastPart(url=''):
-    url = url or planStartUrl
-    urlParts = url.split('/')
-    slicedUrlParts = urlParts[slice(len(urlParts)-1)]
-    return '/'.join(slicedUrlParts)
 
 
 def convertToFrameUrl(url='', frameSrc=''):
@@ -27,7 +20,7 @@ def getFrameSoup(url, urlSoup, frameName=''):
 
 
 def findInFrame(elTag='', elAttr={}, frameName='', url='', findAll=False):
-    url = url or planStartUrl
+    url = url or planUrl
     urlSoup = getSoup(url)
     if urlSoup:
         frameSoup = getFrameSoup(url, urlSoup, frameName)
@@ -37,7 +30,7 @@ def findInFrame(elTag='', elAttr={}, frameName='', url='', findAll=False):
 
 
 def findInSource(elTag='', elAttr={}, url='', findAll=True, urlSoup=None):
-    url = url or planStartUrl
+    url = url or planUrl
     if not urlSoup: urlSoup = getSoup(url)
     if urlSoup:
       if findAll:
@@ -47,7 +40,7 @@ def findInSource(elTag='', elAttr={}, url='', findAll=True, urlSoup=None):
     return None
 
 
-def getElPath(el=None, elAttrName='', defaultSep="/"):
+def getElDOMPath(el=None, elAttrName='', defaultSep="/"):
     parentTempName = ''
     currEl = el
     pathElements = []
@@ -80,6 +73,7 @@ def getElPath(el=None, elAttrName='', defaultSep="/"):
           currEl = parentTemp
           counter+=1
 
+    # join reversed list to get el path
     return defaultSep.join(pathElements[::-1])
 
 

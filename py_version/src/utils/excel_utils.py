@@ -1,26 +1,16 @@
-import pandas as pd
-from constants import outputsPath
+from constants import scheduleExcelPath, excelEngineName, draftSheetName
 from files_utils import doesFileExist
 import json
-
-engineName = 'openpyxl'
-draftSheetName = 'draft_sheet'
-scheduleExcelName = 'schedule.xlsx'
-
-# FILE PATHS
-scheduleExcelPath = outputsPath + scheduleExcelName
-scheduleJSONPath = outputsPath + 'schedule.json'
-scheduleDfsJSONPath = outputsPath + 'schedule_dfs.json'
-scheduleExcelJSONPath = outputsPath + 'schedule_dfs_excel.json'
+from pandas import ExcelWriter, DataFrame, read_excel
 
 
-def doesSheetExist(workbook=pd.ExcelWriter.book, sheetName=''):
+def doesSheetExist(workbook=ExcelWriter.book, sheetName=''):
     return bool(sheetName in workbook.sheetnames and len(workbook.sheetnames)>0)
 
 
 def createDraftSheet(excelFilePath=scheduleExcelPath):
-    writer = pd.ExcelWriter(excelFilePath, engine=engineName)
-    draftDf = pd.DataFrame()
+    writer = ExcelWriter(excelFilePath, engine=excelEngineName)
+    draftDf = DataFrame()
     draftDf.to_excel(writer, sheet_name=draftSheetName, index=False)
     writer.close()
 
@@ -30,7 +20,7 @@ def createDraftSheetIfNecessary():
         createDraftSheet()
 
 
-def delDraftIfNecessary(workbook=pd.ExcelWriter.book):
+def delDraftIfNecessary(workbook=ExcelWriter.book):
     if ((len(workbook.sheetnames)>1) & doesSheetExist(workbook, draftSheetName)):
         deleteExcelSheet(workbook, draftSheetName)
 
@@ -52,7 +42,7 @@ def compareAndUpdateFile(filePath='',dataToCompare=''):
               print(f'{filePath} updated with new data.')
 
 
-def writingObjOfDfsToExcel(writer=pd.ExcelWriter, dataToEnter=None, isConverted = True):
+def writingObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = True):
     try:
         classDfs = convertToObjOfDfs(dataToEnter) if not isConverted else dataToEnter
 
@@ -65,7 +55,7 @@ def writingObjOfDfsToExcel(writer=pd.ExcelWriter, dataToEnter=None, isConverted 
         print(f'Error loading complete classes data: {e}')
 
 
-def writingToExcelSheet(writer=pd.ExcelWriter, sheetName='', dataToEnter=None):
+def writingToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
     try:
         df = convertToDf(dataToEnter)
         df.to_excel(writer, sheet_name=sheetName, index=False)
@@ -75,7 +65,7 @@ def writingToExcelSheet(writer=pd.ExcelWriter, sheetName='', dataToEnter=None):
         print(f'Error loading data to {sheetName}: {e}')
 
 
-def deleteExcelSheet(workbook=pd.ExcelWriter.book, sheetName=''):
+def deleteExcelSheet(workbook=ExcelWriter.book, sheetName=''):
     try:
         del workbook[sheetName]
         msgText = f'The sheet {sheetName} deleted.'
@@ -90,7 +80,7 @@ def convertCurrExcelToDfsJSON():
     excelJSON = {}
 
     try:
-        excelDfs = pd.read_excel(scheduleExcelPath, sheet_name=None)
+        excelDfs = read_excel(scheduleExcelPath, sheet_name=None)
         excelJSON = convertObjOfDfsToJSON(excelDfs)
 
     except Exception as e:
@@ -115,7 +105,7 @@ def convertToDf(dataToConvert=None):
     if(dataToConvert):
         rows=dataToConvert[1:]
         cols=dataToConvert[0]
-        df = pd.DataFrame(data=rows, columns=cols)
+        df = DataFrame(data=rows, columns=cols)
 
     return df
 
@@ -125,4 +115,4 @@ def convertToObjOfDfs(dataToConvert=None):
         return {sheet_name: convertToDf(dataToConvert[sheet_name]) for sheet_name in dataToConvert}
 
     else:
-        return pd.DataFrame()
+        return DataFrame()

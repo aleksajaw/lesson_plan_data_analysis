@@ -1,11 +1,11 @@
-import pandas as pd
-from constants import *
-from utils import *
+from constants import planUrl, scheduleExcelPath, excelEngineName, scheduleExcelJSONPath, scheduleDfsJSONPath, scheduleJSONPath
+from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writingObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile
+import json
+from pandas import ExcelWriter
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import json
 
 
 classesData = {}
@@ -15,7 +15,7 @@ driver = webdriver.Chrome()
 wait = WebDriverWait(driver, 10)
 driverLocationStates = ['default', 'list', 'plan']
 
-driver.get(planStartUrl)
+driver.get(planUrl)
 currDriverLocation = driverLocationStates[0]
 
 listFrame = driver.find_element(By.NAME, 'list')
@@ -74,7 +74,7 @@ createDraftSheetIfNecessary()
 
 try:
 
-    with pd.ExcelWriter(scheduleExcelPath, mode='a', if_sheet_exists='replace', engine=engineName) as writer:
+    with ExcelWriter(scheduleExcelPath, mode='a', if_sheet_exists='replace', engine=excelEngineName) as writer:
 
         workbook = writer.book
         currExcelAsJSON = convertCurrExcelToDfsJSON()

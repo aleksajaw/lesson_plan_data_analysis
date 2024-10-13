@@ -1,5 +1,5 @@
 import requests
-from constants import *
+from constants import planUrl
 
 
 def getResponse(url=''):
@@ -8,7 +8,7 @@ def getResponse(url=''):
 
 
 def getWithoutLastPart(url=''):
-    url = url or planStartUrl
+    url = url or planUrl
     urlParts = url.split('/')
     slicedUrlParts = urlParts[slice(len(urlParts)-1)]
     return '/'.join(slicedUrlParts)
