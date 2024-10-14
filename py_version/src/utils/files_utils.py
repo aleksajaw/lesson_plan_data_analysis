@@ -12,22 +12,38 @@ def doesFileExist(filePath=''):
 
 
 def compareAndUpdateFile(filePath='', dataToCompare=''):
+    
     if bool(filePath) and bool(dataToCompare):
+        msgText = ''
+
         try:
             with open(filePath, "r+") as file:
+                
                 if not (file.read()==dataToCompare):
                     file.seek(0)
                     file.write(dataToCompare)
                     # make sure to delete old redundant value
                     file.truncate()
-                    file.close()
-                    print(f'{filePath} updated with new data.')
+                    msgText = f'{filePath} updated with new data.'
+                    
+                else:
+                    msgText = f'Nothing to update in {filePath}.'
 
-        except FileNotFoundError:
+                file.close()
+                print(msgText)
+
+
+        except FileNotFoundError as e:
+            
             with open(filePath, 'w') as file:
               file.write(dataToCompare)
               file.close()
-              print(f'{filePath} updated with new data.')
+
+              print(f'{e} Created a new file and complete it with data.')
+        
+        except Exception as e:
+            print('Error while comparing and updating file content: ', e)
+
 
 
 def autoFormatExcelFile():
