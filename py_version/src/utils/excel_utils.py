@@ -1,4 +1,4 @@
-from constants import scheduleExcelPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes
+from constants import scheduleExcelPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes, dfColWeekDayNamesTuples
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
@@ -10,7 +10,7 @@ from openpyxl.cell import cell as openpyxl_cell
 def createDraftSheet(excelFilePath=scheduleExcelPath):
     writer = ExcelWriter(excelFilePath, engine=excelEngineName)
     draftDf = DataFrame()
-    draftDf.to_excel(writer, sheet_name=draftSheetName)
+    draftDf.to_excel(writer, sheet_name=draftSheetName, merge_cells=True)
     writer.close()
 
 
@@ -53,7 +53,7 @@ def writeToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
 
     try:
         df = convertToDf(dataToEnter)
-        df.to_excel(writer, sheet_name=sheetName)
+        df.to_excel(writer, sheet_name=sheetName, merge_cells=True)
         msgText = f'Data for sheet {sheetName} loaded.'
 
     except Exception as e:
@@ -70,7 +70,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = Tru
         classDfs = convertToObjOfDfs(dataToEnter) if not isConverted else dataToEnter
 
         for className in classDfs:
-            classDfs[className].to_excel(writer, sheet_name=className)
+            classDfs[className].to_excel(writer, sheet_name=className, merge_cells=True)
 
         msgText = 'Data loaded to the schedule Excel file.'
 
@@ -101,9 +101,18 @@ def convertToDf(dataToConvert=None):
 
         df = DataFrame(data=lessonRows, columns=lessonColumns)
 
+        # use empty string instead of null/NaN
+        df = df.fillna('')
+        
+        # useful if there are repeated index cells in the table
+        # e.g. when there are more than one lesson
+        # at the same time for one class and its groups
+        for indexName in timeIndexes:
+            df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
+        
         # set actual columns as row indexes
         df.set_index(keys=timeIndexes, inplace=True)
-
+        
     return df
 
 
@@ -122,10 +131,16 @@ def convertToObjOfDfs(dataToConvert=None):
 def convertObjOfDfsToJSON(dataToConvert=None):
     objOfDfsJSON = {}
 
-    for sheet_name, df in dataToConvert.items():
-        objOfDfsJSON[sheet_name] = df.to_json(orient='split')
+    try:
+        for sheet_name, df in dataToConvert.items():
+            objOfDfsJSON[sheet_name] = df.to_json(orient='split')
 
-    return json.dumps(objOfDfsJSON, indent=4)
+        objOfDfsJSON = json.dumps(objOfDfsJSON, indent=4)
+
+    except Exception as e:
+        print('Error while converting object of DataFrames to JSON: ',{e})
+
+    return objOfDfsJSON
 
 
 
@@ -136,9 +151,32 @@ def convertCurrExcelToDfsJSON():
     msgText = ''
 
     try:
-        excelDfs = read_excel(scheduleExcelPath, sheet_name=None)
-        #print('excelDfs', excelDfs)
-        excelJSON = convertObjOfDfsToJSON(excelDfs)
+        excelData = read_excel(scheduleExcelPath, sheet_name=None,
+                                keep_default_na=False, na_filter=False)
+
+        if(excelData):
+
+            # old columns version
+            #lessonColumns = dataToConvert[0]
+
+            for sheet_name, oldDf in excelData.items():
+            
+                df = DataFrame(oldDf[2:])
+
+                # multi-dimensional column names
+                df.columns = MultiIndex.from_tuples(tuples = dfColNamesTuples)
+                
+
+                # useful if there are repeated index cells in the table
+                # e.g. when there are more than one lesson
+                # at the same time for one class and its groups
+                for indexName in timeIndexes:
+                    df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
+                
+                df.set_index(keys=timeIndexes, inplace=True)
+                excelData[sheet_name] = df.to_json(orient='split')
+        
+        excelJSON = json.dumps(excelData, indent=4)
 
     except Exception as e:
         msgText = f'Error converting existing schedule Excel file to JSON: {e}'
