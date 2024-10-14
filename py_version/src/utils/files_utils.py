@@ -7,12 +7,23 @@ from openpyxl.utils import column_index_from_string
 
 
 def doesFileExist(filePath=''):
-    return bool (os.path.isfile(filePath))
+    msgText = f'File   {os.path.basename(filePath)}   '
+    doesFileExistBool = bool (os.path.isfile(filePath))
+
+    if doesFileExistBool:
+        msgText += 'exists.'
+    else:
+        msgText += 'does not exist.'
+
+    print(msgText)
+
+    return doesFileExistBool
 
 
 
 def compareAndUpdateFile(filePath='', dataToCompare=''):
     
+    isFileChanged = False
     if bool(filePath) and bool(dataToCompare):
         msgText = ''
 
@@ -24,14 +35,14 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
                     file.write(dataToCompare)
                     # make sure to delete old redundant value
                     file.truncate()
-                    msgText = f'{filePath} updated with new data.'
+                    msgText = f'\nFile   {os.path.basename(filePath)}   updated with new data.'
+                    isFileChanged = True
                     
                 else:
-                    msgText = f'Nothing to update in {filePath}.'
+                    msgText = f'\nNothing to be updated in file   {os.path.basename(filePath)}.'
 
                 file.close()
                 print(msgText)
-
 
         except FileNotFoundError as e:
             
@@ -39,10 +50,13 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
               file.write(dataToCompare)
               file.close()
 
-              print(f'{e} Created a new file and complete it with data.')
+              print(f'File   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.')
         
         except Exception as e:
             print('Error while comparing and updating file content: ', e)
+
+
+        return isFileChanged
 
 
 

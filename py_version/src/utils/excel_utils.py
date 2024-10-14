@@ -8,10 +8,13 @@ from openpyxl.cell import cell as openpyxl_cell
 
 ###   DRAFTS   ###
 def createDraftSheet(excelFilePath=scheduleExcelPath):
-    writer = ExcelWriter(excelFilePath, engine=excelEngineName)
-    draftDf = DataFrame()
-    draftDf.to_excel(writer, sheet_name=draftSheetName, merge_cells=True)
-    writer.close()
+    try:
+        with ExcelWriter(excelFilePath, engine=excelEngineName, mode='w+') as writer:
+            draftDf = DataFrame()  # Create an empty DataFrame
+            draftDf.to_excel(writer, sheet_name=draftSheetName, merge_cells=True)
+
+    except Exception as e:
+        print(f'Error while creating draft sheet for Excel file: {e}')
 
 
 
@@ -22,7 +25,17 @@ def createDraftSheetIfNecessary():
 
 
 
-def delDraftIfNecessary(workbook=ExcelWriter.book):
+def delDraftIfNecessary(workbook=None, excelFilePath=scheduleExcelPath):
+    if not workbook:
+        try:
+            with ExcelWriter(excelFilePath, engine=excelEngineName, mode='w+') as writer:
+            
+                workbook = writer.book
+
+        except Exception as e:
+            print(f"Error while opening Excel file to check and delete draft sheet: {e}")
+            return
+
     if ((len(workbook.sheetnames)>1) & doesSheetExist(workbook, draftSheetName)):
         deleteExcelSheet(workbook, draftSheetName)
 
@@ -151,7 +164,7 @@ def convertCurrExcelToDfsJSON():
     msgText = ''
 
     try:
-        excelData = read_excel(scheduleExcelPath, sheet_name=None,
+        excelData = read_excel(io=scheduleExcelPath, sheet_name=None, engine=excelEngineName,
                                 keep_default_na=False, na_filter=False)
 
         if(excelData):
@@ -161,25 +174,31 @@ def convertCurrExcelToDfsJSON():
 
             for sheet_name, oldDf in excelData.items():
             
-                df = DataFrame(oldDf[2:])
+                if not oldDf.empty:
+                    df = DataFrame(oldDf[2:])
 
-                # multi-dimensional column names
-                df.columns = MultiIndex.from_tuples(tuples = dfColNamesTuples)
-                
+                    # multi-dimensional column names
+                    df.columns = MultiIndex.from_tuples(tuples = dfColNamesTuples)
 
-                # useful if there are repeated index cells in the table
-                # e.g. when there are more than one lesson
-                # at the same time for one class and its groups
-                for indexName in timeIndexes:
-                    df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
-                
-                df.set_index(keys=timeIndexes, inplace=True)
+                    # useful if there are repeated index cells in the table
+                    # e.g. when there are more than one lesson
+                    # at the same time for one class and its groups
+                    for indexName in timeIndexes:
+                        df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
+                    
+                    df.set_index(keys=timeIndexes, inplace=True)
+
+                else:
+                    df = oldDf
+
                 excelData[sheet_name] = df.to_json(orient='split')
-        
+
         excelJSON = json.dumps(excelData, indent=4)
+
 
     except Exception as e:
         msgText = f'Error converting existing schedule Excel file to JSON: {e}'
+
 
     print(msgText)
 
