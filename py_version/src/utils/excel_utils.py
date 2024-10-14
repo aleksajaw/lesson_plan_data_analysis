@@ -1,5 +1,4 @@
 from constants import scheduleExcelPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes
-from files_utils import doesFileExist
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
@@ -17,6 +16,7 @@ def createDraftSheet(excelFilePath=scheduleExcelPath):
 
 
 def createDraftSheetIfNecessary():
+    from files_utils import doesFileExist
     if not doesFileExist(scheduleExcelPath):
         createDraftSheet()
 

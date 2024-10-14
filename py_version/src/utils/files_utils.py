@@ -1,8 +1,14 @@
 import os
+from constants import scheduleExcelPath
+from openpyxl import load_workbook
+from openpyxl.styles import Alignment as openpyxlAlignment
+from openpyxl.utils import column_index_from_string
+
 
 
 def doesFileExist(filePath=''):
     return bool (os.path.isfile(filePath))
+
 
 
 def compareAndUpdateFile(filePath='', dataToCompare=''):
@@ -22,3 +28,63 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
               file.write(dataToCompare)
               file.close()
               print(f'{filePath} updated with new data.')
+
+
+def autoFormatExcelFile():
+    from excel_utils import get1stNotMergedCell
+
+    try:
+                
+        wb = load_workbook(scheduleExcelPath)
+        
+        if (wb):
+            rowsCounter = 0
+
+
+            for ws in wb.worksheets:
+
+                rowsCounter+=1
+                rowsLines = {}
+                colsLength = {}
+
+
+                for col in ws.columns:
+
+                    colLetter = get1stNotMergedCell(col).column_letter
+                    colIndex = column_index_from_string(colLetter)
+                    
+                    # init content length for specific column in worksheet
+                    colsLength[colIndex] = 1
+
+
+                    for cell in col:
+
+                        if cell.row not in rowsLines:
+                            rowsLines[cell.row] = 1
+
+                        maxRowLines = rowsLines[cell.row]
+                        maxColLength = colsLength[cell.column]
+                        
+                        if isinstance(cell.value, str) and '\n' in cell.value:
+
+                            linesCount = cell.value.count('\n') + 1
+                            rowsLines[cell.row] = max(maxRowLines, linesCount)
+                            temp = cell.value.split('\n')
+
+                            for t in temp:
+                                colsLength[cell.column] = max(maxColLength, len(str(t)))
+
+                        else:
+                            colsLength[cell.column] = max(maxColLength, len(str(cell.value)))
+
+                        cell.alignment = openpyxlAlignment(wrap_text=True, horizontal='center', vertical='center')
+
+
+                    ws.column_dimensions[colLetter].width = colsLength[colIndex] + 1
+
+
+            wb.save(scheduleExcelPath)
+
+
+    except Exception as e:
+        print('Error while formatting the Excel file:', e)
