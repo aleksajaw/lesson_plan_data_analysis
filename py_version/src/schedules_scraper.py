@@ -42,7 +42,8 @@ def scrapeClassTables():
     global classList, wait, driver, currDriverLocation, driverLocationStates, classesData
 
     for link in classList:
-    # un-comment this to fast check the scraper
+    # comment out above code and
+    # uncomment this to quickly check the scraper
     #if(True):
     #    link=classList[1]
 
