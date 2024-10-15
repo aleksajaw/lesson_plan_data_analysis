@@ -15,7 +15,7 @@ def doesFileExist(filePath=''):
     else:
         msgText += 'does not exist.'
 
-    print(msgText)
+    #print(msgText)
 
     return doesFileExistBool
 
