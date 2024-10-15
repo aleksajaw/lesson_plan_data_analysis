@@ -2,7 +2,7 @@ import asyncio
 from pyppeteer import launch
 import os
 from classes import Profile, TechnicalProfile, MultitradeProfile, classProfiles
-from constants import outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekDays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount
+from constants import outputsPath, schoolPlanPage, linksFrameName, planFrameName, weekdays, shouldPrintPlanToConsole, shouldWritePlanToJSON, shouldWritePlanToTxt, keysSpacesAmount
 
 async def main():
     browser = await launch()
@@ -45,19 +45,19 @@ async def main():
         await frame2Content.waitForSelector('.tabela')
 
         # Get data from frame2
-        daysInUse = await frame2Content.evaluate('''(weekDays) => {
+        daysInUse = await frame2Content.evaluate('''(weekdays) => {
             const allHeadingCells = document.querySelectorAll('.tabela tr th');
             const headingsWithCorrectIndexes = {};
 
             allHeadingCells.forEach((heading, i) => {
                 const headingText = heading.textContent.trim();
-                const isWeekDay = weekDays.includes(headingText.toLowerCase());
+                const isWeekDay = weekdays.includes(headingText.toLowerCase());
                 if (isWeekDay)
                     headingsWithCorrectIndexes[i+1] = headingText;
             });
 
             return headingsWithCorrectIndexes;
-        }''', weekDays)
+        }''', weekdays)
 
         classDaysData = {}
 

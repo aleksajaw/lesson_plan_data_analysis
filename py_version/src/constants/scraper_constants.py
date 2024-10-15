@@ -7,7 +7,7 @@ linksFrameName = 'list'
 planFrameName = 'plan'
 
 # table week days
-weekDays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek']
+weekdays = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek']
 
 # driver constant
 driverLocationStates = ['default', 'list', 'plan']
