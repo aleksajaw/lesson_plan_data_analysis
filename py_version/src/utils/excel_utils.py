@@ -2,6 +2,7 @@ from constants import scheduleExcelPath, excelEngineName, draftSheetName, dfColN
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
+from openpyxl import Workbook, load_workbook
 from openpyxl.cell import cell as openpyxl_cell
 
 
@@ -25,35 +26,47 @@ def createDraftSheetIfNecessary():
 
 
 
-def delDraftIfNecessary(workbook=None, excelFilePath=scheduleExcelPath):
-    if not workbook:
+def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleExcelPath):
+    from files_utils import doesFileExist
+
+    if not bool(workbook) and doesFileExist(excelFilePath):
+
         try:
-            with ExcelWriter(excelFilePath, engine=excelEngineName, mode='w+') as writer:
-            
-                workbook = writer.book
+            workbook = load_workbook(excelFilePath)
+
+            if (len(workbook.sheetnames)>1) & doesSheetExist(workbook, draftSheetName):
+                deleteExcelSheet(workbook, draftSheetName)
+                workbook.save(excelFilePath)
+          
+            else:
+                workbook.close()
+
 
         except Exception as e:
-            print(f"Error while opening Excel file to check and delete draft sheet: {e}")
+            print(f"Unable to open the Excel file to check and delete the draft sheet: {e}")
             return
 
-    if ((len(workbook.sheetnames)>1) & doesSheetExist(workbook, draftSheetName)):
-        deleteExcelSheet(workbook, draftSheetName)
-
+    
 
 
 ###   SHEET OPERATIONS   ###
-def doesSheetExist(workbook=ExcelWriter.book, sheetName=''):
+def doesSheetExist(workbook=Workbook(), sheetName=''):
     return bool(sheetName in workbook.sheetnames and len(workbook.sheetnames)>0)
 
 
 
-def deleteExcelSheet(workbook=ExcelWriter.book, sheetName=''):
+def deleteExcelSheet(workbook=Workbook(), sheetName=''):
     msgText = ''
 
     try:
-        del workbook[sheetName]
-        msgText = f'The sheet {sheetName} deleted.'
+        if isinstance(workbook, Workbook):
+            worksheet = workbook[sheetName]
+            workbook.remove(worksheet)
+            msgText = f'The sheet {sheetName} deleted.'
 
+        else:
+          raise Exception(f'workbook variable should be Workbook() type, not {type(workbook)}')
+        
     except Exception as e:
         msgText = f'Error deleting the sheet {sheetName}: {e}'
 
@@ -76,7 +89,7 @@ def writeToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
 
 
 
-def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted = True):
+def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted=True):
     msgText = ''
 
     try:
@@ -117,9 +130,13 @@ def convertToDf(dataToConvert=None):
         # use empty string instead of null/NaN
         df = df.fillna('')
         
-        # useful if there are repeated index cells in the table
+        # Restore 111 from '111.0'.
+        # The problem is probably caused by the creation of the DataFrame.
+        df = df.map(convertFloatToInt)
+
+        # Useful if there are repeated index cells in the table,
         # e.g. when there are more than one lesson
-        # at the same time for one class and its groups
+        # at the same time for one class and its groups.
         for indexName in timeIndexes:
             df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
         
@@ -160,14 +177,18 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 # EXCEL CONTENT   =>   OBJECT OF DATA FRAMES
 #                    =>   JSON
 def convertCurrExcelToDfsJSON():
+    from files_utils import doesFileExist
     excelJSON = {}
     msgText = ''
 
+    if not doesFileExist(scheduleExcelPath):
+        return excelJSON
+
     try:
         excelData = read_excel(io=scheduleExcelPath, sheet_name=None, engine=excelEngineName,
-                                keep_default_na=False, na_filter=False)
+                                keep_default_na=False)
 
-        if(excelData):
+        if(bool(excelData)):
 
             # old columns version
             #lessonColumns = dataToConvert[0]
@@ -187,10 +208,9 @@ def convertCurrExcelToDfsJSON():
                         df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
                     
                     df.set_index(keys=timeIndexes, inplace=True)
-
+                
                 else:
                     df = oldDf
-
                 excelData[sheet_name] = df.to_json(orient='split')
 
         excelJSON = json.dumps(excelData, indent=4)
@@ -199,17 +219,24 @@ def convertCurrExcelToDfsJSON():
     except Exception as e:
         msgText = f'Error converting existing schedule Excel file to JSON: {e}'
 
-
     print(msgText)
+
 
     return excelJSON 
 
 
 
+# 111.0   =>   111
+def convertFloatToInt(value=None):
+    isValueFloat = isinstance(value, float) and value.is_integer()
+    if isValueFloat:
+        return int(value)
+    return value
+
+
 # '1'   =>   1
 def convertDigitInStrToInt(text=''):
     return int(text)  if str.isdigit(text)  else text
-
 
 
 # <br>

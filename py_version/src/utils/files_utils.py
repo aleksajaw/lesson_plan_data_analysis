@@ -1,6 +1,6 @@
 import os
 from constants import scheduleExcelPath
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment as openpyxlAlignment
 from openpyxl.utils import column_index_from_string
 
@@ -28,9 +28,10 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
         msgText = ''
 
         try:
-            with open(filePath, "r+") as file:
-                
-                if not (file.read()==dataToCompare):
+            with open(file=filePath, mode="r+") as file:
+                #file.seek(0)
+                fileContent = file.read()
+                if str(fileContent) != str(dataToCompare):
                     file.seek(0)
                     file.write(dataToCompare)
                     # make sure to delete old redundant value
@@ -60,18 +61,18 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
 
 
 
-def autoFormatExcelFile():
+def autoFormatExcelFile(workbook=Workbook()):
     from excel_utils import get1stNotMergedCell
 
     try:
-                
-        wb = load_workbook(scheduleExcelPath)
-        
-        if (wb):
+        if not isinstance(workbook, Workbook):
+            workbook = load_workbook(scheduleExcelPath)
+
+        if (workbook):
             rowsCounter = 0
 
 
-            for ws in wb.worksheets:
+            for ws in workbook.worksheets:
 
                 rowsCounter+=1
                 rowsLines = {}
@@ -113,7 +114,7 @@ def autoFormatExcelFile():
                     ws.column_dimensions[colLetter].width = colsLength[colIndex] + 1
 
 
-            wb.save(scheduleExcelPath)
+            workbook.save(scheduleExcelPath)
 
 
     except Exception as e:
