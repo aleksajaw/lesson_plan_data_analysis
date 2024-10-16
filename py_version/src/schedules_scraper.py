@@ -41,11 +41,11 @@ def scrapeClassTables():
     
     global classList, wait, driver, currDriverLocation, driverLocationStates, classesData
 
-    for link in classList:
+    #for link in classList:
     # comment out above code and
     # uncomment this to quickly check the scraper
-    #if(True):
-    #    link=classList[1]
+    if(True):
+        link=classList[1]
 
         if(currDriverLocation!='list'):
             wait.until(EC.presence_of_element_located((By.NAME, 'list')))

@@ -58,3 +58,7 @@ def createOrEditExcelFile():
     compareAndUpdateFile(scheduleExcelJSONPath, currExcelAsDfsJSON)
     compareAndUpdateFile(scheduleDfsJSONPath, classesDataDfsJSON)
     compareAndUpdateFile(scheduleJSONPath, classesDataJSON)
+
+
+def getClassesDataDfs():
+    return classesDataDfs
