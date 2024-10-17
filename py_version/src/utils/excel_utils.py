@@ -103,7 +103,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted=True)
         for className in classDfs:
             classDfs[className].to_excel(writer, sheet_name=className, merge_cells=True)
 
-        msgText = 'Data loaded to the schedule Excel file.'
+        msgText = 'Data loaded to the main schedule Excel file.'
 
     except Exception as e:
         msgText = f'Error loading complete classes data: {e}'

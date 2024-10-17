@@ -19,7 +19,7 @@ def loadClassesDataVariables(classesData):
     classesDataDfsJSON = convertObjOfDfsToJSON(classesDataDfs)
 
 
-def createOrEditExcelFile():
+def createOrEditMainExcelFile():
     
     global classesDataJSON, classesDataDfs, classesDataDfsJSON
 
@@ -39,18 +39,18 @@ def createOrEditExcelFile():
                         delDraftIfNecessary()
 
                     except Exception as draftError:
-                        print(f"Error while deleting the draft sheet: {draftError}")
+                        print(f"Error while deleting the draft sheet in main Excel file: {draftError}")
 
 
                 except Exception as writeError:
-                    print(f"Error while writing to Excel file: {writeError}")
+                    print(f"Error while writing to the main Excel file: {writeError}")
 
         else:
-            print('Nothing to be updated in Excel file.')
+            print('Nothing to be updated in the main Excel file.')
 
 
     except Exception as e:
-        print(f"Error while handling the Excel file: {e}")
+        print(f"Error while handling the main Excel file: {e}")
 
 
     # to avoid issues, compare file contents
