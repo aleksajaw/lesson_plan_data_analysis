@@ -43,9 +43,10 @@ def scrapeClassTables():
 
     #for link in classList:
     # comment out above code and
-    # uncomment this to quickly check the scraper
-    if(True):
-        link=classList[1]
+    # uncomment one of the two option below to quicker check the scraper
+    for link in classList[:4]:
+    #if(True):
+    #    link=classList[1]
 
         if(currDriverLocation!='list'):
             wait.until(EC.presence_of_element_located((By.NAME, 'list')))
@@ -130,14 +131,14 @@ def scrapeClassTables():
                     linesInRowCounter += 1
 
 
-                '''if linesInRowCounter >1:
+                if linesInRowCounter >1:
 
                     for i in range(linesInRowCounter):
                         checkingRowNr = currRowNr + i
 
                         for j in range(2):
                             if(finalRows[checkingRowNr][j]==''):
-                                finalRows[checkingRowNr][j] = finalRows[checkingRowNr-1][j]'''
+                                finalRows[checkingRowNr][j] = finalRows[checkingRowNr-1][j]
 
                 maxRowCounter = max(maxRowCounter, linesInRowCounter)
                 colsCounter = currColNr + maxColCounter
