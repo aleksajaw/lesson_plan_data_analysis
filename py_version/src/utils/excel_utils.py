@@ -1,4 +1,4 @@
-from constants import scheduleExcelPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes, dfColWeekDayNamesTuples
+from constants import scheduleExcelPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
@@ -74,12 +74,17 @@ def deleteExcelSheet(workbook=Workbook(), sheetName=''):
 
 
 
-def writeToExcelSheet(writer=ExcelWriter, sheetName='', dataToEnter=None):
+def writeToExcelSheet(desire=None, sheetName='', dataToEnter=None):
     msgText = ''
+
+    # desire should be Excel.Writer or filePath
+    if not desire:
+        from files_utils import createFileName
+        desire = createFileName
 
     try:
         df = convertToDf(dataToEnter)
-        df.to_excel(writer, sheet_name=sheetName, merge_cells=True)
+        df.to_excel(desire, sheet_name=sheetName, merge_cells=True)
         msgText = f'Data for sheet {sheetName} loaded.'
 
     except Exception as e:
@@ -137,8 +142,11 @@ def convertToDf(dataToConvert=None):
         # Useful if there are repeated index cells in the table,
         # e.g. when there are more than one lesson
         # at the same time for one class and its groups.
-        for indexName in timeIndexes:
-            df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
+
+        # FOR NOW, LEAVE THIS AS A COMMENT
+        # IF YOU WANT TO KEEP CREATING THE TEACHERS' TIMETABLE FUNCTIONAL.
+        #for indexName in timeIndexes:
+        #    df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
         
         # set actual columns as row indexes
         df.set_index(keys=timeIndexes, inplace=True)
