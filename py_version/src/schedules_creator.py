@@ -22,14 +22,14 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
         teachers = filterNumpyNdarray(teachers)
 
         classrooms = df.xs(classroomColName, axis=1, level=1).stack().unique()
-        classrooms = filterNumpyNdarray(classrooms)
+        classrooms = filterNumpyNdarray(classrooms, True)
 
         createSchedule(teacherSchedules, df, teachers, teacherColName, className)
-        #createSchedule(classroomSchedules, df, classrooms, classroomColName, className)
+        createSchedule(classroomSchedules, df, classrooms, classroomColName, className)
 
 
     sortedTeacherSchedules = {key: teacherSchedules[key] for key in sorted(teacherSchedules)}
-    #sortedClassroomSchedules = {key: classroomSchedules[key] for key in sorted(classroomSchedules)}
+    sortedClassroomSchedules = {key: classroomSchedules[key] for key in sorted(classroomSchedules)}
 
 
     with ExcelWriter(scheduleExcelTeachersPath, mode='w+', engine=excelEngineName) as writer:
@@ -41,30 +41,21 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
             print(f"Error while writing to the teachers' Excel file: {writeError}")
 
 
-    '''with ExcelWriter(scheduleExcelClassroomsPath, mode='w+', engine=excelEngineName) as writer:
+    with ExcelWriter(scheduleExcelClassroomsPath, mode='w+', engine=excelEngineName) as writer:
                 
         try:
-            writeObjOfDfsToExcel(writer, classroomSchedules)
+            writeObjOfDfsToExcel(writer, sortedClassroomSchedules)
             
         except Exception as writeError:
-            print(f"Error while writing to the classrooms' Excel file: {writeError}")'''
+            print(f"Error while writing to the classrooms' Excel file: {writeError}")
 
 
 
-def filterNumpyNdarray(arr=np.ndarray, el=''):
+def filterNumpyNdarray(arr=np.ndarray, shouldConvertBack=False, elToDel=''):
     arrAsStr = arr.astype(str)
-    sortedArr = np.sort( arrAsStr[ arrAsStr != el] )
+    sortedArr = np.sort( arrAsStr[ arrAsStr != elToDel] )
 
-    return np.array([convertBack(val) for val in sortedArr])
-
-
-
-def convertBack(val):
-    try:
-        return int(val)
-
-    except ValueError:
-        return val
+    return np.array([val for val in sortedArr])
 
 
 
@@ -73,41 +64,45 @@ def createSchedule(schedulesDict={}, df=None, group=np.ndarray, elColName='', ne
     if (isinstance(df,DataFrame)) and (len(group)) and (elColName!='') and (newColValue!=''):
         for el in group:
           
+            dfCopy = df.copy()
             # get lessons for specific el
-            elMask = df.xs(elColName, axis=1, level=1) == el
+            try:
+                elMask = dfCopy.xs(elColName, axis=1, level=1) == int(el)
+            except:
+                elMask = dfCopy.xs(elColName, axis=1, level=1) == el
+
             # replace not matching cells with ''
-            elRows = df.where(elMask.any(axis=1))
+            elRows = dfCopy.where(elMask.any(axis=1))
 
 
             for day in weekdays:
                 elDayMask = elMask[day]
-                elRows.loc[~elDayMask, day] = None
+                elRows.loc[~elDayMask, day] = np.nan
 
 
             if not elRows.empty:
 
                 # change the column name and its value
                 elRows = elRows.rename(columns={elColName: 'klasa'})
-
+                
                 # asign to the column "klasa" (old "nauczyciel")
                 # map values of the column "klasa" to className
                 # only if current value is not ''
-                elRows.loc[:, (weekdays, 'klasa')] = elRows.loc[:, (weekdays, 'klasa')].map(lambda x: newColValue   if x not in [None, np.nan]   else x)
-                
+                elRows.loc[:, (weekdays, 'klasa')] = elRows.loc[:, (weekdays, 'klasa')].map(lambda x: newColValue   if pd.notna(x)   else x)
                 #print(colName, el)
                 
                 elRows = elRows.groupby(level=[0]).first()
                 #indexLength = len(elRows.index)
                 #elRows.insert(loc=0, column=timeIndexes[1], value=lessonTimePeriods[:indexLength])
-                #print(elRows)
 
                 if el not in schedulesDict:
-                    schedulesDict[el] = elRows
+                    schedulesDict[str(el)] = elRows
 
                 else:
-                    x = schedulesDict[el].copy()
+                    x = schedulesDict[str(el)].copy()
                     y = x.combine_first(elRows)
+                    #print('yyyyyyyy', y)
                     lastNonEmptyRow = y.dropna(how='all').index[-1]
                     # keep all the rows up to the last non-empty row
-                    schedulesDict[el] = y.loc[:lastNonEmptyRow]
+                    schedulesDict[str(el)] = y.loc[:lastNonEmptyRow]
                     #schedulesDict[el] = y.reindex(columns=weekdays)
