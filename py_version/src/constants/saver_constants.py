@@ -7,6 +7,8 @@ outputsPath = f'{srcDirPath}/schedules/'
 
 # FILE NAMES
 scheduleExcelName = 'schedule.xlsx'
+scheduleExcelTeachersName = 'schedule-teachers.xlsx'
+scheduleExcelClassroomsName = 'schedule-classrooms.xlsx'
 scheduleJSONName = 'schedule.json'
 scheduleDfsJSONName = 'schedule_dfs.json'
 scheduleExcelJSONName = 'schedule_dfs_excel.json'
@@ -15,6 +17,10 @@ scheduleExcelJSONName = 'schedule_dfs_excel.json'
 # FILE PATHS
 # Excel
 scheduleExcelPath = outputsPath + scheduleExcelName
+# For Teachers
+scheduleExcelTeachersPath = outputsPath + scheduleExcelTeachersName
+# For classrooms
+scheduleExcelClassroomsPath = outputsPath + scheduleExcelClassroomsName
 # pure scraped data in JSON
 scheduleJSONPath = outputsPath + scheduleJSONName
 # DataFrames in JSON
@@ -30,6 +36,34 @@ lessonAttrs = ['przedmiot', 'nauczyciel', 'sala']
 dfRowIndexNamesTuples = [
     ('Nr', ''),
     ('Godz', '')
+]
+lessonTimePeriods = [
+    '8:00-8:45',
+    '8:50-9:35',
+    '9:40-10:25',
+    '10:40-11:25',
+    '11:30-12:15',
+    '12:20-13:05',
+    '13:10-13:55',
+    '14:10-14:55',
+    '15:00-15:45',
+    '15:50-16:35',
+    '16:40-17:25',
+    '17:30-18:15'
+]
+dfRowNrAndTimeTuples = [
+    (1, '8:00-8:45'),
+    (2, '8:50-9:35'),
+    (3, '9:40-10:25'),
+    (4, '10:40-11:25'),
+    (5, '11:30-12:15'),
+    (6, '12:20-13:05'),
+    (7, '13:10-13:55'),
+    (8, '14:10-14:55'),
+    (9, '15:00-15:45'),
+    (10, '15:50-16:35'),
+    (11, '16:40-17:25'),
+    (12, '17:30-18:15')
 ]
 dfColWeekDayNamesTuples = [
     ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'sala'),
