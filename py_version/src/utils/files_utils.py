@@ -1,4 +1,6 @@
 import os
+import sys
+import subprocess
 from constants import scheduleExcelPath, outputsPath
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment as openpyxlAlignment
@@ -6,7 +8,7 @@ from openpyxl.utils import column_index_from_string
 
 
 
-def doesFileExist(filePath=''):
+def doesFileExist(filePath='', shouldPrintMsg=False):
     msgText = f'File   {os.path.basename(filePath)}   '
     doesFileExistBool = bool (os.path.isfile(filePath))
 
@@ -15,7 +17,8 @@ def doesFileExist(filePath=''):
     else:
         msgText += 'does not exist.'
 
-    #print(msgText)
+    if shouldPrintMsg:
+        print(msgText)
 
     return doesFileExistBool
 
@@ -164,12 +167,9 @@ def getFileMarker(fileName='', separator='-'):
 
 
 
-def createFileName():
-    basicFileName = 'schedule'
-    fileExt = 'xlsx'
+def createFileName(basicFileName = 'schedule', fileExt = 'xlsx', separator = '-'):
     fileNameParts = findLastFileInGroup(basicFileName, fileExt, True)
     difference = ''
-    separator = '-'
 
     # If there aren't any very similar files in the folder,
     # use the basic file name.
@@ -220,3 +220,26 @@ def findFileNameDifference(fileName='', fileNameToBeCompared=''):
 
 def removeEmptyStrFromArr(arr=[]):
     return [el   for el in arr   if el!='']
+
+
+
+def openFileWithDefApp(filePath=''):
+
+    if filePath!='' and not doesFileExist(filePath, True):
+        return
+
+    try:
+        # Windows
+        if sys.platform == "win32":
+            subprocess.run(['start', '', filePath], shell=True)
+
+        # macOS
+        elif sys.platform == "darwin":
+            subprocess.run(['open', filePath])
+
+        # Linux / Unix-like
+        else:
+            subprocess.run(['xdg-open', file_path])
+
+    except Exception as e:
+        print(f"Failed to open file for User: {e}")
