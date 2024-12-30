@@ -13,10 +13,6 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
     for className, classDf in classSchedulesDfs.items():
         #weekdays = classDf.columns.get_level_values(0).unique()
 
-        # axis =1 => columns
-        #      =0 => index
-        # level=0, =1   level of MultiIndex in column
-
         buildGroupScheduleBasedOnCol(teacherSchedules, classDf, 'teacher', className)
         buildGroupScheduleBasedOnCol(classroomSchedules, classDf, 'classroom', className)
 
@@ -48,24 +44,42 @@ def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newCo
             for el in group:
 
                 # copy for modification
-                baseDfCopy = baseDf.copy()
-
-                # get lessons for specific el in group (teacher or classroom)
-                # including their data type (integer or string)
+                baseDfCopy = baseDf.copy().astype('object')
+                # axis  =1 => columns
+                #       =0 => index
+                #
+                # level of MultiIndex in column
+                # level =1 => weekdays
+                #       =2 => subject, teacher, classroom
+                newScheduleOwnerTempData = baseDfCopy.xs(newScheduleOwner, axis=1, level=1)
+               
+                # get cells with value of specific el in group (teacher or classroom)
+                # e.g. 110 or KJ
+                # not whole subject, classroom and teacher 
+                #
+                # use data type (integer or other)
                 try:
-                    elMask = baseDfCopy.xs(newScheduleOwner, axis=1, level=1) == int(el)
+                    maskToFindDesiredPartOfLessons = newScheduleOwnerTempData == int(el)
                 except:
-                    elMask = baseDfCopy.xs(newScheduleOwner, axis=1, level=1) == el
+                    maskToFindDesiredPartOfLessons = newScheduleOwnerTempData == el
 
-                # replace not matching whole rows with NaN
+                emptyValue = np.nan
+
+                # use mask to get whole desired lessons
+                # replace not matching whole rows with emptyValue
                 # leave rows with any matches untouched
-                elRows = baseDfCopy.where(elMask.any(axis=1))
+                elRows = baseDfCopy.where(maskToFindDesiredPartOfLessons.any(axis=1), emptyValue)
 
                 # divide rows into weekdays
                 # replace value with NaN for not matching days
                 for day in weekdays:
-                    elDayMask = elMask[day]
-                    elRows.loc[~elDayMask, day] = np.nan
+                    # divide earlier mask to days 
+                    elDayMask = maskToFindDesiredPartOfLessons[day]
+
+                    # go through each day,
+                    # ignore other days to make things easier
+                    # replace not matching day cells with emptyValue
+                    elRows[day] = elRows[day].where(elDayMask, emptyValue)
 
 
                 # restrict loop actions if row does not match mask
@@ -73,14 +87,15 @@ def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newCo
 
                     # change the column name and its value
                     elRows = elRows.rename(columns={colToBeChanged: 'klasa'})
-                    
+
                     # asign
-                    # to the column "klasa" (old "nauczyciel" or "sala")
-                    # mapped values of the column "klasa" to className
-                    # only if current value is not NaN in numeric arrays, None or NaN in object arrays, NaT in datetimelike
-                    elRows.loc[:, (weekdays, 'klasa')] = elRows.loc[:, (weekdays, 'klasa')].map(lambda x: newColValue   if pd.notna(x)   else x)
-                    #print(GroupName, el)
-                    
+                    #   to the column "klasa" (old "nauczyciel" or "sala")
+                    #   mapped values of the column "klasa" to className
+                    # only if current value is not NaN in numeric arrays,
+                    #   None or NaN in object arrays,
+                    #   NaT in datetimelike
+                    elRows.loc[:,(weekdays, 'klasa')] = elRows.loc[:, (weekdays, 'klasa')].map(lambda x: newColValue   if pd.notna(x)   else x)
+
                     elRows = elRows.groupby(level=[0]).first()
                     #indexLength = len(elRows.index)
                     #elRows.insert(loc=0, column=timeIndexes[1], value=lessonTimePeriods[:indexLength])
