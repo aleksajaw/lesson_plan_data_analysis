@@ -64,7 +64,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
 
 
 
-def autoFormatExcelFile(workbook=Workbook()):
+def autoFormatExcelFileCellSizes(workbook=Workbook()):
     from excel_utils import get1stNotMergedCell
 
     try:
