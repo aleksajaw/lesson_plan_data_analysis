@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import ExcelWriter, DataFrame
 import numpy as np
 from constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
-from utils import writeObjOfDfsToExcel
+from utils import writeObjOfDfsToExcel,autoFormatExcelFileCellSizes
 
 
 def createOtherScheduleExcelFiles(classSchedulesDfs):
@@ -52,7 +52,7 @@ def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newCo
                 # level =1 => weekdays
                 #       =2 => subject, teacher, classroom
                 newScheduleOwnerTempData = baseDfCopy.xs(newScheduleOwner, axis=1, level=1)
-               
+                
                 # get cells with value of specific el in group (teacher or classroom)
                 # e.g. 110 or KJ
                 # not whole subject, classroom and teacher 
@@ -96,7 +96,7 @@ def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newCo
                     #   NaT in datetimelike
                     elRows.loc[:,(weekdays, 'klasa')] = elRows.loc[:, (weekdays, 'klasa')].map(lambda x: newColValue   if pd.notna(x)   else x)
 
-                    elRows = elRows.groupby(level=[0]).first()
+                    elRows = elRows.groupby(level=[0,1]).first()
                     #indexLength = len(elRows.index)
                     #elRows.insert(loc=0, column=timeIndexes[1], value=lessonTimePeriods[:indexLength])
 
@@ -132,6 +132,7 @@ def writeGroupSchedulesToExcel(groupSchedules=None, groupSchedulesTitle='', sche
     with ExcelWriter(scheduleExcelPath, mode='w+', engine=excelEngineName) as writer:       
         try:
             writeObjOfDfsToExcel(writer, sortedGroupSchedules)
+            autoFormatExcelFileCellSizes(writer.book)
                 
         except Exception as writeError:
             print(f"Error while writing to the {groupSchedulesTitle}' Excel file: {writeError}")

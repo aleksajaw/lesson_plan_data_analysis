@@ -64,12 +64,12 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
 
 
 
-def autoFormatExcelFileCellSizes(workbook=Workbook()):
+def autoFormatExcelFileCellSizes(workbook=Workbook(), excelFilePath=scheduleExcelPath):
     from excel_utils import get1stNotMergedCell
 
     try:
         if not isinstance(workbook, Workbook):
-            workbook = load_workbook(scheduleExcelPath)
+            workbook = load_workbook(excelFilePath)
 
         if (workbook):
             rowsCounter = 0
@@ -117,7 +117,7 @@ def autoFormatExcelFileCellSizes(workbook=Workbook()):
                     ws.column_dimensions[colLetter].width = colsLength[colIndex] + 1
 
 
-            workbook.save(scheduleExcelPath)
+            workbook.save(excelFilePath)
 
 
     except Exception as e:
