@@ -127,8 +127,8 @@ def autoFormatExcelFileCellSizes(workbook=Workbook(), excelFilePath=scheduleExce
                     ws.column_dimensions[colLetter].width = colsLength[colIndex] + 2
 
                 defaultFontSize = 11
-                for rowNr in range(1,len(rowsLines)+1):
-                    ws.row_dimensions[rowNr].height = rowsLines[rowNr] * defaultFontSize * 1.25
+                for row in range(1,len(rowsLines)+1):
+                    ws.row_dimensions[row].height = rowsLines[row] * defaultFontSize * 1.3
 
             workbook.save(excelFilePath)
 
@@ -143,9 +143,9 @@ def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
             currentBorder = cell.border
             defaultColor = '000000'
             borderStyle = { 'hair':   openpyxlSide(border_style='hair',   color=defaultColor),
-                            'thick':  openpyxlSide(border_style='thick',  color=defaultColor),
-                            'thin':   openpyxlSide(border_style='thin',   color=defaultColor),
-                            'medium': openpyxlSide(border_style='medium', color=defaultColor) }
+                            'thin':  openpyxlSide(border_style='thin',  color=defaultColor),
+                            'medium': openpyxlSide(border_style='medium', color=defaultColor),
+                            'thick':   openpyxlSide(border_style='thick',   color=defaultColor) }
             
             cell.border = openpyxlBorder( right = borderStyle[right]    if right    else currentBorder.right,
                                           left = borderStyle[left]      if left     else currentBorder.left,
@@ -158,6 +158,24 @@ def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
     else:
         print("Error while formatting the cell: The value must be of type 'Cell'.")
 
+
+
+def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
+    if isinstance(cell, (openpyxlCell, openpyxlMergedCell)):
+        try:
+            if (  fillType=='solid'
+                  and isinstance(startColor, str) and startColor != ''
+                  and isinstance(startColor, str) and endColor != '' ):
+                cell.fill = openpyxlPatternFill(start_color=startColor, end_color=endColor, fill_type=fillType)
+            
+            elif fillType:
+                cell.fill = openpyxlPatternFill(fill_type=fillType)
+
+        except Exception as e:
+            print('Error while formatting the cell:', e)
+            
+    else:
+        print("Error while formatting the cell: The value must be of type 'Cell'.")
 
 
 def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExcelPath):
@@ -176,71 +194,119 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
                 ws.merge_cells('A1:B2')
                 ws['A1'].fill = permEmptyCellStyle
 
-                rowNrStart = 3
+                rowsStart = 3
                 rowsCount = 0
 
                 # count rows in the 1st and the 2nd column,
                 # cells there are less likely to be merged (for easier data analysis)
-                for row in ws.iter_rows(min_row=rowNrStart, min_col=1, max_col=2):
+                for row in ws.iter_rows(min_row=rowsStart, min_col=1, max_col=2):
                     if row[1].value is not None:
                         rowsCount += 1
                     else:
                         break
                 
 
-                totalRowsCount = rowNrStart-1 + rowsCount
-                colNrIndexesEnd = 2
-                colNrDaysStart = 3
+                totalRowsCount = rowsStart-1 + rowsCount
+                rowIndexesColsEnd = 2
+                colIndexesRowsEnd = 2
+                colDaysStart = 3
                 lenOfWeekdays = len(weekdays)
                 lenOfLessonAttrs = len(lessonAttrs)
-                colNrEnd = colNrDaysStart-1 + lenOfWeekdays * lenOfLessonAttrs
+                totalColsCount = colDaysStart-1 + lenOfWeekdays * lenOfLessonAttrs
                 
 
-                # row with number rowNrStart in the 1st two columns
+                # row with number rowsStart in the 1st two columns
                 # contains the names for the rows' MultiIndex
                 allEmpty = True 
 
                 # check if the cells in the 1st row below column indexes are empty
-                for col in range(colNrDaysStart, colNrEnd+1):
+                for col in range(colDaysStart, totalColsCount+1):
                     
-                    if ws.cell(row=rowNrStart, column=col).value is not None:
+                    if ws.cell(row=rowsStart, column=col).value is not None:
                         allEmpty = False
                         break
 
 
-                # change the BACKGROUND of the cells in the row
-                # if entire row below column indexes is empty
+                # change the BACKGROUND of the cells in the row below column indexes
+                # only if entire row is empty
                 if allEmpty:
                     
                     # MERGE CELLS in the row 
-                    ws.merge_cells( start_row=rowNrStart, start_column=colNrDaysStart,
-                                    end_row=rowNrStart,   end_column=colNrEnd )
+                    ws.merge_cells( start_row=rowsStart, start_column=colDaysStart,
+                                    end_row=rowsStart,   end_column=totalColsCount )
                     
-                    cell = ws.cell(row=rowNrStart, column=colNrDaysStart)
+                    cell = ws.cell(row=rowsStart, column=colDaysStart)
                     cell.fill = permEmptyCellStyle
 
-                    startCoordinate = f'{get_column_letter(colNrDaysStart)}{rowNrStart}'
-                    endCoordinate = f'{get_column_letter(colNrEnd)}{rowNrStart}'
+                    #startCoordinate = f'{get_column_letter(colDaysStart)}{rowsStart}'
+                    #endCoordinate = f'{get_column_letter(totalColsCount)}{rowsStart}'
                     
-                    for cell in ws[startCoordinate:endCoordinate][0]:
-                        formatCellBorder(cell, bottom='thin')
+                    #for cell in ws[startCoordinate:endCoordinate][0]:
+                    #    formatCellBorder(cell, bottom='thin')
 
 
-                # add a RIGHT BORDER at the end of each day
-                for daysCounter in range(1, 1+lenOfWeekdays):
-                    colNr = colNrIndexesEnd + (daysCounter * lenOfLessonAttrs)
+                # add MEDIUM RIGHT BORDERS
+                # at the end of each important column and each day
+                dayColsEnd = [colIndexesRowsEnd + i * 3 for i in range(1, 6)]
+                rowIndexesColsList = list(range(1, colIndexesRowsEnd+1))
+                thickerColsList = rowIndexesColsList + dayColsEnd
 
-                    newRowStart = rowNrStart   if daysCounter == lenOfWeekdays   else rowNrStart + 1
-
-                    for rowNr in range(newRowStart, totalRowsCount+1):
-                        cell = ws.cell(row=rowNr, column=colNr)
-                        formatCellBorder(cell, right = 'thin')
+                for thickerCol in thickerColsList:
+                    for row in range(1, totalRowsCount+1):
+                        cell = ws.cell(row=row, column=thickerCol)
+                        formatCellBorder(cell, right='medium')
+                        # add THIN SIDE BORDERS to the center column on days
+                        if thickerCol > rowIndexesColsEnd:
+                            cell = ws.cell(row=row, column=thickerCol-1)
+                            formatCellBorder(cell, left='thin', right='thin')
                 
 
-                # add the BOTTOM BORDER for the schedule
-                for col in range(colNrDaysStart, colNrEnd+1):
-                    cell = ws.cell(row=totalRowsCount, column=col)
-                    formatCellBorder(cell, bottom='thin')
+                # add MEDIUM BOTTOM BORDERS
+                # at the end of each index and the entire schedule
+                colIndexesRowsList = list(range(1, colIndexesRowsEnd+1))[1:]
+                thickerRowsList = colIndexesRowsList + [rowsStart, totalRowsCount]
+
+                for thickerRow in thickerRowsList:
+                    colsLimit = totalColsCount+1
+                    # ignore long merged cell
+                    if thickerRow==rowsStart:
+                        colsLimit = rowIndexesColsEnd+1
+
+                    for col in range(1, colsLimit):
+                        cell = ws.cell(row=thickerRow, column=col)
+                        formatCellBorder(cell, bottom='medium')
+
+
+                # add BACKGROUND for the lessons with an odd numbers
+                # and HAIR/THIN BORDERS
+                #rowsToBeColoured = []
+                for row in range(1, ws.max_row + 1):
+                    # fast checking if the row is in the specific merged range (for col A here)
+                    merged = next(  ( r   for r in ws.merged_cells.ranges
+                                          if r.min_col == 1 and r.min_row <= row <= r.max_row ),
+                                    None)
+                
+
+                    for col in range(1, totalColsCount+1):
+                        cellForBorder = ws.cell(row=row, column=col)
+                        # thinner ('HAIR') BORDER inside merged row
+                        if merged and merged.min_row != row:
+                            topBorderStyle = 'thin'
+                        # THIN BORDER for outer frame
+                        elif not cellForBorder.border.top.style:
+                            topBorderStyle = 'thin'
+                        formatCellBorder(cellForBorder, top=topBorderStyle)
+
+
+                    # set LIGHT GREY BACKGROUND
+                    rowNr = merged.min_row   if merged   else row
+                    cellValue = ws.cell(row=rowNr, column=1).value
+                    if isinstance(cellValue, int) and (cellValue % 2 != 0):
+                        #rowsToBeColoured.append(row)
+                        for col in range(1, totalColsCount+1):
+                            cell = ws.cell(row=row, column=col)
+                            formatCellBackground(cell, fillType='solid', startColor='E5E5E5', endColor='E5E5E5')
+
 
     except Exception as e:
         print('Error while formatting the Excel file:', e)
