@@ -7,6 +7,8 @@ from openpyxl.styles import Alignment as openpyxlAlignment
 from openpyxl.styles import PatternFill as openpyxlPatternFill
 from openpyxl.styles import Border as openpyxlBorder
 from openpyxl.styles import Side as openpyxlSide
+from openpyxl.cell.cell import Cell as openpyxlCell
+from openpyxl.cell.cell import MergedCell as openpyxlMergedCell
 from openpyxl.utils import column_index_from_string, get_column_letter
 
 
@@ -135,6 +137,24 @@ def autoFormatExcelFileCellSizes(workbook=Workbook(), excelFilePath=scheduleExce
 
 
 
+def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
+    if isinstance(cell, (openpyxlCell, openpyxlMergedCell)):
+        try:
+            currentBorder = cell.border
+            borderStyle = { 'solid': openpyxlSide(border_style="thin", color="000000")}
+            cell.border = openpyxlBorder( right = borderStyle[right]   if right   else currentBorder.right,
+                                          left = borderStyle[left]   if left   else currentBorder.left,
+                                          top = borderStyle[top]   if top   else currentBorder.top,
+                                          bottom = borderStyle[bottom]   if bottom   else currentBorder.bottom )
+
+        except Exception as e:
+            print('Error while formatting the cell:', e)
+            
+    else:
+        print("Error while formatting the cell: The value must be of type 'Cell'.")
+
+
+
 def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExcelPath):
     from constants import weekdays, lessonAttrs
 
@@ -173,9 +193,7 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
 
                 # row with number rowNrStart in the 1st two columns
                 # contains the names for the rows' MultiIndex
-                allEmpty = True
-                solidBorderStyle = openpyxlSide(border_style="thin", color="000000")
-                
+                allEmpty = True 
 
                 # check if the cells in the 1st row below column indexes are empty
                 for col in range(colNrDaysStart, colNrEnd+1):
@@ -198,10 +216,7 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
                     endCoordinate = f'{get_column_letter(colNrEnd)}{rowNrStart}'
                     
                     for cell in ws[startCoordinate:endCoordinate][0]:
-                        cell.border = openpyxlBorder( right = cell.border.right,
-                                                      left = currentBorder.left,
-                                                      top = currentBorder.top,
-                                                      bottom = solidBorderStyle )
+                        formatCellBorder(cell, bottom='solid')
 
 
                 # add a RIGHT BORDER at the end of each day
@@ -212,21 +227,13 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
 
                     for rowNr in range(newRowStart, totalRowsCount+1):
                         cell = ws.cell(row=rowNr, column=colNr)
-                        currentBorder = cell.border
-                        cell.border = openpyxlBorder( right = solidBorderStyle,
-                                                      left = currentBorder.left,
-                                                      top = currentBorder.top,
-                                                      bottom = cell.border.bottom )
+                        formatCellBorder(cell, right = 'solid')
                 
 
                 # add the BOTTOM BORDER for the schedule
                 for col in range(colNrDaysStart, colNrEnd+1):
                     cell = ws.cell(row=totalRowsCount, column=col)
-                    currentBorder = cell.border
-                    cell.border = openpyxlBorder( right = currentBorder.right,
-                                                  left = currentBorder.left,
-                                                  top = currentBorder.top,
-                                                  bottom = solidBorderStyle )
+                    formatCellBorder(cell, bottom='solid')
 
     except Exception as e:
         print('Error while formatting the Excel file:', e)
