@@ -290,11 +290,11 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
                     for col in range(1, totalColsCount+1):
                         cellForBorder = ws.cell(row=row, column=col)
                         # thinner ('HAIR') BORDER inside merged row
-                        if merged and merged.min_row != row:
-                            topBorderStyle = 'thin'
+                        #if merged and merged.min_row != row:
+                        #    topBorderStyle = 'hair'
                         # THIN BORDER for outer frame
-                        elif not cellForBorder.border.top.style:
-                            topBorderStyle = 'thin'
+                        #elif not cellForBorder.border.top.style:
+                        topBorderStyle = 'thin'
                         formatCellBorder(cellForBorder, top=topBorderStyle)
 
 
