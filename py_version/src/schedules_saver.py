@@ -1,5 +1,5 @@
 from constants import scheduleExcelPath, excelEngineName, scheduleExcelJSONPath, scheduleDfsJSONPath, scheduleJSONPath
-from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatExcelFileCellSizes
+from utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatExcelFile
 #, colLetterToNr
 import json
 from pandas import ExcelWriter
@@ -33,7 +33,7 @@ def createOrEditMainExcelFile():
                 
                 try:
                     writeObjOfDfsToExcel(writer, classesDataDfs)
-                    autoFormatExcelFileCellSizes(writer.book)
+                    autoFormatExcelFile(writer.book, scheduleExcelPath)
 
                     try:
                         delDraftIfNecessary()

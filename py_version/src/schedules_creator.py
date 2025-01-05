@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import ExcelWriter, DataFrame
 import numpy as np
 from constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
-from utils import writeObjOfDfsToExcel,autoFormatExcelFileCellSizes
+from utils import writeObjOfDfsToExcel, autoFormatExcelFile
 
 
 def createOtherScheduleExcelFiles(classSchedulesDfs):
@@ -132,7 +132,7 @@ def writeGroupSchedulesToExcel(groupSchedules=None, groupSchedulesTitle='', sche
     with ExcelWriter(scheduleExcelPath, mode='w+', engine=excelEngineName) as writer:       
         try:
             writeObjOfDfsToExcel(writer, sortedGroupSchedules)
-            autoFormatExcelFileCellSizes(writer.book)
+            autoFormatExcelFile(writer.book, scheduleExcelPath)
                 
         except Exception as writeError:
             print(f"Error while writing to the {groupSchedulesTitle}' Excel file: {writeError}")

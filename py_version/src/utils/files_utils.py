@@ -4,7 +4,10 @@ import subprocess
 from constants import scheduleExcelPath, outputsPath
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment as openpyxlAlignment
-from openpyxl.utils import column_index_from_string
+from openpyxl.styles import PatternFill as openpyxlPatternFill
+from openpyxl.styles import Border as openpyxlBorder
+from openpyxl.styles import Side as openpyxlSide
+from openpyxl.utils import column_index_from_string, get_column_letter
 
 
 
@@ -64,6 +67,12 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
 
 
 
+def autoFormatExcelFile(workbook=Workbook(), excelFilePath=scheduleExcelPath):
+    autoFormatExcelFileCellSizes(workbook, excelFilePath)
+    autoFormatExcelFileCellsStyle(workbook, excelFilePath)
+
+
+
 def autoFormatExcelFileCellSizes(workbook=Workbook(), excelFilePath=scheduleExcelPath):
     from excel_utils import get1stNotMergedCell
 
@@ -73,7 +82,6 @@ def autoFormatExcelFileCellSizes(workbook=Workbook(), excelFilePath=scheduleExce
 
         if (workbook):
             rowsCounter = 0
-
 
             for ws in workbook.worksheets:
 
@@ -114,11 +122,111 @@ def autoFormatExcelFileCellSizes(workbook=Workbook(), excelFilePath=scheduleExce
                         cell.alignment = openpyxlAlignment(wrap_text=True, horizontal='center', vertical='center')
 
 
-                    ws.column_dimensions[colLetter].width = colsLength[colIndex] + 1
+                    ws.column_dimensions[colLetter].width = colsLength[colIndex] + 2
 
+                defaultFontSize = 11
+                for rowNr in range(1,len(rowsLines)+1):
+                    ws.row_dimensions[rowNr].height = rowsLines[rowNr] * defaultFontSize * 1.25
 
             workbook.save(excelFilePath)
 
+    except Exception as e:
+        print('Error while formatting the Excel file:', e)
+
+
+
+def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExcelPath):
+    from constants import weekdays, lessonAttrs
+
+    try:
+        if not isinstance(workbook, Workbook):
+            workbook = load_workbook(excelFilePath)
+
+        if (workbook):
+            for ws in workbook.worksheets:
+                
+                permEmptyCellStyle = openpyxlPatternFill(fill_type='lightTrellis')
+                
+                # merge and format empty cells in the corner between the MultiIndexes
+                ws.merge_cells('A1:B2')
+                ws['A1'].fill = permEmptyCellStyle
+
+                rowNrStart = 3
+                rowsCount = 0
+
+                # count rows in the 1st and the 2nd column,
+                # cells there are less likely to be merged (for easier data analysis)
+                for row in ws.iter_rows(min_row=rowNrStart, min_col=1, max_col=2):
+                    if row[1].value is not None:
+                        rowsCount += 1
+                    else:
+                        break
+                
+
+                totalRowsCount = rowNrStart-1 + rowsCount
+                colNrIndexesEnd = 2
+                colNrDaysStart = 3
+                lenOfWeekdays = len(weekdays)
+                lenOfLessonAttrs = len(lessonAttrs)
+                colNrEnd = colNrDaysStart-1 + lenOfWeekdays * lenOfLessonAttrs
+                
+
+                # row with number rowNrStart in the 1st two columns
+                # contains the names for the rows' MultiIndex
+                allEmpty = True
+                solidBorderStyle = openpyxlSide(border_style="thin", color="000000")
+                
+
+                # check if the cells in the 1st row below column indexes are empty
+                for col in range(colNrDaysStart, colNrEnd+1):
+                    if ws.cell(row=rowNrStart, column=col).value is not None:
+                        allEmpty = False
+                        break
+
+
+                # change the BACKGROUND of the cells in the row
+                # if entire row below column indexes is empty
+                if allEmpty:
+                    
+                    # MERGE CELLS in the row 
+                    ws.merge_cells( start_row=rowNrStart, start_column=colNrDaysStart,
+                                    end_row=rowNrStart, end_column=colNrEnd )
+                    cell = ws.cell(row=rowNrStart, column=colNrDaysStart)
+                    cell.fill = permEmptyCellStyle
+
+                    startCoordinate = f'{get_column_letter(colNrDaysStart)}{rowNrStart}'
+                    endCoordinate = f'{get_column_letter(colNrEnd)}{rowNrStart}'
+                    
+                    for cell in ws[startCoordinate:endCoordinate][0]:
+                        cell.border = openpyxlBorder( right = cell.border.right,
+                                                      left = currentBorder.left,
+                                                      top = currentBorder.top,
+                                                      bottom = solidBorderStyle )
+
+
+                # add a RIGHT BORDER at the end of each day
+                for daysCounter in range(1, 1+lenOfWeekdays):
+                    colNr = colNrIndexesEnd + (daysCounter * lenOfLessonAttrs)
+
+                    newRowStart = rowNrStart   if daysCounter == lenOfWeekdays   else rowNrStart + 1
+
+                    for rowNr in range(newRowStart, totalRowsCount+1):
+                        cell = ws.cell(row=rowNr, column=colNr)
+                        currentBorder = cell.border
+                        cell.border = openpyxlBorder( right = solidBorderStyle,
+                                                      left = currentBorder.left,
+                                                      top = currentBorder.top,
+                                                      bottom = cell.border.bottom )
+                
+
+                # add the BOTTOM BORDER for the schedule
+                for col in range(colNrDaysStart, colNrEnd+1):
+                    cell = ws.cell(row=totalRowsCount, column=col)
+                    currentBorder = cell.border
+                    cell.border = openpyxlBorder( right = currentBorder.right,
+                                                  left = currentBorder.left,
+                                                  top = currentBorder.top,
+                                                  bottom = solidBorderStyle )
 
     except Exception as e:
         print('Error while formatting the Excel file:', e)
