@@ -94,14 +94,25 @@ def writeToExcelSheet(desire=None, sheetName='', dataToEnter=None):
 
 
 
+def delInvalidChars(name='', target='sheetName'):
+    if target=='sheetName':
+        invalidScheetNameChars = ['/', '\\', ':', '*', '?', '[', ']']
+        # replace invalid characters with character '_'
+        return ''.join('_'  if c in invalidScheetNameChars   else c   for c in name)
+    else:
+        return name
+
+
+
 def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted=True):
     msgText = ''
 
     try:
-        classDfs = convertToObjOfDfs(dataToEnter) if not isConverted else dataToEnter
+        # group contains classes, teachers, subjects
+        groupDfs = convertToObjOfDfs(dataToEnter)   if not isConverted   else dataToEnter
 
-        for className in classDfs:
-            classDfs[className].to_excel(writer, sheet_name=className, merge_cells=True)
+        for groupName in groupDfs:   
+            groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
 
         msgText = 'Data loaded to the main schedule Excel file.'
 
@@ -158,7 +169,7 @@ def convertToDf(dataToConvert=None):
 # DATA   =>   OBJECT OF DATA FRAMES 
 def convertToObjOfDfs(dataToConvert=None):
     if dataToConvert:
-        return {sheet_name: convertToDf(dataToConvert[sheet_name]) for sheet_name in dataToConvert}
+        return {sheetName: convertToDf(dataToConvert[sheetName])   for sheetName in dataToConvert}
 
     else:
         return {draftSheetName: DataFrame()}
@@ -170,8 +181,8 @@ def convertObjOfDfsToJSON(dataToConvert=None):
     objOfDfsJSON = {}
 
     try:
-        for sheet_name, df in dataToConvert.items():
-            objOfDfsJSON[sheet_name] = df.to_json(orient='split')
+        for sheetName, df in dataToConvert.items():
+            objOfDfsJSON[sheetName] = df.to_json(orient='split')
 
         objOfDfsJSON = json.dumps(objOfDfsJSON, indent=4)
 
@@ -201,7 +212,7 @@ def convertCurrExcelToDfsJSON():
             # old columns version
             #lessonColumns = dataToConvert[0]
 
-            for sheet_name, oldDf in excelData.items():
+            for sheetName, oldDf in excelData.items():
             
                 if not oldDf.empty:
                     df = DataFrame(oldDf[2:])
@@ -219,7 +230,7 @@ def convertCurrExcelToDfsJSON():
                 
                 else:
                     df = oldDf
-                excelData[sheet_name] = df.to_json(orient='split')
+                excelData[sheetName] = df.to_json(orient='split')
 
         excelJSON = json.dumps(excelData, indent=4)
 
