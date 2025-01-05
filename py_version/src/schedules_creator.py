@@ -1,7 +1,7 @@
 import pandas as pd
 from pandas import ExcelWriter, DataFrame
 import numpy as np
-from constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
+from constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
 from utils import writeObjOfDfsToExcel, autoFormatExcelFile
 
 
@@ -9,38 +9,49 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
 
     teacherSchedules = {}
     classroomSchedules = {}
+    subjectSchedules = {}
 
     for className, classDf in classSchedulesDfs.items():
         #weekdays = classDf.columns.get_level_values(0).unique()
 
         buildGroupScheduleBasedOnCol(teacherSchedules, classDf, 'teacher', className)
         buildGroupScheduleBasedOnCol(classroomSchedules, classDf, 'classroom', className)
+        buildGroupScheduleBasedOnCol(subjectSchedules, classDf, 'subject', className)
 
     writeGroupSchedulesToExcel(teacherSchedules, 'teacher', scheduleExcelTeachersPath)
     writeGroupSchedulesToExcel(classroomSchedules, 'classroom', scheduleExcelClassroomsPath)
+    writeGroupSchedulesToExcel(subjectSchedules, 'subject', scheduleExcelSubjectsPath)
 
 
 
-def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newColValue=''):
+def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newColValue='', newMainColKey='class'):
 
     if (isinstance(baseDf,DataFrame)) and (groupType!='') and (newColValue!=''):
         
+        # main group in basic schedule is class
         groupTypes = {'teacher': 'nauczyciel',
-                      'classroom': 'sala'}
-
-        # column name in timetable
+                      'classroom': 'sala',
+                      'subject': 'przedmiot'}
+        
+        # column name in timetable to be changed
         colToBeChanged = groupTypes[groupType]
 
         # make life (program) easier to understand:)
         newScheduleOwner = colToBeChanged
-        
-        # get the list of teachers/classrooms inside the timetable
+
+        # main column in basic schedule is subject
+        newMainCol = {'class': 'klasa',
+                      'teacher': 'nauczyciel',
+                      'classroom': 'sala'}
+        newMainColName = newMainCol[newMainColKey]
+               
+        # get the list of teachers/classrooms/subjects inside the timetable
         group = baseDf.xs(newScheduleOwner, axis=1, level=1).stack().unique()
         group = filterNumpyNdarray(group)
 
         if len(group):
 
-            # loop for each teacher/classroom
+            # loop for each teacher/classroom/subject
             for el in group:
 
                 # copy for modification
@@ -53,9 +64,9 @@ def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newCo
                 #       =2 => subject, teacher, classroom
                 newScheduleOwnerTempData = baseDfCopy.xs(newScheduleOwner, axis=1, level=1)
                 
-                # get cells with value of specific el in group (teacher or classroom)
-                # e.g. 110 or KJ
-                # not whole subject, classroom and teacher 
+                # get cells with value of specific el in group (teacher, classroom or subject)
+                # e.g. KJ, 110, mat
+                # not whole teacher, classroom, subject
                 #
                 # use data type (integer or other)
                 try:
@@ -86,15 +97,15 @@ def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newCo
                 if not elRows.empty:
 
                     # change the column name and its value
-                    elRows = elRows.rename(columns={colToBeChanged: 'klasa'})
+                    elRows = elRows.rename(columns={colToBeChanged: newMainColName})
 
                     # asign
-                    #   to the column "klasa" (old "nauczyciel" or "sala")
+                    #   to the column "klasa" (old "nauczyciel", "przedmiot", "sala")
                     #   mapped values of the column "klasa" to className
                     # only if current value is not NaN in numeric arrays,
                     #   None or NaN in object arrays,
                     #   NaT in datetimelike
-                    elRows.loc[:,(weekdays, 'klasa')] = elRows.loc[:, (weekdays, 'klasa')].map(lambda x: newColValue   if pd.notna(x)   else x)
+                    elRows.loc[:,(weekdays, newMainColName)] = elRows.loc[:, (weekdays, newMainColName)].map(lambda x: newColValue   if pd.notna(x)   else x)
 
                     elRows = elRows.groupby(level=[0,1]).first()
                     #indexLength = len(elRows.index)
