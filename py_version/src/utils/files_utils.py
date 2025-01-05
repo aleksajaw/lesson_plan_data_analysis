@@ -141,11 +141,16 @@ def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
     if isinstance(cell, (openpyxlCell, openpyxlMergedCell)):
         try:
             currentBorder = cell.border
-            borderStyle = { 'solid': openpyxlSide(border_style="thin", color="000000")}
-            cell.border = openpyxlBorder( right = borderStyle[right]   if right   else currentBorder.right,
-                                          left = borderStyle[left]   if left   else currentBorder.left,
-                                          top = borderStyle[top]   if top   else currentBorder.top,
-                                          bottom = borderStyle[bottom]   if bottom   else currentBorder.bottom )
+            defaultColor = '000000'
+            borderStyle = { 'hair':   openpyxlSide(border_style='hair',   color=defaultColor),
+                            'thick':  openpyxlSide(border_style='thick',  color=defaultColor),
+                            'thin':   openpyxlSide(border_style='thin',   color=defaultColor),
+                            'medium': openpyxlSide(border_style='medium', color=defaultColor) }
+            
+            cell.border = openpyxlBorder( right = borderStyle[right]    if right    else currentBorder.right,
+                                          left = borderStyle[left]      if left     else currentBorder.left,
+                                          top = borderStyle[top]        if top      else currentBorder.top,
+                                          bottom = borderStyle[bottom]  if bottom   else currentBorder.bottom )
 
         except Exception as e:
             print('Error while formatting the cell:', e)
@@ -197,6 +202,7 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
 
                 # check if the cells in the 1st row below column indexes are empty
                 for col in range(colNrDaysStart, colNrEnd+1):
+                    
                     if ws.cell(row=rowNrStart, column=col).value is not None:
                         allEmpty = False
                         break
@@ -208,7 +214,8 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
                     
                     # MERGE CELLS in the row 
                     ws.merge_cells( start_row=rowNrStart, start_column=colNrDaysStart,
-                                    end_row=rowNrStart, end_column=colNrEnd )
+                                    end_row=rowNrStart,   end_column=colNrEnd )
+                    
                     cell = ws.cell(row=rowNrStart, column=colNrDaysStart)
                     cell.fill = permEmptyCellStyle
 
@@ -216,7 +223,7 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
                     endCoordinate = f'{get_column_letter(colNrEnd)}{rowNrStart}'
                     
                     for cell in ws[startCoordinate:endCoordinate][0]:
-                        formatCellBorder(cell, bottom='solid')
+                        formatCellBorder(cell, bottom='thin')
 
 
                 # add a RIGHT BORDER at the end of each day
@@ -227,13 +234,13 @@ def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExc
 
                     for rowNr in range(newRowStart, totalRowsCount+1):
                         cell = ws.cell(row=rowNr, column=colNr)
-                        formatCellBorder(cell, right = 'solid')
+                        formatCellBorder(cell, right = 'thin')
                 
 
                 # add the BOTTOM BORDER for the schedule
                 for col in range(colNrDaysStart, colNrEnd+1):
                     cell = ws.cell(row=totalRowsCount, column=col)
-                    formatCellBorder(cell, bottom='solid')
+                    formatCellBorder(cell, bottom='thin')
 
     except Exception as e:
         print('Error while formatting the Excel file:', e)
