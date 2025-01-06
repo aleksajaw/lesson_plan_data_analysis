@@ -196,6 +196,7 @@ def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
 
             sheetsGroups = {}
 
+            # basic structure for the group list sheets
             for sheetName in dataToEnter.keys():
                 
                 if sheetName=='subjects':
@@ -207,7 +208,6 @@ def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
                 elif sheetName=='classrooms':
                     namesBaseList = createGroupsInListByNumbers(dataToEnter[sheetName])
                 
-
                 dfBase = {  'names_base': namesBaseList,
                             'names': dataToEnter[sheetName]}
                 
@@ -215,6 +215,7 @@ def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
                 objOfDfs[sheetName]['names_No.'] = RangeIndex(start=1, stop=len(objOfDfs[sheetName])+1, step=1)
             
             
+            # develop the structure of the worksheet objects
             for listName in objOfDfs:
                 df = objOfDfs[listName]
 
@@ -224,7 +225,7 @@ def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
                 
                 df.set_index(keys=['group_No.', 'names_base', 'names_in_group_No.'], inplace=True)
 
-                # create an object to color the backgrounds of odd groups
+                # create the object for coloring the backgrounds of odd groups
                 groupRows = df.groupby('group_No.').apply(lambda
                                                               group: [  df.index.get_loc(x) + 1
                                                                         for x in group.index ]
