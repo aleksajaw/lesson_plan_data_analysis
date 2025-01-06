@@ -69,9 +69,9 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
 
 
 
-def autoFormatExcelFile(workbook=Workbook(), excelFilePath=scheduleExcelPath):
+def autoFormatMainExcelFile(workbook=Workbook(), excelFilePath=scheduleExcelPath):
     autoFormatExcelFileCellSizes(workbook, excelFilePath)
-    autoFormatExcelFileCellsStyle(workbook, excelFilePath)
+    autoFormatMainExcelFileCellsStyle(workbook, excelFilePath)
 
 
 
@@ -177,7 +177,7 @@ def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
         print("Error while formatting the cell: The value must be of type 'Cell'.")
 
 
-def autoFormatExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExcelPath):
+def autoFormatMainExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExcelPath):
     from constants import weekdays, lessonAttrs
 
     try:
