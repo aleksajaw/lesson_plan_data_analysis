@@ -94,6 +94,60 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
 
 
 
+def createGroupsInListByPrefix(data=[], splitDelimeter = '-', replaceDelimeter = '.r'):
+    # only leave the part before the first '-' and cut '.r' out
+    groupList = [ (str(item).split(splitDelimeter)[0]).replace(replaceDelimeter,'')
+                        if isinstance(item, str)
+                        else item
+                      for item in data ]
+    
+    # group elements by names starting with the same prefix
+    for i in range(2, len(groupList)):
+        gList = groupList
+        if ( all( isinstance(x, str)   for x in [gList[i-1], gList[i]] )
+              and  gList[i].startswith(gList[i-1]) ):
+            
+            groupList[i] = gList[i-1]
+    
+    return groupList
+
+
+
+def createGroupsInListByFirstLetter(data=[]):
+    return [item[0]   for item in data]
+
+
+
+def createGroupsInListByNumbers(data=[]):
+    processed = []
+    for item in data:
+        itemStr = str(item)
+        itemLen = len(itemStr)
+        
+        if any(c.isalpha()   for c in itemStr):
+            item = ''.join([c   for c in itemStr if c.isalpha()])
+
+        elif itemStr.isdigit():
+            if itemLen > 1:
+                item = itemStr[0] + (itemLen-1) * '0'
+          
+            elif 0 < int(item) < 10:
+                item = 1
+            
+            item = int(item)
+        
+        else:
+            # match e.g. '.9', '_09', '09' or '9'
+            match = re.match(r'([^a-zA-Z0-9]*0*[^a-zA-Z0-9]*)\d+', itemStr)
+            if match:# '.', '_0', '0'
+                item = match.group(1)
+        
+        processed.append(item)
+    
+    return processed
+
+
+
 def writeToExcelSheets(desire=None, dataToEnter=None):
     msgText = ''
 
