@@ -109,17 +109,22 @@ def writeToExcelSheets(desire=None, dataToEnter=None):
               # especially for classroom names like _08, s1, 1, 100
               # moreover, it prevents missorting like 1, 10, 100, 2, 20, 200 :)
               #dataToEnter[key].sort( key = lambda x: int( re.findall(r'\d+', x)[0] ) )
-              # also add sorting strings between the numbers like: 1, s1, st1, 2, _02, s2
+
+              # also add sorting strings between the values with numbers like: 1, s1, st1, 2, _02, s2
+              # so we will have s1, s2, st1, 1, 2, _02
               dataToEnter[key].sort(  key=lambda x: (
-                                        # sort by first digit in elements
-                                        int( re.findall( r'\d+', x )[0] )   if re.findall( r'\d+', x )
-                                                                            # if element does not have digit,
-                                                                            # use inf(inity) to move element
-                                                                            # at the end of the sorting here
-                                                                            else float('inf'),
-                                        # sort by strings, D+ is everyting what is not a digit
-                                        # (D+ is the opposite of d+)
-                                        re.findall( r'\D+', x )
+                                        # True values are treated as smaller,
+                                        # so they will appear earlier in the sorted list
+                                        # so at first sort by letters
+                                        not x[0].isalpha(),
+                                        x.lower() if isinstance(x, str) and x[0].isalpha()
+                                                  # sort by first digit in elements
+                                                  else  int( re.findall( r'\d+', x )[0] )
+                                                        if re.findall( r'\d+', x )
+                                                        # if element does not have digit,
+                                                        # use inf(inity) to move element
+                                                        # at the end of the sorting here
+                                                        else float('inf')
                                       )
                                     )
               # convert strings to integer, if it is possible
