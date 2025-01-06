@@ -75,7 +75,7 @@ def autoFormatExcelFile(workbook=Workbook(), excelFilePath=scheduleExcelPath):
 
 
 
-def autoFormatExcelFileCellSizes(workbook=Workbook(), excelFilePath=scheduleExcelPath):
+def autoFormatExcelFileCellSizes(workbook=None, excelFilePath=scheduleExcelPath):
     from excel_utils import get1stNotMergedCell
 
     try:
@@ -86,7 +86,6 @@ def autoFormatExcelFileCellSizes(workbook=Workbook(), excelFilePath=scheduleExce
             rowsCounter = 0
 
             for ws in workbook.worksheets:
-
                 rowsCounter+=1
                 rowsLines = {}
                 colsLength = {}
