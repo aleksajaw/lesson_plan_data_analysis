@@ -1,7 +1,7 @@
 from constants import scheduleExcelPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes
 import json
 import re
-from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
+from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex, RangeIndex
 from openpyxl import Workbook, load_workbook
 from openpyxl.cell import cell as openpyxl_cell
 
@@ -89,6 +89,50 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
 
     except Exception as e:
         msgText = f'Error loading data to {sheetName}: {e}'
+
+    print(msgText)
+
+
+
+def writeToExcelSheets(desire=None, dataToEnter=None):
+    msgText = ''
+
+    # desire should be Excel.Writer or filePath
+    if not desire:
+        from files_utils import createFileName
+        desire = createFileName
+
+    try:
+        for key in dataToEnter.keys():
+            try:
+              # sort by numbers (which are keys here) inside list elements,
+              # especially for classroom names like _08, s1, 1, 100
+              # it also prevents missorting like 1, 10, 100, 2, 20, 200 :)
+              #dataToEnter[key].sort( key = lambda x: int( re.findall(r'\d+', x)[0] ) )
+
+              # also add moving strings at the beggining of the list
+              # (by first checking if the first character is not a letter)
+              dataToEnter[key].sort(key = lambda x: ( not x[0].isalpha(), int( re.findall(r'\d+', x)[0] ) ) )
+              # convert strings to integer, if it is possible
+              dataToEnter[key] = [int(x)   if x.isdigit()   else x   for x in dataToEnter[key]]
+            
+            except:
+                next
+        
+        with ExcelWriter(desire, mode='w+', engine=excelEngineName) as writer:
+            objOfDfs = {sheetName: DataFrame({'names':dataToEnter[sheetName]})   for sheetName in dataToEnter}
+
+            for listName in objOfDfs:
+                df = objOfDfs[listName]
+                # create index without '0' for better looking :)
+                df.index = RangeIndex(start=1, stop=len(df)+1, step=1)
+                df.to_excel(writer, sheet_name=listName)
+        
+
+        msgText = f'Data for {desire} loaded.'
+
+    except Exception as e:
+        msgText = f'Error loading data to {desire}: {e}'
 
     print(msgText)
 
