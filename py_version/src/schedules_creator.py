@@ -1,8 +1,8 @@
 import pandas as pd
 from pandas import ExcelWriter, DataFrame
 import numpy as np
-from constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
-from utils import writeObjOfDfsToExcel, autoFormatExcelFile
+from constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupListsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
+from utils import writeObjOfDfsToExcel, autoFormatExcelFile, writeToExcelSheets, autoFormatExcelFileCellSizes
 
 
 def createOtherScheduleExcelFiles(classSchedulesDfs):
@@ -17,7 +17,12 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
         buildGroupScheduleBasedOnCol(teacherSchedules, classDf, 'teacher', className)
         buildGroupScheduleBasedOnCol(classroomSchedules, classDf, 'classroom', className)
         buildGroupScheduleBasedOnCol(subjectSchedules, classDf, 'subject', className)
+    
+    groupLists = { 'teachers': list(teacherSchedules.keys()),
+                   'classrooms': list(classroomSchedules.keys()),
+                   'subjects': list(subjectSchedules.keys()) }
 
+    writeGroupListsToExcel(groupLists)
     writeGroupSchedulesToExcel(teacherSchedules, 'teacher', scheduleExcelTeachersPath)
     writeGroupSchedulesToExcel(classroomSchedules, 'classroom', scheduleExcelClassroomsPath)
     writeGroupSchedulesToExcel(subjectSchedules, 'subject', scheduleExcelSubjectsPath)
@@ -93,7 +98,7 @@ def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newCo
                     elRows[day] = elRows[day].where(elDayMask, emptyValue)
 
 
-                # restrict loop actions if row does not match mask
+                # restrict loop actions to rows which match mask
                 if not elRows.empty:
 
                     # change the column name and its value
@@ -147,3 +152,9 @@ def writeGroupSchedulesToExcel(groupSchedules=None, groupSchedulesTitle='', sche
                 
         except Exception as writeError:
             print(f"Error while writing to the {groupSchedulesTitle}' Excel file: {writeError}")
+
+
+
+def writeGroupListsToExcel(groupLists={}):
+    writeToExcelSheets(scheduleExcelGroupListsPath, groupLists)
+    autoFormatExcelFileCellSizes(excelFilePath=scheduleExcelGroupListsPath)
