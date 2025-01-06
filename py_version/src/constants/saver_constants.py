@@ -10,6 +10,7 @@ scheduleExcelName = 'schedule.xlsx'
 scheduleExcelTeachersName = 'schedule-teachers.xlsx'
 scheduleExcelClassroomsName = 'schedule-classrooms.xlsx'
 scheduleExcelSubjectsName = 'schedule-subjects.xlsx'
+scheduleExcelGroupListsName = 'schedule-group_lists.xlsx'
 scheduleJSONName = 'schedule.json'
 scheduleDfsJSONName = 'schedule_dfs.json'
 scheduleExcelJSONName = 'schedule_dfs_excel.json'
@@ -24,6 +25,8 @@ scheduleExcelTeachersPath = outputsPath + scheduleExcelTeachersName
 scheduleExcelClassroomsPath = outputsPath + scheduleExcelClassroomsName
 # For subjects
 scheduleExcelSubjectsPath = outputsPath + scheduleExcelSubjectsName
+# For schedule group lists
+scheduleExcelGroupListsPath = outputsPath + scheduleExcelGroupListsName
 # pure scraped data in JSON
 scheduleJSONPath = outputsPath + scheduleJSONName
 # DataFrames in JSON
