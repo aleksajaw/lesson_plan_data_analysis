@@ -74,7 +74,7 @@ def deleteExcelSheet(workbook=Workbook(), sheetName=''):
 
 
 
-def writeToExcelSheet(desire=None, sheetName='', dataToEnter=None):
+def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
     msgText = ''
 
     # desire should be Excel.Writer or filePath
