@@ -107,12 +107,21 @@ def writeToExcelSheets(desire=None, dataToEnter=None):
             try:
               # sort by numbers (which are keys here) inside list elements,
               # especially for classroom names like _08, s1, 1, 100
-              # it also prevents missorting like 1, 10, 100, 2, 20, 200 :)
+              # moreover, it prevents missorting like 1, 10, 100, 2, 20, 200 :)
               #dataToEnter[key].sort( key = lambda x: int( re.findall(r'\d+', x)[0] ) )
-
-              # also add moving strings at the beggining of the list
-              # (by first checking if the first character is not a letter)
-              dataToEnter[key].sort(key = lambda x: ( not x[0].isalpha(), int( re.findall(r'\d+', x)[0] ) ) )
+              # also add sorting strings between the numbers like: 1, s1, st1, 2, _02, s2
+              dataToEnter[key].sort(  key=lambda x: (
+                                        # sort by first digit in elements
+                                        int( re.findall( r'\d+', x )[0] )   if re.findall( r'\d+', x )
+                                                                            # if element does not have digit,
+                                                                            # use inf(inity) to move element
+                                                                            # at the end of the sorting here
+                                                                            else float('inf'),
+                                        # sort by strings, D+ is everyting what is not a digit
+                                        # (D+ is the opposite of d+)
+                                        re.findall( r'\D+', x )
+                                      )
+                                    )
               # convert strings to integer, if it is possible
               dataToEnter[key] = [int(x)   if x.isdigit()   else x   for x in dataToEnter[key]]
             
@@ -120,7 +129,8 @@ def writeToExcelSheets(desire=None, dataToEnter=None):
                 next
         
         with ExcelWriter(desire, mode='w+', engine=excelEngineName) as writer:
-            objOfDfs = {sheetName: DataFrame({'names':dataToEnter[sheetName]})   for sheetName in dataToEnter}
+            objOfDfs = { sheetName: DataFrame({'names':dataToEnter[sheetName]})
+                                    for sheetName in sorted(dataToEnter.keys()) }
 
             for listName in objOfDfs:
                 df = objOfDfs[listName]
