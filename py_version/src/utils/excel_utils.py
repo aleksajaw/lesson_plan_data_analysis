@@ -19,9 +19,9 @@ def createDraftSheet(excelFilePath=scheduleExcelPath):
 
 
 
-def createDraftSheetIfNecessary():
+def createDraftSheetIfNecessary(excelPath=scheduleExcelPath):
     from files_utils import doesFileExist
-    if not doesFileExist(scheduleExcelPath):
+    if not doesFileExist(excelPath):
         createDraftSheet()
 
 
