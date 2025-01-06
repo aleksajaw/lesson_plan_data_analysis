@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import ExcelWriter, DataFrame
 import numpy as np
 from constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupListsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
-from utils import writeObjOfDfsToExcel, autoFormatMainExcelFile, writeToExcelSheets, autoFormatExcelFileCellSizes
+from utils import writeObjOfDfsToExcel, autoFormatMainExcelFile, writeGroupListsToExcelSheets, autoFormatExcelFileCellSizes
 
 
 def createOtherScheduleExcelFiles(classSchedulesDfs):
@@ -156,5 +156,5 @@ def writeGroupSchedulesToExcel(groupSchedules=None, groupSchedulesTitle='', sche
 
 
 def writeGroupListsToExcel(groupLists={}):
-    writeToExcelSheets(scheduleExcelGroupListsPath, groupLists)
+    writeGroupListsToExcelSheets(scheduleExcelGroupListsPath, groupLists)
     autoFormatExcelFileCellSizes(excelFilePath=scheduleExcelGroupListsPath)

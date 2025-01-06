@@ -148,7 +148,7 @@ def createGroupsInListByNumbers(data=[]):
 
 
 
-def writeToExcelSheets(desire=None, dataToEnter=None):
+def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
     msgText = ''
 
     # desire should be Excel.Writer or filePath
@@ -165,12 +165,15 @@ def writeToExcelSheets(desire=None, dataToEnter=None):
               #dataToEnter[key].sort( key = lambda x: int( re.findall(r'\d+', x)[0] ) )
 
               # also add sorting strings between the values with numbers like: 1, s1, st1, 2, _02, s2
-              # so we will have s1, s2, st1, 1, 2, _02
+              # so we will have s1, s2, st1, _02, 1, 2
               dataToEnter[key].sort(  key=lambda x: (
-                                        # True values are treated as smaller,
+                                        # False values are treated as smaller,
                                         # so they will appear earlier in the sorted list
                                         # so at first sort by letters
                                         not x[0].isalpha(),
+                                        # put values like _07 before digits
+                                        # for easier grouping
+                                        x.isdigit(),
                                         x.lower() if isinstance(x, str) and x[0].isalpha()
                                                   # sort by first digit in elements
                                                   else  int( re.findall( r'\d+', x )[0] )
@@ -188,15 +191,70 @@ def writeToExcelSheets(desire=None, dataToEnter=None):
                 next
         
         with ExcelWriter(desire, mode='w+', engine=excelEngineName) as writer:
-            objOfDfs = { sheetName: DataFrame({'names':dataToEnter[sheetName]})
-                                    for sheetName in sorted(dataToEnter.keys()) }
+            dataToEnter = {sheetName: dataToEnter[sheetName]   for sheetName in sorted(dataToEnter.keys())}
+            objOfDfs = {}
 
+            sheetsGroups = {}
+
+            for sheetName in dataToEnter.keys():
+                
+                if sheetName=='subjects':
+                    namesBaseList = createGroupsInListByPrefix(dataToEnter[sheetName])
+                
+                elif sheetName=='teachers':
+                    namesBaseList = createGroupsInListByFirstLetter(dataToEnter[sheetName])
+
+                elif sheetName=='classrooms':
+                    namesBaseList = createGroupsInListByNumbers(dataToEnter[sheetName])
+                
+
+                dfBase = {  'names_base': namesBaseList,
+                            'names': dataToEnter[sheetName]}
+                
+                objOfDfs[sheetName] = DataFrame(dfBase)
+                objOfDfs[sheetName]['names_No.'] = RangeIndex(start=1, stop=len(objOfDfs[sheetName])+1, step=1)
+            
+            
             for listName in objOfDfs:
                 df = objOfDfs[listName]
-                # create index without '0' for better looking :)
-                df.index = RangeIndex(start=1, stop=len(df)+1, step=1)
-                df.to_excel(writer, sheet_name=listName)
-        
+
+                # indexes & their columns
+                df['group_No.'] = (df.groupby('names_base', sort=False).ngroup() + 1).astype(str) + '.'
+                df['names_in_group_No.'] = (df.groupby('names_base').cumcount() + 1).astype(str) + '.'
+                
+                df.set_index(keys=['group_No.', 'names_base', 'names_in_group_No.'], inplace=True)
+
+                # create an object to color the backgrounds of odd groups
+                groupRows = df.groupby('group_No.').apply(lambda
+                                                              group: [  df.index.get_loc(x) + 1
+                                                                        for x in group.index ]
+                                                          ).to_dict()
+                groupRowsFiltered = {}
+                for key, value in groupRows.items():
+                    convertedKey = key.replace('.','')
+                    if convertedKey.isdigit() and int(convertedKey)%2!=0:
+                        groupRowsFiltered[key] = value
+                
+                sheetsGroups[listName] = {  'rowsToColor': [ item+1   for groupList in groupRowsFiltered.values()   for item in groupList ],
+                                            'columnsLength': len((df.reset_index()).columns) }
+                
+                df.to_excel(writer, sheet_name=listName, merge_cells=True)
+            
+
+            # add BACKGROUND to the odd groups of the cells in worksheet 
+            workbook = writer.book
+            if workbook:
+                from files_utils import formatCellBackground
+                
+                for sheetname in workbook.sheetnames:
+                    ws = workbook[sheetname]
+                    sheetBgRanges = sheetsGroups[sheetname]
+
+                    for grRow in sheetBgRanges['rowsToColor']:
+                        for col in range(1, sheetBgRanges['columnsLength']+1):
+                            cell = ws.cell(row=grRow, column=col)
+                            formatCellBackground(cell, 'solid', 'f3f3f3', 'f3f3f3')
+
 
         msgText = f'Data for {desire} loaded.'
 
