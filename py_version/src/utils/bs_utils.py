@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from constants import planURL
+from src.constants import planURL
 from requests_utils import getResponse, getWithoutLastPart
 
 

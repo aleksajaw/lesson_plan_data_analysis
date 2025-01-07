@@ -1,5 +1,5 @@
 import requests
-from constants import planURL
+from src.constants import planURL
 
 
 def getResponse(url=''):

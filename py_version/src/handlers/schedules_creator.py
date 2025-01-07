@@ -1,8 +1,8 @@
 import pandas as pd
 from pandas import ExcelWriter, DataFrame
 import numpy as np
-from constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupListsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
-from utils import writeObjOfDfsToExcel, autoFormatMainExcelFile, writeGroupListsToExcelSheets, autoFormatExcelFileCellSizes
+from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupListsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
+from src.utils import writeObjOfDfsToExcel, autoFormatMainExcelFile, writeGroupListsToExcelSheets, autoFormatExcelFileCellSizes
 
 
 def createOtherScheduleExcelFiles(classSchedulesDfs):

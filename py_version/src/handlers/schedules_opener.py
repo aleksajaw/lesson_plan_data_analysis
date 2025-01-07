@@ -1,5 +1,5 @@
-from utils import openFileWithDefApp
-from constants import scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelPath, scheduleExcelGroupListsPath
+from src.utils import openFileWithDefApp
+from src.constants import scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelPath, scheduleExcelGroupListsPath
 
 
 def openScheduleFilesWithDefApps():

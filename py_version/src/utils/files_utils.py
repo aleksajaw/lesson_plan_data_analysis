@@ -1,7 +1,7 @@
 import os
 import sys
 import subprocess
-from constants import scheduleExcelPath, outputsPath
+from src.constants import scheduleExcelPath, outputsPath
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment as openpyxlAlignment
 from openpyxl.styles import PatternFill as openpyxlPatternFill
@@ -178,7 +178,7 @@ def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
 
 
 def autoFormatMainExcelFileCellsStyle(workbook=Workbook(), excelFilePath=scheduleExcelPath):
-    from constants import weekdays, lessonAttrs
+    from src.constants import weekdays, lessonAttrs
 
     try:
         if not isinstance(workbook, Workbook):

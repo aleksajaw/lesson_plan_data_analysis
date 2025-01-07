@@ -1,5 +1,5 @@
-from constants import planURL, driverLocationStates
-from utils import splitHTMLAndRemoveTags
+from src.constants import planURL, driverLocationStates
+from src.utils import splitHTMLAndRemoveTags
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
