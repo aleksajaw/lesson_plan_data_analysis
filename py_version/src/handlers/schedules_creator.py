@@ -1,9 +1,10 @@
+from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleListsExcelOwnersGrouped, excelEngineName, timeIndexes, dfRowNrAndTimeTuples, lessonAttrs
+from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
 import re
-from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleListsExcelOwnersGrouped, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
-from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground
+
 
 
 def createOtherScheduleExcelFiles(classSchedulesDfs):
@@ -19,11 +20,12 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
         buildNewOwnerScheduleBasedOnCol(classroomSchedules, classDf, 'classroom', className)
         buildNewOwnerScheduleBasedOnCol(subjectSchedules, classDf, 'subject', className)
     
-    groupLists = { 'teachers': list(teacherSchedules.keys()),
-                   'classrooms': list(classroomSchedules.keys()),
-                   'subjects': list(subjectSchedules.keys()) }
+    ownersLists = { 'teachers': list(teacherSchedules.keys()),
+                    'classrooms': list(classroomSchedules.keys()),
+                    'subjects': list(subjectSchedules.keys()) }
 
-    writeGroupListsToExcel(groupLists)    
+    groupedOwnersLists = writeGroupListsToExcelAndFormat(ownersLists)
+
     removeLastEmptyRowsInDataFrames([teacherSchedules,classroomSchedules, subjectSchedules])
     
     writeSortedObjOfDfsToExcel(teacherSchedules, 'teacher', scheduleExcelTeachersPath)
@@ -234,67 +236,143 @@ def createGroupsInListByNumbers(data=[]):
 
 
 
-def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
+def createGroupsInListBy(groupName='', data=[]):
+    result = []
+
+    match groupName:
+        case 'subjects':
+            result = createGroupsInListByPrefix(data)
+    
+        case 'teachers':
+            result = createGroupsInListByFirstLetter(data)
+
+        case 'classrooms':
+            result = createGroupsInListByNumbers(data)
+
+    return result
+
+
+
+def sortScheduleOwnersList(dataToSort=None):
     msgText = ''
-
-    # desire should be Excel.Writer or filePath
-    if not desire:
-        desire = createFileName
-
     try:
-        for key in dataToEnter.keys():
+        for key in dataToSort.keys():
             try:
-              # sort by numbers (which are keys here) inside list elements,
-              # especially for classroom names like _08, s1, 1, 100
-              # moreover, it prevents missorting like 1, 10, 100, 2, 20, 200 :)
-              #dataToEnter[key].sort( key = lambda x: int( re.findall(r'\d+', x)[0] ) )
+                # sort by numbers (which are keys here) inside list elements,
+                # especially for classroom names like _08, s1, 1, 100
+                # moreover, it prevents missorting like 1, 10, 100, 2, 20, 200 :)
+                #dataToEnter[key].sort( key = lambda x: int( re.findall(r'\d+', x)[0] ) )
 
-              # also add sorting strings between the values with numbers like: 1, s1, st1, 2, _02, s2
-              # so we will have s1, s2, st1, _02, 1, 2
-              dataToEnter[key].sort(  key=lambda x: (
-                                        # False values are treated as smaller,
-                                        # so they will appear earlier in the sorted list
-                                        # so at first sort by letters
-                                        not x[0].isalpha(),
-                                        # put values like _07 before digits
-                                        # for easier grouping
-                                        x.isdigit(),
-                                        x.lower() if isinstance(x, str) and x[0].isalpha()
-                                                  # sort by first digit in elements
-                                                  else  int( re.findall( r'\d+', x )[0] )
-                                                        if re.findall( r'\d+', x )
-                                                        # if element does not have digit,
-                                                        # use inf(inity) to move element
-                                                        # at the end of the sorting here
-                                                        else float('inf')
+                # also add sorting strings between the values with numbers like: 1, s1, st1, 2, _02, s2
+                # so we will have s1, s2, st1, _02, 1, 2
+                dataToSort[key].sort( key=lambda x: (
+                                          # False values are treated as smaller,
+                                          # so they will appear earlier in the sorted list
+                                          # so at first sort by letters
+                                          not x[0].isalpha(),
+                                          # put values like _07 before digits
+                                          # for easier grouping
+                                          x.isdigit(),
+                                          x.lower() if isinstance(x, str) and x[0].isalpha()
+                                                    # sort by first digit in elements
+                                                    else  int( re.findall( r'\d+', x )[0] )
+                                                          if re.findall( r'\d+', x )
+                                                          # if element does not have digit,
+                                                          # use inf(inity) to move element
+                                                          # at the end of the sorting here
+                                                          else float('inf')
                                       )
                                     )
-              # convert strings to integer, if it is possible
-              dataToEnter[key] = [int(x)   if x.isdigit()   else x   for x in dataToEnter[key]]
+                # convert strings to integer, if it is possible
+                dataToSort[key] = [int(x)   if x.isdigit()   else x   for x in dataToSort[key]]
             
             except:
                 next
+      
+    except Exception as e:
+        msgText = f'Error loading complete classes data: {e}'
+
+    if msgText: print(msgText)
+    return dataToSort
+
+
+
+def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='group_No.', strToDelete='.'):
+    msgText = ''
+    try:
+        df = dfWithRowsToColor
+        # create the object for coloring the backgrounds of odd groups
+        groupedRows = df.groupby(keyToGroupBy).apply(lambda
+                                                      group: [  df.index.get_loc(x) + 1
+                                                                for x in group.index ]
+                                                  ).to_dict()
+        groupedRowsFiltered = {}
         
-        with ExcelWriter(desire, mode='w+', engine=excelEngineName) as writer:
+        for key, value in groupedRows.items():
+            convertedKey = key.replace(strToDelete,'')
+            if convertedKey.isdigit() and int(convertedKey)%2!=0:
+                groupedRowsFiltered[key] = value
+        
+        return {  'rowsToColor': [ item+1   for groupList in groupedRowsFiltered.values()
+                                            for item in groupList ],
+                  'columnsLength': len((df.reset_index()).columns) }
+    
+
+    except Exception as e:
+        msgText = f'Error while writing group lists to excel sheets: {e}'
+    
+    if msgText: print(msgText)
+
+
+
+def addBgToExcelSheetRowsBasedOnObj(writer=ExcelWriter, sheetsGroups={}):
+    # add BACKGROUND to the (odd here) groups of the cells in worksheet 
+    msgText = ''
+
+    try:
+        workbook = writer.book
+        if workbook:
+                            
+            for sheetname in workbook.sheetnames:
+                ws = workbook[sheetname]
+                sheetBgRanges = sheetsGroups[sheetname]
+
+                for grRow in sheetBgRanges['rowsToColor']:
+                    for col in range(1, sheetBgRanges['columnsLength']+1):
+                        cell = ws.cell(row=grRow, column=col)
+                        formatCellBackground(cell, 'solid', 'f3f3f3', 'f3f3f3')
+    
+    
+    except Exception as e:
+        msgText = f'Error while adding background to the cells in the Excel sheet rows: {e}'
+    
+    print(msgText)
+
+
+
+def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
+    msgText = ''
+    dataToReturn = None
+
+    if not excelPath:
+        excelPath = createFileName
+
+    try:
+        dataToEnter = sortScheduleOwnersList(dataToEnter)
+        objOfDfs = {}
+        
+        with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:
             dataToEnter = {sheetName: dataToEnter[sheetName]   for sheetName in sorted(dataToEnter.keys())}
-            objOfDfs = {}
 
             sheetsGroups = {}
 
             # basic structure for the group list sheets
-            for sheetName in dataToEnter.keys():
+            for sheetName, sheetData in dataToEnter.items():
                 
-                if sheetName=='subjects':
-                    namesBaseList = createGroupsInListByPrefix(dataToEnter[sheetName])
-                
-                elif sheetName=='teachers':
-                    namesBaseList = createGroupsInListByFirstLetter(dataToEnter[sheetName])
-
-                elif sheetName=='classrooms':
-                    namesBaseList = createGroupsInListByNumbers(dataToEnter[sheetName])
+                namesBaseList = createGroupsInListBy(sheetName, sheetData)
                 
                 dfBase = {  'names_base': namesBaseList,
-                            'names': dataToEnter[sheetName]}
+                            'names': sheetData }
                 
                 objOfDfs[sheetName] = DataFrame(dfBase)
                 objOfDfs[sheetName]['names_No.'] = RangeIndex(start=1, stop=len(objOfDfs[sheetName])+1, step=1)
@@ -309,47 +387,37 @@ def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
                 df['names_in_group_No.'] = (df.groupby('names_base').cumcount() + 1).astype(str) + '.'
                 
                 df.set_index(keys=['group_No.', 'names_base', 'names_in_group_No.'], inplace=True)
-
-                # create the object for coloring the backgrounds of odd groups
-                groupRows = df.groupby('group_No.').apply(lambda
-                                                              group: [  df.index.get_loc(x) + 1
-                                                                        for x in group.index ]
-                                                          ).to_dict()
-                groupRowsFiltered = {}
-                for key, value in groupRows.items():
-                    convertedKey = key.replace('.','')
-                    if convertedKey.isdigit() and int(convertedKey)%2!=0:
-                        groupRowsFiltered[key] = value
                 
-                sheetsGroups[listName] = {  'rowsToColor': [ item+1   for groupList in groupRowsFiltered.values()   for item in groupList ],
-                                            'columnsLength': len((df.reset_index()).columns) }
+                sheetsGroups[listName] = createObjForDfRowsColoring(df)
                 
+                objOfDfs[listName] = df
                 df.to_excel(writer, sheet_name=listName, merge_cells=True)
-            
 
-            # add BACKGROUND to the odd groups of the cells in worksheet 
-            workbook = writer.book
-            if workbook:
-                                
-                for sheetname in workbook.sheetnames:
-                    ws = workbook[sheetname]
-                    sheetBgRanges = sheetsGroups[sheetname]
+            dataToReturn = objOfDfs
+            addBgToExcelSheetRowsBasedOnObj(writer, sheetsGroups)
 
-                    for grRow in sheetBgRanges['rowsToColor']:
-                        for col in range(1, sheetBgRanges['columnsLength']+1):
-                            cell = ws.cell(row=grRow, column=col)
-                            formatCellBackground(cell, 'solid', 'f3f3f3', 'f3f3f3')
+        msgText = f'Data loaded into the schedule Excel file: ' + excelPath.split('/')[-1]
 
-
-        msgText = f'Data loaded into the schedule Excel file: ' + desire.split('/')[-1]
 
     except Exception as e:
-        msgText = f'Error loading complete classes data: {e}'
+        msgText = f'Error while writing group lists to excel sheets: {e}'
+    
+    if msgText: print(msgText)
 
-    print(msgText)
+    return dataToReturn
 
 
 
-def writeGroupListsToExcel(groupLists={}):
-    writeGroupListsToExcelSheets(scheduleListsExcelOwnersGrouped, groupLists)
-    autoFormatExcelCellSizes(excelFilePath=scheduleListsExcelOwnersGrouped)
+def writeGroupListsToExcelAndFormat(groupLists={}):
+    dataToReturn = None
+    msgText = ''
+    try:
+        dataToReturn = writeGroupListsToExcel(scheduleListsExcelOwnersGrouped, groupLists)
+        autoFormatExcelCellSizes(excelFilePath=scheduleListsExcelOwnersGrouped)
+
+    except Exception as e:
+        msgText = f'Error while writing and formatting the excel files for group lists: {e}'
+
+    if msgText!='': print(msgText)
+
+    return dataToReturn
