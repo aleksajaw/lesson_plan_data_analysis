@@ -147,7 +147,7 @@ def writeGroupSchedulesToExcel(groupSchedules=None, groupSchedulesTitle='', sche
     
     with ExcelWriter(scheduleExcelPath, mode='w+', engine=excelEngineName) as writer:       
         try:
-            writeObjOfDfsToExcel(writer, sortedGroupSchedules)
+            writeObjOfDfsToExcel(writer, scheduleExcelPath, sortedGroupSchedules)
             autoFormatMainExcelFile(writer.book, scheduleExcelPath)
                 
         except Exception as writeError:

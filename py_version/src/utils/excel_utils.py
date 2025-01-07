@@ -88,7 +88,7 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
         msgText = f'Data for sheet {sheetName} loaded.'
 
     except Exception as e:
-        msgText = f'Error loading data to {sheetName}: {e}'
+        msgText = f'Error loading data into {sheetName}: {e}'
 
     print(msgText)
 
@@ -257,10 +257,10 @@ def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
                             formatCellBackground(cell, 'solid', 'f3f3f3', 'f3f3f3')
 
 
-        msgText = f'Data for {desire} loaded.'
+        msgText = f'Data loaded into the schedule Excel file: ' + desire.split('/')[-1]
 
     except Exception as e:
-        msgText = f'Error loading data to {desire}: {e}'
+        msgText = f'Error loading complete classes data: {e}'
 
     print(msgText)
 
@@ -276,7 +276,7 @@ def delInvalidChars(name='', target='sheetName'):
 
 
 
-def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted=True):
+def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelPath='', dataToEnter=None, isConverted=True):
     msgText = ''
 
     try:
@@ -286,7 +286,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, dataToEnter=None, isConverted=True)
         for groupName in groupDfs:   
             groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
 
-        msgText = 'Data loaded to the main schedule Excel file.'
+        msgText = 'Data loaded into the schedule Excel file: ' + scheduleExcelPath.split('/')[-1]
 
     except Exception as e:
         msgText = f'Error loading complete classes data: {e}'

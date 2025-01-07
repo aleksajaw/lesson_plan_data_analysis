@@ -32,7 +32,7 @@ def createOrEditMainExcelFile():
             with ExcelWriter(scheduleExcelPath, mode='w+', engine=excelEngineName) as writer:
                 
                 try:
-                    writeObjOfDfsToExcel(writer, classesDataDfs)
+                    writeObjOfDfsToExcel(writer, scheduleExcelPath, classesDataDfs)
                     autoFormatMainExcelFile(writer.book, scheduleExcelPath)
 
                     try:
