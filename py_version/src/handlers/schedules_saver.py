@@ -1,5 +1,5 @@
-from src.constants import scheduleExcelPath, excelEngineName, scheduleExcelJSONPath, scheduleDfsJSONPath, scheduleJSONPath
-from src.utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertCurrExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatMainExcelFile
+from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExcelClassesJSONPath, scheduleClassesDfsJSONPath, scheduleClassesJSONPath
+from src.utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatScheduleExcel
 #, colLetterToNr
 import json
 from pandas import ExcelWriter
@@ -25,15 +25,15 @@ def createOrEditMainExcelFile():
 
     createDraftSheetIfNecessary()
 
-    currExcelAsDfsJSON = convertCurrExcelToDfsJSON()
+    currExcelAsDfsJSON = convertExcelToDfsJSON()
     
     try:
         if str(currExcelAsDfsJSON) != str(classesDataDfsJSON):
-            with ExcelWriter(scheduleExcelPath, mode='w+', engine=excelEngineName) as writer:
+            with ExcelWriter(scheduleExcelClassesPath, mode='w+', engine=excelEngineName) as writer:
                 
                 try:
-                    writeObjOfDfsToExcel(writer, scheduleExcelPath, classesDataDfs)
-                    autoFormatMainExcelFile(writer.book, scheduleExcelPath)
+                    writeObjOfDfsToExcel(writer, scheduleExcelClassesPath, classesDataDfs)
+                    autoFormatScheduleExcel(writer.book, scheduleExcelClassesPath)
 
                     try:
                         delDraftIfNecessary()
@@ -55,9 +55,9 @@ def createOrEditMainExcelFile():
 
     # to avoid issues, compare file contents
     # & update if it's neccessarry
-    compareAndUpdateFile(scheduleExcelJSONPath, currExcelAsDfsJSON)
-    compareAndUpdateFile(scheduleDfsJSONPath, classesDataDfsJSON)
-    compareAndUpdateFile(scheduleJSONPath, classesDataJSON)
+    compareAndUpdateFile(scheduleExcelClassesJSONPath, currExcelAsDfsJSON)
+    compareAndUpdateFile(scheduleClassesDfsJSONPath, classesDataDfsJSON)
+    compareAndUpdateFile(scheduleClassesJSONPath, classesDataJSON)
 
 
 def getClassesDataDfs():

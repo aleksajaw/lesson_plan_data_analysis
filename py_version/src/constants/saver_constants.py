@@ -6,19 +6,19 @@ outputsPath = f'{srcDirPath}/schedules/'
 
 
 # FILE NAMES
-scheduleExcelName = 'schedule.xlsx'
-scheduleExcelTeachersName = 'schedule-teachers.xlsx'
-scheduleExcelClassroomsName = 'schedule-classrooms.xlsx'
-scheduleExcelSubjectsName = 'schedule-subjects.xlsx'
-scheduleExcelGroupListsName = 'schedule-group_lists.xlsx'
-scheduleJSONName = 'schedule.json'
-scheduleDfsJSONName = 'schedule_dfs.json'
-scheduleExcelJSONName = 'schedule_dfs_excel.json'
+scheduleExcelClassesName = 'schedule_classes.xlsx'
+scheduleExcelTeachersName = 'schedule_teachers.xlsx'
+scheduleExcelClassroomsName = 'schedule_classrooms.xlsx'
+scheduleExcelSubjectsName = 'schedule_subjects.xlsx'
+scheduleListsExcelOwnersGroupedName = 'schedule-lists_owners-grouped.xlsx'
+scheduleClassesJSONName = 'schedule_classes.json'
+scheduleClassesDfsJSONName = 'dfs_schedule-classes.json'
+scheduleExcelClassesJSONName = 'dfs-excel_schedule-classes.json'
 
 
 # FILE PATHS
-# Excel
-scheduleExcelPath = outputsPath + scheduleExcelName
+# Excel For Classes
+scheduleExcelClassesPath = outputsPath + scheduleExcelClassesName 
 # For Teachers
 scheduleExcelTeachersPath = outputsPath + scheduleExcelTeachersName
 # For classrooms
@@ -26,13 +26,13 @@ scheduleExcelClassroomsPath = outputsPath + scheduleExcelClassroomsName
 # For subjects
 scheduleExcelSubjectsPath = outputsPath + scheduleExcelSubjectsName
 # For schedule group lists
-scheduleExcelGroupListsPath = outputsPath + scheduleExcelGroupListsName
+scheduleListsExcelOwnersGrouped = outputsPath + scheduleListsExcelOwnersGroupedName
 # pure scraped data in JSON
-scheduleJSONPath = outputsPath + scheduleJSONName
+scheduleClassesJSONPath = outputsPath + scheduleClassesJSONName
 # DataFrames in JSON
-scheduleDfsJSONPath = outputsPath + scheduleDfsJSONName
+scheduleClassesDfsJSONPath = outputsPath + scheduleClassesDfsJSONName
 # current Excel in JSON
-scheduleExcelJSONPath = outputsPath + scheduleExcelJSONName
+scheduleExcelClassesJSONPath = outputsPath + scheduleExcelClassesJSONName
 
 
 # variables for handling pandas' Data Frame and excel
