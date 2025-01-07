@@ -294,6 +294,8 @@ def concatAndFilterDataFrames(el1=None, el2=None):
     msgText = ''
 
     try:
+        #el1 = el1.dropna(axis=1, how='all')
+        el2 = el2.dropna(axis=1, how='all')
         newDf = pd.concat([el1, el2])#.sort_index()
         rowsFiltered = []
 
