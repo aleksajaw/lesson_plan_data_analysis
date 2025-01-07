@@ -266,6 +266,29 @@ def writeGroupListsToExcelSheets(desire=None, dataToEnter=None):
 
 
 
+def removeLastEmptyRowsInExcel(elToBeFiltered=None):
+    msgText = ''
+
+    try:
+        if not isinstance(elToBeFiltered, list):
+            elToBeFiltered = list(elToBeFiltered)
+
+        # keep all the rows up to the last non-empty row
+        for singleWorksheet in elToBeFiltered:
+            if len(singleWorksheet.items()):
+                for sheetName, sheetVal in singleWorksheet.items():
+                    lastNonEmptyRow = int(sheetVal.dropna(how='all').index[-1][0])
+                    #lastNonEmptyRow = (int(lastNonEmptyRow[0]), lastNonEmptyRow[1])
+                    singleWorksheet[sheetName] = sheetVal.loc[:lastNonEmptyRow]
+    
+    except Exception as e:
+        msgText = f'Error while removing last empty rows in Excel worksheet: {e}'
+    
+    if len(msgText):
+        print(msgText)
+
+
+
 def delInvalidChars(name='', target='sheetName'):
     if target=='sheetName':
         invalidScheetNameChars = ['/', '\\', ':', '*', '?', '[', ']']
