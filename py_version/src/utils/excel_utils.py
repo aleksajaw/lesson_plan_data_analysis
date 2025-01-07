@@ -289,6 +289,44 @@ def removeLastEmptyRowsInExcel(elToBeFiltered=None):
 
 
 
+def concatAndFilterDataFrames(el1=None, el2=None):
+    import pandas as pd, numpy as np
+    msgText = ''
+
+    try:
+        newDf = pd.concat([el1, el2])#.sort_index()
+        rowsFiltered = []
+
+        # iterate through rows (time indexes)
+        for (day, time), singleLessonAttr in newDf.groupby(timeIndexes):
+            singleRow = {}
+            singleRow[timeIndexes[0]] = day
+            singleRow[timeIndexes[1]] = time
+
+            for col in newDf.columns:
+                booleanMask = singleLessonAttr[col] != ''
+                nonEmptyValues = singleLessonAttr[col][booleanMask].dropna().tolist()
+
+                if nonEmptyValues:
+                    for value in nonEmptyValues:
+                        singleRow[col] = value
+
+            rowsFiltered.append(singleRow)
+
+
+        newDfFiltered = pd.DataFrame(rowsFiltered).set_index(keys=newDf.index.names)
+        newDfFiltered = newDfFiltered.reindex(columns=newDf.columns, fill_value=np.nan)
+
+        return newDfFiltered
+    
+    except Exception as e:
+        msgText = f'Error while concatenating Data Frames for Excel worksheet: {e}'
+        
+    if len(msgText):
+        print(msgText)
+
+
+
 def delInvalidChars(name='', target='sheetName'):
     if target=='sheetName':
         invalidScheetNameChars = ['/', '\\', ':', '*', '?', '[', ']']
