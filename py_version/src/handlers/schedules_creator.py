@@ -15,9 +15,9 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
     for className, classDf in classSchedulesDfs.items():
         #weekdays = classDf.columns.get_level_values(0).unique()
 
-        buildGroupScheduleBasedOnCol(teacherSchedules, classDf, 'teacher', className)
-        buildGroupScheduleBasedOnCol(classroomSchedules, classDf, 'classroom', className)
-        buildGroupScheduleBasedOnCol(subjectSchedules, classDf, 'subject', className)
+        buildNewOwnerScheduleBasedOnCol(teacherSchedules, classDf, 'teacher', className)
+        buildNewOwnerScheduleBasedOnCol(classroomSchedules, classDf, 'classroom', className)
+        buildNewOwnerScheduleBasedOnCol(subjectSchedules, classDf, 'subject', className)
     
     groupLists = { 'teachers': list(teacherSchedules.keys()),
                    'classrooms': list(classroomSchedules.keys()),
@@ -32,7 +32,7 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
 
 
 
-def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newColValue='', newMainColKey='class'):
+def buildNewOwnerScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newColValue='', newMainColKey='class'):
 
     if (isinstance(baseDf,DataFrame)) and (groupType!='') and (newColValue!=''):
         
