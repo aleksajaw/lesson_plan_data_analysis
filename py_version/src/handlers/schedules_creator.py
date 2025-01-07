@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import ExcelWriter, DataFrame
 import numpy as np
 from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupListsPath, excelEngineName, timeIndexes, dfRowNrAndTimeTuples
-from src.utils import writeObjOfDfsToExcel, autoFormatMainExcelFile, writeGroupListsToExcelSheets, autoFormatExcelFileCellSizes
+from src.utils import writeObjOfDfsToExcel, autoFormatMainExcelFile, writeGroupListsToExcelSheets, autoFormatExcelFileCellSizes, removeLastEmptyRowsInExcel, concatAndFilterDataFrames
 
 
 def createOtherScheduleExcelFiles(classSchedulesDfs):
@@ -22,7 +22,9 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
                    'classrooms': list(classroomSchedules.keys()),
                    'subjects': list(subjectSchedules.keys()) }
 
-    writeGroupListsToExcel(groupLists)
+    writeGroupListsToExcel(groupLists)    
+    removeLastEmptyRowsInExcel([teacherSchedules,classroomSchedules, subjectSchedules])
+    
     writeGroupSchedulesToExcel(teacherSchedules, 'teacher', scheduleExcelTeachersPath)
     writeGroupSchedulesToExcel(classroomSchedules, 'classroom', scheduleExcelClassroomsPath)
     writeGroupSchedulesToExcel(subjectSchedules, 'subject', scheduleExcelSubjectsPath)
@@ -121,12 +123,10 @@ def buildGroupScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newCo
 
                     else:
                         x = targetDict[str(el)].copy()
-                        y = x.combine_first(elRows)
-                        #print('yyyyyyyy', y)
-                        lastNonEmptyRow = y.dropna(how='all').index[-1]
-                        # keep all the rows up to the last non-empty row
-                        targetDict[str(el)] = y.loc[:lastNonEmptyRow]
-                        #schedulesDict[el] = y.reindex(columns=weekdays)
+                        #y = x.combine_first(elRows)
+                        #y = x.join(elRows)
+
+                        targetDict[str(el)] = concatAndFilterDataFrames(x, elRows)
 
 
 
