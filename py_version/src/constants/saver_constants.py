@@ -10,7 +10,13 @@ scheduleExcelClassesName = 'schedule_classes.xlsx'
 scheduleExcelTeachersName = 'schedule_teachers.xlsx'
 scheduleExcelClassroomsName = 'schedule_classrooms.xlsx'
 scheduleExcelSubjectsName = 'schedule_subjects.xlsx'
+
+scheduleExcelClassesGroupedName = 'schedule_classes-grouped.xlsx'
+scheduleExcelTeachersGroupedName = 'schedule_teachers-grouped.xlsx'
+scheduleExcelClassroomsGroupedName = 'schedule_classrooms-grouped.xlsx'
+scheduleExcelSubjectsGroupedName = 'schedule_subjects-grouped.xlsx'
 scheduleListsExcelOwnersGroupedName = 'schedule-lists_owners-grouped.xlsx'
+
 scheduleClassesJSONName = 'schedule_classes.json'
 scheduleClassesDfsJSONName = 'dfs_schedule-classes.json'
 scheduleExcelClassesJSONName = 'dfs-excel_schedule-classes.json'
@@ -25,8 +31,18 @@ scheduleExcelTeachersPath = outputsPath + scheduleExcelTeachersName
 scheduleExcelClassroomsPath = outputsPath + scheduleExcelClassroomsName
 # For subjects
 scheduleExcelSubjectsPath = outputsPath + scheduleExcelSubjectsName
-# For schedule group lists
+
+# Excel For Classes grouped
+scheduleExcelClassesGroupedPath = outputsPath + scheduleExcelClassesGroupedName 
+# For Teachers grouped
+scheduleExcelTeachersGroupedPath = outputsPath + scheduleExcelTeachersGroupedName
+# For classrooms grouped
+scheduleExcelClassroomsGroupedPath = outputsPath + scheduleExcelClassroomsGroupedName
+# For subjects grouped
+scheduleExcelSubjectsGroupedPath = outputsPath + scheduleExcelSubjectsGroupedName
+# For schedule lists with owner grouped
 scheduleListsExcelOwnersGrouped = outputsPath + scheduleListsExcelOwnersGroupedName
+
 # pure scraped data in JSON
 scheduleClassesJSONPath = outputsPath + scheduleClassesJSONName
 # DataFrames in JSON
