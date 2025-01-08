@@ -74,11 +74,13 @@ def findLastBoldRowAtBeggining(ws, minCol=1):
     msgText=''
 
     try:
-        lastBoldRowAtBeggining = 1
-        for col in ws.iter_cols(min_col=minCol, min_row=lastBoldRowAtBeggining):
+        lastBoldRowAtBeggining = -1
+        rowTemp = 1
+        for col in ws.iter_cols(min_col=minCol, min_row=rowTemp):
             for cell in col:
                 if cell.font and cell.font.bold:
                     lastBoldRowAtBeggining = cell.row
+                    rowTemp = lastBoldRowAtBeggining
                 else:
                     break
     
@@ -101,63 +103,70 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
         if (workbook):
             for ws in workbook.worksheets:
                 
-                # merge and format empty cells in the corner between the MultiIndexes
-                mergeEmptyCellsAndColorBg(ws, { 'startRow': 1, 'startCol': 1, 'endRow': 2, 'endCol': 2 })
-
                 # column nr where the row indexes end
-                rowIndexesColsEnd = 2
-                
+                rowIndexesLastCol = 2
+
                 # bold rows are for headers
-                lastBoldRowAtBeggining = findLastBoldRowAtBeggining(ws, rowIndexesColsEnd)
+                lastBoldRowAtBeggining = findLastBoldRowAtBeggining(ws, rowIndexesLastCol)
+
+                # merge and format empty cells in the corner between the MultiIndexes
+                mergeEmptyCellsAndColorBg(ws, { 'startRow': 1,
+                                                'startCol': 1,
+                                                'endRow': lastBoldRowAtBeggining,
+                                                'endCol': rowIndexesLastCol } )
 
                 lastMergedCellColIn1stRow = max([cell.max_col   for cell in ws.merged_cells
                                                                 if cell.min_row==1])
                 
                 # cells in the 1st two columns which row nr equals contentRowsStart
                 # contains the names for the rows' MultiIndex
-                contentRowsStart = lastBoldRowAtBeggining+1
+                contentFirstRow = lastBoldRowAtBeggining+1
                 # col nr for the 1st cell for the 1st day
-                colDaysStart = rowIndexesColsEnd+1
+                daysFirstColList = rowIndexesLastCol+1
 
                 totalColsCount = lastMergedCellColIn1stRow
                 totalColsRange = range(1, totalColsCount+1)
                 # cells in the 2nd column contain part of rows indexes & are less likely to be merged (for easier data analysis)
-                totalRowsCount = lastBoldRowAtBeggining + getNrOfLastNonEmptyCellInCol(ws, minRow=contentRowsStart, col=2)                    
+                totalRowsCount = lastBoldRowAtBeggining + getNrOfLastNonEmptyCellInCol(ws, minRow=contentFirstRow, col=2)                    
                 totalRowsRange = range(1, totalRowsCount+1)
 
-                colorBgOfEmptyRow(ws, range(rowIndexesColsEnd+1, totalColsCount+1), row=contentRowsStart, startColumn=colDaysStart)
+                colorBgOfEmptyRow(ws, range(rowIndexesLastCol+1, totalColsCount+1), row=contentFirstRow, startColumn=daysFirstColList)
 
 
                 # add MEDIUM RIGHT BORDERS
                 # at the end of each important column and each day
-                dayColsEnd = [mergedCellRange.max_col   for mergedCellRange in ws.merged_cells]
-                rowIndexesColsList = list(range(1, lastBoldRowAtBeggining+1))
-                rowsWithRightBorder = rowIndexesColsList + dayColsEnd
+                daysLastCol = sorted([mergedCellRange.max_col  for mergedCellRange in ws.merged_cells
+                                                              if mergedCellRange.min_row==mergedCellRange.max_row==1
+                                                                and mergedCellRange.min_col > 2])
+                rowIndexesCols = list(range(1, rowIndexesLastCol+1))
+                colsWithRightMediumBorder = rowIndexesCols + daysLastCol
+                standardDaySize = daysLastCol[0] - rowIndexesLastCol
 
-                for col in rowsWithRightBorder:
-                    for row in totalRowsRange:
-                        cell = ws.cell(row=row, column=col)
+                for col in colsWithRightMediumBorder:
+                    for row1 in totalRowsRange:
+                        cell = ws.cell(row=row1, column=col)
                         formatCellBorder(cell, right='medium')
 
                         # add THIN SIDE BORDERS to the center column on days
                         # do not include the columns reserved for the rows indexes
-                        if rowIndexesColsEnd < col:
-                            cell = ws.cell(row=row, column=col-1)
-                            formatCellBorder(cell, left='thin', right='thin')
+                        if rowIndexesLastCol < col:
+                            for attrCol in range((col-standardDaySize)+1, col):
+                                cell = ws.cell(row=row1, column=attrCol)
+                                formatCellBorder(cell, left='thin', right='thin')
                 
 
                 # add MEDIUM BOTTOM BORDERS
                 # at the end of each index (for columns, for rows) and the entire schedule
-                rowsWithBottomBorder = [lastBoldRowAtBeggining, contentRowsStart, totalRowsCount]
+                rowsWithBottomBorder = [lastBoldRowAtBeggining, contentFirstRow, totalRowsCount]
 
                 for row in rowsWithBottomBorder:
                     colsLimit = totalColsCount+1
                     # ignore long merged cell
-                    if row==contentRowsStart:
-                        colsLimit = rowIndexesColsEnd+1
+                    if row==contentFirstRow:
+                        colsLimit = rowIndexesLastCol+1
 
                     for col in range(1, colsLimit):
-                        cell = ws.cell(row=row, column=col)
+                        cell = ws.cell(row, column=col)
                         formatCellBorder(cell, bottom='medium')
 
 
@@ -173,7 +182,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
                                     None)
 
                     for col in range(1, colsLimit):
-                        cell = ws.cell(row=row, column=col)
+                        cell = ws.cell(row, column=col)
                         # thinner ('HAIR') BORDER inside merged row
                         #if merged and merged.min_row != row:
                         #    topBorderStyle = 'hair'
@@ -190,7 +199,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
                     if isinstance(cellValue, int) and (cellValue % 2 != 0):
                         #rowsToBeColoured.append(row)
                         for col in totalColsRange:
-                            cell = ws.cell(row=row, column=col)
+                            cell = ws.cell(row, column=col)
                             formatCellBackground(cell, fillType='solid', startColor='E5E5E5', endColor='E5E5E5')
 
 
