@@ -276,6 +276,24 @@ def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
 
 
 
+def dropnaInDfByAxis(el=None, both=True, axis=-1):
+    msgText=''
+
+    try:
+        if isinstance(el, DataFrame):
+            axisList = [axis   if (axis>=0 and not both)   else 0,1]
+            for axis in axisList:
+                el = el.dropna(axis=axis, how='all')
+
+    except Exception as e:
+        msgText = f'Error while dropping the NA values in the both axis of Data Frame: {e}'
+
+    if msgText: print(msgText)
+ 
+    return el
+
+
+
 def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataToEnter=None, isConverted=True):
     msgText = ''
 

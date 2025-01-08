@@ -1,5 +1,5 @@
 from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupsPath, scheduleListsExcelOwnersGrouped, excelEngineName
-from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy
+from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
@@ -350,7 +350,8 @@ def concatAndFilterGroupListsDataFrames(objOfDfs={}, groupListsDfs={}):
                     #   The behavior of DataFrame concatenation with empty or all-NA entries is deprecated.
                     #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
                     #   To retain the old behavior, exclude the relevant entries before the concat operation.
-                    y = y.dropna(axis=1, how='any')
+                    #x = dropnaInDfByAxis(x)
+                    y = dropnaInDfByAxis(y)
                     newObjOfDfs[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColNames[ownersType], str(el))
 
                 else:

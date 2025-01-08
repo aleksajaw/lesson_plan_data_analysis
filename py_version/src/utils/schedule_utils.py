@@ -1,5 +1,5 @@
 from src.constants import scheduleExcelClassesPath, weekdays, lessonAttrs4el, timeIndexes
-from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder
+from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
 import pandas as pd
 import numpy as np
 import re
@@ -216,8 +216,8 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         #   The behavior of DataFrame concatenation with empty or all-NA entries is deprecated.
         #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
         #   To retain the old behavior, exclude the relevant entries before the concat operation.
-        #el1 = el1.dropna(axis=1, how='all')
-        el2 = el2.dropna(axis=1, how='all')
+        #el1 = dropnaInDfByAxis(el1)
+        el2 = dropnaInDfByAxis(el2)
         newDf = pd.concat([el1, el2])#.sort_index()
         rowsFiltered = []
 
@@ -239,11 +239,11 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
                         singleRow[col] = value
 
                     if prepareNewColVal:
-                        singleRow[(col[0], newColName)] = newColVal
+                        if not (col[0], newColName) in singleRow:
+                            singleRow[(col[0], newColName)] = (newColVal   if not newColVal.isdigit()
+                                                                           else int(newColVal))
 
             rowsFiltered.append(singleRow)
-
-        #print(rowsFiltered)
 
         if addNewCol:
             #newColumns1stLvl = list((newDf.columns).get_level_values(0).unique())
@@ -307,7 +307,25 @@ def createGroupsInListByFirstLetter(data=[]):
     msgText = ''
 
     try:
-        return [item[0]   for item in data]
+        newData = []
+        for item in data:
+            #if any(c.isdigit()   for c in item):
+            match = re.match(r'[^\d\w]+[a-zA-Z]*', item)
+
+            if match:
+              if item!=match[0]:
+                # e.g. '#re4'   =>   '#re'
+                newData.append(match[0])
+
+              else:
+                # e.g. '#re'   =>   '#r'
+                newData.append(match[1])
+            
+            else:
+                newData.append(item[0])
+
+        return newData
+        #return [item[0]   for item in data]
     
     except Exception as e:
         msgText = f'Error while creating groups in list by first letter: {e}'
