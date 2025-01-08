@@ -228,6 +228,30 @@ def get1stNotMergedCell(group=[]):
 
 
 
+def getNrOfLastNonEmptyCellInCol(ws=None, minRow=int, col=int):
+    msgText=''
+    counter = -1
+
+    try:
+        for row in ws.iter_rows(min_row=minRow, min_col=col, max_col=col):
+
+            if row[0].value is not None:           
+                if counter < 0:
+                    counter = 0
+                
+                counter += 1
+            
+            else:
+                break
+    
+    except Exception as e:
+        msgText = f'Error while getting the last non-empty cell in column: {e}'
+                    
+    if msgText: print(msgText)
+
+    return counter
+
+                    
 def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
     msgText = ''
 
@@ -247,6 +271,8 @@ def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
         msgText = f'Error while removing last empty rows in Excel worksheet: {e}'
     
     if msgText: print(msgText)
+
+    #return elToBeFiltered
 
 
 
