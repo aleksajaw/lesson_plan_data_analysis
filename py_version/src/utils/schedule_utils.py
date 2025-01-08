@@ -1,4 +1,4 @@
-from src.constants import scheduleExcelClassesPath, weekdays, lessonAttrs3el, timeIndexes
+from src.constants import scheduleExcelClassesPath, weekdays, lessonAttrs4el, timeIndexes
 from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder
 import pandas as pd
 import numpy as np
@@ -14,7 +14,85 @@ def autoFormatScheduleExcel(workbook=Workbook(), excelFilePath=scheduleExcelClas
 
 
 
+def mergeEmptyCellsAndColorBg(ws=None, mergedCellObj={'startRow':int, 'startRow': int, 'startRow': int, 'endCol': int}):
+    msgText=''
+
+    try:
+        permEmptyCellStyle = openpyxlPatternFill(fill_type='lightTrellis')
+
+        ws.merge_cells( start_row=mergedCellObj['startRow'],
+                        start_column=mergedCellObj['startRow'],
+                        end_row=mergedCellObj['startRow'],
+                        end_column=mergedCellObj['endCol'] )
+
+        ws.cell(row=mergedCellObj['startRow'], column=mergedCellObj['startCol']).fill = permEmptyCellStyle
+
+
+    except Exception as e:
+        msgText = f'Error while merging the empty cells and coloring their background: {e}'
+
+
+    if msgText: print(msgText)
+
+
+
+def colorBgOfEmptyRow(ws=None, colRange=None, row=int, startColumn=int):
+    msgText=''
+
+    try:
+        permEmptyCellStyle = openpyxlPatternFill(fill_type='lightTrellis')
+        allEmpty = True 
+
+        # check if the cells in the 1st row (below column indexes) are empty
+        for col in colRange:
+            
+            if ws.cell(row=row, column=col).value is not None:
+                allEmpty = False
+                break
+
+
+        # change the BACKGROUND of the cells in the row (below column indexes)
+        # only if entire row is empty
+        if allEmpty:
+            
+            # MERGE CELLS in the row 
+            ws.merge_cells( start_row=row, start_column=startColumn,
+                            end_row=row,   end_column=max(colRange) )
+            
+            cell = ws.cell(row=row, column=startColumn)
+            cell.fill = permEmptyCellStyle
+            
+
+    except Exception as e:
+        msgText = f'Error while coloring the background of empty rows: {e}'
+
+    if msgText: print(msgText)
+
+
+
+def findLastBoldRowAtBeggining(ws, minCol=1):
+    msgText=''
+
+    try:
+        lastBoldRowAtBeggining = 1
+        for col in ws.iter_cols(min_col=minCol, min_row=lastBoldRowAtBeggining):
+            for cell in col:
+                if cell.font and cell.font.bold:
+                    lastBoldRowAtBeggining = cell.row
+                else:
+                    break
+    
+    except Exception as e:
+        msgText = f'Error while searching for the last bold row at the beggining: {e}'
+
+    if msgText: print(msgText)
+
+    return lastBoldRowAtBeggining
+                        
+
+
 def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=scheduleExcelClassesPath):
+    from excel_utils import getNrOfLastNonEmptyCellInCol
 
     try:
         if not isinstance(workbook, Workbook):
@@ -23,122 +101,95 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
         if (workbook):
             for ws in workbook.worksheets:
                 
-                permEmptyCellStyle = openpyxlPatternFill(fill_type='lightTrellis')
-                
                 # merge and format empty cells in the corner between the MultiIndexes
-                ws.merge_cells('A1:B2')
-                ws['A1'].fill = permEmptyCellStyle
+                mergeEmptyCellsAndColorBg(ws, { 'startRow': 1, 'startCol': 1, 'endRow': 2, 'endCol': 2 })
 
-                rowsStart = 3
-                rowsCount = 0
-
-                # count rows in the 1st and the 2nd column,
-                # cells there are less likely to be merged (for easier data analysis)
-                for row in ws.iter_rows(min_row=rowsStart, min_col=1, max_col=2):
-                    if row[1].value is not None:
-                        rowsCount += 1
-                    else:
-                        break
-                
-
-                totalRowsCount = rowsStart-1 + rowsCount
+                # column nr where the row indexes end
                 rowIndexesColsEnd = 2
-                colIndexesRowsEnd = 2
-                colDaysStart = 3
-                lenOfWeekdays = len(weekdays)
-                lenOfLessonAttrs = len(lessonAttrs3el)
-                totalColsCount = colDaysStart-1 + lenOfWeekdays * lenOfLessonAttrs
                 
+                # bold rows are for headers
+                lastBoldRowAtBeggining = findLastBoldRowAtBeggining(ws, rowIndexesColsEnd)
 
-                # row with number rowsStart in the 1st two columns
+                lastMergedCellColIn1stRow = max([cell.max_col   for cell in ws.merged_cells
+                                                                if cell.min_row==1])
+                
+                # cells in the 1st two columns which row nr equals contentRowsStart
                 # contains the names for the rows' MultiIndex
-                allEmpty = True 
+                contentRowsStart = lastBoldRowAtBeggining+1
+                # col nr for the 1st cell for the 1st day
+                colDaysStart = rowIndexesColsEnd+1
 
-                # check if the cells in the 1st row below column indexes are empty
-                for col in range(colDaysStart, totalColsCount+1):
-                    
-                    if ws.cell(row=rowsStart, column=col).value is not None:
-                        allEmpty = False
-                        break
+                totalColsCount = lastMergedCellColIn1stRow
+                totalColsRange = range(1, totalColsCount+1)
+                # cells in the 2nd column contain part of rows indexes & are less likely to be merged (for easier data analysis)
+                totalRowsCount = lastBoldRowAtBeggining + getNrOfLastNonEmptyCellInCol(ws, minRow=contentRowsStart, col=2)                    
+                totalRowsRange = range(1, totalRowsCount+1)
 
-
-                # change the BACKGROUND of the cells in the row below column indexes
-                # only if entire row is empty
-                if allEmpty:
-                    
-                    # MERGE CELLS in the row 
-                    ws.merge_cells( start_row=rowsStart, start_column=colDaysStart,
-                                    end_row=rowsStart,   end_column=totalColsCount )
-                    
-                    cell = ws.cell(row=rowsStart, column=colDaysStart)
-                    cell.fill = permEmptyCellStyle
-
-                    #startCoordinate = f'{get_column_letter(colDaysStart)}{rowsStart}'
-                    #endCoordinate = f'{get_column_letter(totalColsCount)}{rowsStart}'
-                    
-                    #for cell in ws[startCoordinate:endCoordinate][0]:
-                    #    formatCellBorder(cell, bottom='thin')
+                colorBgOfEmptyRow(ws, range(rowIndexesColsEnd+1, totalColsCount+1), row=contentRowsStart, startColumn=colDaysStart)
 
 
                 # add MEDIUM RIGHT BORDERS
                 # at the end of each important column and each day
-                dayColsEnd = [colIndexesRowsEnd + i * 3 for i in range(1, 6)]
-                rowIndexesColsList = list(range(1, colIndexesRowsEnd+1))
-                thickerColsList = rowIndexesColsList + dayColsEnd
+                dayColsEnd = [mergedCellRange.max_col   for mergedCellRange in ws.merged_cells]
+                rowIndexesColsList = list(range(1, lastBoldRowAtBeggining+1))
+                rowsWithRightBorder = rowIndexesColsList + dayColsEnd
 
-                for thickerCol in thickerColsList:
-                    for row in range(1, totalRowsCount+1):
-                        cell = ws.cell(row=row, column=thickerCol)
+                for col in rowsWithRightBorder:
+                    for row in totalRowsRange:
+                        cell = ws.cell(row=row, column=col)
                         formatCellBorder(cell, right='medium')
+
                         # add THIN SIDE BORDERS to the center column on days
-                        if thickerCol > rowIndexesColsEnd:
-                            cell = ws.cell(row=row, column=thickerCol-1)
+                        # do not include the columns reserved for the rows indexes
+                        if rowIndexesColsEnd < col:
+                            cell = ws.cell(row=row, column=col-1)
                             formatCellBorder(cell, left='thin', right='thin')
                 
 
                 # add MEDIUM BOTTOM BORDERS
-                # at the end of each index and the entire schedule
-                colIndexesRowsList = list(range(1, colIndexesRowsEnd+1))[1:]
-                thickerRowsList = colIndexesRowsList + [rowsStart, totalRowsCount]
+                # at the end of each index (for columns, for rows) and the entire schedule
+                rowsWithBottomBorder = [lastBoldRowAtBeggining, contentRowsStart, totalRowsCount]
 
-                for thickerRow in thickerRowsList:
+                for row in rowsWithBottomBorder:
                     colsLimit = totalColsCount+1
                     # ignore long merged cell
-                    if thickerRow==rowsStart:
+                    if row==contentRowsStart:
                         colsLimit = rowIndexesColsEnd+1
 
                     for col in range(1, colsLimit):
-                        cell = ws.cell(row=thickerRow, column=col)
+                        cell = ws.cell(row=row, column=col)
                         formatCellBorder(cell, bottom='medium')
 
 
                 # add BACKGROUND for the lessons with an odd numbers
                 # and HAIR/THIN BORDERS
                 #rowsToBeColoured = []
-                for row in range(1, ws.max_row + 1):
+                for row in totalRowsRange:
+                    colsLimit = totalColsCount+1
+
                     # fast checking if the row is in the specific merged range (for col A here)
                     merged = next(  ( r   for r in ws.merged_cells.ranges
                                           if r.min_col == 1 and r.min_row <= row <= r.max_row ),
                                     None)
-                
 
-                    for col in range(1, totalColsCount+1):
-                        cellForBorder = ws.cell(row=row, column=col)
+                    for col in range(1, colsLimit):
+                        cell = ws.cell(row=row, column=col)
                         # thinner ('HAIR') BORDER inside merged row
                         #if merged and merged.min_row != row:
                         #    topBorderStyle = 'hair'
                         # THIN BORDER for outer frame
-                        #elif not cellForBorder.border.top.style:
+                        #elif not cell.border.top.style:
                         topBorderStyle = 'thin'
-                        formatCellBorder(cellForBorder, top=topBorderStyle)
+                        formatCellBorder(cell, top=topBorderStyle)
 
 
                     # set LIGHT GREY BACKGROUND
                     rowNr = merged.min_row   if merged   else row
                     cellValue = ws.cell(row=rowNr, column=1).value
+
                     if isinstance(cellValue, int) and (cellValue % 2 != 0):
                         #rowsToBeColoured.append(row)
-                        for col in range(1, totalColsCount+1):
+                        for col in totalColsRange:
                             cell = ws.cell(row=row, column=col)
                             formatCellBackground(cell, fillType='solid', startColor='E5E5E5', endColor='E5E5E5')
 
