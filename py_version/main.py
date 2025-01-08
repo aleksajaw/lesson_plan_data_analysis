@@ -18,7 +18,10 @@ for fName in ['constants', 'handlers', 'schedules', 'utils']:
 
 
 def main():
-    
+    import warnings
+
+    warnings.filterwarnings("ignore", category=FutureWarning)
+
     classesData = getClassesDataFromSchoolWebPage()
     loadClassesDataVariables(classesData)
     createOrEditMainExcelFile()
