@@ -1,5 +1,5 @@
 from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleListsExcelOwnersGrouped, excelEngineName, timeIndexes, dfRowNrAndTimeTuples, lessonAttrs
-from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground
+from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground, filterNumpyNdarray
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
@@ -130,16 +130,6 @@ def buildNewOwnerScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', ne
                         #y = x.join(elRows)
 
                         targetDict[str(el)] = concatAndFilterScheduleDataFrames(x, elRows)
-
-
-
-def filterNumpyNdarray(arr=np.ndarray, shouldConvertBack=False, elToDel=''):
-    # convert values to string
-    arrAsStr = arr.astype(str)
-    # remove specific value
-    sortedArr = np.sort( arrAsStr[ arrAsStr != elToDel] )
-
-    return np.array([val for val in sortedArr])
 
 
 

@@ -2,6 +2,7 @@ from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetN
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
+import numpy as np
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment as openpyxlAlignment
 from openpyxl.styles import PatternFill as openpyxlPatternFill
@@ -203,13 +204,16 @@ def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
 
 
 
-def delInvalidChars(name='', target='sheetName'):
-    if target=='sheetName':
-        invalidScheetNameChars = ['/', '\\', ':', '*', '?', '[', ']']
-        # replace invalid characters with character '_'
-        return ''.join('_'  if c in invalidScheetNameChars   else c   for c in name)
-    else:
-        return name
+def get1stNotMergedCell(group=[]):
+    foundNotMergedCell = False
+    i = -1
+
+    while not foundNotMergedCell:
+        i+=1
+        if not isinstance(group[i], openpyxlMergedCell):
+            foundNotMergedCell = True
+
+    return group[i] if i>=0 else None
 
 
 
@@ -435,13 +439,22 @@ def splitHTMLAndRemoveTags(HTMLText=''):
 
 
 
-def get1stNotMergedCell(group=[]):
-    foundNotMergedCell = False
-    i = -1
+# 'part 1/2'    =>   'part 1_2'
+# or '[part1]'   =>   '_part1_'
+def delInvalidChars(name='', target='sheetName'):
+    if target=='sheetName':
+        invalidScheetNameChars = ['/', '\\', ':', '*', '?', '[', ']']
+        # replace invalid characters with character '_'
+        return ''.join('_'  if c in invalidScheetNameChars   else c   for c in name)
+    else:
+        return name
+    
 
-    while not foundNotMergedCell:
-        i+=1
-        if not isinstance(group[i], openpyxlMergedCell):
-            foundNotMergedCell = True
 
-    return group[i] if i>=0 else None
+def filterNumpyNdarray(arr=np.ndarray, shouldConvertBack=False, elToDel=''):
+    # convert values to string
+    arrAsStr = arr.astype(str)
+    # remove specific value
+    sortedArr = np.sort( arrAsStr[ arrAsStr != elToDel] )
+
+    return np.array([val for val in sortedArr])
