@@ -10,6 +10,7 @@ scheduleExcelClassesName = 'schedule_classes.xlsx'
 scheduleExcelTeachersName = 'schedule_teachers.xlsx'
 scheduleExcelClassroomsName = 'schedule_classrooms.xlsx'
 scheduleExcelSubjectsName = 'schedule_subjects.xlsx'
+scheduleExcelGroupsName = 'schedule_groups.xlsx'
 
 scheduleExcelClassesGroupedName = 'schedule_classes-grouped.xlsx'
 scheduleExcelTeachersGroupedName = 'schedule_teachers-grouped.xlsx'
@@ -31,6 +32,8 @@ scheduleExcelTeachersPath = outputsPath + scheduleExcelTeachersName
 scheduleExcelClassroomsPath = outputsPath + scheduleExcelClassroomsName
 # For subjects
 scheduleExcelSubjectsPath = outputsPath + scheduleExcelSubjectsName
+# For groups: grouped all of the above
+scheduleExcelGroupsPath = outputsPath + scheduleExcelGroupsName
 
 # Excel For Classes grouped
 scheduleExcelClassesGroupedPath = outputsPath + scheduleExcelClassesGroupedName 
@@ -54,7 +57,8 @@ scheduleExcelClassesJSONPath = outputsPath + scheduleExcelClassesJSONName
 # variables for handling pandas' Data Frame and excel
 timeIndexes = ['Nr','Godz']
 weekdays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek']
-lessonAttrs = ['przedmiot', 'nauczyciel', 'sala']
+lessonAttrs3el = ['przedmiot', 'nauczyciel', 'sala']
+lessonAttrs4el = ['przedmiot', 'nauczyciel', 'klasa', 'sala']
 dfRowIndexNamesTuples = [
     ('Nr', ''),
     ('Godz', '')

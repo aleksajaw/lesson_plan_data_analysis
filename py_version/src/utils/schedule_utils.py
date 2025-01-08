@@ -1,4 +1,4 @@
-from src.constants import scheduleExcelClassesPath, weekdays, lessonAttrs, timeIndexes
+from src.constants import scheduleExcelClassesPath, weekdays, lessonAttrs3el, timeIndexes
 from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder
 import pandas as pd
 import numpy as np
@@ -46,7 +46,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
                 colIndexesRowsEnd = 2
                 colDaysStart = 3
                 lenOfWeekdays = len(weekdays)
-                lenOfLessonAttrs = len(lessonAttrs)
+                lenOfLessonAttrs = len(lessonAttrs3el)
                 totalColsCount = colDaysStart-1 + lenOfWeekdays * lenOfLessonAttrs
                 
 

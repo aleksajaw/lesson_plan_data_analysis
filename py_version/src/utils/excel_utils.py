@@ -1,4 +1,4 @@
-from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes, weekdays, lessonAttrs
+from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
