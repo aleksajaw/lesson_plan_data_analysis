@@ -1,4 +1,4 @@
-from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleListsExcelOwnersGrouped, excelEngineName
+from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupsPath, scheduleListsExcelOwnersGrouped, excelEngineName
 from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
@@ -27,6 +27,12 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
     groupedOwnersLists = writeGroupListsToExcelAndFormat(ownersLists)
 
     removeLastEmptyRowsInDataFrames([teacherSchedules,classroomSchedules, subjectSchedules])
+    
+    allCreatedSchedules = { 'teachers': teacherSchedules, 'classrooms': classroomSchedules, 'subjects': subjectSchedules }
+
+    groupsSchedules = concatAndFilterGroupListsDataFrames(allCreatedSchedules, groupedOwnersLists)
+    
+    writeSortedObjOfDfsToExcel(groupsSchedules, 'groups', scheduleExcelGroupsPath)
     
     writeSortedObjOfDfsToExcel(teacherSchedules, 'teacher', scheduleExcelTeachersPath)
     writeSortedObjOfDfsToExcel(classroomSchedules, 'classroom', scheduleExcelClassroomsPath)
@@ -302,3 +308,52 @@ def writeGroupListsToExcelAndFormat(groupLists={}):
     if msgText: print(msgText)
 
     return dataToReturn
+
+
+
+def getPureGroupLists(objOfDfs={}):
+    groupObj = {}
+
+    for groupName, df in objOfDfs.items():
+        groupObj[groupName] = df.groupby('names_base')['names'].apply(list).to_dict()
+
+    return groupObj
+
+
+
+
+def concatAndFilterGroupListsDataFrames(objOfDfs={}, groupListsDfs={}):
+    
+    pureGroupLists = getPureGroupLists(groupListsDfs)
+
+    newObjOfDfs = {}
+    newColNames = { 'classes': 'klasa',
+                    'classrooms': 'sala',
+                    'subjects': 'przedmiot', 
+                    'teachers': 'nauczyciel' }
+
+    # get value for subjects, classrooms etc. separately 
+    for ownersType, ownersList in pureGroupLists.items():
+        ownerObjOfDfs = objOfDfs[ownersType]
+
+        # get group names like 'ang', '100' etc.
+        for groupName, groupList in ownersList.items():
+            
+            # get elements like 'ang.r', '101' etc.
+            for el in groupList:
+                x = newObjOfDfs[str(groupName)]   if str(groupName) in newObjOfDfs.keys()   else None
+                y = ownerObjOfDfs[str(el)]
+
+                if isinstance(x, DataFrame):
+                    # ... and concatenate them :)
+                    # the line below prevents FutureWarning:
+                    #   The behavior of DataFrame concatenation with empty or all-NA entries is deprecated.
+                    #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
+                    #   To retain the old behavior, exclude the relevant entries before the concat operation.
+                    y = y.dropna(axis=1, how='any')
+                    newObjOfDfs[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColNames[ownersType], str(el))
+
+                else:
+                    newObjOfDfs[str(groupName)] = y
+
+    return newObjOfDfs

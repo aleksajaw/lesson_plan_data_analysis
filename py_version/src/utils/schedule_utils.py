@@ -199,14 +199,21 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
 
 
 
-def concatAndFilterScheduleDataFrames(el1=None, el2=None):
+def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newColName='', newColVal=''):
     msgText = ''
 
     try:
+        # two lines below prevents FutureWarning:
+        #   The behavior of DataFrame concatenation with empty or all-NA entries is deprecated.
+        #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
+        #   To retain the old behavior, exclude the relevant entries before the concat operation.
         #el1 = el1.dropna(axis=1, how='all')
         el2 = el2.dropna(axis=1, how='all')
         newDf = pd.concat([el1, el2])#.sort_index()
         rowsFiltered = []
+
+        prepareNewColVal = addNewCol and newColName and newColVal
+
 
         # iterate through rows (time indexes)
         for (day, time), singleLessonAttr in newDf.groupby(timeIndexes):
@@ -222,11 +229,34 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None):
                     for value in nonEmptyValues:
                         singleRow[col] = value
 
+                    if prepareNewColVal:
+                        singleRow[(col[0], newColName)] = newColVal
+
             rowsFiltered.append(singleRow)
 
+        #print(rowsFiltered)
 
+        if addNewCol:
+            #newColumns1stLvl = list((newDf.columns).get_level_values(0).unique())
+            newColumns1stLvl = weekdays
+            
+            newColumnsFull = []
+
+            for day in newColumns1stLvl:
+                for col in lessonAttrs4el:
+                    newColumnsFull.append((day, col))
+
+            #columnsVal = newColumnsFull
+            columnsVal = pd.MultiIndex.from_tuples(newColumnsFull)
+        
+        else:
+            columnsVal = newDf.columns
+        
         newDfFiltered = pd.DataFrame(rowsFiltered).set_index(keys=newDf.index.names)
-        newDfFiltered = newDfFiltered.reindex(columns=newDf.columns, fill_value=np.nan)
+        #print(newDfFiltered)
+        newDfFiltered = newDfFiltered.reindex(columns=columnsVal, fill_value=np.nan)
+
+        #print(newDfFiltered)
 
         return newDfFiltered
     
