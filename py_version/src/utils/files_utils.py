@@ -22,42 +22,41 @@ def doesFileExist(filePath='', shouldPrintMsg=False):
 
 
 def compareAndUpdateFile(filePath='', dataToCompare=''):
-    
+    msgText = ''
     isFileChanged = False
-    if bool(filePath) and bool(dataToCompare):
-        msgText = ''
+    #if bool(filePath) and bool(dataToCompare):
 
-        try:
-            with open(file=filePath, mode="r+") as file:
-                #file.seek(0)
-                fileContent = file.read()
-                if str(fileContent) != str(dataToCompare):
-                    file.seek(0)
-                    file.write(dataToCompare)
-                    # make sure to delete old redundant value
-                    file.truncate()
-                    msgText = f'\nFile   {os.path.basename(filePath)}   updated with new data.'
-                    isFileChanged = True
-                    
-                else:
-                    msgText = f'\nNothing to be updated in file   {os.path.basename(filePath)}.'
+    try:
+        with open(file=filePath, mode="r+") as file:
+            #file.seek(0)
+            fileContent = file.read()
+            if str(fileContent) != str(dataToCompare):
+                file.seek(0)
+                file.write(dataToCompare)
+                # make sure to delete old redundant value
+                file.truncate()
+                msgText = f'\nFile   {os.path.basename(filePath)}   updated with new data.'
+                isFileChanged = True
+                
+            else:
+                msgText = f'\nNothing to be updated in file   {os.path.basename(filePath)}.'
 
-                file.close()
-                print(msgText)
+            file.close()
 
-        except FileNotFoundError as e:
-            
-            with open(filePath, 'w') as file:
-              file.write(dataToCompare)
-              file.close()
-
-              print(f'File   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.')
+    except FileNotFoundError as e:
         
-        except Exception as e:
-            print('Error while comparing and updating file content: ', e)
+        with open(filePath, 'w') as file:
+          file.write(dataToCompare)
+          file.close()
 
+          msgText = f'File   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.'
+    
+    except Exception as e:
+        msgText = f'Error while comparing and updating file content: {e}'
 
-        return isFileChanged
+    if msgText: print(msgText)
+
+    return isFileChanged
 
 
 

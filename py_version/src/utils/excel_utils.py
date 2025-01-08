@@ -77,7 +77,7 @@ def deleteExcelSheet(workbook=Workbook(), sheetName=''):
     except Exception as e:
         msgText = f'Error deleting the sheet {sheetName}: {e}'
 
-    print(msgText)
+    if msgText: print(msgText)
 
 
 
@@ -97,12 +97,14 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
     except Exception as e:
         msgText = f'Error loading data into {sheetName}: {e}'
 
-    print(msgText)
+    if msgText: print(msgText)
 
 
 
 def autoFormatExcelCellSizes(workbook=None, excelFilePath=scheduleExcelClassesPath):
 
+    msgText = ''
+    
     try:
         if not isinstance(workbook, Workbook):
             workbook = load_workbook(excelFilePath)
@@ -157,11 +159,15 @@ def autoFormatExcelCellSizes(workbook=None, excelFilePath=scheduleExcelClassesPa
             workbook.save(excelFilePath)
 
     except Exception as e:
-        print('Error while formatting the Excel file:', e)
+        msgText = f'Error while formatting the cell sizes in the Excel file: {e}'
+
+    if msgText: print(msgText)
 
 
 
 def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
+    msgText = ''
+
     if isinstance(cell, (openpyxlCell, openpyxlMergedCell)):
         try:
             currentBorder = cell.border
@@ -177,14 +183,18 @@ def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
                                           bottom = borderStyle[bottom]  if bottom   else currentBorder.bottom )
 
         except Exception as e:
-            print('Error while formatting the cell:', e)
+            msgText = f'Error while formatting the cell: {e}'
             
     else:
-        print("Error while formatting the cell: The value must be of type 'Cell'.")
+        msgText = "Error while formatting the cell: The value must be of type 'Cell'."
+    
+    if msgText: print(msgText)
 
 
 
 def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
+    msgText = ''
+
     if isinstance(cell, (openpyxlCell, openpyxlMergedCell)):
         try:
             if (  fillType=='solid'
@@ -197,11 +207,12 @@ def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
                 cell.fill = openpyxlPatternFill(fill_type=fillType)
 
         except Exception as e:
-            print('Error while formatting the cell:', e)
+            msgText = f'Error while formatting the cell: {e}'
             
     else:
-        print("Error while formatting the cell: The value must be of type 'Cell'.")
+        msgText = 'Error while formatting the cell: The value must be of type \'Cell\'.'
 
+    if msgText: print(msgText)
 
 
 def get1stNotMergedCell(group=[]):
@@ -235,8 +246,7 @@ def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
     except Exception as e:
         msgText = f'Error while removing last empty rows in Excel worksheet: {e}'
     
-    if len(msgText):
-        print(msgText)
+    if msgText: print(msgText)
 
 
 
@@ -255,17 +265,17 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
     except Exception as e:
         msgText = f'Error loading complete classes data: {e}'
     
-    print(msgText)
+    if msgText: print(msgText)
 
 
 
 def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
     from schedule_utils import autoFormatScheduleExcel
     msgText = ''
-    #if len(objOfDfs.keys()):
-    sortedObjOfDfs = {key: objOfDfs[key] for key in sorted(objOfDfs)}
 
     try:
+        #if len(objOfDfs.keys()):
+        sortedObjOfDfs = {key: objOfDfs[key] for key in sorted(objOfDfs)}
         with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:       
             writeObjOfDfsToExcel(writer, excelPath, sortedObjOfDfs)
             autoFormatScheduleExcel(writer.book, excelPath)
@@ -273,7 +283,7 @@ def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
     except Exception as writeError:
         msgText = f"Error while writing to the {titleForDisplay}' Excel file: {writeError}"
     
-    print(msgText)
+    if msgText: print(msgText)
 
 
 
@@ -332,6 +342,7 @@ def convertToObjOfDfs(dataToConvert=None):
 
 # OBJECT OF DATA FRAMES   =>   JSON
 def convertObjOfDfsToJSON(dataToConvert=None):
+    msgText = ''
     objOfDfsJSON = {}
 
     try:
@@ -341,8 +352,9 @@ def convertObjOfDfsToJSON(dataToConvert=None):
         objOfDfsJSON = json.dumps(objOfDfsJSON, indent=4)
 
     except Exception as e:
-        print('Error while converting object of DataFrames to JSON: ',{e})
+        msgText = f'Error while converting object of DataFrames to JSON: {e}'
 
+    if msgText: print(msgText)
     return objOfDfsJSON
 
 
@@ -392,7 +404,7 @@ def convertExcelToDfsJSON(defaultIndexes = timeIndexes):
     except Exception as e:
         msgText = f'Error converting existing schedule Excel file to JSON: {e}'
 
-    print(msgText)
+    if msgText: print(msgText)
 
 
     return excelJSON 

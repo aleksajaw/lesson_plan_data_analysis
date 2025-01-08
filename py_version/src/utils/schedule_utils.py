@@ -7,11 +7,11 @@ from openpyxl.styles import PatternFill as openpyxlPatternFill
 
 def autoFormatScheduleExcel(workbook=Workbook(), excelFilePath=scheduleExcelClassesPath):
     autoFormatExcelCellSizes(workbook, excelFilePath)
-    autoFormatScheduleExcelCellsStyle(workbook, excelFilePath)
+    autoFormatScheduleExcelCellStyles(workbook, excelFilePath)
 
 
 
-def autoFormatScheduleExcelCellsStyle(workbook=Workbook(), excelFilePath=scheduleExcelClassesPath):
+def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=scheduleExcelClassesPath):
 
     try:
         if not isinstance(workbook, Workbook):
@@ -141,4 +141,4 @@ def autoFormatScheduleExcelCellsStyle(workbook=Workbook(), excelFilePath=schedul
 
 
     except Exception as e:
-        print('Error while formatting the Excel file:', e)
+        print('Error while formatting the cell styles in the Excel file:', e)

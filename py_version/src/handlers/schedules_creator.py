@@ -167,77 +167,111 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None):
     except Exception as e:
         msgText = f'Error while concatenating Data Frames for Excel worksheet: {e}'
         
-    if len(msgText):
-        print(msgText)
+    if msgText: print(msgText)
 
 
 
 def createGroupsInListByPrefix(data=[], splitDelimeter = '-', replaceDelimeter = '.r'):
-    # only leave the part before the first '-' and cut '.r' out
-    groupList = [ (str(item).split(splitDelimeter)[0]).replace(replaceDelimeter,'')
-                        if isinstance(item, str)
-                        else item
-                      for item in data ]
+    msgText = ''
+
+    try:
+        # only leave the part before the first '-' and cut '.r' out
+        groupList = [ (str(item).split(splitDelimeter)[0]).replace(replaceDelimeter,'')
+                            if isinstance(item, str)
+                            else item
+                          for item in data ]
+        
+        # group elements by names starting with the same prefix
+        for i in range(2, len(groupList)):
+            gList = groupList
+            if ( all( isinstance(x, str)   for x in [gList[i-1], gList[i]] )
+                  and  gList[i].startswith(gList[i-1]) ):
+                
+                groupList[i] = gList[i-1]
     
-    # group elements by names starting with the same prefix
-    for i in range(2, len(groupList)):
-        gList = groupList
-        if ( all( isinstance(x, str)   for x in [gList[i-1], gList[i]] )
-              and  gList[i].startswith(gList[i-1]) ):
-            
-            groupList[i] = gList[i-1]
+    except Exception as e:
+        msgText = f'Error while creating groups in list by prefix: {e}'
+    
+    if msgText: print(msgText)
     
     return groupList
 
 
 
 def createGroupsInListByFirstLetter(data=[]):
-    return [item[0]   for item in data]
+    msgText = ''
 
-
-
-def createGroupsInListByNumbers(data=[]):
-    groupsInList = []
-    for item in data:
-        itemStr = str(item)
-        itemLen = len(itemStr)
-        
-        if any(c.isalpha()   for c in itemStr):
-            item = ''.join([c   for c in itemStr if c.isalpha()])
-
-        elif itemStr.isdigit():
-            if itemLen > 1:
-                item = itemStr[0] + (itemLen-1) * '0'
-          
-            elif 0 < int(item) < 10:
-                item = 1
-            
-            item = int(item)
-        
-        else:
-            # match e.g. '.9', '_09', '09' or '9'
-            match = re.match(r'([^a-zA-Z0-9]*0*[^a-zA-Z0-9]*)\d+', itemStr)
-            if match:# '.', '_0', '0'
-                item = match.group(1)
-        
-        groupsInList.append(item)
+    try:
+        return [item[0]   for item in data]
     
-    return groupsInList
+    except Exception as e:
+        msgText = f'Error while creating groups in list by first letter: {e}'
+    
+    if msgText: print(msgText)
+
+
+
+def createGroupsInListByNumbers(data=[], optionalPartInNrPrefix='0'):
+    msgText=''
+
+    try:
+        groupsInList = []
+        for item in data:
+            itemStr = str(item)
+            itemLen = len(itemStr)
+            
+            if any(c.isalpha()   for c in itemStr):
+                item = ''.join([c   for c in itemStr if c.isalpha()])
+
+            elif itemStr.isdigit():
+                if itemLen > 1:
+                    item = itemStr[0] + (itemLen-1) * '0'
+              
+                elif 0 < int(item) < 10:
+                    item = 1
+                
+                item = int(item)
+            
+            else:
+                # match e.g. '.9', '_09', '09' or '9'
+                pattern = r'([^a-zA-Z0-9]*' + re.escape(optionalPartInNrPrefix) + r'*[^a-zA-Z0-9]*)\d+'
+                match = re.match(pattern, itemStr)
+                
+                if match:
+                    # '.', '_0', '0'   only if   optionalPartInNrPrefix = 0
+                    item = match.group(1)
+            
+            groupsInList.append(item)
+        
+        return groupsInList
+    
+    except Exception as e:
+        msgText = f'Error while creating groups in list by numbers: {e}'
+    
+    if msgText: print(msgText)
 
 
 
 def createGroupsInListBy(groupName='', data=[]):
     result = []
-
-    match groupName:
-        case 'subjects':
-            result = createGroupsInListByPrefix(data)
+    msgText = ''
     
-        case 'teachers':
-            result = createGroupsInListByFirstLetter(data)
+    try:
+        match groupName:
+            case 'subjects':
+                result = createGroupsInListByPrefix(data)
+        
+            case 'teachers':
+                result = createGroupsInListByFirstLetter(data)
 
-        case 'classrooms':
-            result = createGroupsInListByNumbers(data)
+            case 'classrooms':
+                result = createGroupsInListByNumbers(data)
+
+
+    except Exception as e:
+        msgText = f'Error while creating groups in list by...: {e}'
+    
+    if msgText: print(msgText)
 
     return result
 
@@ -283,6 +317,7 @@ def sortScheduleOwnersList(dataToSort=None):
         msgText = f'Error loading complete classes data: {e}'
 
     if msgText: print(msgText)
+
     return dataToSort
 
 
@@ -309,7 +344,7 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='grou
     
 
     except Exception as e:
-        msgText = f'Error while writing group lists to excel sheets: {e}'
+        msgText = f'Error while creating object for coloring Data Frame rows: {e}'
     
     if msgText: print(msgText)
 
@@ -336,7 +371,7 @@ def addBgToExcelSheetRowsBasedOnObj(writer=ExcelWriter, sheetsGroups={}):
     except Exception as e:
         msgText = f'Error while adding background to the cells in the Excel sheet rows: {e}'
     
-    print(msgText)
+    if msgText: print(msgText)
 
 
 
@@ -379,7 +414,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
                 df.set_index(keys=['group_No.', 'names_base', 'names_in_group_No.'], inplace=True)
                 
                 sheetsGroups[listName] = createObjForDfRowsColoring(df)
-                
+
                 objOfDfs[listName] = df
                 df.to_excel(writer, sheet_name=listName, merge_cells=True)
 
@@ -408,6 +443,6 @@ def writeGroupListsToExcelAndFormat(groupLists={}):
     except Exception as e:
         msgText = f'Error while writing and formatting the excel files for group lists: {e}'
 
-    if msgText!='': print(msgText)
+    if msgText: print(msgText)
 
     return dataToReturn
