@@ -351,7 +351,7 @@ def concatAndFilterGroupListsDataFrames(objOfDfs={}, groupListsDfs={}):
                     #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
                     #   To retain the old behavior, exclude the relevant entries before the concat operation.
                     x = dropnaInDfByAxis(x, 1)
-                    y = dropnaInDfByAxis(y, 1)
+                    #y = dropnaInDfByAxis(y, 1)
                     newObjOfDfs[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColNames[ownersType], str(el))
 
                 else:

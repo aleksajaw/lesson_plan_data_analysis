@@ -216,7 +216,7 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         #   The behavior of DataFrame concatenation with empty or all-NA entries is deprecated.
         #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
         #   To retain the old behavior, exclude the relevant entries before the concat operation.
-        el1 = dropnaInDfByAxis(el1, 1)
+        #el1 = dropnaInDfByAxis(el1, 1)
         el2 = dropnaInDfByAxis(el2, 1)
         newDf = pd.concat([el1, el2])#.sort_index()
         rowsFiltered = []
@@ -247,14 +247,17 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
                             missingNrs = list( range( lastFilteredRowNr+1, currRowNr ) )
                             desiredNr = missingNrs[0]
 
-                            singleRowTemp = dfColWeekDayEmptyRow
+                            singleRowTemp = {}
+                            
+                            for lessonAttr in colDayNamesTuples:
+                                singleRowTemp[lessonAttr] = np.nan
                             
                             while desiredNr and lastFilteredRowNr != missingNrs[-1]:
                                 
                                 desiredPreviousTime = lessonTimePeriods[ desiredNr-1 ]
                                 singleRowTemp[timeIndexes[0]] = desiredNr
                                 singleRowTemp[timeIndexes[1]] = desiredPreviousTime
-                                
+
                                 rowsFiltered.append(singleRowTemp.copy())
 
                                 lastFilteredRowNr = int(rowsFiltered[-1][timeIndexes[0]])
@@ -274,8 +277,8 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
             rowsFiltered.append(singleRow)
 
 
-        if addNewCol or ( len(newDf.columns.get_level_values(0)) < len(weekdays) ):
-            
+        if addNewCol or ( len(newDf.columns.get_level_values(0).unique()) < len(weekdays) ):
+
             columnsVal = pd.MultiIndex.from_tuples(colDayNamesTuples)
         
         else:
