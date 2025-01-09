@@ -1,3 +1,4 @@
+from src.utils.error_utils import getTraceback
 from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupsPath, scheduleListsExcelOwnersGrouped, excelEngineName
 from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis
 import pandas as pd
@@ -176,7 +177,7 @@ def sortScheduleOwnersList(dataToSort=None):
                 next
       
     except Exception as e:
-        msgText = f'Error loading complete classes data: {e}'
+        msgText = f'\nError loading complete classes data: {getTraceback(e)}'
 
     if msgText: print(msgText)
 
@@ -206,7 +207,7 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='grou
     
 
     except Exception as e:
-        msgText = f'Error while creating object for coloring Data Frame rows: {e}'
+        msgText = f'\nError while creating object for coloring Data Frame rows: {getTraceback(e)}'
     
     if msgText: print(msgText)
 
@@ -231,7 +232,7 @@ def addBgToExcelSheetRowsBasedOnObj(writer=ExcelWriter, sheetsGroups={}):
     
     
     except Exception as e:
-        msgText = f'Error while adding background to the cells in the Excel sheet rows: {e}'
+        msgText = f'\nError while adding background to the cells in the Excel sheet rows: {getTraceback(e)}'
     
     if msgText: print(msgText)
 
@@ -287,7 +288,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
 
 
     except Exception as e:
-        msgText = f'Error while writing group lists to excel sheets: {e}'
+        msgText = f'\nError while writing group lists to excel sheets: {getTraceback(e)}'
     
     if msgText: print(msgText)
 
@@ -303,7 +304,7 @@ def writeGroupListsToExcelAndFormat(groupLists={}):
         autoFormatExcelCellSizes(excelFilePath=scheduleListsExcelOwnersGrouped)
 
     except Exception as e:
-        msgText = f'Error while writing and formatting the excel files for group lists: {e}'
+        msgText = f'\nError while writing and formatting the excel files for group lists: {getTraceback(e)}'
 
     if msgText: print(msgText)
 

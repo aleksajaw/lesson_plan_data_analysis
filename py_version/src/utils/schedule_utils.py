@@ -1,3 +1,4 @@
+from src.utils.error_utils import getTraceback
 from src.constants import scheduleExcelClassesPath, weekdays, timeIndexes, dfColWeekDayNamesTuples3el, dfColWeekDayNamesTuples4el, lessonTimePeriods, dfColWeekDayEmptyRow
 from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
 import pandas as pd
@@ -29,7 +30,7 @@ def mergeEmptyCellsAndColorBg(ws=None, mergedCellObj={'startRow':int, 'startCol'
 
 
     except Exception as e:
-        msgText = f'Error while merging the empty cells and coloring their background: {e}'
+        msgText = f'\nError while merging the empty cells and coloring their background: {getTraceback(e)}'
 
 
     if msgText: print(msgText)
@@ -64,7 +65,7 @@ def colorBgOfEmptyRow(ws=None, colRange=None, row=int, startColumn=int):
             
 
     except Exception as e:
-        msgText = f'Error while coloring the background of empty rows: {e}'
+        msgText = f'\nError while coloring the background of empty rows: {getTraceback(e)}'
 
     if msgText: print(msgText)
 
@@ -85,7 +86,7 @@ def findLastBoldRowAtBeggining(ws, minCol=1):
                     break
     
     except Exception as e:
-        msgText = f'Error while searching for the last bold row at the beggining: {e}'
+        msgText = f'\nError while searching for the last bold row at the beggining: {getTraceback(e)}'
 
     if msgText: print(msgText)
 
@@ -95,6 +96,7 @@ def findLastBoldRowAtBeggining(ws, minCol=1):
 
 def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=scheduleExcelClassesPath):
     from excel_utils import getNrOfLastNonEmptyCellInCol
+    msgText=''
 
     try:
         if not isinstance(workbook, Workbook):
@@ -204,7 +206,9 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
 
 
     except Exception as e:
-        print('Error while formatting the cell styles in the Excel file:', e)
+        msgText = f'\nError while formatting the cell styles in the Excel file: {getTraceback(e)}'
+      
+    if msgText: print(msgText)
 
 
 
@@ -293,9 +297,11 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         return newDfFiltered
     
     except Exception as e:
-        msgText = f'Error while concatenating Data Frames for Excel worksheet: {e}'
+        msgText = f'\nError while filter and convert schedule Data Frames for Excel worksheet: {getTraceback(e)}'
         
     if msgText: print(msgText)
+    
+    return newDfFiltered
 
 
 
@@ -318,7 +324,7 @@ def createGroupsInListByPrefix(data=[], splitDelimeter = '-', replaceDelimeter =
                 groupList[i] = gList[i-1]
     
     except Exception as e:
-        msgText = f'Error while creating groups in list by prefix: {e}'
+        msgText = f'\nError while creating groups in list by prefix: {getTraceback(e)}'
     
     if msgText: print(msgText)
     
@@ -351,7 +357,7 @@ def createGroupsInListByFirstLetter(data=[]):
         #return [item[0]   for item in data]
     
     except Exception as e:
-        msgText = f'Error while creating groups in list by first letter: {e}'
+        msgText = f'\nError while creating groups in list by first letter: {getTraceback(e)}'
     
     if msgText: print(msgText)
 
@@ -392,7 +398,7 @@ def createGroupsInListByNumbers(data=[], optionalPartInNrPrefix='0'):
         return groupsInList
     
     except Exception as e:
-        msgText = f'Error while creating groups in list by numbers: {e}'
+        msgText = f'\nError while creating groups in list by numbers: {getTraceback(e)}'
     
     if msgText: print(msgText)
 
@@ -415,7 +421,7 @@ def createGroupsInListBy(groupName='', data=[]):
 
 
     except Exception as e:
-        msgText = f'Error while creating groups in list by...: {e}'
+        msgText = f'\nError while creating groups in list by...: {getTraceback(e)}'
     
     if msgText: print(msgText)
 

@@ -1,3 +1,4 @@
+from src.utils.error_utils import getTraceback
 from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes
 import json
 import re
@@ -22,7 +23,7 @@ def createDraftSheet(excelFilePath=scheduleExcelClassesPath):
             draftDf.to_excel(writer, sheet_name=draftSheetName, merge_cells=True)
 
     except Exception as e:
-        print(f'Error while creating draft sheet for Excel file: {e}')
+        print(f'\nError while creating draft sheet for Excel file: {getTraceback(e)}')
 
 
 
@@ -50,7 +51,7 @@ def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleExcelClassesP
 
 
         except Exception as e:
-            print(f"Unable to open the Excel file to check and delete the draft sheet: {e}")
+            print(f"Unable to open the Excel file to check and delete the draft sheet: {getTraceback(e)}")
             return
 
     
@@ -75,7 +76,7 @@ def deleteExcelSheet(workbook=Workbook(), sheetName=''):
           raise Exception(f'workbook variable should be Workbook() type, not {type(workbook)}')
         
     except Exception as e:
-        msgText = f'Error deleting the sheet {sheetName}: {e}'
+        msgText = f'\nError deleting the sheet {sheetName}: {getTraceback(e)}'
 
     if msgText: print(msgText)
 
@@ -95,7 +96,7 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
         msgText = f'Data for sheet {sheetName} loaded.'
 
     except Exception as e:
-        msgText = f'Error loading data into {sheetName}: {e}'
+        msgText = f'\nError loading data into {sheetName}: {getTraceback(e)}'
 
     if msgText: print(msgText)
 
@@ -159,7 +160,7 @@ def autoFormatExcelCellSizes(workbook=None, excelFilePath=scheduleExcelClassesPa
             workbook.save(excelFilePath)
 
     except Exception as e:
-        msgText = f'Error while formatting the cell sizes in the Excel file: {e}'
+        msgText = f'\nError while formatting the cell sizes in the Excel file: {getTraceback(e)}'
 
     if msgText: print(msgText)
 
@@ -183,7 +184,7 @@ def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
                                           bottom = borderStyle[bottom]  if bottom   else currentBorder.bottom )
 
         except Exception as e:
-            msgText = f'Error while formatting the cell: {e}'
+            msgText = f'\nError while formatting the cell: {getTraceback(e)}'
             
     else:
         msgText = "Error while formatting the cell: The value must be of type 'Cell'."
@@ -207,10 +208,10 @@ def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
                 cell.fill = openpyxlPatternFill(fill_type=fillType)
 
         except Exception as e:
-            msgText = f'Error while formatting the cell: {e}'
+            msgText = f'\nError while formatting the cell: {getTraceback(e)}'
             
     else:
-        msgText = 'Error while formatting the cell: The value must be of type \'Cell\'.'
+        msgText = '\nError while formatting the cell: The value must be of type \'Cell\'.'
 
     if msgText: print(msgText)
 
@@ -245,7 +246,7 @@ def getNrOfLastNonEmptyCellInCol(ws=None, minRow=int, col=int):
                 break
     
     except Exception as e:
-        msgText = f'Error while getting the last non-empty cell in column: {e}'
+        msgText = f'\nError while getting the last non-empty cell in column: {getTraceback(e)}'
                     
     if msgText: print(msgText)
 
@@ -268,7 +269,7 @@ def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
                     singleWorksheet[sheetName] = sheetVal.loc[:lastNonEmptyRow]
     
     except Exception as e:
-        msgText = f'Error while removing last empty rows in Excel worksheet: {e}'
+        msgText = f'\nError while removing last empty rows in Excel worksheet: {getTraceback(e)}'
     
     if msgText: print(msgText)
 
@@ -286,7 +287,7 @@ def dropnaInDfByAxis(el=None, axis=-1, both=True):
                 el = el.dropna(axis=axis, how='all')
 
     except Exception as e:
-        msgText = f'Error while dropping the NA values in the both axis of Data Frame: {e}'
+        msgText = f'\nError while dropping the NA values in the both axis of Data Frame: {getTraceback(e)}'
 
     if msgText: print(msgText)
  
@@ -307,7 +308,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
         msgText = 'Data loaded into the schedule Excel file: ' + scheduleExcelClassesPath.split('/')[-1]
 
     except Exception as e:
-        msgText = f'Error loading complete classes data: {e}'
+        msgText = f'\nError loading complete classes data: {getTraceback(e)}'
     
     if msgText: print(msgText)
 
@@ -396,7 +397,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
         objOfDfsJSON = json.dumps(objOfDfsJSON, indent=4)
 
     except Exception as e:
-        msgText = f'Error while converting object of DataFrames to JSON: {e}'
+        msgText = f'\nError while converting object of DataFrames to JSON: {getTraceback(e)}'
 
     if msgText: print(msgText)
     return objOfDfsJSON
@@ -446,7 +447,7 @@ def convertExcelToDfsJSON(defaultIndexes = timeIndexes):
 
 
     except Exception as e:
-        msgText = f'Error converting existing schedule Excel file to JSON: {e}'
+        msgText = f'\nError converting existing schedule Excel file to JSON: {getTraceback(e)}'
 
     if msgText: print(msgText)
 

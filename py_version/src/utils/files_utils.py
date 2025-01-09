@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+from src.utils.error_utils import getTraceback
 from src.constants import outputsPath
 
 
@@ -52,7 +53,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
           msgText = f'File   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.'
     
     except Exception as e:
-        msgText = f'Error while comparing and updating file content: {e}'
+        msgText = f'\nError while comparing and updating file content: {getTraceback(e)}'
 
     if msgText: print(msgText)
 
@@ -177,4 +178,4 @@ def openFileWithDefApp(filePath=''):
             subprocess.run(['xdg-open', file_path])
 
     except Exception as e:
-        print(f"Failed to open file for User: {e}")
+        print(f"Failed to open file for User: {getTraceback(e)}")

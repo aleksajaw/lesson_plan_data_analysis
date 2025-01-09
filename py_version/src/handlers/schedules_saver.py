@@ -1,3 +1,4 @@
+from src.utils.error_utils import getTraceback
 from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExcelClassesJSONPath, scheduleClassesDfsJSONPath, scheduleClassesJSONPath
 from src.utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatScheduleExcel
 import json
@@ -49,7 +50,7 @@ def createOrEditMainExcelFile():
 
 
     except Exception as e:
-        print(f"Error while handling the main Excel file: {e}")
+        print(f"Error while handling the main Excel file: {getTraceback(e)}")
 
 
     # to avoid issues, compare file contents
