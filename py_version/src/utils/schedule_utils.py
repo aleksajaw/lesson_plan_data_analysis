@@ -1,4 +1,4 @@
-from src.constants import scheduleExcelClassesPath, weekdays, lessonAttrs4el, timeIndexes
+from src.constants import scheduleExcelClassesPath, weekdays, timeIndexes, dfColWeekDayNamesTuples3el, dfColWeekDayNamesTuples4el, lessonTimePeriods, dfColWeekDayEmptyRow
 from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
 import pandas as pd
 import numpy as np
@@ -223,6 +223,7 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
 
         prepareNewColVal = addNewCol and newColName and newColVal
 
+        colDayNamesTuples = dfColWeekDayNamesTuples4el   if addNewCol   else dfColWeekDayNamesTuples3el
 
         # iterate through rows (time indexes)
         for (day, time), singleLessonAttr in newDf.groupby(timeIndexes):
@@ -236,32 +237,51 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
 
                 if nonEmptyValues:
                     for value in nonEmptyValues:
+                        
+                        # add empty rows to avoid tables that do not start from row nr 1
+                        if len(rowsFiltered) < singleRow[timeIndexes[0]]-1:
+                            
+                            lastFilteredRowNr = ( int( rowsFiltered[-1][timeIndexes[0]] )  if len(rowsFiltered)
+                                                                                           else 0 )
+                            currRowNr = int( singleRow[timeIndexes[0]] )
+                            missingNrs = list( range( lastFilteredRowNr+1, currRowNr ) )
+                            desiredNr = missingNrs[0]
+
+                            singleRowTemp = dfColWeekDayEmptyRow
+                            
+                            while desiredNr and lastFilteredRowNr != missingNrs[-1]:
+                                
+                                desiredPreviousTime = lessonTimePeriods[ desiredNr-1 ]
+                                singleRowTemp[timeIndexes[0]] = desiredNr
+                                singleRowTemp[timeIndexes[1]] = desiredPreviousTime
+                                
+                                rowsFiltered.append(singleRowTemp.copy())
+
+                                lastFilteredRowNr = int(rowsFiltered[-1][timeIndexes[0]])
+                                missingNrs = missingNrs[1:]   if len(missingNrs)   else []
+                                desiredNr  = missingNrs[0]    if len(missingNrs)   else 0
+
+
                         singleRow[col] = value
+
 
                     if prepareNewColVal:
                         if not (col[0], newColName) in singleRow:
                             singleRow[(col[0], newColName)] = (newColVal   if not newColVal.isdigit()
                                                                            else int(newColVal))
 
+
             rowsFiltered.append(singleRow)
 
-        if addNewCol:
-            #newColumns1stLvl = list((newDf.columns).get_level_values(0).unique())
-            newColumns1stLvl = weekdays
+
+        if addNewCol or ( len(newDf.columns.get_level_values(0)) < len(weekdays) ):
             
-            newColumnsFull = []
-
-            for day in newColumns1stLvl:
-                for col in lessonAttrs4el:
-                    newColumnsFull.append((day, col))
-
-            #columnsVal = newColumnsFull
-            columnsVal = pd.MultiIndex.from_tuples(newColumnsFull)
+            columnsVal = pd.MultiIndex.from_tuples(colDayNamesTuples)
         
         else:
             columnsVal = newDf.columns
         
-        newDfFiltered = pd.DataFrame(rowsFiltered).set_index(keys=newDf.index.names)
+        newDfFiltered = pd.DataFrame(rowsFiltered).set_index(keys=timeIndexes)
         #print(newDfFiltered)
         newDfFiltered = newDfFiltered.reindex(columns=columnsVal, fill_value=np.nan)
 
