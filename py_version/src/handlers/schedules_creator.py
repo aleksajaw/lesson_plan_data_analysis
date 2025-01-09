@@ -284,7 +284,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
             dataToReturn = objOfDfs
             addBgToExcelSheetRowsBasedOnObj(writer, sheetsGroups)
 
-        msgText = f'Data loaded into the schedule Excel file: ' + excelPath.split('/')[-1]
+        msgText = f'\nData loaded into the schedule Excel file: ' + excelPath.split('/')[-1]
 
 
     except Exception as e:

@@ -39,18 +39,18 @@ def createOrEditMainExcelFile():
                         delDraftIfNecessary()
 
                     except Exception as draftError:
-                        print(f"Error while deleting the draft sheet in main Excel file: {draftError}")
+                        print(f"\nError while deleting the draft sheet in main Excel file: {draftError}")
 
 
                 except Exception as writeError:
-                    print(f"Error while writing to the main Excel file: {writeError}")
+                    print(f"\nError while writing to the main Excel file: {writeError}")
 
         else:
             print('Nothing to be updated in the main Excel file.')
 
 
     except Exception as e:
-        print(f"Error while handling the main Excel file: {getTraceback(e)}")
+        print(f"\nError while handling the main Excel file: {getTraceback(e)}")
 
 
     # to avoid issues, compare file contents

@@ -93,7 +93,7 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
     try:
         df = convertToDf(dataToEnter)
         df.to_excel(desire, sheet_name=sheetName, merge_cells=True)
-        msgText = f'Data for sheet {sheetName} loaded.'
+        msgText = f'\nData for sheet {sheetName} loaded.'
 
     except Exception as e:
         msgText = f'\nError loading data into {sheetName}: {getTraceback(e)}'
@@ -187,7 +187,7 @@ def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
             msgText = f'\nError while formatting the cell: {getTraceback(e)}'
             
     else:
-        msgText = "Error while formatting the cell: The value must be of type 'Cell'."
+        msgText = "\nError while formatting the cell: The value must be of type 'Cell'."
     
     if msgText: print(msgText)
 
@@ -305,7 +305,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
         for groupName in groupDfs:   
             groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
 
-        msgText = 'Data loaded into the schedule Excel file: ' + scheduleExcelClassesPath.split('/')[-1]
+        msgText = '\nData loaded into the schedule Excel file: ' + scheduleExcelClassesPath.split('/')[-1]
 
     except Exception as e:
         msgText = f'\nError loading complete classes data: {getTraceback(e)}'
@@ -326,7 +326,7 @@ def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
             autoFormatScheduleExcel(writer.book, excelPath)
                 
     except Exception as writeError:
-        msgText = f"Error while writing to the {titleForDisplay}' Excel file: {writeError}"
+        msgText = f"\nError while writing to the {titleForDisplay}' Excel file: {writeError}"
     
     if msgText: print(msgText)
 
