@@ -216,8 +216,8 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         #   The behavior of DataFrame concatenation with empty or all-NA entries is deprecated.
         #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
         #   To retain the old behavior, exclude the relevant entries before the concat operation.
-        #el1 = dropnaInDfByAxis(el1)
-        el2 = dropnaInDfByAxis(el2)
+        el1 = dropnaInDfByAxis(el1, 1)
+        el2 = dropnaInDfByAxis(el2, 1)
         newDf = pd.concat([el1, el2])#.sort_index()
         rowsFiltered = []
 

@@ -276,7 +276,7 @@ def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
 
 
 
-def dropnaInDfByAxis(el=None, both=True, axis=-1):
+def dropnaInDfByAxis(el=None, axis=-1, both=True):
     msgText=''
 
     try:
