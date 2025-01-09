@@ -19,7 +19,7 @@ for fName in ['constants', 'handlers', 'schedules', 'utils']:
 
 def main():
     #turnOffFutureWarnings()
-    
+
     classesData = getClassesDataFromSchoolWebPage()
     loadClassesDataVariables(classesData)
     createOrEditMainExcelFile()
@@ -29,9 +29,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-def turnOffFutureWarnings():
-    import warnings
-    warnings.filterwarnings("ignore", category=FutureWarning)
