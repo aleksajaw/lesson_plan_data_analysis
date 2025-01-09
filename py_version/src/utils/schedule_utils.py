@@ -14,15 +14,15 @@ def autoFormatScheduleExcel(workbook=Workbook(), excelFilePath=scheduleExcelClas
 
 
 
-def mergeEmptyCellsAndColorBg(ws=None, mergedCellObj={'startRow':int, 'startRow': int, 'startRow': int, 'endCol': int}):
+def mergeEmptyCellsAndColorBg(ws=None, mergedCellObj={'startRow':int, 'startCol': int, 'endRow': int, 'endCol': int}):
     msgText=''
 
     try:
         permEmptyCellStyle = openpyxlPatternFill(fill_type='lightTrellis')
 
         ws.merge_cells( start_row=mergedCellObj['startRow'],
-                        start_column=mergedCellObj['startRow'],
-                        end_row=mergedCellObj['startRow'],
+                        start_column=mergedCellObj['startCol'],
+                        end_row=mergedCellObj['endRow'],
                         end_column=mergedCellObj['endCol'] )
 
         ws.cell(row=mergedCellObj['startRow'], column=mergedCellObj['startCol']).fill = permEmptyCellStyle
