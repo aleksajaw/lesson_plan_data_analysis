@@ -2,6 +2,7 @@ from src.utils.error_utils import getTraceback
 from src.constants import scheduleExcelClassesPath, weekdays, timeIndexes, dfColWeekDayNamesTuples3el, dfColWeekDayNamesTuples4el, lessonTimePeriods, dfColWeekDayEmptyRow
 from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
 import pandas as pd
+from pandas import DataFrame
 import numpy as np
 import re
 from openpyxl import load_workbook, Workbook
@@ -214,6 +215,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
 
 def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newColName='', newColVal=''):
     msgText = ''
+    newDf = None
 
     try:
         # two lines below prevents FutureWarning:
@@ -221,64 +223,107 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
         #   To retain the old behavior, exclude the relevant entries before the concat operation.
         #el1 = dropnaInDfByAxis(el1, 1)
-        el2 = dropnaInDfByAxis(el2, 1)
-        newDf = pd.concat([el1, el2])#.sort_index()
+        if isinstance(el1, DataFrame) and isinstance(el2, DataFrame):
+            el2 = dropnaInDfByAxis(el2, 1)
+            newDf = pd.concat([el1, el2]).reset_index()
+            newDf.set_index(keys=timeIndexes, inplace=True)
+            newDf = newDf.sort_index(level=0)
+        else:
+            newDf = el1 or el2
+        newDf = filterAndConvertScheduleDataFrames(newDf, addNewCol, newColName, newColVal)
+
+
+    except Exception as e:
+        msgText = f'\nError while concatenating and filter the schedule Data Frames: {getTraceback(e)}'
+
+    if msgText: print(msgText)
+
+    return newDf
+        
+
+
+def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', newColVal=''):
+    newDfFiltered = []
+    msgText = ''
+    
+    try:
+        newDf = df.copy()
+        #print('\nnewDf.index ', list(newDf.index))
         rowsFiltered = []
 
         prepareNewColVal = addNewCol and newColName and newColVal
 
         colDayNamesTuples = dfColWeekDayNamesTuples4el   if addNewCol   else dfColWeekDayNamesTuples3el
+        timeKey1 = timeIndexes[0]
+        timeKey2 = timeIndexes[1]
 
         # iterate through rows (time indexes)
-        for (day, time), singleLessonAttr in newDf.groupby(timeIndexes):
-            singleRow = {}
-            singleRow[timeIndexes[0]] = day
-            singleRow[timeIndexes[1]] = time
+        for (lessonNr, time), row in newDf.groupby(timeIndexes):
+            #print(lessonNr)
+            #print(time)
+            #print(row)
+            rowFrame = row
+            singleRowBase = {}
+            singleRowBase[timeKey1] = int(lessonNr)
+            singleRowBase[timeKey2] = time
+
+            innerRows = []
 
             for col in newDf.columns:
-                booleanMask = singleLessonAttr[col] != ''
-                nonEmptyValues = singleLessonAttr[col][booleanMask].dropna().tolist()
+                #print(rowFrame.keys())
+                #print(col)
+                booleanMask = rowFrame[col] != ''
+                nonEmptyValues = rowFrame[col][booleanMask].dropna().tolist()
+                #print(nonEmptyValues)
 
                 if nonEmptyValues:
-                    for value in nonEmptyValues:
+                    for index, value in enumerate(nonEmptyValues):
                         
-                        # add empty rows to avoid tables that do not start from row nr 1
-                        if len(rowsFiltered) < singleRow[timeIndexes[0]]-1:
-                            
-                            lastFilteredRowNr = ( int( rowsFiltered[-1][timeIndexes[0]] )  if len(rowsFiltered)
-                                                                                           else 0 )
-                            currRowNr = int( singleRow[timeIndexes[0]] )
-                            missingNrs = list( range( lastFilteredRowNr+1, currRowNr ) )
-                            desiredNr = missingNrs[0]
+                        if len(innerRows) < len(nonEmptyValues):
+                            innerRows.append(singleRowBase.copy())
 
-                            singleRowTemp = {}
+                            currRowNr = int( singleRowBase[timeKey1] )
+
+
+                        # add empty rows to avoid tables that do not start from row nr 1
+                        if ( (       rowsFiltered   and   (int(rowsFiltered[-1][timeKey1]) < currRowNr-1) )
+                            or ( not rowsFiltered   and   1 < currRowNr) ):
+
+                            lastFilteredRowNr = ( int( rowsFiltered[-1][timeKey1] )  if len(rowsFiltered)
+                                                                                           else 0 )
+
+                            missingNrs = list( range( lastFilteredRowNr+1, currRowNr ) )
                             
-                            for lessonAttr in colDayNamesTuples:
-                                singleRowTemp[lessonAttr] = np.nan
-                            
-                            while desiredNr and lastFilteredRowNr != missingNrs[-1]:
+                            while len(missingNrs):
+                                #print([r[timeKey1]   for r in rowsFiltered])
+                                #print((singleRowBase[timeKey1]))
+                                #print(missingNrs)
+                                desiredNr = missingNrs[0]
+                                singleRowTemp = {}
+                                
+                                for lessonAttr in colDayNamesTuples:
+                                    singleRowTemp[lessonAttr] = np.nan
                                 
                                 desiredPreviousTime = lessonTimePeriods[ desiredNr-1 ]
-                                singleRowTemp[timeIndexes[0]] = desiredNr
-                                singleRowTemp[timeIndexes[1]] = desiredPreviousTime
-
+                                singleRowTemp[timeKey1] = desiredNr
+                                singleRowTemp[timeKey2] = desiredPreviousTime
                                 rowsFiltered.append(singleRowTemp.copy())
-
-                                lastFilteredRowNr = int(rowsFiltered[-1][timeIndexes[0]])
-                                missingNrs = missingNrs[1:]   if len(missingNrs)   else []
-                                desiredNr  = missingNrs[0]    if len(missingNrs)   else 0
+                                missingNrs = missingNrs[1:]   if missingNrs   else []
+                                singleRowTemp = {}
 
 
-                        singleRow[col] = value
+                        innerRows[index][col] = value
+                        #print('innerRows[index]:', innerRows[index])
 
 
                     if prepareNewColVal:
-                        if not (col[0], newColName) in singleRow:
-                            singleRow[(col[0], newColName)] = (newColVal   if not newColVal.isdigit()
-                                                                           else int(newColVal))
+                        for index, r in enumerate(innerRows):
+                            if not (col[0], newColName) in r:
+                                innerRows[index][(col[0], newColName)] = (newColVal   if not newColVal.isdigit()
+                                                                                      else int(newColVal))
 
-
-            rowsFiltered.append(singleRow)
+            for r in innerRows:
+                rowsFiltered.append(r.copy())
 
 
         if addNewCol or ( len(newDf.columns.get_level_values(0).unique()) < len(weekdays) ):
@@ -287,15 +332,15 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         
         else:
             columnsVal = newDf.columns
-        
-        newDfFiltered = pd.DataFrame(rowsFiltered).set_index(keys=timeIndexes)
-        #print(newDfFiltered)
+
+        #print('rowsFiltered indexy ', [row[timeKey1]   for row in rowsFiltered])
+        newDfFiltered = pd.DataFrame(rowsFiltered)
+        #print('newDfFiltered.index ', newDfFiltered.index)
+        newDfFiltered = newDfFiltered.reset_index()
+        newDfFiltered.set_index(keys=timeIndexes, inplace=True)
+        #print('newDfFiltered.index ', newDfFiltered.index)
         newDfFiltered = newDfFiltered.reindex(columns=columnsVal, fill_value=np.nan)
 
-        #print(newDfFiltered)
-
-        return newDfFiltered
-    
     except Exception as e:
         msgText = f'\nError while filter and convert schedule Data Frames for Excel worksheet: {getTraceback(e)}'
         
