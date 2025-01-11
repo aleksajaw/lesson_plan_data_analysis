@@ -216,6 +216,7 @@ def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
     if msgText: print(msgText)
 
 
+
 def get1stNotMergedCell(group=[]):
     foundNotMergedCell = False
     i = -1
@@ -338,39 +339,46 @@ def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
 # DATA   =>   DATA FRAME
 def convertToDf(dataToConvert=None, rowIndexesAsList=timeIndexes, colNamesAsTuples=dfColNamesTuples):
     df = None
+    msgText=''
 
-    if(dataToConvert):
+    try:
+        if(dataToConvert):
 
-        # multi-dimensional column names
-        lessonColumns = MultiIndex.from_tuples(tuples = colNamesAsTuples)
+            # multi-dimensional column names
+            lessonColumns = MultiIndex.from_tuples(tuples = colNamesAsTuples)
 
-        # old columns version
-        #lessonColumns = dataToConvert[0]
+            # old columns version
+            #lessonColumns = dataToConvert[0]
 
-        # schedule without column names
-        lessonRows = dataToConvert[1:]
+            # schedule without column names
+            lessonRows = dataToConvert[1:]
 
-        df = DataFrame(data=lessonRows, columns=lessonColumns)
+            df = DataFrame(data=lessonRows, columns=lessonColumns)
 
-        # use empty string instead of null/NaN
-        df = df.fillna('')
-        
-        # Restore 111 from '111.0'.
-        # The problem is probably caused by the creation of the DataFrame.
-        df = df.map(convertFloatToInt)
+            # use empty string instead of null/NaN
+            df = df.fillna('')
+            
+            # Restore 111 from '111.0'.
+            # The problem is probably caused by the creation of the DataFrame.
+            df = df.map(convertFloatToInt)
 
-        # Useful if there are repeated index cells in the table,
-        # e.g. when there are more than one lesson
-        # at the same time for one class and its groups.
+            # Useful if there are repeated index cells in the table,
+            # e.g. when there are more than one lesson
+            # at the same time for one class and its groups.
 
-        # FOR NOW, LEAVE THIS AS A COMMENT
-        # IF YOU WANT TO KEEP CREATING THE TEACHERS' TIMETABLE FUNCTIONAL.
-        #for indexName in timeIndexes:
-        #    df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
-        
-        # set actual columns as row indexes
-        df.set_index(keys=rowIndexesAsList, inplace=True)
-        
+            # FOR NOW, LEAVE THIS AS A COMMENT
+            # IF YOU WANT TO KEEP CREATING THE TEACHERS' TIMETABLE FUNCTIONAL.
+            #for indexName in timeIndexes:
+            #    df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
+            
+            # set actual columns as row indexes
+            df.set_index(keys=rowIndexesAsList, inplace=True)
+            
+    except Exception as e:
+        msgText = f'\nError while converting data do DataFrame: {getTraceback(e)}'
+
+    if msgText: print(msgText)  
+    
     return df
 
 

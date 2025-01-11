@@ -21,10 +21,11 @@ def main():
     #turnOffFutureWarnings()
 
     classesData = getClassesDataFromSchoolWebPage()
-    loadClassesDataVariables(classesData)
-    createOrEditMainExcelFile()
-    createOtherScheduleExcelFiles(getClassesDataDfs())
-    openScheduleFilesWithDefApps()
+    if classesData:
+        loadClassesDataVariables(classesData)
+        createOrEditMainExcelFile()
+        createOtherScheduleExcelFiles(getClassesDataDfs())
+        openScheduleFilesWithDefApps()
 
 
 if __name__ == "__main__":
