@@ -485,12 +485,10 @@ def convertBrInText(text=''):
 #   =>   helloworld!
 def splitHTMLAndRemoveTags(HTMLText=''):
     HTMLTextStripped = re.sub(r'&nbsp;|\s+', '', HTMLText)
-    tagParts = re.split(r'(<[^>]+>)', HTMLTextStripped)
-    textParts = []
-
-    for part in tagParts:
-        if part and not part.startswith('<'):
-            textParts.append( convertDigitInStrToInt(part) )
+    pattern = r'<[^>]+>([^<]+)</[^>]+>'
+    
+    textParts = re.findall(pattern, HTMLTextStripped)
+    textParts = [convertDigitInStrToInt(part)   for part in textParts]
 
     return textParts
 
