@@ -11,16 +11,22 @@ def getTraceback(e):
     import inspect
 
     msgText=''
-    # extract useful data from exception traceback
-    fileName, lineNr, fnName, code = traceback.extract_tb(e.__traceback__)[0]
-    excType, excValue, excTb = sys.exc_info() # exception info
-    # list of tuples, each element representing a frame in the call stack;
-    # each tuple contains information about one level of the function call
+    # exception info
+    excType, excValue, excTb = sys.exc_info()
+
+    # The line below converts a traceback object into readable information about call stack frames
+    # (a list of tuples). Each tuple contains details about one level of the function call.
+    excTraceback = traceback.extract_tb(e.__traceback__)
+    # frame where the exception was raised
+    fileName, lineNr, fnName, code = excTraceback[0]
+    
+    # Similar to traceback.extract_tb(e.__traceback__), but inspect.stack() additionally
+    # includes a frame object and works even if no exception has occurred.
     stack = inspect.stack()
     previousFrame = stack[1].frame
     if previousFrame:
-        # local variables from previous frame as reversed list using [::-1]
-        # list sorted in the order of the most recently declared variable
+        # The local variables from the previous frame as a reversed list using [::-1].
+        # The list is sorted in the order of the most recently declared variables.
         localVars = [item   for item in previousFrame.f_locals.items()   if item[0] not in ['e', 'msgText']][::-1]
     else:
         localVars = []
