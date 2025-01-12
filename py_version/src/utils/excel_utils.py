@@ -492,7 +492,9 @@ def convertBrInText(text=''):
 # </p>
 #   =>   helloworld!
 def splitHTMLAndRemoveTags(HTMLText=''):
-    HTMLTextStripped = re.sub(r'&nbsp;|\s+', '', HTMLText)
+    #patternSub = r'&nbsp;|\s+'
+    patternSub = r'&nbsp;'
+    HTMLTextStripped = re.sub(patternSub, '', HTMLText)
     textParts = []
     convertedTextParts = []
 
