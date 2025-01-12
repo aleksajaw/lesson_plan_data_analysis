@@ -493,12 +493,16 @@ def convertBrInText(text=''):
 #   =>   helloworld!
 def splitHTMLAndRemoveTags(HTMLText=''):
     HTMLTextStripped = re.sub(r'&nbsp;|\s+', '', HTMLText)
-    pattern = r'<[^>]+>([^<]+)</[^>]+>'
-    
-    textParts = re.findall(pattern, HTMLTextStripped)
-    textParts = [convertDigitInStrToInt(part)   for part in textParts]
+    textParts = []
+    convertedTextParts = []
 
-    return textParts
+    if HTMLTextStripped:
+        # pattern to get e.g. string 'text' from <span class='p'>text</span>
+        pattern = r'<[^>]+>([^<]+)</[^>]+>'
+        textParts = re.findall(pattern, HTMLTextStripped)   or   [HTMLTextStripped]
+        convertedTextParts = [convertDigitInStrToInt(part)   for part in textParts]      
+
+    return convertedTextParts
 
 
 
