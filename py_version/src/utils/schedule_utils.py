@@ -350,23 +350,56 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
 
 
-def createGroupsInListByPrefix(data=[], splitDelimeter = '-', replaceDelimeter = '.r'):
+# 'r' comes from 'rozszerzony/a' which means the subject is extendend like 'advanced English'
+def createGroupsInListByPrefix(data=[], splitDelimiter = '-', replaceDelimiters = ['.r', 'r_']):
     msgText = ''
 
     try:
-        # only leave the part before the first '-' and cut '.r' out
-        groupList = [ (str(item).split(splitDelimeter)[0]).replace(replaceDelimeter,'')
-                            if isinstance(item, str)
-                            else item
-                          for item in data ]
+        groupList = []
+
+        # only leave the part before the first '-' and cut '.r' and 'r_' out
+        for item in data:
+            itemAdded = False
+
+            if isinstance(item, str):
+                item1stEl = str(item).split(splitDelimiter)[0]
+
+                for repDeli in replaceDelimiters:
+                    itemAdded = False
+
+                    if repDeli in item1stEl:
+                        
+                        # e.g., delimiter to replace + subject name   =>   'r_matematyka'
+                        if item1stEl.startswith(repDeli):
+                            groupList.append( item1stEl.replace(repDeli, '', 1) )
+                            itemAdded = True
+                            break
+                        
+                        # e.g., delimiter to replace + subject name   =>   'matematyka.r'
+                        elif item1stEl.endswith(repDeli):
+                            deliIndex = item1stEl.rfind(repDeli)
+
+                            if deliIndex != -1:
+                                groupList.append( item1stEl[:deliIndex] )
+                                itemAdded = True
+                                break
+                
+                
+                if not itemAdded:
+                    groupList.append(item1stEl)
+            
+            else:
+                groupList.append(item)
         
         # group elements by names starting with the same prefix
         for i in range(2, len(groupList)):
-            gList = groupList
-            if ( all( isinstance(x, str)   for x in [gList[i-1], gList[i]] )
-                  and  gList[i].startswith(gList[i-1]) ):
-                
-                groupList[i] = gList[i-1]
+            
+            el = groupList[i]
+            previousEl = groupList[i-1]
+            doesElStartSameAsPrevious = el.startswith( previousEl )
+
+            if doesElStartSameAsPrevious:
+                groupList[i] = previousEl
     
     except Exception as e:
         msgText = f'\nError while creating groups in list by prefix: {getTraceback(e)}'
