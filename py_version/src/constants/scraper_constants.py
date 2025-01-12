@@ -1,6 +1,9 @@
 # INITIAL VARIABLES
-schoolURL = 'https://zamkowa15.edu.pl'
-planURL = schoolURL + '/plan/plan.html'
+schoolAndPlanURLs = [ ('https://zamkowa15.edu.pl', '/plan/plan.html'),
+                      ('https://www.mechaniksieradz.edu.pl', '/DANE/Plan/Uczen/biezacy/') ]
+
+schoolURL, partPlanURL = schoolAndPlanURLs[0]
+planURL = schoolURL + partPlanURL
 
 # frame name attributes
 linksFrameName = 'list'
