@@ -1,8 +1,7 @@
-from src.constants import planURL, driverLocationStates
+from src.constants import planURL, driverLocationStates, timeIndexNames, scraperFindKeys, scraperPresenceLocators
 from src.utils import splitHTMLAndRemoveTags
 from src.utils.error_utils import getTraceback
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -29,8 +28,8 @@ def initSchedulePageDriver():
         driver.get(planURL)
         currDriverLocation = driverLocationStates[0]
 
-        listFrame = driver.find_element(By.NAME, 'list')
-        planFrame = driver.find_element(By.NAME, 'plan')
+        listFrame = driver.find_element(*scraperPresenceLocators['list'])
+        planFrame = driver.find_element(*scraperPresenceLocators['plan'])
 
         driver.switch_to.frame(listFrame)
         currDriverLocation = driverLocationStates[1]
@@ -52,7 +51,7 @@ def scrapeAndSetClassList():
     noErrors = True
     
     try:
-        classList = driver.find_elements(By.CSS_SELECTOR, 'a[target="plan"]')
+        classList = driver.find_elements(*scraperFindKeys['classList'])
 
     except Exception as e:
         msgText = f'\nError while scraping and setting the class list for the schedules for {planURL}: {getTraceback(e)}'
@@ -71,6 +70,8 @@ def scrapeClassTables():
     noErrors = True
 
     try:
+        colsNrReservedForRowMultiIndex = len(timeIndexNames)
+        emptyCellDefaultCols = ['','','']
         
         for link in classList:
         # comment out above code and
@@ -79,10 +80,10 @@ def scrapeClassTables():
         #if(True):
         #    link=classList[1]
 
-            if(currDriverLocation!='list'):
-                wait.until(EC.presence_of_element_located((By.NAME, 'list')))
+            if(currDriverLocation!=driverLocationStates[1]):
+                wait.until(EC.presence_of_element_located(scraperPresenceLocators[driverLocationStates[1]]))
                 driver.switch_to.frame(listFrame)
-            currDriverLocation = driverLocationStates[1]
+                currDriverLocation = driverLocationStates[1]
 
             link.click()
             className2 = link.text
@@ -90,16 +91,14 @@ def scrapeClassTables():
             driver.switch_to.default_content()
             currDriverLocation = driverLocationStates[0]
 
-            wait.until(EC.presence_of_element_located((By.NAME, 'plan')))
+            wait.until( EC.presence_of_element_located(scraperPresenceLocators[driverLocationStates[2]]) )
             driver.switch_to.frame(planFrame)
             currDriverLocation = driverLocationStates[2]
             
-            table = driver.find_element(By.CLASS_NAME, 'tabela')
+            table = driver.find_element(*scraperFindKeys['table'])
+            rows = table.find_elements(*scraperFindKeys['rows'])
 
             classData = []
-
-            rows = table.find_elements(By.TAG_NAME, 'tr')
-
             finalRows = []
 
 
@@ -107,7 +106,7 @@ def scrapeClassTables():
             rowsCounter = 0
             
             for row in rows:
-                cols = row.find_elements(By.XPATH, './/td | .//th')
+                cols = row.find_elements(*scraperFindKeys['cols'])
 
                 # loop through cells (columns) in rows
                 colsCounter = 0
@@ -155,8 +154,8 @@ def scrapeClassTables():
                                 colsInCellCounter+=1
 
                         else:
-                            finalRows[rowNrWithExtraLines].extend(['','',''])
-                            colsInCellCounter+=3
+                            finalRows[rowNrWithExtraLines].extend(emptyCellDefaultCols)
+                            colsInCellCounter += len(emptyCellDefaultCols)
                         
                         maxColCounter = max(maxColCounter,colsInCellCounter)
                         linesInRowCounter += 1
@@ -167,7 +166,7 @@ def scrapeClassTables():
                         for i in range(linesInRowCounter):
                             checkingRowNr = currRowNr + i
 
-                            for j in range(2):
+                            for j in range(colsNrReservedForRowMultiIndex):
                                 if(finalRows[checkingRowNr][j]==''):
                                     finalRows[checkingRowNr][j] = finalRows[checkingRowNr-1][j]
 
