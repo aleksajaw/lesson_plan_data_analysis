@@ -126,7 +126,7 @@ def buildNewOwnerScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', ne
 
                     elRows = elRows.groupby(level=[0,1]).first()
                     #indexLength = len(elRows.index)
-                    #elRows.insert(loc=0, column=timeIndexes[1], value=lessonTimePeriods[:indexLength])
+                    #elRows.insert(loc=0, column=timeIndexNames[1], value=lessonTimePeriods[:indexLength])
 
                     if el not in targetDict:
                         targetDict[str(el)] = elRows
@@ -270,7 +270,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
             for listName in objOfDfs:
                 df = objOfDfs[listName]
 
-                # indexes & their columns
+                # indices & their columns
                 df['group_No.'] = (df.groupby('names_base', sort=False).ngroup() + 1).astype(str) + '.'
                 df['names_in_group_No.'] = (df.groupby('names_base').cumcount() + 1).astype(str) + '.'
                 

@@ -55,7 +55,7 @@ scheduleExcelClassesJSONPath = outputsPath + scheduleExcelClassesJSONName
 
 
 # variables for handling pandas' Data Frame and excel
-timeIndexes = ['Nr','Godz']
+timeIndexNames = ['Nr','Godz']
 weekdays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek']
 lessonAttrs3el = ['przedmiot', 'nauczyciel', 'sala']
 lessonAttrs4el = ['przedmiot', 'nauczyciel', 'klasa', 'sala']

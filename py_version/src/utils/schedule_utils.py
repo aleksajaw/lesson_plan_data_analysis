@@ -1,5 +1,5 @@
 from src.utils.error_utils import getTraceback
-from src.constants import scheduleExcelClassesPath, weekdays, timeIndexes, dfColWeekDayNamesTuples3el, dfColWeekDayNamesTuples4el, lessonTimePeriods, dfColWeekDayEmptyRow
+from src.constants import scheduleExcelClassesPath, weekdays, timeIndexNames, dfColWeekDayNamesTuples3el, dfColWeekDayNamesTuples4el, lessonTimePeriods, dfColWeekDayEmptyRow
 from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
 import pandas as pd
 from pandas import DataFrame
@@ -45,7 +45,7 @@ def colorBgOfEmptyRow(ws=None, colRange=None, row=int, startColumn=int):
         permEmptyCellStyle = openpyxlPatternFill(fill_type='lightTrellis')
         allEmpty = True 
 
-        # check if the cells in the 1st row (below column indexes) are empty
+        # check if the cells in the 1st row (below column indices) are empty
         for col in colRange:
             
             if ws.cell(row=row, column=col).value is not None:
@@ -53,7 +53,7 @@ def colorBgOfEmptyRow(ws=None, colRange=None, row=int, startColumn=int):
                 break
 
 
-        # change the BACKGROUND of the cells in the row (below column indexes)
+        # change the BACKGROUND of the cells in the row (below column indices)
         # only if entire row is empty
         if allEmpty:
             
@@ -106,7 +106,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
         if (workbook):
             for ws in workbook.worksheets:
                 
-                # column nr where the row indexes end
+                # column nr where the row indices end
                 rowIndexesLastCol = 2
 
                 # bold rows are for headers
@@ -129,7 +129,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
 
                 totalColsCount = lastMergedCellColIn1stRow
                 totalColsRange = range(1, totalColsCount+1)
-                # cells in the 2nd column contain part of rows indexes & are less likely to be merged (for easier data analysis)
+                # cells in the 2nd column contain part of rows indices & are less likely to be merged (for easier data analysis)
                 totalRowsCount = lastBoldRowAtBeggining + getNrOfLastNonEmptyCellInCol(ws, minRow=contentFirstRow, col=2)                    
                 totalRowsRange = range(1, totalRowsCount+1)
 
@@ -151,7 +151,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
                         formatCellBorder(cell, right='medium')
 
                         # add THIN SIDE BORDERS to the center column on days
-                        # do not include the columns reserved for the rows indexes
+                        # do not include the columns reserved for the rows indices
                         if rowIndexesLastCol < col:
                             for attrCol in range((col-standardDaySize)+1, col):
                                 cell = ws.cell(row=row1, column=attrCol)
@@ -226,7 +226,7 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         if isinstance(el1, DataFrame) and isinstance(el2, DataFrame):
             el2 = dropnaInDfByAxis(el2, 1)
             newDf = pd.concat([el1, el2]).reset_index()
-            newDf.set_index(keys=timeIndexes, inplace=True)
+            newDf.set_index(keys=timeIndexNames, inplace=True)
             newDf = newDf.sort_index(level=0)
         else:
             newDf = el1 or el2
@@ -254,11 +254,11 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
         prepareNewColVal = addNewCol and newColName and newColVal
 
         colDayNamesTuples = dfColWeekDayNamesTuples4el   if addNewCol   else dfColWeekDayNamesTuples3el
-        timeKey1 = timeIndexes[0]
-        timeKey2 = timeIndexes[1]
+        timeKey1 = timeIndexNames[0]
+        timeKey2 = timeIndexNames[1]
 
-        # iterate through rows (time indexes)
-        for (lessonNr, time), row in newDf.groupby(timeIndexes):
+        # iterate through rows (time indices)
+        for (lessonNr, time), row in newDf.groupby(timeIndexNames):
             #print(lessonNr)
             #print(time)
             #print(row)
@@ -337,7 +337,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
         newDfFiltered = pd.DataFrame(rowsFiltered)
         #print('newDfFiltered.index ', newDfFiltered.index)
         newDfFiltered = newDfFiltered.reset_index()
-        newDfFiltered.set_index(keys=timeIndexes, inplace=True)
+        newDfFiltered.set_index(keys=timeIndexNames, inplace=True)
         #print('newDfFiltered.index ', newDfFiltered.index)
         newDfFiltered = newDfFiltered.reindex(columns=columnsVal, fill_value=np.nan)
 

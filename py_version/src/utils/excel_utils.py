@@ -1,5 +1,5 @@
 from src.utils.error_utils import getTraceback
-from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexes
+from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexNames
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
@@ -337,7 +337,7 @@ def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
 
 
 # DATA   =>   DATA FRAME
-def convertToDf(dataToConvert=None, rowIndexesAsList=timeIndexes, colNamesAsTuples=dfColNamesTuples):
+def convertToDf(dataToConvert=None, rowIndexesAsList=timeIndexNames, colNamesAsTuples=dfColNamesTuples):
     df = None
     msgText=''
 
@@ -368,10 +368,10 @@ def convertToDf(dataToConvert=None, rowIndexesAsList=timeIndexes, colNamesAsTupl
 
             # FOR NOW, LEAVE THIS AS A COMMENT
             # IF YOU WANT TO KEEP CREATING THE TEACHERS' TIMETABLE FUNCTIONAL.
-            #for indexName in timeIndexes:
+            #for indexName in timeIndexNames:
             #    df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
             
-            # set actual columns as row indexes
+            # set actual columns as row indices
             df.set_index(keys=rowIndexesAsList, inplace=True)
             
     except Exception as e:
@@ -414,7 +414,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
 # EXCEL CONTENT   =>   OBJECT OF DATA FRAMES
 #                    =>   JSON
-def convertExcelToDfsJSON(defaultIndexes = timeIndexes):
+def convertExcelToDfsJSON(defaultIndexes = timeIndexNames):
     from files_utils import doesFileExist
     excelJSON = {}
     msgText = ''
