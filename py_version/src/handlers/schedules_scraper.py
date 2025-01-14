@@ -1,5 +1,5 @@
 from src.constants import planURL, driverLocationStates, timeIndexNames, scraperFindKeys, scraperPresenceLocators
-from src.utils import splitHTMLAndRemoveTags
+from src.utils import splitHTMLAndRemoveTags, delInvalidChars
 from src.utils.error_utils import getTraceback
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -72,7 +72,7 @@ def scrapeClassTables():
     try:
         colsNrReservedForRowMultiIndex = len(timeIndexNames)
         emptyCellDefaultCols = ['','','']
-        
+
         for link in classList:
         # comment out above code and
         # uncomment one of the two option below to quicker check the scraper
@@ -86,7 +86,7 @@ def scrapeClassTables():
                 currDriverLocation = driverLocationStates[1]
 
             link.click()
-            className2 = link.text
+            schoolClassName = link.text
 
             driver.switch_to.default_content()
             currDriverLocation = driverLocationStates[0]
@@ -98,90 +98,100 @@ def scrapeClassTables():
             table = driver.find_element(*scraperFindKeys['table'])
             rows = table.find_elements(*scraperFindKeys['rows'])
 
-            classData = []
-            finalRows = []
+
+            classRows = []
 
 
             # loop through rows
-            rowsCounter = 0
-            
+            currRowNr = 0
+
             for row in rows:
+                
                 cols = row.find_elements(*scraperFindKeys['cols'])
 
-                # loop through cells (columns) in rows
-                colsCounter = 0
-                maxRowCounter = 0
-                maxColCounter = 0
+
+                currColNr = 0
+                maxColInRowCounter = 0
+                maxLinesInRowCounter = 0
 
                 for cell in cols:
-                    cellContent = cell.get_attribute('innerHTML')
 
-                    # convert all to []
-                    if '<br>' in cellContent:
-                        #cellContent = [cellContent.split('<br>')[0]]
-                        cellContent = cellContent.split('<br>')
+                    cellContent = [ cell.get_attribute('innerHTML')
+                                    or   '' ]
+                    
+                    if '<br>' in cellContent[0]:
+                        cellContent = cellContent[0].split('<br>')
 
-                    else:
-                        cellContent = [cellContent]
 
-                    while rowsCounter >= len(finalRows):
-                        finalRows.append([])
-
-                    # loop through lines inside a single cell
-                    currColNr = colsCounter
-                    currRowNr = rowsCounter
                     linesInRowCounter = 0
 
                     for cellLine in cellContent:
-                        partsOfLine = splitHTMLAndRemoveTags(cellLine)
-                        colsInCellCounter = 0
-                        rowNrWithExtraLines = currRowNr + linesInRowCounter
-
-                        while rowNrWithExtraLines >= len(finalRows):
-                            finalRows.append([])
                         
-                        parentRow = finalRows[rowNrWithExtraLines]
+                        partsOfLine = splitHTMLAndRemoveTags(cellLine)
 
-                        if len(partsOfLine) > 0:
+                        
+                        colsInCellLineCounter = 0
+                        currRowWithLinesTotalNr = currRowNr + linesInRowCounter
 
-                            for part in partsOfLine:
-                                x = currColNr + colsInCellCounter
+                        while currRowWithLinesTotalNr > (len(classRows)-1):
+                            classRows.append([])
+                        
+                        currRow = classRows[currRowWithLinesTotalNr]
 
-                                while x >= len(parentRow):
-                                    finalRows[rowNrWithExtraLines].append('')                      
 
-                                finalRows[rowNrWithExtraLines][x] = part
-                                colsInCellCounter+=1
+                        isItTimeIndexCol = len(partsOfLine)==1   and   currColNr <= colsNrReservedForRowMultiIndex
+
+                        if len(partsOfLine) > 1   or   isItTimeIndexCol:
+
+                            for partNr, part in enumerate(partsOfLine):
+                                currColWithLinePartTotalNr = currColNr + partNr
+
+                                while currColWithLinePartTotalNr > (len(currRow)-1):
+                                    classRows[currRowWithLinesTotalNr].append('')                      
+
+                                classRows[currRowWithLinesTotalNr][currColWithLinePartTotalNr] = part
+
+                            colsInCellLineCounter += len(partsOfLine)
+
 
                         else:
-                            finalRows[rowNrWithExtraLines].extend(emptyCellDefaultCols)
-                            colsInCellCounter += len(emptyCellDefaultCols)
+                            classRows[currRowWithLinesTotalNr].extend(emptyCellDefaultCols)
+                            colsInCellLineCounter += len(emptyCellDefaultCols)
                         
-                        maxColCounter = max(maxColCounter,colsInCellCounter)
+
+                        maxColInRowCounter = max(maxColInRowCounter, colsInCellLineCounter)
                         linesInRowCounter += 1
 
 
-                    if linesInRowCounter >1:
+                    if linesInRowCounter > 1:
+                        for lineNr in range( linesInRowCounter ):
+                            
+                            rowNrUnderCheck = currRowNr + lineNr
+                            currRow = classRows[rowNrUnderCheck]
+                            earlierRow = classRows[rowNrUnderCheck-1]
+                            
+                            for timeIndexColNr in range( len(timeIndexNames) ):
+                                earlierTimeIndex = earlierRow[timeIndexColNr]
 
-                        for i in range(linesInRowCounter):
-                            checkingRowNr = currRowNr + i
+                                if not currRow[timeIndexColNr]:
+                                    classRows[rowNrUnderCheck][timeIndexColNr] = earlierTimeIndex
 
-                            for j in range(colsNrReservedForRowMultiIndex):
-                                if(finalRows[checkingRowNr][j]==''):
-                                    finalRows[checkingRowNr][j] = finalRows[checkingRowNr-1][j]
+                    
+                    currColNr = currColNr + maxColInRowCounter
 
-                    maxRowCounter = max(maxRowCounter, linesInRowCounter)
-                    colsCounter = currColNr + maxColCounter
+                    maxLinesInRowCounter = max(maxLinesInRowCounter, linesInRowCounter)
+                
+                currRowNr += maxLinesInRowCounter
 
 
-                rowsCounter+=maxRowCounter
-
-            classData = finalRows
-            #print(classData)
-            classesData[className2.replace('/', ' ')] = classData
+            #print(classRows)
+            classesData[delInvalidChars(schoolClassName)] = classRows
 
             driver.switch_to.parent_frame()
     
+
+        driver.quit()
+
     except Exception as e:
         msgText = f'\nError while scrapping the schedules from {planURL}: {getTraceback(e)}'
         noErrors = False
