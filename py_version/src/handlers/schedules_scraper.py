@@ -72,9 +72,7 @@ def scrapeClassTables():
         colsNrReservedForRowMultiIndex = len(timeIndexNames)
         emptyCellDefaultCols = ['','','']
 
-        # problem in schedule_groups.xlsx
-        # worksheet named 'informatyka'
-        for link in [classList[i]   for i in [14,21,23]]:
+        for link in classList:
         # To quickly check the scraping loop:
         # comment out the above code
         # and uncomment one of the two options below.

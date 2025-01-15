@@ -353,11 +353,9 @@ def concatAndFilterGroupListsDataFrames(objOfDfs={}, groupListsDfs={}):
                     #   To retain the old behavior, exclude the relevant entries before the concat operation.
                     x = dropnaInDfByAxis(x, 1)
                     #y = dropnaInDfByAxis(y, 1)
-                    print('schedules_creator   =>   concatAndFilterGroupListsDataFrames   =>   if isinstance(x, DataFrame)')
                     newObjOfDfs[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColNames[ownersType], str(el))
 
                 else:
-                    print('schedules_creator   =>   else')
                     newObjOfDfs[str(groupName)] = filterAndConvertScheduleDataFrames(y, True, newColNames[ownersType], str(el))
 
     return newObjOfDfs

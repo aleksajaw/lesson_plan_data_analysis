@@ -228,11 +228,8 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
             newDf = pd.concat([el1, el2]).reset_index()
             newDf.set_index(keys=timeIndexNames, inplace=True)
             newDf = newDf.sort_index(level=0)
-
-            print('schedules_utils   =>   concatAndFilterScheduleDataFrames   =>   if isinstance(el1, DataFrame)   and   isinstance(el2, DataFrame)')
         else:
             newDf = el1 or el2
-            print('schedules_utils   =>   concatAndFilterScheduleDataFrames   =>   else')
         newDf = filterAndConvertScheduleDataFrames(newDf, addNewCol, newColName, newColVal)
 
 
@@ -272,7 +269,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
             innerRows = []
 
-            for colNr, col in enumerate(newDf.columns):
+            for col in newDf.columns:
                 #print(rowFrame.keys())
                 #print(col)
                 booleanMask = rowFrame[col] != ''
@@ -280,13 +277,6 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
                 #print(nonEmptyValues)
 
                 if nonEmptyValues:
-                    # SHOW VARIABLES STATUS TO FIND ERRORS
-                    if(lessonNr==8   and   newDf.columns[colNr][0] == 'Wtorek' ):
-                        print( '\n', col, '     ', nonEmptyValues )
-                        if prepareNewColVal:
-                            print('new: ', newColName, ': ', newColVal, '\n')
-                    
-                    
                     for index, value in enumerate(nonEmptyValues):
                         
                         if len(innerRows) < len(nonEmptyValues):
@@ -328,8 +318,10 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
                     if prepareNewColVal:
                         for index, r in enumerate(innerRows):
-                            print(r.keys)
-                            if (col[0], newColName) not in r:
+                            doesRowHaveDay = col[0] in [ rowKey[0]   for rowKey in r.keys() ]
+                            doesDayHaveInnerCol = (col[0], newColName) in r
+
+                            if doesRowHaveDay   and   not doesDayHaveInnerCol:
                                 innerRows[index][(col[0], newColName)] = (newColVal   if not newColVal.isdigit()
                                                                                       else int(newColVal))
 
