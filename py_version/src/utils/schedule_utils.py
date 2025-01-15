@@ -223,13 +223,16 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
         #   To retain the old behavior, exclude the relevant entries before the concat operation.
         #el1 = dropnaInDfByAxis(el1, 1)
-        if isinstance(el1, DataFrame) and isinstance(el2, DataFrame):
+        if isinstance(el1, DataFrame)   and   isinstance(el2, DataFrame):
             el2 = dropnaInDfByAxis(el2, 1)
             newDf = pd.concat([el1, el2]).reset_index()
             newDf.set_index(keys=timeIndexNames, inplace=True)
             newDf = newDf.sort_index(level=0)
+
+            print('schedules_utils   =>   concatAndFilterScheduleDataFrames   =>   if isinstance(el1, DataFrame)   and   isinstance(el2, DataFrame)')
         else:
             newDf = el1 or el2
+            print('schedules_utils   =>   concatAndFilterScheduleDataFrames   =>   else')
         newDf = filterAndConvertScheduleDataFrames(newDf, addNewCol, newColName, newColVal)
 
 
@@ -251,7 +254,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
         #print('\nnewDf.index ', list(newDf.index))
         rowsFiltered = []
 
-        prepareNewColVal = addNewCol and newColName and newColVal
+        prepareNewColVal = addNewCol   and   newColName   and   newColVal
 
         colDayNamesTuples = dfColWeekDayNamesTuples4el   if addNewCol   else dfColWeekDayNamesTuples3el
         timeKey1 = timeIndexNames[0]
@@ -269,7 +272,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
             innerRows = []
 
-            for col in newDf.columns:
+            for colNr, col in enumerate(newDf.columns):
                 #print(rowFrame.keys())
                 #print(col)
                 booleanMask = rowFrame[col] != ''
@@ -277,6 +280,13 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
                 #print(nonEmptyValues)
 
                 if nonEmptyValues:
+                    # SHOW VARIABLES STATUS TO FIND ERRORS
+                    if(lessonNr==8   and   newDf.columns[colNr][0] == 'Wtorek' ):
+                        print( '\n', col, '     ', nonEmptyValues )
+                        if prepareNewColVal:
+                            print('new: ', newColName, ': ', newColVal, '\n')
+                    
+                    
                     for index, value in enumerate(nonEmptyValues):
                         
                         if len(innerRows) < len(nonEmptyValues):
@@ -289,8 +299,8 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
                         if ( (       rowsFiltered   and   (int(rowsFiltered[-1][timeKey1]) < currRowNr-1) )
                             or ( not rowsFiltered   and   1 < currRowNr) ):
 
-                            lastFilteredRowNr = ( int( rowsFiltered[-1][timeKey1] )  if len(rowsFiltered)
-                                                                                           else 0 )
+                            lastFilteredRowNr = ( int( rowsFiltered[-1][timeKey1] )   if len(rowsFiltered)
+                                                                                      else 0 )
 
                             missingNrs = list( range( lastFilteredRowNr+1, currRowNr ) )
                             
@@ -318,6 +328,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
                     if prepareNewColVal:
                         for index, r in enumerate(innerRows):
+                            print(r.keys)
                             if (col[0], newColName) not in r:
                                 innerRows[index][(col[0], newColName)] = (newColVal   if not newColVal.isdigit()
                                                                                       else int(newColVal))
