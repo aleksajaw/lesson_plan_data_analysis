@@ -6,17 +6,33 @@ from src.constants import schedulePath
 
 
 
+def doesDirExist(dirPath='', shouldPrintMsg=False):
+    msgText = f'Directory   {os.path.basename(dirPath)}   '
+    doesDirExistBool = bool( os.path.isdir(dirPath) )
+
+    msgText += ( 'exists.'   if doesDirExistBool
+                             else 'does not exist.' )
+    
+    if shouldPrintMsg: print(msgText)
+
+    return doesDirExistBool
+
+
+
+def createDirIfNecessary(dirPath=''):
+    if dirPath   and   not doesDirExist(dirPath):
+        os.mkdir(dirPath)
+
+
+
 def doesFileExist(filePath='', shouldPrintMsg=False):
     msgText = f'File   {os.path.basename(filePath)}   '
-    doesFileExistBool = bool (os.path.isfile(filePath))
+    doesFileExistBool = bool( os.path.isfile(filePath) )
 
-    if doesFileExistBool:
-        msgText += 'exists.'
-    else:
-        msgText += 'does not exist.'
-
-    if shouldPrintMsg:
-        print(msgText)
+    msgText += ( 'exists.'   if doesFileExistBool
+                             else 'does not exist.' )
+    
+    if shouldPrintMsg: print(msgText)
 
     return doesFileExistBool
 
