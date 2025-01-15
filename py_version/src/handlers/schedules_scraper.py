@@ -143,7 +143,7 @@ def scrapeClassTables():
                         # For e.g., get '<span>subject name</span> <span>teacher name</span> <span>classroom number</span>'
                         # as ['subject name', 'teacher name', 'classroom number']
                         partsOfLine = splitHTMLAndRemoveTags(cellLine)
-
+                        partsOfLineLength = len(partsOfLine)
                         
                         colsInCellLineCounter = 0
                         currRowWithLinesTotalNr = currRowNr + linesInRowCounter
@@ -163,22 +163,24 @@ def scrapeClassTables():
                         # or
                         # 2)  the line has exactly 1 element,
                         #       but it is one of the time index columns;
-                        isItTimeIndexCol = len(partsOfLine)==1   and   currColNr < colsNrReservedForRowMultiIndex
+                        isItTimeIndexCol = partsOfLineLength==1   and   currColNr < colsNrReservedForRowMultiIndex
 
-                        if len(partsOfLine) > 1   or   isItTimeIndexCol:
+                        if partsOfLineLength > 1   or   isItTimeIndexCol:
 
-                            # write the parts of the line.
+                            currColWithLineColsTotalNr = currColNr + partsOfLineLength
+
+                            # initialize missing columns in the current row if necessary;
+                            while currColWithLineColsTotalNr > len(currRow):
+                                classRows[currRowWithLinesTotalNr].append('')
+
+                            # write the parts of the line;
                             for partNr, part in enumerate(partsOfLine):
-                                currColWithLinePartTotalNr = currColNr + partNr
+                                currColWithLinePartColNr = currColNr + partNr
 
-                                # Initialize new columns in the current row if necessary,
-                                while currColWithLinePartTotalNr > (len(currRow)-1):
-                                    classRows[currRowWithLinesTotalNr].append('')                      
+                                # then update the value of that column   &   inner column counter.
+                                classRows[currRowWithLinesTotalNr][currColWithLinePartColNr] = part
 
-                                # then update the value of that column.
-                                classRows[currRowWithLinesTotalNr][currColWithLinePartTotalNr] = part
-
-                            colsInCellLineCounter += len(partsOfLine)
+                            colsInCellLineCounter += partsOfLineLength
 
 
                         else:
