@@ -163,7 +163,7 @@ def scrapeClassTables():
                         # or
                         # 2)  the line has exactly 1 element,
                         #       but it is one of the time index columns;
-                        isItTimeIndexCol = len(partsOfLine)==1   and   currColNr <= colsNrReservedForRowMultiIndex
+                        isItTimeIndexCol = len(partsOfLine)==1   and   currColNr < colsNrReservedForRowMultiIndex
 
                         if len(partsOfLine) > 1   or   isItTimeIndexCol:
 
