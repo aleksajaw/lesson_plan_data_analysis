@@ -4,6 +4,29 @@ def turnOffFutureWarnings():
 
 
 
+def handleErrorMsg(errorMsg=''):
+    from constants import logsPath
+    from files_utils import createDirIfNecessary, createFileNameWithDateTime
+    import os
+
+    if errorMsg:
+        mainSeparator = '__'
+        baseName = 'error' + mainSeparator + 'log'
+
+        dateTimeFileName = createFileNameWithDateTime(baseName, 'txt', mainSeparator)
+        dateDirName = dateTimeFileName.split(mainSeparator)[0]
+        dateErrorLogsDirName = dateDirName + mainSeparator + 'errors'
+        
+        dateErrorLogsDirPath = logsPath + dateErrorLogsDirName + '/'
+        createDirIfNecessary(dateErrorLogsDirPath)
+
+        with open(dateErrorLogsDirPath + dateTimeFileName, 'w') as file:
+            file.write(errorMsg)
+
+    return errorMsg
+
+
+
 def getTraceback(e):
     import traceback
     import re

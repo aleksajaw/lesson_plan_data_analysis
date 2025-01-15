@@ -1,6 +1,6 @@
 from src.constants import planURL, driverLocationStates, timeIndexNames, scraperFindKeys, scraperPresenceLocators
 from src.utils import splitHTMLAndRemoveTags, delInvalidChars
-from src.utils.error_utils import getTraceback
+from src.utils.error_utils import handleErrorMsg, getTraceback
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -35,8 +35,8 @@ def initSchedulePageDriver():
         currDriverLocation = driverLocationStates[1]
     
     except Exception as e:
-        msgText = f'\nError while initializing webdriver and its elements for {planURL}: {getTraceback(e)}'
         noErrors = False
+        msgText = handleErrorMsg(f'\nError while initializing Web Driver and its elements for {planURL}:{getTraceback(e)}')
 
     if msgText: print(msgText)  
 
@@ -54,9 +54,8 @@ def scrapeAndSetClassList():
         classList = driver.find_elements(*scraperFindKeys['classList'])
 
     except Exception as e:
-        msgText = f'\nError while scraping and setting the class list for the schedules for {planURL}: {getTraceback(e)}'
         noErrors = False
-
+        msgText = handleErrorMsg(f'\nError while scraping and setting the class list for the schedules for {planURL}: {getTraceback(e)}')
     if msgText: print(msgText)  
     
     return noErrors
@@ -238,8 +237,8 @@ def scrapeClassTables():
         driver.quit()
 
     except Exception as e:
-        msgText = f'\nError while scrapping the schedules from {planURL}: {getTraceback(e)}'
         noErrors = False
+        msgText = handleErrorMsg(f'\nError while scrapping the schedules from {planURL}: {getTraceback(e)}')
 
     if msgText: print(msgText)     
 

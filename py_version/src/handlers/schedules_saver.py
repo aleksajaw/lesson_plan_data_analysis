@@ -1,4 +1,4 @@
-from src.utils.error_utils import getTraceback
+from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExcelClassesJSONPath, scheduleClassesDfsJSONPath, scheduleClassesJSONPath
 from src.utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatScheduleExcel
 import json
@@ -39,18 +39,18 @@ def createOrEditMainExcelFile():
                         delDraftIfNecessary()
 
                     except Exception as draftError:
-                        print(f"\nError while deleting the draft sheet in main Excel file: {draftError}")
+                        print( handleErrorMsg( f'\nError while deleting the draft sheet in main Excel file: {draftError}' ) )
 
 
                 except Exception as writeError:
-                    print(f"\nError while writing to the main Excel file: {writeError}")
+                    print( handleErrorMsg( f'\nError while writing to the main Excel file: {writeError}' ) )
 
         else:
             print('Nothing to be updated in the main Excel file.')
 
 
     except Exception as e:
-        print(f"\nError while handling the main Excel file: {getTraceback(e)}")
+        print( handleErrorMsg( f'\nError while handling the main Excel file: {getTraceback(e)}' ) )
 
 
     # to avoid issues, compare file contents

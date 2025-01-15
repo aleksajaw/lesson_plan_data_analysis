@@ -1,4 +1,4 @@
-from src.utils.error_utils import getTraceback
+from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexNames
 import json
 import re
@@ -23,7 +23,7 @@ def createDraftSheet(excelFilePath=scheduleExcelClassesPath):
             draftDf.to_excel(writer, sheet_name=draftSheetName, merge_cells=True)
 
     except Exception as e:
-        print(f'\nError while creating draft sheet for Excel file: {getTraceback(e)}')
+        print(handleErrorMsg(f'\nError while creating draft sheet for Excel file: {getTraceback(e)}'))
 
 
 
@@ -76,7 +76,7 @@ def deleteExcelSheet(workbook=Workbook(), sheetName=''):
           raise Exception(f'workbook variable should be Workbook() type, not {type(workbook)}')
         
     except Exception as e:
-        msgText = f'\nError deleting the sheet {sheetName}: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError deleting the sheet {sheetName}: {getTraceback(e)}')
 
     if msgText: print(msgText)
 
@@ -96,7 +96,7 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
         msgText = f'\nData for sheet {sheetName} loaded.'
 
     except Exception as e:
-        msgText = f'\nError loading data into {sheetName}: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError loading data into {sheetName}: {getTraceback(e)}')
 
     if msgText: print(msgText)
 
@@ -160,7 +160,7 @@ def autoFormatExcelCellSizes(workbook=None, excelFilePath=scheduleExcelClassesPa
             workbook.save(excelFilePath)
 
     except Exception as e:
-        msgText = f'\nError while formatting the cell sizes in the Excel file: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError while formatting the cell sizes in the Excel file: {getTraceback(e)}')
 
     if msgText: print(msgText)
 
@@ -184,7 +184,7 @@ def formatCellBorder(cell=None, right='', left='', top='', bottom=''):
                                           bottom = borderStyle[bottom]  if bottom   else currentBorder.bottom )
 
         except Exception as e:
-            msgText = f'\nError while formatting the cell: {getTraceback(e)}'
+            msgText = handleErrorMsg(f'\nError while formatting the cell: {getTraceback(e)}')
             
     else:
         msgText = "\nError while formatting the cell: The value must be of type 'Cell'."
@@ -208,7 +208,7 @@ def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
                 cell.fill = openpyxlPatternFill(fill_type=fillType)
 
         except Exception as e:
-            msgText = f'\nError while formatting the cell: {getTraceback(e)}'
+            msgText = handleErrorMsg(f'\nError while formatting the cell: {getTraceback(e)}')
             
     else:
         msgText = '\nError while formatting the cell: The value must be of type \'Cell\'.'
@@ -247,7 +247,7 @@ def getNrOfLastNonEmptyCellInCol(ws=None, minRow=int, col=int):
                 break
     
     except Exception as e:
-        msgText = f'\nError while getting the last non-empty cell in column: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError while getting the last non-empty cell in column: {getTraceback(e)}')
                     
     if msgText: print(msgText)
 
@@ -270,7 +270,7 @@ def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
                     singleWorksheet[sheetName] = sheetVal.loc[:lastNonEmptyRow]
     
     except Exception as e:
-        msgText = f'\nError while removing last empty rows in Excel worksheet: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError while removing last empty rows in Excel worksheet: {getTraceback(e)}')
     
     if msgText: print(msgText)
 
@@ -288,7 +288,7 @@ def dropnaInDfByAxis(el=None, axis=-1, both=True):
                 el = el.dropna(axis=axis, how='all')
 
     except Exception as e:
-        msgText = f'\nError while dropping the NA values in the both axis of Data Frame: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError while dropping the NA values in the both axis of Data Frame: {getTraceback(e)}')
 
     if msgText: print(msgText)
  
@@ -309,7 +309,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
         msgText = '\nData loaded into the schedule Excel file: ' + scheduleExcelClassesPath.split('/')[-1]
 
     except Exception as e:
-        msgText = f'\nError loading complete classes data: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError loading complete classes data: {getTraceback(e)}')
     
     if msgText: print(msgText)
 
@@ -375,7 +375,7 @@ def convertToDf(dataToConvert=None, rowIndexesAsList=timeIndexNames, colNamesAsT
             df.set_index(keys=rowIndexesAsList, inplace=True)
             
     except Exception as e:
-        msgText = f'\nError while converting data do DataFrame: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError while converting data do DataFrame: {getTraceback(e)}')
 
     if msgText: print(msgText)  
     
@@ -405,7 +405,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
         objOfDfsJSON = json.dumps(objOfDfsJSON, indent=4)
 
     except Exception as e:
-        msgText = f'\nError while converting object of DataFrames to JSON: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError while converting object of DataFrames to JSON: {getTraceback(e)}')
 
     if msgText: print(msgText)
     return objOfDfsJSON
@@ -455,7 +455,7 @@ def convertExcelToDfsJSON(defaultIndexes = timeIndexNames):
 
 
     except Exception as e:
-        msgText = f'\nError converting existing schedule Excel file to JSON: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError converting existing schedule Excel file to JSON: {getTraceback(e)}')
 
     if msgText: print(msgText)
 

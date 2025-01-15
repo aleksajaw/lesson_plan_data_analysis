@@ -1,7 +1,7 @@
 import os
 import sys
 import subprocess
-from src.utils.error_utils import getTraceback
+from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants import schedulePath
 
 
@@ -69,7 +69,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
           msgText = f'File   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.'
     
     except Exception as e:
-        msgText = f'\nError while comparing and updating file content: {getTraceback(e)}'
+        msgText = handleErrorMsg(f'\nError while comparing and updating file content: {getTraceback(e)}')
 
     if msgText: print(msgText)
 
