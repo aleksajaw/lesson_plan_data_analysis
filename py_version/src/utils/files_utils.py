@@ -103,7 +103,7 @@ def getFileMarker(fileName='', separator='-'):
 
 
 
-def createFileName(basicFileName = 'schedule', fileExt = 'xlsx', separator = '-'):
+def createFileNameWithNr(basicFileName = 'schedule', fileExt = 'xlsx', separator = '-'):
     fileNameParts = findLastFileInGroup(basicFileName, fileExt, True)
     difference = ''
 
@@ -131,6 +131,22 @@ def createFileName(basicFileName = 'schedule', fileExt = 'xlsx', separator = '-'
 
 
     return finalFileName + '.' + fileExt
+
+
+
+def createFileNameWithDateTime(fileNameBase='log', fileExt='txt', mainSeparator='_', innerDateSeparator='-'):
+    import datetime
+
+    currTime = datetime.datetime.now()
+    dateStr = '%Y' + innerDateSeparator + '%m' + innerDateSeparator + '%d' + mainSeparator + '%H'
+    timeStr = '%M' + innerDateSeparator + '%S'
+    currTimeFormatted = currTime.strftime( dateStr + innerDateSeparator + timeStr)
+
+    fileName = currTimeFormatted + mainSeparator 
+    fileName += fileNameBase or 'log'
+    fileName += '.' + (fileExt or 'txt') 
+
+    return fileName
 
         
 

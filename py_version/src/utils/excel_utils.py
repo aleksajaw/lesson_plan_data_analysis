@@ -87,8 +87,8 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
 
     # desire should be Excel.Writer or filePath
     if not desire:
-        from files_utils import createFileName
-        desire = createFileName
+        from files_utils import createFileNameWithNr
+        desire = createFileNameWithNr
 
     try:
         df = convertToDf(dataToEnter)

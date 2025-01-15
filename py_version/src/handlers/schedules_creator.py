@@ -1,6 +1,6 @@
 from src.utils.error_utils import getTraceback
 from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupsPath, scheduleListsExcelOwnersGrouped, excelEngineName
-from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileName, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames
+from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
@@ -243,7 +243,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
     dataToReturn = None
 
     if not excelPath:
-        excelPath = createFileName
+        excelPath = createFileNameWithNr
 
     try:
         dataToEnter = sortScheduleOwnersList(dataToEnter)
