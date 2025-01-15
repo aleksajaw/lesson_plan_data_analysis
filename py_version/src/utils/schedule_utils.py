@@ -318,7 +318,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
                     if prepareNewColVal:
                         for index, r in enumerate(innerRows):
-                            if not (col[0], newColName) in r:
+                            if (col[0], newColName) not in r:
                                 innerRows[index][(col[0], newColName)] = (newColVal   if not newColVal.isdigit()
                                                                                       else int(newColVal))
 
