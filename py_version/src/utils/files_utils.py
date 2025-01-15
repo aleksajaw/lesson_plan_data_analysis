@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 from src.utils.error_utils import getTraceback
-from src.constants import outputsPath
+from src.constants import schedulePath
 
 
 
@@ -65,7 +65,7 @@ def findFileGroup(desiredBase='', desiredExt='', getSplitFileName=False):
     from collections import defaultdict
     group = defaultdict(list)
 
-    for fileName in os.listdir(outputsPath):
+    for fileName in os.listdir(schedulePath):
         basename, ext = splitFileName(fileName)
 
         if desiredExt in ('', '*', ext) and desiredBase in ('', '*', basename):

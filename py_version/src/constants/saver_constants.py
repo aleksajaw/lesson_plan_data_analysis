@@ -2,7 +2,8 @@
 import os
 currDirPath = os.path.dirname(__file__)
 srcDirPath = os.path.dirname(currDirPath)
-outputsPath = f'{srcDirPath}/schedules/'
+schedulePath = f'{srcDirPath}/schedules/'
+logsPath = f'{srcDirPath}/logs/'
 
 
 # FILE NAMES
@@ -25,33 +26,33 @@ scheduleExcelClassesJSONName = 'dfs-excel_schedule-classes.json'
 
 # FILE PATHS
 # Excel For Classes
-scheduleExcelClassesPath = outputsPath + scheduleExcelClassesName 
+scheduleExcelClassesPath = schedulePath + scheduleExcelClassesName 
 # For Teachers
-scheduleExcelTeachersPath = outputsPath + scheduleExcelTeachersName
+scheduleExcelTeachersPath = schedulePath + scheduleExcelTeachersName
 # For classrooms
-scheduleExcelClassroomsPath = outputsPath + scheduleExcelClassroomsName
+scheduleExcelClassroomsPath = schedulePath + scheduleExcelClassroomsName
 # For subjects
-scheduleExcelSubjectsPath = outputsPath + scheduleExcelSubjectsName
+scheduleExcelSubjectsPath = schedulePath + scheduleExcelSubjectsName
 # For groups: grouped all of the above
-scheduleExcelGroupsPath = outputsPath + scheduleExcelGroupsName
+scheduleExcelGroupsPath = schedulePath + scheduleExcelGroupsName
 
 # Excel For Classes grouped
-scheduleExcelClassesGroupedPath = outputsPath + scheduleExcelClassesGroupedName 
+scheduleExcelClassesGroupedPath = schedulePath + scheduleExcelClassesGroupedName 
 # For Teachers grouped
-scheduleExcelTeachersGroupedPath = outputsPath + scheduleExcelTeachersGroupedName
+scheduleExcelTeachersGroupedPath = schedulePath + scheduleExcelTeachersGroupedName
 # For classrooms grouped
-scheduleExcelClassroomsGroupedPath = outputsPath + scheduleExcelClassroomsGroupedName
+scheduleExcelClassroomsGroupedPath = schedulePath + scheduleExcelClassroomsGroupedName
 # For subjects grouped
-scheduleExcelSubjectsGroupedPath = outputsPath + scheduleExcelSubjectsGroupedName
+scheduleExcelSubjectsGroupedPath = schedulePath + scheduleExcelSubjectsGroupedName
 # For schedule lists with owner grouped
-scheduleListsExcelOwnersGrouped = outputsPath + scheduleListsExcelOwnersGroupedName
+scheduleListsExcelOwnersGrouped = schedulePath + scheduleListsExcelOwnersGroupedName
 
 # pure scraped data in JSON
-scheduleClassesJSONPath = outputsPath + scheduleClassesJSONName
+scheduleClassesJSONPath = schedulePath + scheduleClassesJSONName
 # DataFrames in JSON
-scheduleClassesDfsJSONPath = outputsPath + scheduleClassesDfsJSONName
+scheduleClassesDfsJSONPath = schedulePath + scheduleClassesDfsJSONName
 # current Excel in JSON
-scheduleExcelClassesJSONPath = outputsPath + scheduleExcelClassesJSONName
+scheduleExcelClassesJSONPath = schedulePath + scheduleExcelClassesJSONName
 
 
 # variables for handling pandas' Data Frame and excel
