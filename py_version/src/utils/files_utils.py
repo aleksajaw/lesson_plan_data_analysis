@@ -25,6 +25,26 @@ def createDirIfNecessary(dirPath=''):
 
 
 
+def listSubdirectories(basePath=''):
+    excludedDirs = ['.old']
+    dirList = []
+
+    try:
+        for dirName in os.listdir(basePath):
+            isDir = os.path.isdir( os.path.join(basePath, dirName) )
+            
+            if isDir   and   dirName not in excludedDirs:
+                dirList.append(dirName)
+    
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError loading complete classes data: {getTraceback(e)}')
+        
+        if msgText: print(msgText)
+    
+    return dirList
+
+
+
 def doesFileExist(filePath='', shouldPrintMsg=False):
     msgText = f'File   {os.path.basename(filePath)}   '
     doesFileExistBool = bool( os.path.isfile(filePath) )
