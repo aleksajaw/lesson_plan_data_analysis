@@ -28,7 +28,7 @@ def checkIfAnyPathMissing():
 def checkIfAnyDirInside():
     global envName
     doesEnvDirExist = os.path.exists(envName)
-    return (not any( os.path.isdir(os.path.join(envName, entry))    for entry in os.listdir(envName)))   if doesEnvDirExist   else False
+    return any( os.path.isdir(os.path.join(envName, entry))    for entry in os.listdir(envName))   if doesEnvDirExist   else False
 
 
 
@@ -83,7 +83,7 @@ def runVirtualEnv():
         commandMain = f'\"source {currEssentialEnvPaths[1]}'
     
     try:
-        if not checkIfAnyPathMissing()   or   checkIfAnyDirInside():
+        if not checkIfAnyPathMissing()   and   checkIfAnyDirInside():
             command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
             subprocess.check_call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print(f'\nThe virtual environment "{envName}" activated.')
