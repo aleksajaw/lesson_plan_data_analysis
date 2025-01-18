@@ -248,7 +248,6 @@ def scrapeClassTables():
 
 def scrapeSchoolWebPage():
 
-    noErrors = True
     noErrors = initSchedulePageDriver()
     
     if noErrors:
