@@ -19,10 +19,13 @@ currEssenialEnvPaths = essentialEnvPaths[currSys]
 
 
 
-def createVirtualEnvIfNecessary():
+def createVirtualEnvIfNecessary(forceReinstall=False):
     global envName, essentialEnvPaths
 
-    if any( (not os.path.exists(essPath))   for essPath in currEssenialEnvPaths ):
+    isAnyPathMissing = any( (not os.path.exists(essPath))   for essPath in currEssenialEnvPaths )
+    isThereAnyDirInside = not any( os.path.isdir(os.path.join(envName, entry))    for entry in os.listdir(envName))
+    
+    if forceReinstall   or   isAnyPathMissing   or   isThereAnyDirInside:
         
         msgText = f'\nCreating a new virtual enviroment in the directory "{envName}"'
         print(msgText + '...')
@@ -30,11 +33,15 @@ def createVirtualEnvIfNecessary():
         try:
             subprocess.check_call([sys.executable, '-m', 'venv', envName])
 
-            if any( (not os.path.exists(essPath))   for essPath in currEssenialEnvPaths ): 
+            isThereAnyDirInside = not any( os.path.isdir(os.path.join(envName, entry))    for entry in os.listdir(envName))
+            isAnyPathMissing = any( (not os.path.exists(essPath))   for essPath in currEssenialEnvPaths )
+
+            if isAnyPathMissing   or   isThereAnyDirInside:
+                
                 import shutil
                 shutil.rmtree(envName)
                 print(f'\nHave to remove old {envName} directory.')
-                createVirtualEnvIfNecessary()
+                setupEnvironment(True)
             
             print('Ends successfully.')
             return True
@@ -69,13 +76,14 @@ def runVirtualEnv():
     
     try:
         command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
-        subprocess.run(command, shell=True, check=True)
+        subprocess.check_call(command, shell=True)
         print(f'The virtual environment "{envName}" activated.')
         sys.exit()
         return True
         
     except subprocess.CalledProcessError:
         print(f'Error while activating the virtual environment "{envName}".')
+        setupEnvironment(True)
         return False
 
 
@@ -89,7 +97,9 @@ def doesPackageNeedInstallation(packageName='', requiredVer=''):
     try:
         
         envPythonPath = currEssenialEnvPaths[0]
-        commandResult = subprocess.check_output([envPythonPath, '-m', 'pip', 'show', packageName]).decode('utf-8')
+        # stdout=subprocess.PIPE: Captures the standard output (i.e., the data that the process would normally print to the screen).
+        # stderr=subprocess.PIPE: Captures the standard error stream (i.e., the errors that the process would normally print to the screen).
+        commandResult = subprocess.check_output([envPythonPath, '-m', 'pip', 'show', packageName], stderr=subprocess.PIPE).decode('utf-8')
         installedVer = None
 
         for line in commandResult.splitlines():
@@ -104,7 +114,7 @@ def doesPackageNeedInstallation(packageName='', requiredVer=''):
     
     except FileNotFoundError:
         print(f'\nFile {envPythonPath} not found.')
-        createVirtualEnvIfNecessary()
+        setupEnvironment(True)
 
 
 
@@ -132,8 +142,14 @@ def installRequirements(requirementsFile='requirements.txt'):
         print(f'\nSome requirements need to be installed: {packagesToInstall}')
         for packageName in packagesToInstall:
             envPythonPath = currEssenialEnvPaths[0]
-            subprocess.check_call([envPythonPath, '-m', 'pip', 'install', packageName])
-
+            try:
+                # stdout=subprocess.PIPE: Captures the standard output (i.e., the data that the process would normally print to the screen).
+                # stderr=subprocess.PIPE: Captures the standard error stream (i.e., the errors that the process would normally print to the screen).
+                subprocess.check_call([envPythonPath, '-m', 'pip', 'install', packageName], stderr=subprocess.PIPE)
+            
+            except subprocess.CalledProcessError:
+                print('Error while installing requirements.')
+                setupEnvironment(True)
 
     except FileNotFoundError:
         print(f'\nFile {requirementsFile} not found.')
@@ -184,9 +200,12 @@ def addAllOfTheProjectFolders():
 
 
 
-def setupEnvironment(requirementsFile='requirements.txt'):
+def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
+    if forceReinstall:
+        print('Reinstall environment.')
+    
     try:
-        noErrors = createVirtualEnvIfNecessary()
+        noErrors = createVirtualEnvIfNecessary(forceReinstall)
         if noErrors:
             noErrors = installRequirements(requirementsFile)
           
