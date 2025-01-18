@@ -11,7 +11,7 @@ essentialEnvPaths = { 'win32':  [ os.path.join(envName, 'Scripts', 'python.exe')
                       'darwin': [ os.path.join(envName, 'bin', 'python'),
                                   os.path.join(envName, 'bin', 'activate') ] }
 currSys = sys.platform
-currEssenialEnvPaths = essentialEnvPaths[currSys]
+currEssentialEnvPaths = essentialEnvPaths[currSys]
 
 
 
@@ -19,25 +19,33 @@ currEssenialEnvPaths = essentialEnvPaths[currSys]
 
 
 
-def createVirtualEnvIfNecessary(forceReinstall=False):
-    global envName, essentialEnvPaths
+def checkIfAnyPathMissing():
+    global currEssentialEnvPaths
+    return any( (not os.path.exists(essPath))   for essPath in currEssentialEnvPaths )
 
-    isAnyPathMissing = any( (not os.path.exists(essPath))   for essPath in currEssenialEnvPaths )
-    isThereAnyDirInside = not any( os.path.isdir(os.path.join(envName, entry))    for entry in os.listdir(envName))
-    
-    if forceReinstall   or   isAnyPathMissing   or   isThereAnyDirInside:
+
+
+def checkIfAnyDirInside():
+    global envName
+    doesEnvDirExist = os.path.exists(envName)
+    return (not any( os.path.isdir(os.path.join(envName, entry))    for entry in os.listdir(envName)))   if doesEnvDirExist   else False
+
+
+
+def createVirtualEnvIfNecessary(forceReinstall=False):
+    global envName, currEssentialEnvPaths
+        
+    if forceReinstall   or   not os.path.exists(envName)   or   checkIfAnyPathMissing()   or   not checkIfAnyDirInside():
         
         msgText = f'\nCreating a new virtual enviroment in the directory "{envName}"'
         print(msgText + '...')
 
         try:
-            subprocess.check_call([sys.executable, '-m', 'venv', envName])
+            # stdout=subprocess.PIPE: Captures the standard output (i.e., the data that the process would normally print to the screen).
+            # stderr=subprocess.PIPE: Captures the standard error stream (i.e., the errors that the process would normally print to the screen).
+            subprocess.check_call([sys.executable, '-m', 'venv', envName], stderr=subprocess.PIPE)
 
-            isThereAnyDirInside = not any( os.path.isdir(os.path.join(envName, entry))    for entry in os.listdir(envName))
-            isAnyPathMissing = any( (not os.path.exists(essPath))   for essPath in currEssenialEnvPaths )
-
-            if isAnyPathMissing   or   isThereAnyDirInside:
-                
+            if checkIfAnyPathMissing():
                 import shutil
                 shutil.rmtree(envName)
                 print(f'\nHave to remove old {envName} directory.')
@@ -62,26 +70,30 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
 
 
 def runVirtualEnv():
-    global envName, essentialEnvPaths
+    global envName, currEssentialEnvPaths
     
     command = []
-    
+
     if currSys == "win32":
         commandBefore = 'start cmd /K '
-        commandMain = f'\"{currEssenialEnvPaths[1]}'
+        commandMain = f'\"{currEssentialEnvPaths[1]}'
 
     elif currSys in ['linux', 'darwin']:
         commandBefore = 'bash -c '
-        commandMain = f'\"source {currEssenialEnvPaths[1]}'
+        commandMain = f'\"source {currEssentialEnvPaths[1]}'
     
     try:
-        command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
-        subprocess.check_call(command, shell=True)
-        print(f'The virtual environment "{envName}" activated.')
-        sys.exit()
-        return True
+        if not checkIfAnyPathMissing()   or   checkIfAnyDirInside():
+            command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
+            subprocess.check_call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            print(f'The virtual environment "{envName}" activated.')
+            sys.exit()
+            return True
         
-    except subprocess.CalledProcessError:
+        else:
+            raise FileNotFoundError
+        
+    except (subprocess.CalledProcessError, FileNotFoundError):
         print(f'Error while activating the virtual environment "{envName}".')
         setupEnvironment(True)
         return False
@@ -93,12 +105,10 @@ def runVirtualEnv():
 
 
 def doesPackageNeedInstallation(packageName='', requiredVer=''):
-    global essentialEnvPaths
+    global currEssentialEnvPaths
     try:
         
-        envPythonPath = currEssenialEnvPaths[0]
-        # stdout=subprocess.PIPE: Captures the standard output (i.e., the data that the process would normally print to the screen).
-        # stderr=subprocess.PIPE: Captures the standard error stream (i.e., the errors that the process would normally print to the screen).
+        envPythonPath = currEssentialEnvPaths[0]
         commandResult = subprocess.check_output([envPythonPath, '-m', 'pip', 'show', packageName], stderr=subprocess.PIPE).decode('utf-8')
         installedVer = None
 
@@ -119,7 +129,7 @@ def doesPackageNeedInstallation(packageName='', requiredVer=''):
 
 
 def installRequirements(requirementsFile='requirements.txt'):
-    global envName, essentialEnvPaths
+    global envName, currEssentialEnvPaths
 
     packagesToInstall=[]
 
@@ -141,10 +151,8 @@ def installRequirements(requirementsFile='requirements.txt'):
     except ImportError as e:
         print(f'\nSome requirements need to be installed: {packagesToInstall}')
         for packageName in packagesToInstall:
-            envPythonPath = currEssenialEnvPaths[0]
+            envPythonPath = currEssentialEnvPaths[0]
             try:
-                # stdout=subprocess.PIPE: Captures the standard output (i.e., the data that the process would normally print to the screen).
-                # stderr=subprocess.PIPE: Captures the standard error stream (i.e., the errors that the process would normally print to the screen).
                 subprocess.check_call([envPythonPath, '-m', 'pip', 'install', packageName], stderr=subprocess.PIPE)
             
             except subprocess.CalledProcessError:
@@ -208,7 +216,10 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
         noErrors = createVirtualEnvIfNecessary(forceReinstall)
         if noErrors:
             noErrors = installRequirements(requirementsFile)
-          
+            
+        if forceReinstall:
+            runVirtualEnv()
+        
     except Exception as e:
         print(f'Error: {e}')
         sys.exit()
