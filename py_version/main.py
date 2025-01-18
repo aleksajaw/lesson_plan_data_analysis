@@ -4,6 +4,14 @@ import subprocess
 
 # Remember to write this name to the .gitignore file.
 envName='venv'
+essentialEnvPaths = { 'win32':  [ os.path.join(envName, 'Scripts', 'python.exe'),
+                                  os.path.join(envName, 'Scripts', 'activate') ],
+                      'linux':  [ os.path.join(envName, 'bin', 'python'),
+                                  os.path.join(envName, 'bin', 'activate') ],
+                      'darwin': [ os.path.join(envName, 'bin', 'python'),
+                                  os.path.join(envName, 'bin', 'activate') ] }
+currSys = sys.platform
+currEssenialEnvPaths = essentialEnvPaths[currSys]
 
 
 
@@ -12,16 +20,23 @@ envName='venv'
 
 
 def createVirtualEnvIfNecessary():
-    global envName
+    global envName, essentialEnvPaths
 
-    if not os.path.exists(envName):
+    if any( (not os.path.exists(essPath))   for essPath in currEssenialEnvPaths ):
         
         msgText = f'\nCreating a new virtual enviroment in the directory "{envName}"'
         print(msgText + '...')
 
         try:
             subprocess.check_call([sys.executable, '-m', 'venv', envName])
-            print(msgText + ' ends successfully.')
+
+            if any( (not os.path.exists(essPath))   for essPath in currEssenialEnvPaths ): 
+                import shutil
+                shutil.rmtree(envName)
+                print(f'\nHave to remove old {envName} directory.')
+                createVirtualEnvIfNecessary()
+            
+            print('Ends successfully.')
             return True
 
         except Exception as e:
@@ -40,20 +55,17 @@ def createVirtualEnvIfNecessary():
 
 
 def runVirtualEnv():
-    global envName
-    import platform
+    global envName, essentialEnvPaths
     
     command = []
     
-    if platform.system() == 'Windows':
-        activateScript = os.path.join(envName, 'Scripts', 'activate.bat')
+    if currSys == "win32":
         commandBefore = 'start cmd /K '
-        commandMain = f'\"{activateScript}'
+        commandMain = f'\"{currEssenialEnvPaths[1]}'
 
-    elif platform.system() in ['Linux', 'Darwin']:
-        activateScript = os.path.join(envName, 'bin', 'activate')
+    elif currSys in ['linux', 'darwin']:
         commandBefore = 'bash -c '
-        commandMain = f'\"source {activateScript}'
+        commandMain = f'\"source {currEssenialEnvPaths[1]}'
     
     try:
         command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
@@ -73,10 +85,11 @@ def runVirtualEnv():
 
 
 def doesPackageNeedInstallation(packageName='', requiredVer=''):
+    global essentialEnvPaths
     try:
         
-        pythonPath = os.path.join(envName, 'Scripts', 'python.exe')
-        commandResult = subprocess.check_output([pythonPath or 'python', '-m', 'pip', 'show', packageName]).decode('utf-8')
+        envPythonPath = currEssenialEnvPaths[0]
+        commandResult = subprocess.check_output([envPythonPath, '-m', 'pip', 'show', packageName]).decode('utf-8')
         installedVer = None
 
         for line in commandResult.splitlines():
@@ -86,14 +99,17 @@ def doesPackageNeedInstallation(packageName='', requiredVer=''):
         
         return not (installedVer == requiredVer)
     
-    
     except subprocess.CalledProcessError:
         return True
+    
+    except FileNotFoundError:
+        print(f'\nFile {envPythonPath} not found.')
+        createVirtualEnvIfNecessary()
 
 
 
 def installRequirements(requirementsFile='requirements.txt'):
-    global envName
+    global envName, essentialEnvPaths
 
     packagesToInstall=[]
 
@@ -115,8 +131,8 @@ def installRequirements(requirementsFile='requirements.txt'):
     except ImportError as e:
         print(f'\nSome requirements need to be installed: {packagesToInstall}')
         for packageName in packagesToInstall:
-            pipPath = os.path.join(envName, 'Scripts', 'pip')
-            subprocess.check_call([pipPath or 'pip', 'install', packageName])
+            envPythonPath = currEssenialEnvPaths[0]
+            subprocess.check_call([envPythonPath, '-m', 'pip', 'install', packageName])
 
 
     except FileNotFoundError:
@@ -212,7 +228,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.setup:
-      setupEnvironment()
+        setupEnvironment()
 
     try:
         runVirtualEnv()
