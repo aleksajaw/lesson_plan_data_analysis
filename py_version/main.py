@@ -86,7 +86,7 @@ def runVirtualEnv():
         if not checkIfAnyPathMissing()   or   checkIfAnyDirInside():
             command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
             subprocess.check_call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            print(f'The virtual environment "{envName}" activated.')
+            print(f'\nThe virtual environment "{envName}" activated.')
             sys.exit()
             return True
         
@@ -94,7 +94,7 @@ def runVirtualEnv():
             raise FileNotFoundError
         
     except (subprocess.CalledProcessError, FileNotFoundError):
-        print(f'Error while activating the virtual environment "{envName}".')
+        print(f'\nError while activating the virtual environment "{envName}".')
         setupEnvironment(True)
         return False
 
@@ -156,7 +156,7 @@ def installRequirements(requirementsFile='requirements.txt'):
                 subprocess.check_call([envPythonPath, '-m', 'pip', 'install', packageName], stderr=subprocess.PIPE)
             
             except subprocess.CalledProcessError:
-                print('Error while installing requirements.')
+                print('\nError while installing requirements.')
                 setupEnvironment(True)
 
     except FileNotFoundError:
@@ -210,7 +210,7 @@ def addAllOfTheProjectFolders():
 
 def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
     if forceReinstall:
-        print('Reinstall environment.')
+        print('\nReinstall environment.')
     
     try:
         noErrors = createVirtualEnvIfNecessary(forceReinstall)
@@ -221,7 +221,7 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
             runVirtualEnv()
         
     except Exception as e:
-        print(f'Error: {e}')
+        print(f'\nError: {e}')
         sys.exit()
 
 
@@ -264,4 +264,4 @@ if __name__ == '__main__':
         runVirtualEnv()
         
     except Exception as e:
-        print(f'Error: {e}\nTry command:\n\npython main.py --setup')
+        print(f'\nError: {e}\nTry command:\n\npython main.py --setup')
