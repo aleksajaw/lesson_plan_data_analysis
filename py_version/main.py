@@ -15,7 +15,7 @@ currEssentialEnvPaths = essentialEnvPaths[currSys]
 
 
 
-###############################################################################################
+######################################################################################################################################################
 
 
 
@@ -74,7 +74,7 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
 
 
 
-###############################################################################################
+######################################################################################################################################################
 
 
 
@@ -92,16 +92,18 @@ def runVirtualEnv():
         commandMain = f'\"source {currEssentialEnvPaths[1]}'
     
     try:
-        if not checkIsAnyPathMissing()   and   checkIsAnyDirInside():
-            command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
-            subprocess.check_call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            print(f'\nThe virtual environment "{envName}" activated.')
-            sys.exit()
-            return True
+        # Remove the comment characters in this function if you want to automate 
+        # installation of the missing virtual environment or needed packages.
+        # Remember to correct the indentations.
+        #if not checkIsAnyPathMissing()   and   checkIsAnyDirInside():
+        command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
+        subprocess.check_call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(f'\nThe virtual environment "{envName}" activated.')
+        sys.exit()
+        return True
         
-        else:
-            raise FileNotFoundError
-        
+    #else:
+    #    raise FileNotFoundError
     except (subprocess.CalledProcessError, FileNotFoundError):
         print(f'\nError while activating the virtual environment "{envName}".')
         setupEnvironment(True)
@@ -109,7 +111,7 @@ def runVirtualEnv():
 
 
 
-###############################################################################################
+######################################################################################################################################################
 
 
 
@@ -180,7 +182,7 @@ def installRequirements(requirementsFile='requirements.txt'):
 
 
 
-###############################################################################################
+######################################################################################################################################################
 
 
 
@@ -213,7 +215,7 @@ def addAllOfTheProjectFolders():
 
 
 
-###############################################################################################
+######################################################################################################################################################
 
 
 
@@ -226,8 +228,13 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
         if noErrors:
             noErrors = installRequirements(requirementsFile)
             
-        if forceReinstall:
-            runVirtualEnv()
+        # Remove the comment characters in this function if you want to automate 
+        # initialization of the project after a forced reinstallation 
+        # of the virtual environment and needed packages. 
+        # Remember to correct the indentations.
+
+        #if forceReinstall:
+        #    runVirtualEnv()
         
     except Exception as e:
         print(f'\nError: {e}')
@@ -235,7 +242,7 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
 
 
 
-###############################################################################################
+######################################################################################################################################################
 
 
 
@@ -269,8 +276,9 @@ if __name__ == '__main__':
     if args.setup:
         setupEnvironment()
 
-    try:
-        runVirtualEnv()
-        
-    except Exception as e:
-        print(f'\nError: {e}\nTry command:\n\npython main.py --setup')
+    else:
+        try:
+            runVirtualEnv()
+            
+        except Exception as e:
+            print(f'\nError: {e}\nTry command:\n\npython main.py --setup')
