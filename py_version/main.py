@@ -19,23 +19,34 @@ currEssentialEnvPaths = essentialEnvPaths[currSys]
 
 
 
-def checkIfAnyPathMissing():
+def checkIfNotExists(pathEl=''):
+    return not os.path.exists(pathEl)
+
+
+
+def checkIsAnyPathMissing():
     global currEssentialEnvPaths
-    return any( (not os.path.exists(essPath))   for essPath in currEssentialEnvPaths )
+    return any( checkIfNotExists(essPath)   for essPath in currEssentialEnvPaths )
 
 
 
-def checkIfAnyDirInside():
+def checkIsDir(baseName='', entry=''):
+    return os.path.isdir(os.path.join(baseName, entry))
+
+
+
+def checkIsAnyDirInside():
     global envName
-    doesEnvDirExist = os.path.exists(envName)
-    return any( os.path.isdir(os.path.join(envName, entry))    for entry in os.listdir(envName))   if doesEnvDirExist   else False
+    doesEnvDirExist = not checkIfNotExists(envName)
+    dirEntries = os.listdir(envName)
+    return any( checkIsDir(envName, entry)   for entry in dirEntries )   if doesEnvDirExist   else False
 
 
 
 def createVirtualEnvIfNecessary(forceReinstall=False):
     global envName, currEssentialEnvPaths
         
-    if forceReinstall   or   not os.path.exists(envName)   or   checkIfAnyPathMissing()   or   not checkIfAnyDirInside():
+    if forceReinstall  or  checkIfNotExists(envName)  or  checkIsAnyPathMissing()  or  not checkIsAnyDirInside():
         
         msgText = f'\nCreating a new virtual enviroment in the directory "{envName}"'
         print(msgText + '...')
@@ -45,7 +56,7 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
             # stderr=subprocess.PIPE: Captures the standard error stream (i.e., the errors that the process would normally print to the screen).
             subprocess.check_call([sys.executable, '-m', 'venv', envName], stderr=subprocess.PIPE)
 
-            if checkIfAnyPathMissing():
+            if checkIsAnyPathMissing():
                 import shutil
                 shutil.rmtree(envName)
                 print(f'\nHave to remove old {envName} directory.')
@@ -83,7 +94,7 @@ def runVirtualEnv():
         commandMain = f'\"source {currEssentialEnvPaths[1]}'
     
     try:
-        if not checkIfAnyPathMissing()   and   checkIfAnyDirInside():
+        if not checkIsAnyPathMissing()   and   checkIsAnyDirInside():
             command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
             subprocess.check_call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             print(f'\nThe virtual environment "{envName}" activated.')
@@ -177,9 +188,9 @@ def installRequirements(requirementsFile='requirements.txt'):
 
 def addToSysPath(basePath='', innerFolderName=''):
     folderPathToAdd = ( basePath  if    not innerFolderName
-                                  else  basePath / innerFolderName)
+                                  else  os.path.join(basePath, innerFolderName) )
 
-    if not folderPathToAdd.exists():
+    if checkIfNotExists(folderPathToAdd):
         print(f'\nThe directory "{folderPathToAdd}" does not exist.')
         sys.exit()
 
@@ -193,7 +204,7 @@ def addAllOfTheProjectFolders():
     from pathlib import Path
     
     projectRoot = Path(__file__).resolve().parent
-    srcFolder = projectRoot / 'src'
+    srcFolder = os.path.join(projectRoot, 'src')
 
     folderList = [ 'constants', 'handlers', 'logs', 'schedules', 'utils' ]
         
