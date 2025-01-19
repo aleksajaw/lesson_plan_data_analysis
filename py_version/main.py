@@ -120,9 +120,14 @@ def runVirtualEnv():
         # Decoding using the 'cp852' encoding works on Windows.
         # If not, remember... "Strange, it works for me" :D
         print(f'\nError while activating the virtual environment "{envName}".\n{e.stderr.decode('cp852')}')
-        setupEnvironment(True)
+
+        # The 1st version of quitting the function.
+        # Automatically (re)install the environment if the program cannot run without any issues.
+        #setupEnvironment(True)
+        #runVirtualEnv()
+
+        # The 2nd, older and simpler version of quitting the function.
         #return False
-        runVirtualEnv()
 
 
 
@@ -213,6 +218,7 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(exit_on_error=False)
     parser.add_argument('--setup', action='store_true', help='Run the automatic setup or add the missing or corrupted packages.')
+    parser.add_argument('--force', action='store_true', help='Force the action.')
     parser.add_argument('--start', action='store_true', help='Activate the virtual environment.')
     args = None
 
@@ -226,7 +232,7 @@ if __name__ == '__main__':
 
 
     if args.setup:
-        setupEnvironment()
+        setupEnvironment(bool(args.force))
 
 
     if args.start   or   not args.setup:
