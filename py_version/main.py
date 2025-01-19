@@ -134,7 +134,9 @@ def doesPackageNeedInstallation(packageName='', requiredVer=''):
         
         return not (installedVer == requiredVer)
     
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        if packageName not in e.stderr.decode():
+            setupEnvironment(True)
         return True
     
     except FileNotFoundError:
@@ -289,7 +291,7 @@ if __name__ == '__main__':
 
     if args.setup:
         setupEnvironment()
-        
+
 
     if args.start   or   not args.setup:
         try:
