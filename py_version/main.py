@@ -84,29 +84,33 @@ def runVirtualEnv():
     command = []
 
     if currSys == "win32":
-        commandBefore = 'start cmd /K '
-        commandMain = f'\"{currEssentialEnvPaths[1]}'
+        commandBefore = 'cmd /c '
+        commandActivate = f'\"{currEssentialEnvPaths[1]}'
 
     elif currSys in ['linux', 'darwin']:
         commandBefore = 'bash -c '
-        commandMain = f'\"source {currEssentialEnvPaths[1]}'
+        commandActivate = f'\"source {currEssentialEnvPaths[1]}'
     
     try:
         # Remove the comment characters in this function if you want to automate 
         # installation of the missing virtual environment or needed packages.
         # Remember to correct the indentations.
-        #if not checkIsAnyPathMissing()   and   checkIsAnyDirInside():
-        command = commandBefore + commandMain + '   &&   python -c \"import main; main.main()\"   &&   deactivate   &&   exit\"'
-        subprocess.check_call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(f'\nThe virtual environment "{envName}" activated.')
+    #if not checkIsAnyPathMissing()   and   checkIsAnyDirInside():
+        commandInfo = f'echo The virtual environment \"{envName}\" activated.'
+        commandMain = 'python -c \"import main; main.main()\"'
+        commandDeactivate = 'deactivate'
+        command = commandBefore + commandActivate + ' && ' + commandInfo + ' && ' + commandMain + ' && ' + commandDeactivate + '\"'
+
+        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
         sys.exit()
         return True
         
     #else:
     #    raise FileNotFoundError
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        print(f'\nError while activating the virtual environment "{envName}".')
-        setupEnvironment(True)
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        # Decoding using the 'cp852' encoding works on Windows.
+        # If not, remember... "Strange, it works for me" :D
+        print(f'\nError while activating the virtual environment "{envName}".\n{e.stderr.decode('cp852')}')
         return False
 
 
