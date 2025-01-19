@@ -269,16 +269,27 @@ def main():
 if __name__ == '__main__':
     
     import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--setup', action='store_true', help='Run the configuration or add the missing modules.')
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser(exit_on_error=False)
+    parser.add_argument('--setup', action='store_true', help='Run the automatic setup or add the missing or corrupted packages.')
+    parser.add_argument('--start', action='store_true', help='Activate the virtual environment.')
+    args = None
+
+    try:
+        args = parser.parse_args()
+
+    except:
+        print('\nSomething went wrong. It seems like you are trying to use unrecognized arguments.\n')
+        parser.print_help()
+        sys.exit(1)
+
 
     if args.setup:
         setupEnvironment()
+        
 
-    else:
+    if args.start   or   not args.setup:
         try:
             runVirtualEnv()
             
         except Exception as e:
-            print(f'\nError: {e}\nTry command:\n\npython main.py --setup')
+            print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
