@@ -48,11 +48,13 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
         
     if forceReinstall  or  checkIfNotExists(envName)  or  checkIsAnyPathMissing()  or  not checkIsAnyDirInside():
         
-        msgText = f'\nCreating a new virtual enviroment in the directory "{envName}"'
-        print(msgText + '...')
+        msgText = f'Creating a new virtual enviroment in the directory "{envName}"'
+        print('\n' + msgText + '...')
 
         try:
             subprocess.check_call(f'{sys.executable} -m venv {envName}')
+            # Ensure that pip is upgraded to the latest version.
+            subprocess.check_call(f'{currEssentialEnvPaths[0]} -m pip install --upgrade pip')
 
             if checkIsAnyPathMissing():
                 import shutil
