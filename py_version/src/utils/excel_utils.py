@@ -11,7 +11,7 @@ from openpyxl.styles import Border as openpyxlBorder
 from openpyxl.styles import Side as openpyxlSide
 from openpyxl.cell.cell import Cell as openpyxlCell
 from openpyxl.cell.cell import MergedCell as openpyxlMergedCell
-from openpyxl.utils import column_index_from_string, get_column_letter
+from openpyxl.utils import column_index_from_string
 
 
 
@@ -520,7 +520,7 @@ def delInvalidChars(name='', target='sheetName'):
     
 
 
-def filterNumpyNdarray(arr=np.ndarray, shouldConvertBack=False, elToDel=''):
+def filterNumpyNdarray(arr=np.ndarray, elToDel=''):
     # convert values to string
     arrAsStr = arr.astype(str)
     # remove specific value

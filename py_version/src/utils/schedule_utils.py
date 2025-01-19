@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import scheduleExcelClassesPath, weekdays, timeIndexNames, dfColWeekDayNamesTuples3el, dfColWeekDayNamesTuples4el, lessonTimePeriods, dfColWeekDayEmptyRow
+from src.constants import scheduleExcelClassesPath, weekdays, timeIndexNames, dfColWeekDayNamesTuples3el, dfColWeekDayNamesTuples4el, lessonTimePeriods
 from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
 import pandas as pd
 from pandas import DataFrame
