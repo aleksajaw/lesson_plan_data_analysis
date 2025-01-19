@@ -53,8 +53,6 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
 
         try:
             subprocess.check_call(f'{sys.executable} -m venv {envName}')
-            # Ensure that pip is upgraded to the latest version.
-            subprocess.check_call(f'{currEssentialEnvPaths[0]} -m pip install --upgrade pip')
 
             if checkIsAnyPathMissing():
                 import shutil
@@ -62,6 +60,11 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
                 print(f'\nHave to remove old {envName} directory.')
                 setupEnvironment(True)
             
+            # Ensure that pip is upgraded to the latest version.
+            subprocess.check_call(f'{currEssentialEnvPaths[0]} -m pip install --upgrade pip')
+            # Automatic installation of the requirements.
+            subprocess.check_call(f'{currEssentialEnvPaths[0]} -m pip install -r requirements.txt')
+
             print('Ends successfully.')
             return True
 
@@ -113,14 +116,16 @@ def runVirtualEnv():
         # Decoding using the 'cp852' encoding works on Windows.
         # If not, remember... "Strange, it works for me" :D
         print(f'\nError while activating the virtual environment "{envName}".\n{e.stderr.decode('cp852')}')
-        return False
+        setupEnvironment(True)
+        #return False
+        runVirtualEnv()
 
 
 
 ######################################################################################################################################################
 
 
-
+'''
 def doesPackageNeedInstallation(packageName='', requiredVer=''):
     global currEssentialEnvPaths
     try:
@@ -161,18 +166,20 @@ def installRequirements(requirementsFile='requirements.txt'):
                 packageVer = packageLine[1]
 
                 if packageName   and   doesPackageNeedInstallation(packageName, packageVer):
-                    packagesToInstall.append(packageName)
-            
+                    #packagesToInstall.append(packageName)
+                    break
+                
             if len(packagesToInstall):
                 raise ImportError
 
 
     except ImportError as e:
-        print(f'\nSome requirements need to be installed: {packagesToInstall}')
-        for packageName in packagesToInstall:
+        #print(f'\nSome requirements need to be installed: {packagesToInstall}')
+        #for packageName in packagesToInstall:
             envPythonPath = currEssentialEnvPaths[0]
             try:
-                subprocess.check_call(f'{envPythonPath} -m pip install {packageName}')
+                #subprocess.check_call(f'{envPythonPath} -m pip install {packageName}')
+                subprocess.check_call(f'{envPythonPath} -m pip install -r requirements.txt')
             
             except subprocess.CalledProcessError:
                 print('\nError while installing requirements.')
@@ -187,7 +194,7 @@ def installRequirements(requirementsFile='requirements.txt'):
         print('\nAll of the requirements already exist.')
 
     return True
-
+'''
 
 
 ######################################################################################################################################################
@@ -233,8 +240,8 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
     
     try:
         noErrors = createVirtualEnvIfNecessary(forceReinstall)
-        if noErrors:
-            noErrors = installRequirements(requirementsFile)
+        #if noErrors:
+        #    noErrors = installRequirements(requirementsFile)
             
         # Remove the comment characters in this function if you want to automate 
         # initialization of the project after a forced reinstallation 
