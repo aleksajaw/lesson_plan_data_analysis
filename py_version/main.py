@@ -135,30 +135,32 @@ def runVirtualEnv():
 
 
 
-def addToSysPath(basePath='', innerFolderName=''):
-    folderPathToAdd = ( basePath  if    not innerFolderName
-                                  else  os.path.join(basePath, innerFolderName) )
+def addToSysPath(basePath='', innerDirName=''):
+    dirPathToAdd = ( basePath  if    not innerDirName
+                                  else  os.path.join(basePath, innerDirName) )
 
-    if checkIfNotExists(folderPathToAdd):
-        print(f'\nThe directory "{folderPathToAdd}" does not exist.')
+    if checkIfNotExists(dirPathToAdd):
+        print(f'\nThe directory "{dirPathToAdd}" does not exist.')
         sys.exit()
 
     else:
-        sys.path.append(str(folderPathToAdd))
+        sys.path.append(str(dirPathToAdd))
         return True
 
 
 
-def addAllOfTheProjectFolders():
-    from pathlib import Path
+def addAllOfTheProjectDirs():
     
-    projectRoot = Path(__file__).parent
-    srcFolder = os.path.join(projectRoot, 'src')
+    projectRoot = os.path.dirname(__file__)
+    srcDir = os.path.join(projectRoot, 'src')
 
-    folderList = [ 'constants', 'handlers', 'logs', 'schedules', 'utils' ]
+    for dirName in ['logs', 'schedules']:
+        addToSysPath(projectRoot, dirName)
+
+    dirList = [ 'constants', 'handlers', 'utils' ]
         
-    for folderName in folderList:
-        addToSysPath(srcFolder, folderName)
+    for dirName in dirList:
+        addToSysPath(srcDir, dirName)
     
     return True
 
@@ -194,7 +196,7 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
 
 
 def main():
-    if addAllOfTheProjectFolders():
+    if addAllOfTheProjectDirs():
     
         from src import ( getClassesDataFromSchoolWebPage,
                           loadClassesDataVariables, createOrEditMainExcelFile, getClassesDataDfs,

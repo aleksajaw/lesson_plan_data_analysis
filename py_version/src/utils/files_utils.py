@@ -143,7 +143,7 @@ def createFileNameWithNr(basicFileName = 'schedule', fileExt = 'xlsx', separator
     fileNameParts = findLastFileInGroup(basicFileName, fileExt, True)
     difference = ''
 
-    # If there aren't any very similar files in the folder,
+    # If there aren't any very similar files in the dir,
     # use the basic file name.
     finalFileName = basicFileName
 

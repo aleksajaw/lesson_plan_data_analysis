@@ -5,6 +5,7 @@ import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
 import re
+import os
 
 
 
@@ -284,7 +285,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
             dataToReturn = objOfDfs
             addBgToExcelSheetRowsBasedOnObj(writer, sheetsGroups)
 
-        msgText = f'\nData loaded into the schedule Excel file: ' + excelPath.split('/')[-1]
+        msgText = f'\nData loaded into the schedule Excel file: ' + os.path.basename(excelPath)
 
 
     except Exception as e:

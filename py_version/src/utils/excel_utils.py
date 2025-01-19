@@ -12,6 +12,7 @@ from openpyxl.styles import Side as openpyxlSide
 from openpyxl.cell.cell import Cell as openpyxlCell
 from openpyxl.cell.cell import MergedCell as openpyxlMergedCell
 from openpyxl.utils import column_index_from_string
+import os
 
 
 
@@ -306,7 +307,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
         for groupName in groupDfs:   
             groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
 
-        msgText = '\nData loaded into the schedule Excel file: ' + scheduleExcelClassesPath.split('/')[-1]
+        msgText = '\nData loaded into the schedule Excel file: ' + os.path.basename(scheduleExcelClassesPath)
 
     except Exception as e:
         msgText = handleErrorMsg(f'\nError loading complete classes data: {getTraceback(e)}')

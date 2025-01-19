@@ -17,10 +17,10 @@ def handleErrorMsg(errorMsg=''):
         dateDirName = dateTimeFileName.split(mainSeparator)[0]
         dateErrorLogsDirName = dateDirName + mainSeparator + 'errors'
         
-        dateErrorLogsDirPath = logsPath + dateErrorLogsDirName + '/'
+        dateErrorLogsDirPath = os.path.join(logsPath, dateErrorLogsDirName)
         createDirIfNecessary(dateErrorLogsDirPath)
 
-        with open(dateErrorLogsDirPath + dateTimeFileName, 'w') as file:
+        with open(os.path.join(dateErrorLogsDirPath, dateTimeFileName), 'w') as file:
             file.write(errorMsg)
 
     return errorMsg
