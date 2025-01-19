@@ -43,6 +43,10 @@ def checkIsAnyDirInside():
 
 
 
+######################################################################################################################################################
+
+
+
 def createVirtualEnvIfNecessary(forceReinstall=False):
     global envName, currEssentialEnvPaths
         
@@ -125,81 +129,6 @@ def runVirtualEnv():
 ######################################################################################################################################################
 
 
-'''
-def doesPackageNeedInstallation(packageName='', requiredVer=''):
-    global currEssentialEnvPaths
-    try:
-        
-        envPythonPath = currEssentialEnvPaths[0]
-        commandResult = subprocess.check_output(f'{envPythonPath} -m pip show {packageName}', stderr=subprocess.PIPE).decode('utf-8')
-        installedVer = None
-
-        for line in commandResult.splitlines():
-            if line.startswith('Version:'):
-                installedVer = line.split(':')[1].strip()
-                break
-        
-        return not (installedVer == requiredVer)
-    
-    except subprocess.CalledProcessError as e:
-        if packageName not in e.stderr.decode():
-            setupEnvironment(True)
-        return True
-    
-    except FileNotFoundError:
-        print(f'\nFile {envPythonPath} not found.')
-        setupEnvironment(True)
-
-
-
-def installRequirements(requirementsFile='requirements.txt'):
-    global envName, currEssentialEnvPaths
-
-    packagesToInstall=[]
-
-    try:
-        with open(requirementsFile, 'r') as file:
-            
-            for line in file:
-                packageLine = line.strip().split('==')
-                packageName = packageLine[0]
-                packageVer = packageLine[1]
-
-                if packageName   and   doesPackageNeedInstallation(packageName, packageVer):
-                    #packagesToInstall.append(packageName)
-                    break
-                
-            if len(packagesToInstall):
-                raise ImportError
-
-
-    except ImportError as e:
-        #print(f'\nSome requirements need to be installed: {packagesToInstall}')
-        #for packageName in packagesToInstall:
-            envPythonPath = currEssentialEnvPaths[0]
-            try:
-                #subprocess.check_call(f'{envPythonPath} -m pip install {packageName}')
-                subprocess.check_call(f'{envPythonPath} -m pip install -r requirements.txt')
-            
-            except subprocess.CalledProcessError:
-                print('\nError while installing requirements.')
-                setupEnvironment(True)
-
-    except FileNotFoundError:
-        print(f'\nFile {requirementsFile} not found.')
-        return False
-
-
-    else:
-        print('\nAll of the requirements already exist.')
-
-    return True
-'''
-
-
-######################################################################################################################################################
-
-
 
 def addToSysPath(basePath='', innerFolderName=''):
     folderPathToAdd = ( basePath  if    not innerFolderName
@@ -240,8 +169,6 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
     
     try:
         noErrors = createVirtualEnvIfNecessary(forceReinstall)
-        #if noErrors:
-        #    noErrors = installRequirements(requirementsFile)
             
         # Remove the comment characters in this function if you want to automate 
         # initialization of the project after a forced reinstallation 
