@@ -87,7 +87,7 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
 
 
 
-def runVirtualEnv():
+def runVirtualEnv(forceStart=False):
     global envName, currEssentialEnvPaths
     
     command = []
@@ -123,8 +123,9 @@ def runVirtualEnv():
 
         # The 1st version of quitting the function.
         # Automatically (re)install the environment if the program cannot run without any issues.
-        #setupEnvironment(True)
-        #runVirtualEnv()
+        if forceStart:
+            setupEnvironment(True)
+            runVirtualEnv()
 
         # The 2nd, older and simpler version of quitting the function.
         #return False
@@ -239,7 +240,7 @@ if __name__ == '__main__':
 
     if args.start   or   not args.setup:
         try:
-            runVirtualEnv()
+            runVirtualEnv(bool(args.force))
             
         except Exception as e:
             print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
