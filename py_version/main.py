@@ -84,24 +84,24 @@ def runVirtualEnv():
     command = []
 
     if currSys == "win32":
-        commandBefore = 'cmd /c '
-        commandActivate = f'\"{currEssentialEnvPaths[1]}'
+        cBefore = 'cmd /c \"'
 
     elif currSys in ['linux', 'darwin']:
-        commandBefore = 'bash -c '
-        commandActivate = f'\"source {currEssentialEnvPaths[1]}'
+        cBefore = 'bash -c \"source '
     
     try:
         # Remove the comment characters in this function if you want to automate 
         # installation of the missing virtual environment or needed packages.
         # Remember to correct the indentations.
     #if not checkIsAnyPathMissing()   and   checkIsAnyDirInside():
-        commandInfo = f'echo The virtual environment \"{envName}\" activated.'
-        commandMain = 'python -c \"import main; main.main()\"'
-        commandDeactivate = 'deactivate'
-        command = commandBefore + commandActivate + ' && ' + commandInfo + ' && ' + commandMain + ' && ' + commandDeactivate + '\"'
+        cActivatePart = currEssentialEnvPaths[1]
+        cInfo = f'echo The virtual environment \"{envName}\" activated.'
+        cMain = 'python -c \"import main; main.main()\"'
+        cDeactivate = 'deactivate'
 
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
+        command = cBefore + cActivatePart + ' && ' + cInfo + ' && ' + cMain + ' && ' + cDeactivate + '\"'
+
+        subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
         sys.exit()
         return True
         
