@@ -52,9 +52,7 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
         print(msgText + '...')
 
         try:
-            # stdout=subprocess.PIPE: Captures the standard output (i.e., the data that the process would normally print to the screen).
-            # stderr=subprocess.PIPE: Captures the standard error stream (i.e., the errors that the process would normally print to the screen).
-            subprocess.check_call([sys.executable, '-m', 'venv', envName], stderr=subprocess.PIPE)
+            subprocess.check_call(f'{sys.executable} -m venv {envName}')
 
             if checkIsAnyPathMissing():
                 import shutil
@@ -120,7 +118,7 @@ def doesPackageNeedInstallation(packageName='', requiredVer=''):
     try:
         
         envPythonPath = currEssentialEnvPaths[0]
-        commandResult = subprocess.check_output([envPythonPath, '-m', 'pip', 'show', packageName], stderr=subprocess.PIPE).decode('utf-8')
+        commandResult = subprocess.check_output(f'{envPythonPath} -m pip show {packageName}', stderr=subprocess.PIPE).decode('utf-8')
         installedVer = None
 
         for line in commandResult.splitlines():
@@ -164,7 +162,7 @@ def installRequirements(requirementsFile='requirements.txt'):
         for packageName in packagesToInstall:
             envPythonPath = currEssentialEnvPaths[0]
             try:
-                subprocess.check_call([envPythonPath, '-m', 'pip', 'install', packageName], stderr=subprocess.PIPE)
+                subprocess.check_call(f'{envPythonPath} -m pip install {packageName}')
             
             except subprocess.CalledProcessError:
                 print('\nError while installing requirements.')
@@ -203,7 +201,7 @@ def addToSysPath(basePath='', innerFolderName=''):
 def addAllOfTheProjectFolders():
     from pathlib import Path
     
-    projectRoot = Path(__file__).resolve().parent
+    projectRoot = Path(__file__).parent
     srcFolder = os.path.join(projectRoot, 'src')
 
     folderList = [ 'constants', 'handlers', 'logs', 'schedules', 'utils' ]
