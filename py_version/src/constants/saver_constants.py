@@ -16,7 +16,6 @@ scheduleExcelSubjectsName = 'schedule_subjects.xlsx'
 
 scheduleListsExcelOwnersGroupedName = 'schedule-lists_owners-grouped.xlsx'
 
-scheduleExcelAllGroupedName = 'schedule_all-grouped.xlsx'
 scheduleExcelClassesGroupedName = 'schedule_classes-grouped.xlsx'
 scheduleExcelTeachersGroupedName = 'schedule_teachers-grouped.xlsx'
 scheduleExcelClassroomsGroupedName = 'schedule_classrooms-grouped.xlsx'
@@ -36,10 +35,12 @@ scheduleExcelTeachersPath =  os.path.join(schedulePath, scheduleExcelTeachersNam
 scheduleExcelClassroomsPath =  os.path.join(schedulePath, scheduleExcelClassroomsName)
 # For subjects
 scheduleExcelSubjectsPath =  os.path.join(schedulePath, scheduleExcelSubjectsName)
-# For groups: grouped all of the above
-scheduleExcelAllGroupedPath =  os.path.join(schedulePath, scheduleExcelAllGroupedName)
 
-# Excel For Classes grouped
+
+# Excel for schedule lists with owner grouped
+scheduleListsExcelOwnersGrouped =  os.path.join(schedulePath, scheduleListsExcelOwnersGroupedName)
+
+# For Classes grouped
 scheduleExcelClassesGroupedPath =  os.path.join(schedulePath, scheduleExcelClassesGroupedName)
 # For Teachers grouped
 scheduleExcelTeachersGroupedPath =  os.path.join(schedulePath, scheduleExcelTeachersGroupedName)
@@ -47,8 +48,6 @@ scheduleExcelTeachersGroupedPath =  os.path.join(schedulePath, scheduleExcelTeac
 scheduleExcelClassroomsGroupedPath =  os.path.join(schedulePath, scheduleExcelClassroomsGroupedName)
 # For subjects grouped
 scheduleExcelSubjectsGroupedPath =  os.path.join(schedulePath, scheduleExcelSubjectsGroupedName)
-# For schedule lists with owner grouped
-scheduleListsExcelOwnersGrouped =  os.path.join(schedulePath, scheduleListsExcelOwnersGroupedName)
 
 # pure scraped data in JSON
 scheduleClassesJSONPath =  os.path.join(schedulePath, scheduleClassesJSONName)

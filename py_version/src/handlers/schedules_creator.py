@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleExcelAllGroupedPath, scheduleListsExcelOwnersGrouped, excelEngineName
+from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGrouped, excelEngineName
 from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
@@ -34,14 +34,6 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
                     'subjects': list(subjectSchedules.keys()) }
 
     groupedOwnersLists = writeGroupListsToExcelAndFormat(ownersLists)
-
-    #allCreatedSchedules = { 'teachers': teacherSchedules,
-    #                        'classrooms': classroomSchedules,
-    #                        'subjects': subjectSchedules }
-
-    #allByGroupsSchedules = concatAndFilterGroupListsDataFrames(allCreatedSchedules, groupedOwnersLists)
-    
-    #writeSortedObjOfDfsToExcel(allByGroupsSchedules, 'all-by-groups', scheduleExcelAllGroupedPath)
 
     teacherSchedulesByGroups = concatAndFilterSingleGroupListDataFrames('teachers', teacherSchedules, groupedOwnersLists['teachers'])
     classroomSchedulesByGroups = concatAndFilterSingleGroupListDataFrames('classrooms', classroomSchedules, groupedOwnersLists['classrooms'])
