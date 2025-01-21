@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelGroupsPath, scheduleListsExcelOwnersGrouped, excelEngineName
+from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleExcelAllGroupedPath, scheduleListsExcelOwnersGrouped, excelEngineName
 from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
@@ -21,24 +21,27 @@ def createOtherScheduleExcelFiles(classSchedulesDfs):
         buildNewOwnerScheduleBasedOnCol(teacherSchedules, classDf, 'teacher', className)
         buildNewOwnerScheduleBasedOnCol(classroomSchedules, classDf, 'classroom', className)
         buildNewOwnerScheduleBasedOnCol(subjectSchedules, classDf, 'subject', className)
-    
+
+    removeLastEmptyRowsInDataFrames([teacherSchedules,classroomSchedules, subjectSchedules])
+
+    writeSortedObjOfDfsToExcel(teacherSchedules, 'teacher', scheduleExcelTeachersPath)
+    writeSortedObjOfDfsToExcel(classroomSchedules, 'classroom', scheduleExcelClassroomsPath)
+    writeSortedObjOfDfsToExcel(subjectSchedules, 'subject', scheduleExcelSubjectsPath)
+
+
     ownersLists = { 'teachers': list(teacherSchedules.keys()),
                     'classrooms': list(classroomSchedules.keys()),
                     'subjects': list(subjectSchedules.keys()) }
 
     groupedOwnersLists = writeGroupListsToExcelAndFormat(ownersLists)
 
-    removeLastEmptyRowsInDataFrames([teacherSchedules,classroomSchedules, subjectSchedules])
-    
-    allCreatedSchedules = { 'teachers': teacherSchedules, 'classrooms': classroomSchedules, 'subjects': subjectSchedules }
+    allCreatedSchedules = { 'teachers': teacherSchedules,
+                            'classrooms': classroomSchedules,
+                            'subjects': subjectSchedules }
 
-    groupsSchedules = concatAndFilterGroupListsDataFrames(allCreatedSchedules, groupedOwnersLists)
-    
-    writeSortedObjOfDfsToExcel(groupsSchedules, 'groups', scheduleExcelGroupsPath)
-    
-    writeSortedObjOfDfsToExcel(teacherSchedules, 'teacher', scheduleExcelTeachersPath)
-    writeSortedObjOfDfsToExcel(classroomSchedules, 'classroom', scheduleExcelClassroomsPath)
-    writeSortedObjOfDfsToExcel(subjectSchedules, 'subject', scheduleExcelSubjectsPath)
+    allByGroupsSchedules = concatAndFilterGroupListsDataFrames(allCreatedSchedules, groupedOwnersLists)
+
+    writeSortedObjOfDfsToExcel(allByGroupsSchedules, 'all-by-groups', scheduleExcelAllGroupedPath)
 
 
 

@@ -13,13 +13,14 @@ scheduleExcelClassesName = 'schedule_classes.xlsx'
 scheduleExcelTeachersName = 'schedule_teachers.xlsx'
 scheduleExcelClassroomsName = 'schedule_classrooms.xlsx'
 scheduleExcelSubjectsName = 'schedule_subjects.xlsx'
-scheduleExcelGroupsName = 'schedule_groups.xlsx'
 
+scheduleListsExcelOwnersGroupedName = 'schedule-lists_owners-grouped.xlsx'
+
+scheduleExcelAllGroupedName = 'schedule_all-grouped.xlsx'
 scheduleExcelClassesGroupedName = 'schedule_classes-grouped.xlsx'
 scheduleExcelTeachersGroupedName = 'schedule_teachers-grouped.xlsx'
 scheduleExcelClassroomsGroupedName = 'schedule_classrooms-grouped.xlsx'
 scheduleExcelSubjectsGroupedName = 'schedule_subjects-grouped.xlsx'
-scheduleListsExcelOwnersGroupedName = 'schedule-lists_owners-grouped.xlsx'
 
 scheduleClassesJSONName = 'schedule_classes.json'
 scheduleClassesDfsJSONName = 'dfs_schedule-classes.json'
@@ -36,7 +37,7 @@ scheduleExcelClassroomsPath =  os.path.join(schedulePath, scheduleExcelClassroom
 # For subjects
 scheduleExcelSubjectsPath =  os.path.join(schedulePath, scheduleExcelSubjectsName)
 # For groups: grouped all of the above
-scheduleExcelGroupsPath =  os.path.join(schedulePath, scheduleExcelGroupsName)
+scheduleExcelAllGroupedPath =  os.path.join(schedulePath, scheduleExcelAllGroupedName)
 
 # Excel For Classes grouped
 scheduleExcelClassesGroupedPath =  os.path.join(schedulePath, scheduleExcelClassesGroupedName)
