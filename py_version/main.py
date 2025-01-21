@@ -110,16 +110,14 @@ def runVirtualEnv(forceStart=False):
 
         command = cBefore + cActivatePart + ' && ' + cInfo + ' && ' + cMain + ' && ' + cDeactivate + '\"'
 
-        subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
+        subprocess.run(command, shell=True, check=True, text=True, stderr=subprocess.PIPE)
         sys.exit()
         return True
         
     #else:
     #    raise FileNotFoundError
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        # Decoding using the 'cp852' encoding works on Windows.
-        # If not, remember... "Strange, it works for me" :D
-        print(f'\nError while activating the virtual environment "{envName}".\n{e.stderr.decode('cp852')}')
+        print(f'\nError while activating the virtual environment "{envName}".\n{e.stderr}')
 
         # The 1st version of quitting the function.
         # Automatically (re)install the environment if the program cannot run without any issues.
