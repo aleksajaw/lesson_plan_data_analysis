@@ -103,6 +103,43 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
 
 
 
+def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataToEnter=None, isConverted=True):
+    msgText = ''
+
+    try:
+        # group contains classes, teachers, subjects
+        groupDfs = convertToObjOfDfs(dataToEnter)   if not isConverted   else dataToEnter
+
+        for groupName in groupDfs:   
+            groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
+
+        msgText = '\nData loaded into the schedule Excel file: ' + os.path.basename(scheduleExcelClassesPath)
+
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError loading complete classes data: {getTraceback(e)}')
+    
+    if msgText: print(msgText)
+
+
+
+def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
+    from schedule_utils import autoFormatScheduleExcel
+    msgText = ''
+
+    try:
+        #if len(objOfDfs.keys()):
+        sortedObjOfDfs = {key: objOfDfs[key] for key in sorted(objOfDfs)}
+        with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:       
+            writeObjOfDfsToExcel(writer, excelPath, sortedObjOfDfs)
+            autoFormatScheduleExcel(writer.book, excelPath)
+                
+    except Exception as writeError:
+        msgText = f"\nError while writing to the {titleForDisplay}' Excel file: {writeError}"
+    
+    if msgText: print(msgText)
+
+
+
 def autoFormatExcelCellSizes(workbook=None, excelFilePath=scheduleExcelClassesPath):
 
     msgText = ''
@@ -218,6 +255,31 @@ def formatCellBackground(cell=None, fillType='', startColor='', endColor=''):
 
 
 
+def addBgToExcelSheetRowsBasedOnObj(writer=ExcelWriter, sheetRowsToColor={'rows':[], 'colsLength':0}):
+    # add BACKGROUND to the (odd here) groups of the cells in worksheet 
+    msgText = ''
+
+    try:
+        workbook = writer.book
+        if workbook:
+                            
+            for sheetname in workbook.sheetnames:
+                ws = workbook[sheetname]
+                sheetBgRanges = sheetRowsToColor[sheetname]
+
+                for grRow in sheetBgRanges['rows']:
+                    for col in range(1, sheetBgRanges['colsLength']+1):
+                        cell = ws.cell(row=grRow, column=col)
+                        formatCellBackground(cell, 'solid', 'f3f3f3', 'f3f3f3')
+    
+    
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while adding background to the cells in the Excel sheet rows: {getTraceback(e)}')
+    
+    if msgText: print(msgText)
+
+
+
 def get1stNotMergedCell(group=[]):
     foundNotMergedCell = False
     i = -1
@@ -294,43 +356,6 @@ def dropnaInDfByAxis(el=None, axis=-1, both=True):
     if msgText: print(msgText)
  
     return el
-
-
-
-def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataToEnter=None, isConverted=True):
-    msgText = ''
-
-    try:
-        # group contains classes, teachers, subjects
-        groupDfs = convertToObjOfDfs(dataToEnter)   if not isConverted   else dataToEnter
-
-        for groupName in groupDfs:   
-            groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
-
-        msgText = '\nData loaded into the schedule Excel file: ' + os.path.basename(scheduleExcelClassesPath)
-
-    except Exception as e:
-        msgText = handleErrorMsg(f'\nError loading complete classes data: {getTraceback(e)}')
-    
-    if msgText: print(msgText)
-
-
-
-def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
-    from schedule_utils import autoFormatScheduleExcel
-    msgText = ''
-
-    try:
-        #if len(objOfDfs.keys()):
-        sortedObjOfDfs = {key: objOfDfs[key] for key in sorted(objOfDfs)}
-        with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:       
-            writeObjOfDfsToExcel(writer, excelPath, sortedObjOfDfs)
-            autoFormatScheduleExcel(writer.book, excelPath)
-                
-    except Exception as writeError:
-        msgText = f"\nError while writing to the {titleForDisplay}' Excel file: {writeError}"
-    
-    if msgText: print(msgText)
 
 
 
@@ -519,6 +544,13 @@ def delInvalidChars(name='', target='sheetName'):
     else:
         return name
     
+
+
+# for example,
+# {'key1':[], 'key2':[]}   =>   ['key1', 'key2']
+def getListOfKeys(obj={}):
+    return list(obj.keys())
+
 
 
 def filterNumpyNdarray(arr=np.ndarray, elToDel=''):
