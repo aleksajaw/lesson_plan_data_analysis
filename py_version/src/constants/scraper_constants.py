@@ -2,7 +2,7 @@
 schoolAndPlanURLs = [ ('https://zamkowa15.edu.pl', '/plan/plan.html'),
                       ('https://www.mechaniksieradz.edu.pl', '/DANE/Plan/Uczen/biezacy/') ]
 
-schoolURL, partPlanURL = schoolAndPlanURLs[1]
+schoolURL, partPlanURL = schoolAndPlanURLs[0]
 planURL = schoolURL + partPlanURL
 
 # frame name attributes
