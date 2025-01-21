@@ -60,7 +60,7 @@ scheduleExcelClassesJSONPath =  os.path.join(schedulePath, scheduleExcelClassesJ
 # variables for handling pandas' Data Frame and excel
 timeIndexNames = ['Nr','Godz']
 weekdays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek']
-lessonAttrs3el = ['przedmiot', 'nauczyciel', 'sala']
+lessonAttrs3el = ['przedmiot', 'grupa', 'nauczyciel', 'sala']
 lessonAttrs4el = ['przedmiot', 'nauczyciel', 'klasa', 'sala']
 dfRowIndexNamesTuples = [
     ('Nr', ''),
@@ -94,27 +94,27 @@ dfRowNrAndTimeTuples = [
     (11, '16:40-17:25'),
     (12, '17:30-18:15')
 ]
-dfColWeekDayNamesTuples3el = [
-    ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'sala'),
-    ('Wtorek', 'przedmiot'), ('Wtorek', 'nauczyciel'), ('Wtorek', 'sala'),
-    ('Środa', 'przedmiot'), ('Środa', 'nauczyciel'), ('Środa', 'sala'),
-    ('Czwartek', 'przedmiot'), ('Czwartek', 'nauczyciel'), ('Czwartek', 'sala'),
-    ('Piątek', 'przedmiot'), ('Piątek', 'nauczyciel'), ('Piątek', 'sala')
-]
 dfColWeekDayNamesTuples4el = [
-    ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'klasa'), ('Poniedziałek', 'sala'),
-    ('Wtorek', 'przedmiot'), ('Wtorek', 'nauczyciel'), ('Wtorek', 'klasa'), ('Wtorek', 'sala'),
-    ('Środa', 'przedmiot'), ('Środa', 'nauczyciel'), ('Środa', 'klasa'), ('Środa', 'sala'),
-    ('Czwartek', 'przedmiot'), ('Czwartek', 'nauczyciel'), ('Czwartek', 'klasa'), ('Czwartek', 'sala'),
-    ('Piątek', 'przedmiot'), ('Piątek', 'nauczyciel'), ('Piątek', 'klasa'), ('Piątek', 'sala')
+    ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'grupa'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'sala'),
+    ('Wtorek', 'przedmiot'), ('Wtorek', 'grupa'), ('Wtorek', 'nauczyciel'), ('Wtorek', 'sala'),
+    ('Środa', 'przedmiot'), ('Środa', 'grupa'), ('Środa', 'nauczyciel'), ('Środa', 'sala'),
+    ('Czwartek', 'przedmiot'), ('Czwartek', 'grupa'), ('Czwartek', 'nauczyciel'), ('Czwartek', 'sala'),
+    ('Piątek', 'przedmiot'), ('Piątek', 'grupa'), ('Piątek', 'nauczyciel'), ('Piątek', 'sala')
 ]
-dfColNamesTuples = dfRowIndexNamesTuples + dfColWeekDayNamesTuples3el
+dfColWeekDayNamesTuples5el = [
+    ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'grupa'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'klasa'), ('Poniedziałek', 'sala'),
+    ('Wtorek', 'przedmiot'), ('Wtorek', 'grupa'), ('Wtorek', 'nauczyciel'), ('Wtorek', 'klasa'), ('Wtorek', 'sala'),
+    ('Środa', 'przedmiot'), ('Środa', 'grupa'), ('Środa', 'nauczyciel'), ('Środa', 'klasa'), ('Środa', 'sala'),
+    ('Czwartek', 'przedmiot'), ('Czwartek', 'grupa'), ('Czwartek', 'nauczyciel'), ('Czwartek', 'klasa'), ('Czwartek', 'sala'),
+    ('Piątek', 'przedmiot'), ('Piątek', 'grupa'), ('Piątek', 'nauczyciel'), ('Piątek', 'klasa'), ('Piątek', 'sala')
+]
+dfColNamesTuples = dfRowIndexNamesTuples + dfColWeekDayNamesTuples4el
 # dfColNamesTuples = [('Nr', ''), ('Godz', '')] + [(day, attr) for day in weekdays for attr in lessonAttrs]
 
 import numpy as np
 dfColWeekDayEmptyRow = {
-    ('Poniedziałek', 'przedmiot'): np.nan, ('Poniedziałek', 'nauczyciel'): np.nan, ('Poniedziałek', 'klasa'): np.nan, ('Poniedziałek', 'sala'): np.nan,
-    ('Wtorek', 'przedmiot'): np.nan, ('Wtorek', 'nauczyciel'): np.nan, ('Wtorek', 'klasa'): np.nan, ('Wtorek', 'sala'): np.nan,
-    ('Środa', 'przedmiot'): np.nan, ('Środa', 'nauczyciel'): np.nan, ('Środa', 'klasa'): np.nan, ('Środa', 'sala'): np.nan,
-    ('Czwartek', 'przedmiot'): np.nan, ('Czwartek', 'nauczyciel'): np.nan, ('Czwartek', 'klasa'): np.nan, ('Czwartek', 'sala'): np.nan,
-    ('Piątek', 'przedmiot'): np.nan, ('Piątek', 'nauczyciel'): np.nan, ('Piątek', 'klasa'): np.nan, ('Piątek', 'sala'): np.nan }
+    ('Poniedziałek', 'przedmiot'): np.nan, ('Poniedziałek', 'grupa'): np.nan, ('Poniedziałek', 'nauczyciel'): np.nan, ('Poniedziałek', 'klasa'): np.nan, ('Poniedziałek', 'sala'): np.nan,
+    ('Wtorek', 'przedmiot'): np.nan, ('Wtorek', 'grupa'): np.nan, ('Wtorek', 'nauczyciel'): np.nan, ('Wtorek', 'klasa'): np.nan, ('Wtorek', 'sala'): np.nan,
+    ('Środa', 'przedmiot'): np.nan, ('Środa', 'grupa'): np.nan, ('Środa', 'nauczyciel'): np.nan, ('Środa', 'klasa'): np.nan, ('Środa', 'sala'): np.nan,
+    ('Czwartek', 'przedmiot'): np.nan, ('Czwartek', 'grupa'): np.nan, ('Czwartek', 'nauczyciel'): np.nan, ('Czwartek', 'klasa'): np.nan, ('Czwartek', 'sala'): np.nan,
+    ('Piątek', 'przedmiot'): np.nan, ('Piątek', 'grupa'): np.nan, ('Piątek', 'nauczyciel'): np.nan, ('Piątek', 'klasa'): np.nan, ('Piątek', 'sala'): np.nan }

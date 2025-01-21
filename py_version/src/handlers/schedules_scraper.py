@@ -70,7 +70,7 @@ def scrapeClassTables():
 
     try:
         colsNrReservedForRowMultiIndex = len(timeIndexNames)
-        emptyCellDefaultCols = ['','','']
+        emptyCellDefaultCols = ['','','','']
 
         for link in classList:
         # To quickly check the scraping loop:
@@ -144,6 +144,19 @@ def scrapeClassTables():
                         partsOfLine = splitHTMLAndRemoveTags(cellLine)
                         partsOfLineLength = len(partsOfLine)
                         
+                        if partsOfLineLength > 1:
+                            # get separate column for lesson group
+                            elWithGroup = list(part   for part in partsOfLine[0].rpartition('-')   if part)
+                            if len(elWithGroup)>1:
+                                partsOfLine[0] = elWithGroup[0]
+                                groupPart = elWithGroup[2]
+                            else:
+                                # subject without division into the groups
+                                groupPart = 'X'
+                            partsOfLine.insert(1, groupPart)
+                            partsOfLineLength = len(partsOfLine)
+                        
+
                         colsInCellLineCounter = 0
                         currRowWithLinesTotalNr = currRowNr + linesInRowCounter
 

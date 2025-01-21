@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import scheduleExcelClassesPath, weekdays, timeIndexNames, dfColWeekDayNamesTuples3el, dfColWeekDayNamesTuples4el, lessonTimePeriods
+from src.constants import scheduleExcelClassesPath, weekdays, timeIndexNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, lessonTimePeriods
 from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
 import pandas as pd
 from pandas import DataFrame
@@ -253,7 +253,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
         prepareNewColVal = addNewCol   and   newColName   and   newColVal
 
-        colDayNamesTuples = dfColWeekDayNamesTuples4el   if addNewCol   else dfColWeekDayNamesTuples3el
+        colDayNamesTuples = dfColWeekDayNamesTuples5el   if addNewCol   else dfColWeekDayNamesTuples4el
         timeKey1 = timeIndexNames[0]
         timeKey2 = timeIndexNames[1]
 
