@@ -18,13 +18,16 @@ import os
 
 ###   DRAFTS   ###
 def createDraftSheet(excelFilePath=scheduleExcelClassesPath):
+    msgTxt=''
     try:
         with ExcelWriter(excelFilePath, engine=excelEngineName, mode='w+') as writer:
             draftDf = DataFrame()  # Create an empty DataFrame
             draftDf.to_excel(writer, sheet_name=draftSheetName, merge_cells=True)
 
     except Exception as e:
-        print(handleErrorMsg('\nError while creating draft sheet for Excel file.', getTraceback(e)))
+        msgTxt = handleErrorMsg('\nError while creating draft sheet for Excel file.', getTraceback(e))
+
+    if msgTxt: print(msgTxt)
 
 
 
@@ -37,6 +40,7 @@ def createDraftSheetIfNecessary(excelPath=scheduleExcelClassesPath):
 
 def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleExcelClassesPath):
     from files_utils import doesFileExist
+    msgTxt=''
 
     if not bool(workbook) and doesFileExist(excelFilePath):
 
@@ -52,9 +56,10 @@ def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleExcelClassesP
 
 
         except Exception as e:
-            print(f"Unable to open the Excel file to check and delete the draft sheet: {getTraceback(e)}")
+            msgTxt = handleErrorMsg('\nUnable to open the Excel file to check and delete the draft sheet.', getTraceback(e))
             return
-
+    
+    if msgTxt: print(msgTxt)
     
 
 
@@ -134,7 +139,7 @@ def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
             autoFormatScheduleExcel(writer.book, excelPath)
                 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while writing to the {titleForDisplay}\' Excel file.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while writing to the {titleForDisplay} Excel file.', getTraceback(e))
     
     if msgText: print(msgText)
 

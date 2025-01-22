@@ -86,7 +86,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
           file.write(dataToCompare)
           file.close()
 
-          msgText = f'File   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.'
+          msgText = f'\nFile   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.'
     
     except Exception as e:
         msgText = handleErrorMsg('\nError while comparing and updating file content.', getTraceback(e))
