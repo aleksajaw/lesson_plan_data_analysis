@@ -201,7 +201,7 @@ def main():
     
         from src import ( getClassesDataFromSchoolWebPage,
                           loadClassesDataVariables, createOrEditMainExcelFile, getClassesDataDfs,
-                          createOtherScheduleExcelFiles,
+                          createScheduleExcelFiles,
                           openScheduleFilesWithDefApps )
         
         #turnOffFutureWarnings()
@@ -211,7 +211,7 @@ def main():
         if classesData:
             loadClassesDataVariables(classesData)
             createOrEditMainExcelFile()
-            createOtherScheduleExcelFiles(getClassesDataDfs())
+            createScheduleExcelFiles(getClassesDataDfs())
             openScheduleFilesWithDefApps()
 
 

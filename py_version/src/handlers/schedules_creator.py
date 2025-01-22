@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGrouped, excelEngineName
-from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, formatCellBackground, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames
+from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames, getListOfKeys
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
@@ -8,54 +8,110 @@ import re
 import os
 
 
-
-def createOtherScheduleExcelFiles(classSchedulesDfs):
-
-    teacherSchedules = {}
-    classroomSchedules = {}
-    subjectSchedules = {}
-
-    for className, classDf in classSchedulesDfs.items():
-        #weekdays = classDf.columns.get_level_values(0).unique()
-
-        buildNewOwnerScheduleBasedOnCol(teacherSchedules, classDf, 'teacher', className)
-        buildNewOwnerScheduleBasedOnCol(classroomSchedules, classDf, 'classroom', className)
-        buildNewOwnerScheduleBasedOnCol(subjectSchedules, classDf, 'subject', className)
-
-    removeLastEmptyRowsInDataFrames([teacherSchedules,classroomSchedules, subjectSchedules])
-
-    writeSortedObjOfDfsToExcel(teacherSchedules, 'teacher', scheduleExcelTeachersPath)
-    writeSortedObjOfDfsToExcel(classroomSchedules, 'classroom', scheduleExcelClassroomsPath)
-    writeSortedObjOfDfsToExcel(subjectSchedules, 'subject', scheduleExcelSubjectsPath)
-
-
-    ownersLists = { 'teachers': list(teacherSchedules.keys()),
-                    'classrooms': list(classroomSchedules.keys()),
-                    'subjects': list(subjectSchedules.keys()) }
-
-    groupedOwnersLists = writeGroupListsToExcelAndFormat(ownersLists)
-
-    teacherSchedulesByGroups = concatAndFilterSingleGroupListDataFrames('teachers', teacherSchedules, groupedOwnersLists['teachers'])
-    classroomSchedulesByGroups = concatAndFilterSingleGroupListDataFrames('classrooms', classroomSchedules, groupedOwnersLists['classrooms'])
-    subjectSchedulesByGroups = concatAndFilterSingleGroupListDataFrames('subjects', subjectSchedules, groupedOwnersLists['subjects'])
-
-    writeSortedObjOfDfsToExcel(teacherSchedulesByGroups, 'teachers-by-groups', scheduleExcelTeachersGroupedPath)
-    writeSortedObjOfDfsToExcel(classroomSchedulesByGroups, 'classrooms-by-groups', scheduleExcelClassroomsGroupedPath)
-    writeSortedObjOfDfsToExcel(subjectSchedulesByGroups, 'subjects-by-groups', scheduleExcelSubjectsGroupedPath)
+teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists = {}, {}, {}, {}
 
 
 
-def buildNewOwnerScheduleBasedOnCol(targetDict={}, baseDf=None, groupType='', newColValue='', newMainColKey='class'):
+def createScheduleExcelFiles(classSchedulesDfs):
+    
+    createScheduleExcelFilesByOwnerTypes(classSchedulesDfs)
+    #createScheduleExcelFileForOwnerLists()
+    createScheduleExcelFilesByGroupedOwnerLists()
 
-    if (isinstance(baseDf,DataFrame)) and (groupType!='') and (newColValue!=''):
+
+
+def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs):
+    global teacherSchedules, classroomSchedules, subjectSchedules
+    msgText=''
+
+    teacherSchedulesTemp, classroomSchedulesTemp, subjectSchedulesTemp = {}, {}, {}
+
+    try:
+        for className, classDf in classSchedulesDfs.items():
+            
+            buildOwnersTypeScheduleBasedOnCol(teacherSchedulesTemp, classDf, 'teacher', className)
+            buildOwnersTypeScheduleBasedOnCol(classroomSchedulesTemp, classDf, 'classroom', className)
+            buildOwnersTypeScheduleBasedOnCol(subjectSchedulesTemp, classDf, 'subject', className)
+
+        removeLastEmptyRowsInDataFrames([teacherSchedulesTemp, classroomSchedulesTemp, subjectSchedulesTemp])
+
+        teacherSchedules = teacherSchedulesTemp.copy()
+        classroomSchedules = classroomSchedulesTemp.copy()
+        subjectSchedules = subjectSchedulesTemp.copy()
+    
+        createScheduleExcelFileForOwnerLists()
+
+        teacherSchedules = { key: teacherSchedules[key]   for key in getPureList(groupedOwnerLists['teachers']) }
+        classroomSchedules = { str(key): classroomSchedules[str(key)]   for key in getPureList(groupedOwnerLists['classrooms']) }
+        subjectSchedules = { key: subjectSchedules[key]   for key in getPureList(groupedOwnerLists['subjects']) }
+
+        writeSortedObjOfDfsToExcel(teacherSchedules, 'teachers', scheduleExcelTeachersPath)
+        writeSortedObjOfDfsToExcel(classroomSchedules, 'classrooms', scheduleExcelClassroomsPath)
+        writeSortedObjOfDfsToExcel(subjectSchedules, 'subjects', scheduleExcelSubjectsPath)
+            
+        
+    except Exception as e:
+        msgText = handleErrorMsg('\nError while creating the schedule Excel files (by owner types).', getTraceback(e))
+
+    if msgText: print(msgText)
+
+
+
+def createScheduleExcelFileForOwnerLists():
+    global teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
+    msgText=''
+
+    try:
+        ownerLists = { 'teachers': getListOfKeys(teacherSchedules),
+                       'classrooms': getListOfKeys(classroomSchedules),
+                       'subjects': getListOfKeys(subjectSchedules) }
+        
+        groupedOwnerLists = writeGroupListsToExcelAndFormat(ownerLists)
+    
+    except Exception as e:
+        msgText = handleErrorMsg('\nError while creating the schedule Excel files for the owner lists.', getTraceback(e))
+    
+    if msgText: print(msgText)
+
+
+
+def createScheduleExcelFilesByGroupedOwnerLists():
+    global teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
+    msgText=''
+
+    try:
+        teacherSchedulesByGroups, classroomSchedulesByGroups, subjectSchedulesByGroups = {}, {}, {}
+
+        concatAndFilterSingleGroupListDataFrames('teachers', teacherSchedules, groupedOwnerLists['teachers'], teacherSchedulesByGroups)
+        writeSortedObjOfDfsToExcel(teacherSchedulesByGroups, 'teachers-by-groups', scheduleExcelTeachersGroupedPath)
+
+
+        concatAndFilterSingleGroupListDataFrames('classrooms', classroomSchedules, groupedOwnerLists['classrooms'], classroomSchedulesByGroups)
+        writeSortedObjOfDfsToExcel(classroomSchedulesByGroups, 'classrooms-by-groups', scheduleExcelClassroomsGroupedPath)
+        
+        
+        concatAndFilterSingleGroupListDataFrames('subjects', subjectSchedules, groupedOwnerLists['subjects'], subjectSchedulesByGroups)
+        writeSortedObjOfDfsToExcel(subjectSchedulesByGroups, 'subjects-by-groups', scheduleExcelSubjectsGroupedPath)
+
+
+    except Exception as e:
+        msgText = handleErrorMsg('\nError while creating the schedule Excel files by grouped owner lists.', getTraceback(e))
+
+    if msgText: print(msgText)
+
+
+
+def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='', newColValue='', newMainColKey='class'):
+
+    if (isinstance(baseDf,DataFrame)) and (ownersType!='') and (newColValue!=''):
         
         # main group in basic schedule is class
-        groupTypes = {'teacher': 'nauczyciel',
+        ownerTypes = {'teacher': 'nauczyciel',
                       'classroom': 'sala',
                       'subject': 'przedmiot'}
         
         # column name in timetable to be changed
-        colToBeChanged = groupTypes[groupType]
+        colToBeChanged = ownerTypes[ownersType]
 
         # make life (program) easier to understand:)
         newScheduleOwner = colToBeChanged
@@ -179,7 +235,7 @@ def sortScheduleOwnersList(dataToSort=None):
             
             except:
                 next
-      
+
     except Exception as e:
         msgText = handleErrorMsg('\nError loading complete classes data.', getTraceback(e))
 
@@ -205,38 +261,13 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='grou
             if convertedKey.isdigit() and int(convertedKey)%2!=0:
                 groupedRowsFiltered[key] = value
         
-        return {  'rowsToColor': [ item+1   for groupList in groupedRowsFiltered.values()
-                                            for item in groupList ],
-                  'columnsLength': len((df.reset_index()).columns) }
+        return {  'rows': [ item+1   for groupList in groupedRowsFiltered.values()
+                                        for item in groupList ],
+                  'colsLength': len((df.reset_index()).columns) }
     
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating object for coloring Data Frame rows.', getTraceback(e))
-    
-    if msgText: print(msgText)
-
-
-
-def addBgToExcelSheetRowsBasedOnObj(writer=ExcelWriter, sheetsGroups={}):
-    # add BACKGROUND to the (odd here) groups of the cells in worksheet 
-    msgText = ''
-
-    try:
-        workbook = writer.book
-        if workbook:
-                            
-            for sheetname in workbook.sheetnames:
-                ws = workbook[sheetname]
-                sheetBgRanges = sheetsGroups[sheetname]
-
-                for grRow in sheetBgRanges['rowsToColor']:
-                    for col in range(1, sheetBgRanges['columnsLength']+1):
-                        cell = ws.cell(row=grRow, column=col)
-                        formatCellBackground(cell, 'solid', 'f3f3f3', 'f3f3f3')
-    
-    
-    except Exception as e:
-        msgText = handleErrorMsg('\nError while adding background to the cells in the Excel sheet rows.', getTraceback(e))
     
     if msgText: print(msgText)
 
@@ -247,7 +278,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
     dataToReturn = None
 
     if not excelPath:
-        excelPath = createFileNameWithNr
+        excelPath = createFileNameWithNr()
 
     try:
         dataToEnter = sortScheduleOwnersList(dataToEnter)
@@ -301,67 +332,56 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
 
 
 def writeGroupListsToExcelAndFormat(groupLists={}):
-    dataToReturn = None
     msgText = ''
-    try:
-        dataToReturn = writeGroupListsToExcel(scheduleListsExcelOwnersGrouped, groupLists)
-        autoFormatExcelCellSizes(excelFilePath=scheduleListsExcelOwnersGrouped)
 
+    try:
+        newObjOfDfs = writeGroupListsToExcel(scheduleListsExcelOwnersGrouped, groupLists)
+        autoFormatExcelCellSizes(excelFilePath=scheduleListsExcelOwnersGrouped)
+        
     except Exception as e:
         msgText = handleErrorMsg('\nError while writing and formatting the excel files for group lists.', getTraceback(e))
 
     if msgText: print(msgText)
 
-    return dataToReturn
-
-
-
-def getPureGroupLists(objOfDfs={}):
-    groupObj = {}
-
-    for groupName, df in objOfDfs.items():
-        groupObj[groupName] = getPureGroupList(df)
-
-    return groupObj
-
-
-
-def getPureGroupList(df=None):
-    return df.groupby('names_base')['names'].apply(list).to_dict()
-
-
-
-def concatAndFilterGroupListsDataFrames(objOfDfs={}, groupListsDfs={}):
-    
-    ownersPureGroupLists = getPureGroupLists(groupListsDfs)
-
-    newObjOfDfs = {}
-
-    # get value for subjects, classrooms etc. separately 
-    for ownersType, ownerPureGroupList in ownersPureGroupLists.items():
-        ownerObjOfDfs = objOfDfs[ownersType]
-        concatAndFilterSingleGroupListDataFrames(ownersType, ownerObjOfDfs, ownerPureGroupList, True, newObjOfDfs)
-
     return newObjOfDfs
 
 
 
-def concatAndFilterSingleGroupListDataFrames(ownersType='', ownerObjOfDfs=None, ownerGroupList=None, isListPure=False, newDf={}):
+def getPureGroupList(df=DataFrame, colToGroupBy='names_base', colToCreateList='names'):
+    newDf = None
+    if colToGroupBy in df.index.names   and colToCreateList in df.columns:
+        newDf = df.groupby(colToGroupBy)[colToCreateList].apply(list).to_dict()
+
+    return newDf
+
+
+
+def getPureList(df=DataFrame, colToCreateList='names'):
+    # Make list from colToCreateList.
+    newDf = None
+    if colToCreateList in df.columns:
+        newDf = list(df[colToCreateList])
+
+    return newDf
+
+
+
+def concatAndFilterSingleGroupListDataFrames(ownersType='', sheetsForOwnerTypes={}, ownersList=DataFrame, newDf={}):
     
     newColNames = { 'classes': 'klasa',
                     'classrooms': 'sala',
                     'subjects': 'przedmiot', 
                     'teachers': 'nauczyciel' }
     
-    ownerPureGroupList = getPureGroupList(ownerGroupList)   if not isListPure   else ownerGroupList
-    newDf = newDf or {}
+    ownersPureGroupList = getPureGroupList(ownersList)
+
     # get group names like 'ang', '100' etc.
-    for groupName, groupList in ownerPureGroupList.items():
+    for groupName, groupList in ownersPureGroupList.items():
         
         # get elements like 'ang.r', '101' etc.
         for el in groupList:
             x = newDf[str(groupName)]   if str(groupName) in newDf.keys()   else None
-            y = ownerObjOfDfs[str(el)]
+            y = sheetsForOwnerTypes[str(el)].copy()
 
             if isinstance(x, DataFrame):
                 # ... and concatenate them :)

@@ -37,7 +37,7 @@ scheduleExcelClassroomsPath =  os.path.join(schedulePath, scheduleExcelClassroom
 scheduleExcelSubjectsPath =  os.path.join(schedulePath, scheduleExcelSubjectsName)
 
 
-# Excel for schedule lists with owner grouped
+# Excel for schedule lists with grouped owners
 scheduleListsExcelOwnersGrouped =  os.path.join(schedulePath, scheduleListsExcelOwnersGroupedName)
 
 # For Classes grouped
