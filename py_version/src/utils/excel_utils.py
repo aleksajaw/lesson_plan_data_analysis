@@ -133,9 +133,9 @@ def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
 
     try:
         #if len(objOfDfs.keys()):
-        sortedObjOfDfs = {key: objOfDfs[key] for key in sorted(objOfDfs)}
+        #sortedObjOfDfs = {key: objOfDfs[key] for key in sorted(objOfDfs)}
         with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:       
-            writeObjOfDfsToExcel(writer, excelPath, sortedObjOfDfs)
+            writeObjOfDfsToExcel(writer, excelPath, objOfDfs)
             autoFormatScheduleExcel(writer.book, excelPath)
                 
     except Exception as e:
@@ -561,7 +561,8 @@ def getListOfKeys(obj={}):
 def filterNumpyNdarray(arr=np.ndarray, elToDel=''):
     # convert values to string
     arrAsStr = arr.astype(str)
+    filteredArrAsStr = arrAsStr[ arrAsStr != elToDel]
     # remove specific value
-    sortedArr = np.sort( arrAsStr[ arrAsStr != elToDel] )
-
-    return np.array([val for val in sortedArr])
+    #sortedArr = np.sort( arrAsStr[ arrAsStr != elToDel] )
+    
+    return np.array([val   for val in filteredArrAsStr])

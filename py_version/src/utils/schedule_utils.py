@@ -199,7 +199,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
                     rowNr = merged.min_row   if merged   else row
                     cellValue = ws.cell(row=rowNr, column=1).value
 
-                    if isinstance(cellValue, int) and (cellValue % 2 != 0):
+                    if isinstance(cellValue, int) and (cellValue & 1):
                         #rowsToBeColoured.append(row)
                         for col in totalColsRange:
                             cell = ws.cell(row, column=col)
@@ -258,7 +258,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
         timeKey2 = timeIndexNames[1]
 
         # iterate through rows (time indices)
-        for (lessonNr, time), row in newDf.groupby(timeIndexNames):
+        for (lessonNr, time), row in newDf.groupby(timeIndexNames, sort=False):
             #print(lessonNr)
             #print(time)
             #print(row)

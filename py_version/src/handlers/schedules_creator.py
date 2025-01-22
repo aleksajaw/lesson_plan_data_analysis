@@ -123,7 +123,7 @@ def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='',
         newMainColName = newMainCol[newMainColKey]
                
         # get the list of teachers/classrooms/subjects inside the timetable
-        group = baseDf.xs(newScheduleOwner, axis=1, level=1).stack().unique()
+        group = baseDf.xs(newScheduleOwner, axis=1, level=1).stack(sort=False).unique()
         group = filterNumpyNdarray(group)
 
         if len(group):
@@ -184,7 +184,7 @@ def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='',
                     #   NaT in datetimelike
                     elRows.loc[:,(weekdays, newMainColName)] = elRows.loc[:, (weekdays, newMainColName)].map(lambda x: newColValue   if pd.notna(x)   else x)
 
-                    elRows = elRows.groupby(level=[0,1]).first()
+                    elRows = elRows.groupby(level=[0,1], sort=False).first()
                     #indexLength = len(elRows.index)
                     #elRows.insert(loc=0, column=timeIndexNames[1], value=lessonTimePeriods[:indexLength])
 
@@ -203,6 +203,7 @@ def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='',
 def sortScheduleOwnersList(dataToSort=None):
     msgText = ''
     try:
+        pattern = re.compile(r'\d+')
         for key in dataToSort.keys():
             try:
                 # sort by numbers (which are keys here) inside list elements,
@@ -222,8 +223,8 @@ def sortScheduleOwnersList(dataToSort=None):
                                           x.isdigit(),
                                           x.lower() if isinstance(x, str) and x[0].isalpha()
                                                     # sort by first digit in elements
-                                                    else  int( re.findall( r'\d+', x )[0] )
-                                                          if re.findall( r'\d+', x )
+                                                    else  int(pattern.search(x).group(0))
+                                                          if pattern.search(x)
                                                           # if element does not have digit,
                                                           # use inf(inity) to move element
                                                           # at the end of the sorting here
@@ -249,18 +250,31 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='grou
     msgText = ''
     try:
         df = dfWithRowsToColor
-        # create the object for coloring the backgrounds of odd groups
-        groupedRows = df.groupby(keyToGroupBy).apply(lambda
-                                                      group: [  df.index.get_loc(x) + 1
-                                                                for x in group.index ]
-                                                  ).to_dict()
+        # Create the object for coloring the backgrounds of odd groups.
+        # get_loc() starts counting rows from 1, not 0.
+        # (Column headers are excluded here.)
+        # keyToGroupBy is one of the indices.
+        #groupedRows = df.groupby(keyToGroupBy).apply(lambda
+        #                                              group: [  df.index.get_loc(x) + 1
+        #                                                        for x in group.index ]
+        #                                          ).to_dict()
+        dfReset = df.copy().reset_index()
+        dfReset['index_loc'] = dfReset.index + 1
+        groupedRows = dfReset.groupby(keyToGroupBy)['index_loc'].apply(list).to_dict()
+        
         groupedRowsFiltered = {}
         
         for key, value in groupedRows.items():
+            # convert '1.' => '1'
             convertedKey = key.replace(strToDelete,'')
-            if convertedKey.isdigit() and int(convertedKey)%2!=0:
+
+            # int(x) & 1
+            # Checks if the number x is odd by testing the least significant bit.
+            if convertedKey.isdigit()   and   (int(convertedKey) & 1):
                 groupedRowsFiltered[key] = value
         
+        # Headers are in the 1st row of the worksheet,
+        # so we add 1 to the item's value.
         return {  'rows': [ item+1   for groupList in groupedRowsFiltered.values()
                                         for item in groupList ],
                   'colsLength': len((df.reset_index()).columns) }
@@ -307,7 +321,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
 
                 # indices & their columns
                 df['group_No.'] = (df.groupby('names_base', sort=False).ngroup() + 1).astype(str) + '.'
-                df['names_in_group_No.'] = (df.groupby('names_base').cumcount() + 1).astype(str) + '.'
+                df['names_in_group_No.'] = (df.groupby('names_base', sort=False).cumcount() + 1).astype(str) + '.'
                 
                 df.set_index(keys=['group_No.', 'names_base', 'names_in_group_No.'], inplace=True)
                 
@@ -348,9 +362,11 @@ def writeGroupListsToExcelAndFormat(groupLists={}):
 
 
 def getPureGroupList(df=DataFrame, colToGroupBy='names_base', colToCreateList='names'):
+    # Group data in Data Frame by unique values in column (index) colToGroupBy.
+    # Then, make list from colToCreateList.
     newDf = None
     if colToGroupBy in df.index.names   and colToCreateList in df.columns:
-        newDf = df.groupby(colToGroupBy)[colToCreateList].apply(list).to_dict()
+        newDf = df.groupby(colToGroupBy, sort=False)[colToCreateList].apply(list).to_dict()
 
     return newDf
 
