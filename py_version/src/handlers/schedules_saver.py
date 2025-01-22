@@ -50,7 +50,7 @@ def createOrEditMainExcelFile():
 
 
     except Exception as e:
-        print( handleErrorMsg( f'\nError while handling the main Excel file: {getTraceback(e)}' ) )
+        print( handleErrorMsg( f'\nError while handling the main Excel file.', getTraceback(e) ) )
 
 
     # to avoid issues, compare file contents

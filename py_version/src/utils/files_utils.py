@@ -7,7 +7,7 @@ from src.constants import schedulePath
 
 
 def doesDirExist(dirPath='', shouldPrintMsg=False):
-    msgText = f'Directory   {os.path.basename(dirPath)}   '
+    msgText = f'\nDirectory   {os.path.basename(dirPath)}   '
     doesDirExistBool = bool( os.path.isdir(dirPath) )
 
     msgText += ( 'exists.'   if doesDirExistBool
@@ -37,7 +37,7 @@ def listSubdirectories(basePath=''):
                 dirList.append(dirName)
     
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError loading complete classes data: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError loading complete classes data.', getTraceback(e))
         
         if msgText: print(msgText)
     
@@ -46,7 +46,7 @@ def listSubdirectories(basePath=''):
 
 
 def doesFileExist(filePath='', shouldPrintMsg=False):
-    msgText = f'File   {os.path.basename(filePath)}   '
+    msgText = f'\nFile   {os.path.basename(filePath)}   '
     doesFileExistBool = bool( os.path.isfile(filePath) )
 
     msgText += ( 'exists.'   if doesFileExistBool
@@ -76,7 +76,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
                 isFileChanged = True
                 
             else:
-                msgText = f'\nNothing to be updated in file   {os.path.basename(filePath)}.'
+                msgText = f'\nNothing to be updated in the file   {os.path.basename(filePath)}.'
 
             file.close()
 
@@ -89,7 +89,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
           msgText = f'File   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.'
     
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while comparing and updating file content: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while comparing and updating file content.', getTraceback(e))
 
     if msgText: print(msgText)
 

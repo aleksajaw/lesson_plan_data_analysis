@@ -61,7 +61,7 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
             if checkIsAnyPathMissing():
                 import shutil
                 shutil.rmtree(envName)
-                print(f'\nHave to remove old {envName} directory.')
+                print(f'\nHad to remove the old {envName} directory.')
                 setupEnvironment(True)
             
             # Ensure that pip is upgraded to the latest version.
@@ -73,7 +73,7 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
             return True
 
         except Exception as e:
-            print(f'\nError while {msgText[0].upper() + msgText[1:]}: {e}')
+            print(f'\nError while {msgText[0].lower() + msgText[1:]}: {e}')
             return False
         
     else:
@@ -116,8 +116,10 @@ def runVirtualEnv(forceStart=False):
         
     #else:
     #    raise FileNotFoundError
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        print(f'\nError while activating the virtual environment "{envName}".\n{e.stderr}')
+    except (subprocess.CalledProcessError, UnicodeDecodeError, FileNotFoundError) as e:
+        errorMsg = ( '\n' + e.stderr   if hasattr(e, 'stderr')
+                                       else '' )
+        print(f'\nError while activating the virtual environment "{envName}".{errorMsg}')
 
         # The 1st version of quitting the function.
         # Automatically (re)install the environment if the program cannot run without any issues.

@@ -31,7 +31,7 @@ def mergeEmptyCellsAndColorBg(ws=None, mergedCellObj={'startRow':int, 'startCol'
 
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while merging the empty cells and coloring their background: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while merging the empty cells and coloring their background.', getTraceback(e))
 
 
     if msgText: print(msgText)
@@ -66,7 +66,7 @@ def colorBgOfEmptyRow(ws=None, colRange=None, row=int, startColumn=int):
             
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while coloring the background of empty rows: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while coloring the background of empty rows.', getTraceback(e))
 
     if msgText: print(msgText)
 
@@ -87,7 +87,7 @@ def findLastBoldRowAtBeggining(ws, minCol=1):
                     break
     
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while searching for the last bold row at the beggining: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while searching for the last bold row at the beggining.', getTraceback(e))
 
     if msgText: print(msgText)
 
@@ -207,7 +207,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
 
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while formatting the cell styles in the Excel file: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while formatting the cell styles in the Excel file.', getTraceback(e))
       
     if msgText: print(msgText)
 
@@ -234,7 +234,7 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
 
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while concatenating and filter the schedule Data Frames: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while concatenating and filter the schedule Data Frames.', getTraceback(e))
 
     if msgText: print(msgText)
 
@@ -345,7 +345,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
         newDfFiltered = newDfFiltered.reindex(columns=columnsVal, fill_value=np.nan)
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while filter and convert schedule Data Frames for Excel worksheet: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while filter and convert schedule Data Frames for Excel worksheet.', getTraceback(e))
         
     if msgText: print(msgText)
     
@@ -405,7 +405,7 @@ def createGroupsInListByPrefix(data=[], splitDelimiter = '-', replaceDelimiters 
                 groupList[i] = previousEl
     
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while creating groups in list by prefix: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while creating groups in list by prefix.', getTraceback(e))
     
     if msgText: print(msgText)
     
@@ -438,7 +438,7 @@ def createGroupsInListByFirstLetter(data=[]):
         #return [item[0]   for item in data]
     
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while creating groups in list by first letter: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while creating groups in list by first letter.', getTraceback(e))
     
     if msgText: print(msgText)
 
@@ -479,30 +479,34 @@ def createGroupsInListByNumbers(data=[], optionalPartInNrPrefix='0'):
         return groupsInList
     
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while creating groups in list by numbers: {getTraceback(e)}')
+        msgText = handleErrorMsg('\nError while creating groups in list by numbers.', getTraceback(e))
     
     if msgText: print(msgText)
 
 
 
-def createGroupsInListBy(groupName='', data=[]):
+def createGroupsInListBy(listName='', data=[]):
     result = []
     msgText = ''
-    
+    groupingKey = ''
+
     try:
-        match groupName:
+        match listName:
             case 'subjects':
                 result = createGroupsInListByPrefix(data)
+                groupingKey = 'prefix'
         
             case 'teachers':
                 result = createGroupsInListByFirstLetter(data)
+                groupingKey = 'first letter'
 
             case 'classrooms':
                 result = createGroupsInListByNumbers(data)
+                groupingKey = 'numbers'
 
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while creating groups in list by...: {getTraceback(e)}')
+        msgText = handleErrorMsg(f'\nError while creating groups in the {listName}\' list by {groupingKey}.', getTraceback(e))
     
     if msgText: print(msgText)
 

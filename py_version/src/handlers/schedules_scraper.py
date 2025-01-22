@@ -36,7 +36,7 @@ def initSchedulePageDriver():
     
     except Exception as e:
         noErrors = False
-        msgText = handleErrorMsg(f'\nError while initializing Web Driver and its elements for {planURL}:{getTraceback(e)}')
+        msgText = handleErrorMsg(f'\nError while initializing Web Driver and its elements for {planURL}.', getTraceback(e))
 
     if msgText: print(msgText)  
 
@@ -55,7 +55,7 @@ def scrapeAndSetClassList():
 
     except Exception as e:
         noErrors = False
-        msgText = handleErrorMsg(f'\nError while scraping and setting the class list for the schedules for {planURL}: {getTraceback(e)}')
+        msgText = handleErrorMsg(f'\nError while scraping and setting the class list for the schedules for {planURL}.', getTraceback(e))
     if msgText: print(msgText)  
     
     return noErrors
@@ -251,7 +251,7 @@ def scrapeClassTables():
 
     except Exception as e:
         noErrors = False
-        msgText = handleErrorMsg(f'\nError while scrapping the schedules from {planURL}: {getTraceback(e)}')
+        msgText = handleErrorMsg(f'\nError while scrapping the schedules from {planURL}.', getTraceback(e))
 
     if msgText: print(msgText)     
 
