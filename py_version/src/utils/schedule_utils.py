@@ -225,7 +225,7 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         #el1 = dropnaInDfByAxis(el1, 1)
         if isinstance(el1, DataFrame)   and   isinstance(el2, DataFrame):
             el2 = dropnaInDfByAxis(el2, 1)
-            newDf = pd.concat([el1, el2]).reset_index()
+            newDf = pd.concat([el1, el2], sort=False).reset_index()
             newDf.set_index(keys=timeIndexNames, inplace=True)
             newDf = newDf.sort_index(level=0)
         else:
@@ -273,7 +273,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
                 #print(rowFrame.keys())
                 #print(col)
                 booleanMask = rowFrame[col] != ''
-                nonEmptyValues = rowFrame[col][booleanMask].dropna().tolist()
+                nonEmptyValues = [x for x in rowFrame[col][booleanMask] if pd.notna(x)]
                 #print(nonEmptyValues)
 
                 if nonEmptyValues:
