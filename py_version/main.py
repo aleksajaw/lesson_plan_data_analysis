@@ -1,6 +1,11 @@
 import sys
 import os
 import subprocess
+import time
+
+startTime=None
+
+
 
 # Remember to write this name to the .gitignore file.
 envName='venv'
@@ -111,8 +116,11 @@ def runVirtualEnv(forceStart=False):
         command = cBefore + cActivatePart + ' && ' + cInfo + ' && ' + cMain + ' && ' + cDeactivate + '\"'
 
         subprocess.run(command, shell=True, check=True, text=True, stderr=subprocess.PIPE)
+
+        execTime  = (time.perf_counter() - startTime)
+        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+
         sys.exit()
-        return True
         
     #else:
     #    raise FileNotFoundError
@@ -142,6 +150,10 @@ def addToSysPath(basePath='', innerDirName=''):
 
     if checkIfNotExists(dirPathToAdd):
         print(f'\nThe directory "{dirPathToAdd}" does not exist.')
+        
+        execTime  = (time.perf_counter() - startTime)
+        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+
         sys.exit()
 
     else:
@@ -188,6 +200,10 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
         
     except Exception as e:
         print(f'\nError: {e}')
+
+        execTime  = (time.perf_counter() - startTime)
+        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+
         sys.exit()
 
 
@@ -216,6 +232,33 @@ def main():
 
 
 
+def chooseStart(args=None):
+    global startTime
+    startTime = time.perf_counter()
+    
+    if args.setup:
+        setupEnvironment(args.force)
+
+    # The 2nd part of the condition prevents the situation where '--force' is the only flag being used.
+    # Also, it allows running the program without any flags.
+    if args.start   or   (not args.setup and not args.force):
+        try:
+            runVirtualEnv(args.force)
+            
+        except Exception as e:
+            print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
+        
+        execTime  = (time.perf_counter() - startTime)
+        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+    
+    else:
+        execTime  = (time.perf_counter() - startTime)
+        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+
+        sys.exit()
+
+
+
 if __name__ == '__main__':
     
     import argparse
@@ -233,17 +276,4 @@ if __name__ == '__main__':
         parser.print_help()
         sys.exit(1)
 
-    if args.setup:
-        setupEnvironment(args.force)
-
-    # The 2nd part of the condition prevents the situation where '--force' is the only flag being used.
-    # Also, it allows running the program without any flags.
-    if args.start   or   (not args.setup and not args.force):
-        try:
-            runVirtualEnv(args.force)
-            
-        except Exception as e:
-            print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
-
-    else:
-        sys.exit()
+    chooseStart(args)
