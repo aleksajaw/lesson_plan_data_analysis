@@ -75,15 +75,15 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
             subprocess.check_call(f'{currEssentialEnvPaths[0]} -m pip install -r requirements.txt')
 
             print('Ends successfully.')
-            return True
+
 
         except Exception as e:
             print(f'\nError while {msgText[0].lower() + msgText[1:]}: {e}')
-            return False
+            raise Exception(e)
         
     else:
         print(f'\nThe virtual environment "{envName}" already exists.')
-    
+
     return True
 
 
@@ -120,11 +120,8 @@ def runVirtualEnv(forceStart=False):
         execTime  = (time.perf_counter() - startTime)
         print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
-        sys.exit()
-        
-    #else:
-    #    raise FileNotFoundError
-    except (subprocess.CalledProcessError, UnicodeDecodeError, FileNotFoundError) as e:
+
+    except (subprocess.CalledProcessError, UnicodeDecodeError) as e:
         errorMsg = ( '\n' + e.stderr   if hasattr(e, 'stderr')
                                        else '' )
         print(f'\nError while activating the virtual environment "{envName}".{errorMsg}')
@@ -134,9 +131,6 @@ def runVirtualEnv(forceStart=False):
         if forceStart:
             setupEnvironment(True)
             runVirtualEnv()
-
-        # The 2nd, older and simpler version of quitting the function.
-        #return False
 
 
 
@@ -154,11 +148,12 @@ def addToSysPath(basePath='', innerDirName=''):
         execTime  = (time.perf_counter() - startTime)
         print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
-        sys.exit()
+        raise Exception(FileNotFoundError)
 
     else:
         sys.path.append(str(dirPathToAdd))
-        return True
+    
+    return True
 
 
 
@@ -188,23 +183,13 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
         print('\nReinstall environment.')
     
     try:
-        noErrors = createVirtualEnvIfNecessary(forceReinstall)
-            
-        # Remove the comment characters in this function if you want to automate 
-        # initialization of the project after a forced reinstallation 
-        # of the virtual environment and needed packages. 
-        # Remember to correct the indentations.
-
-        #if forceReinstall:
-        #    runVirtualEnv()
+      createVirtualEnvIfNecessary(forceReinstall)
         
     except Exception as e:
         print(f'\nError: {e}')
 
         execTime  = (time.perf_counter() - startTime)
         print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
-
-        sys.exit()
 
 
 
@@ -228,7 +213,7 @@ def main():
             loadClassesDataVariables(classesData)
             createOrEditMainExcelFile()
             createScheduleExcelFiles(getClassesDataDfs())
-            openScheduleFilesWithDefApps()
+            #openScheduleFilesWithDefApps()
 
 
 
@@ -270,10 +255,10 @@ if __name__ == '__main__':
 
     try:
         args = parser.parse_args()
+        chooseStart(args)
 
-    except:
-        print('\nSomething went wrong. It seems like you are trying to use unrecognized arguments.\n')
+    except Exception as e:
+        print('\nSomething went wrong. It seems like you are trying to use unrecognized arguments.\n', e)
         parser.print_help()
-        sys.exit(1)
 
-    chooseStart(args)
+        sys.exit(1)
