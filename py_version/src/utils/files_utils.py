@@ -58,6 +58,21 @@ def doesFileExist(filePath='', shouldPrintMsg=False):
 
 
 
+def writeDataToFile(filePath='', dataToEnter=None):
+    msgText=''
+
+    try:
+        with open(filePath, 'w') as file:
+            file.write(dataToEnter)
+            file.close()
+    
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while writing data to the file {os.path.basename(filePath)}.', getTraceback(e))
+
+    if msgText: print(msgText)
+
+
+
 def compareAndUpdateFile(filePath='', dataToCompare=''):
     msgText = ''
     isFileChanged = False
@@ -67,6 +82,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
         with open(file=filePath, mode="r+") as file:
             #file.seek(0)
             fileContent = file.read()
+
             if str(fileContent) != str(dataToCompare):
                 file.seek(0)
                 file.write(dataToCompare)
@@ -81,12 +97,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
             file.close()
 
     except FileNotFoundError as e:
-        
-        with open(filePath, 'w') as file:
-          file.write(dataToCompare)
-          file.close()
-
-          msgText = f'\nFile   {os.path.basename(filePath)}   not found. Created a new file and complete it with data.'
+        writeDataToFile(filePath, dataToCompare)
     
     except Exception as e:
         msgText = handleErrorMsg('\nError while comparing and updating file content.', getTraceback(e))
