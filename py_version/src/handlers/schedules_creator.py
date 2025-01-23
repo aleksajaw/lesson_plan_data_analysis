@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, excelEngineName
-from src.utils import writeObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames, getListOfKeys
+from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, excelEngineName, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath
+from src.utils import writerForWriteObjOfDfsToExcel, writeObjOfDfsToJSON, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames, getListOfKeys
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
@@ -45,9 +45,9 @@ def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs):
         classroomSchedules = { str(key): classroomSchedules[str(key)]   for key in getPureList(groupedOwnerLists['classrooms']) }
         subjectSchedules = { key: subjectSchedules[key]   for key in getPureList(groupedOwnerLists['subjects']) }
 
-        writeSortedObjOfDfsToExcel(teacherSchedules, 'teachers', scheduleExcelTeachersPath)
-        writeSortedObjOfDfsToExcel(classroomSchedules, 'classrooms', scheduleExcelClassroomsPath)
-        writeSortedObjOfDfsToExcel(subjectSchedules, 'subjects', scheduleExcelSubjectsPath)
+        writerForWriteObjOfDfsToExcel(scheduleExcelTeachersPath, teacherSchedules, 'teachers')
+        writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsPath, classroomSchedules, 'classrooms')
+        writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsPath, subjectSchedules, 'subjects')
             
         
     except Exception as e:
@@ -83,15 +83,18 @@ def createScheduleExcelFilesByGroupedOwnerLists():
         teacherSchedulesByGroups, classroomSchedulesByGroups, subjectSchedulesByGroups = {}, {}, {}
 
         concatAndFilterSingleGroupListDataFrames('teachers', teacherSchedules, groupedOwnerLists['teachers'], teacherSchedulesByGroups)
-        writeSortedObjOfDfsToExcel(teacherSchedulesByGroups, 'teachers-by-groups', scheduleExcelTeachersGroupedPath)
+        writerForWriteObjOfDfsToExcel(scheduleExcelTeachersGroupedPath, teacherSchedulesByGroups, 'teachers-by-groups')
+        writeObjOfDfsToJSON(scheduleTeachersGroupedDfsJSONPath, teacherSchedulesByGroups)
 
 
         concatAndFilterSingleGroupListDataFrames('classrooms', classroomSchedules, groupedOwnerLists['classrooms'], classroomSchedulesByGroups)
-        writeSortedObjOfDfsToExcel(classroomSchedulesByGroups, 'classrooms-by-groups', scheduleExcelClassroomsGroupedPath)
+        writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsGroupedPath, classroomSchedulesByGroups, 'classrooms-by-groups')
+        writeObjOfDfsToJSON(scheduleClassroomsGroupedDfsJSONPath, classroomSchedulesByGroups)
         
         
         concatAndFilterSingleGroupListDataFrames('subjects', subjectSchedules, groupedOwnerLists['subjects'], subjectSchedulesByGroups)
-        writeSortedObjOfDfsToExcel(subjectSchedulesByGroups, 'subjects-by-groups', scheduleExcelSubjectsGroupedPath)
+        writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsGroupedPath, subjectSchedulesByGroups, 'subjects-by-groups')
+        writeObjOfDfsToJSON(scheduleSubjectsGroupedDfsJSONPath, subjectSchedulesByGroups)
 
 
     except Exception as e:

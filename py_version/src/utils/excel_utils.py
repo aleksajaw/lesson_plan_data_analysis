@@ -127,17 +127,17 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
 
 
 
-def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
+def writerForWriteObjOfDfsToExcel(excelPath='', objOfDfs=None, titleForDisplay='', doesNeedFormat=True):
     from schedule_utils import autoFormatScheduleExcel
-    msgText = ''
+    msgText=''
 
     try:
-        #if len(objOfDfs.keys()):
-        #sortedObjOfDfs = {key: objOfDfs[key] for key in sorted(objOfDfs)}
         with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:       
             writeObjOfDfsToExcel(writer, excelPath, objOfDfs)
-            autoFormatScheduleExcel(writer.book, excelPath)
-                
+
+            if doesNeedFormat:
+                autoFormatScheduleExcel(writer.book, excelPath)
+
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while writing to the {titleForDisplay} Excel file.', getTraceback(e))
     
