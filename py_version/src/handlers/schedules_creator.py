@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGrouped, excelEngineName
-from src.utils import writeSortedObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames, getListOfKeys
+from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, excelEngineName
+from src.utils import writeObjOfDfsToExcel, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames, getListOfKeys
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
@@ -346,8 +346,8 @@ def writeGroupListsToExcelAndFormat(groupLists={}):
     msgText = ''
 
     try:
-        newObjOfDfs = writeGroupListsToExcel(scheduleListsExcelOwnersGrouped, groupLists)
-        autoFormatExcelCellSizes(excelFilePath=scheduleListsExcelOwnersGrouped)
+        newObjOfDfs = writeGroupListsToExcel(scheduleListsExcelOwnersGroupedPath, groupLists)
+        autoFormatExcelCellSizes(excelFilePath=scheduleListsExcelOwnersGroupedPath)
         
     except Exception as e:
         msgText = handleErrorMsg('\nError while writing and formatting the excel files for group lists.', getTraceback(e))

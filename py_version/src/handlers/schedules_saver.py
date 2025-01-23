@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExcelClassesJSONPath, scheduleClassesDfsJSONPath, scheduleClassesJSONPath
+from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExcelClassesDfsJSONPath, scheduleClassesDfsJSONPath, scheduleClassesJSONPath
 from src.utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatScheduleExcel
 import json
 from pandas import ExcelWriter
@@ -55,7 +55,7 @@ def createOrEditMainExcelFile():
 
     # to avoid issues, compare file contents
     # & update if it's neccessarry
-    compareAndUpdateFile(scheduleExcelClassesJSONPath, currExcelAsDfsJSON)
+    compareAndUpdateFile(scheduleExcelClassesDfsJSONPath, currExcelAsDfsJSON)
     compareAndUpdateFile(scheduleClassesDfsJSONPath, classesDataDfsJSON)
     compareAndUpdateFile(scheduleClassesJSONPath, classesDataJSON)
 
