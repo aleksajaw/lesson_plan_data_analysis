@@ -117,9 +117,6 @@ def runVirtualEnv(forceStart=False):
 
         subprocess.run(command, shell=True, check=True, text=True, stderr=subprocess.PIPE)
 
-        execTime  = (time.perf_counter() - startTime)
-        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
-
 
     except (subprocess.CalledProcessError, UnicodeDecodeError) as e:
         errorMsg = ( '\n' + e.stderr   if hasattr(e, 'stderr')
