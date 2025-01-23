@@ -145,6 +145,21 @@ def writeSortedObjOfDfsToExcel(objOfDfs=None, titleForDisplay='', excelPath=''):
 
 
 
+def writeObjOfDfsToJSON(filePath='', objOfDfs=None):
+    from src.utils.files_utils import compareAndUpdateFile
+    msgText = ''
+
+    try:
+        dataToEnter = convertObjOfDfsToJSON(objOfDfs)
+        compareAndUpdateFile(filePath, dataToEnter)
+
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while writing data to the {os.path.basename(filePath)} JSON file.', getTraceback(e))
+
+    if msgText: print(msgText)
+
+
+
 def autoFormatExcelCellSizes(workbook=None, excelFilePath=scheduleExcelClassesPath):
 
     msgText = ''
