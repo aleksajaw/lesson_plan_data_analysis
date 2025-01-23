@@ -65,9 +65,10 @@ def writeDataToFile(filePath='', dataToEnter=None):
         with open(filePath, 'w') as file:
             file.write(dataToEnter)
             file.close()
-    
+            msgText = f'\nFile   {os.path.basename(filePath)}   saved.'
+
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while writing data to the file {os.path.basename(filePath)}.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while writing data to the file   {os.path.basename(filePath)}.', getTraceback(e))
 
     if msgText: print(msgText)
 

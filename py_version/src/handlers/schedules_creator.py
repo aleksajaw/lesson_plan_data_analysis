@@ -83,17 +83,17 @@ def createScheduleExcelFilesByGroupedOwnerLists():
         teacherSchedulesByGroups, classroomSchedulesByGroups, subjectSchedulesByGroups = {}, {}, {}
 
         concatAndFilterSingleGroupListDataFrames('teachers', teacherSchedules, groupedOwnerLists['teachers'], teacherSchedulesByGroups)
-        writerForWriteObjOfDfsToExcel(scheduleExcelTeachersGroupedPath, teacherSchedulesByGroups, 'teachers-by-groups')
+        writerForWriteObjOfDfsToExcel(scheduleExcelTeachersGroupedPath, teacherSchedulesByGroups)
         writeObjOfDfsToJSON(scheduleTeachersGroupedDfsJSONPath, teacherSchedulesByGroups)
 
 
         concatAndFilterSingleGroupListDataFrames('classrooms', classroomSchedules, groupedOwnerLists['classrooms'], classroomSchedulesByGroups)
-        writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsGroupedPath, classroomSchedulesByGroups, 'classrooms-by-groups')
+        writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsGroupedPath, classroomSchedulesByGroups)
         writeObjOfDfsToJSON(scheduleClassroomsGroupedDfsJSONPath, classroomSchedulesByGroups)
         
         
         concatAndFilterSingleGroupListDataFrames('subjects', subjectSchedules, groupedOwnerLists['subjects'], subjectSchedulesByGroups)
-        writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsGroupedPath, subjectSchedulesByGroups, 'subjects-by-groups')
+        writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsGroupedPath, subjectSchedulesByGroups)
         writeObjOfDfsToJSON(scheduleSubjectsGroupedDfsJSONPath, subjectSchedulesByGroups)
 
 
@@ -333,7 +333,7 @@ def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
             dataToReturn = objOfDfs
             addBgToExcelSheetRowsBasedOnObj(writer, sheetsGroups)
 
-        msgText = f'\nData loaded into the schedule Excel file: ' + os.path.basename(excelPath)
+        msgText = f'\nData loaded into the schedule Excel file   ' + os.path.basename(excelPath)
 
 
     except Exception as e:

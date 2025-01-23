@@ -118,7 +118,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
         for groupName in groupDfs:   
             groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
 
-        msgText = '\nData loaded into the schedule Excel file: ' + os.path.basename(scheduleExcelClassesPath)
+        msgText = '\nData loaded into the schedule Excel file   ' + os.path.basename(scheduleExcelClassesPath)
 
     except Exception as e:
         msgText = handleErrorMsg('\nError loading complete classes data.', getTraceback(e))
@@ -127,7 +127,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
 
 
 
-def writerForWriteObjOfDfsToExcel(excelPath='', objOfDfs=None, titleForDisplay='', doesNeedFormat=True):
+def writerForWriteObjOfDfsToExcel(excelPath='', objOfDfs=None, doesNeedFormat=True):
     from schedule_utils import autoFormatScheduleExcel
     msgText=''
 
@@ -139,7 +139,7 @@ def writerForWriteObjOfDfsToExcel(excelPath='', objOfDfs=None, titleForDisplay='
                 autoFormatScheduleExcel(writer.book, excelPath)
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while writing to the {titleForDisplay} Excel file.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while writing to the {os.path.basename(excelPath)} Excel file.', getTraceback(e))
     
     if msgText: print(msgText)
 
