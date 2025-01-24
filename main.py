@@ -231,13 +231,15 @@ def chooseStart(args=None):
             print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
         
         execTime  = (time.perf_counter() - startTime)
-        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+        if round(execTime%60, 2):
+            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
     
     else:
         execTime  = (time.perf_counter() - startTime)
-        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+        if round(execTime%60, 2):
+            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
-        sys.exit()
+        raise Exception('The "--force" argument cannot be used alone.')
 
 
 
@@ -255,7 +257,7 @@ if __name__ == '__main__':
         chooseStart(args)
 
     except Exception as e:
-        print('\nSomething went wrong. It seems like you are trying to use unrecognized arguments.\n', e)
+        print(f'\nSomething went wrong. It seems like you are trying to use unrecognized arguments or a combination of them.\n\n{e}\n')
         parser.print_help()
 
         sys.exit(1)
