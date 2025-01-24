@@ -5,6 +5,7 @@ srcDirPath = os.path.dirname(currDirPath)
 projectRoot = os.path.dirname(srcDirPath)
 #schedulePath = os.path.join(srcDirPath, 'schedules')
 schedulePath = os.path.join(projectRoot, 'schedules')
+scheduleJSONPath = os.path.join(schedulePath, 'json')
 logsPath = os.path.join(projectRoot, 'logs')
 
 
@@ -21,7 +22,7 @@ scheduleExcelTeachersGroupedName = 'schedule_teachers-grouped.xlsx'
 scheduleExcelClassroomsGroupedName = 'schedule_classrooms-grouped.xlsx'
 scheduleExcelSubjectsGroupedName = 'schedule_subjects-grouped.xlsx'
 
-scheduleClassesJSONName = 'schedule_classes.json'
+scheduleClassesBaseJSONName = 'base_schedule_classes.json'
 
 scheduleListsOwnersGroupedJSONName = 'dfs_schedule-lists_owners-grouped.json'
 
@@ -65,35 +66,35 @@ scheduleExcelSubjectsGroupedPath =  os.path.join(schedulePath, scheduleExcelSubj
 
 # JSON
 # Pure scraped classes
-scheduleClassesJSONPath =  os.path.join(schedulePath, scheduleClassesJSONName)
+scheduleClassesBaseJSONPath =  os.path.join(scheduleJSONPath, scheduleClassesBaseJSONName)
 
 
 # JSON with Data Frames
 # For schedule lists with grouped owners
-scheduleListsOwnersGroupedJSONPath =  os.path.join(schedulePath, scheduleListsOwnersGroupedJSONName)
+scheduleListsOwnersGroupedJSONPath =  os.path.join(scheduleJSONPath, scheduleListsOwnersGroupedJSONName)
 
 # For classes grouped
-scheduleClassesGroupedDfsJSONPath = os.path.join(schedulePath, scheduleClassesGroupedJSONName)
+scheduleClassesGroupedDfsJSONPath = os.path.join(scheduleJSONPath, scheduleClassesGroupedJSONName)
 # For teachers grouped
-scheduleTeachersGroupedDfsJSONPath = os.path.join(schedulePath, scheduleTeachersGroupedJSONName)
+scheduleTeachersGroupedDfsJSONPath = os.path.join(scheduleJSONPath, scheduleTeachersGroupedJSONName)
 # For classrooms grouped
-scheduleClassroomsGroupedDfsJSONPath = os.path.join(schedulePath, scheduleClassroomsGroupedJSONName)
+scheduleClassroomsGroupedDfsJSONPath = os.path.join(scheduleJSONPath, scheduleClassroomsGroupedJSONName)
 # For subjects grouped
-scheduleSubjectsGroupedDfsJSONPath = os.path.join(schedulePath, scheduleSubjectsGroupedJSONName)
+scheduleSubjectsGroupedDfsJSONPath = os.path.join(scheduleJSONPath, scheduleSubjectsGroupedJSONName)
 
 
 # For classes
-scheduleClassesDfsJSONPath =  os.path.join(schedulePath, scheduleClassesDfsJSONName)
+scheduleClassesDfsJSONPath =  os.path.join(scheduleJSONPath, scheduleClassesDfsJSONName)
 # For teachers
-scheduleTeachersDfsJSONPath = os.path.join(schedulePath, scheduleTeachersDfsJSONName)
+scheduleTeachersDfsJSONPath = os.path.join(scheduleJSONPath, scheduleTeachersDfsJSONName)
 # For classrooms
-scheduleClassroomsDfsJSONPath = os.path.join(schedulePath, scheduleClassroomsDfsJSONName)
+scheduleClassroomsDfsJSONPath = os.path.join(scheduleJSONPath, scheduleClassroomsDfsJSONName)
 # For subjects
-scheduleSubjectsDfsJSONPath = os.path.join(schedulePath, scheduleSubjectsDfsJSONName)
+scheduleSubjectsDfsJSONPath = os.path.join(scheduleJSONPath, scheduleSubjectsDfsJSONName)
 
 
 # Data read from the current basic Excel
-scheduleExcelClassesDfsJSONPath =  os.path.join(schedulePath, scheduleExcelClassesJSONName)
+scheduleExcelClassesDfsJSONPath =  os.path.join(scheduleJSONPath, scheduleExcelClassesJSONName)
 
 
 JSONIndentValue = 4
