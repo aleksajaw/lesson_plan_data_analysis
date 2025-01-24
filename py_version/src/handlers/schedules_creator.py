@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, excelEngineName, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath
+from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, excelEngineName, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.utils import writerForWriteObjOfDfsToExcel, writeObjOfDfsToJSON, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames, getListOfKeys
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
@@ -45,9 +45,14 @@ def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs):
         classroomSchedules = { str(key): classroomSchedules[str(key)]   for key in getPureList(groupedOwnerLists['classrooms']) }
         subjectSchedules = { key: subjectSchedules[key]   for key in getPureList(groupedOwnerLists['subjects']) }
 
-        writerForWriteObjOfDfsToExcel(scheduleExcelTeachersPath, teacherSchedules, 'teachers')
-        writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsPath, classroomSchedules, 'classrooms')
-        writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsPath, subjectSchedules, 'subjects')
+        if writeObjOfDfsToJSON(scheduleTeachersDfsJSONPath, teacherSchedules):
+            writerForWriteObjOfDfsToExcel(scheduleExcelTeachersPath, teacherSchedules)
+            
+        if writeObjOfDfsToJSON(scheduleClassroomsDfsJSONPath, classroomSchedules):
+            writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsPath, classroomSchedules)
+
+        if writeObjOfDfsToJSON(scheduleSubjectsDfsJSONPath, subjectSchedules):
+            writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsPath, subjectSchedules)
             
         
     except Exception as e:
@@ -66,7 +71,9 @@ def createScheduleExcelFileForOwnerLists():
                        'classrooms': getListOfKeys(classroomSchedules),
                        'subjects': getListOfKeys(subjectSchedules) }
         
-        groupedOwnerLists = writeGroupListsToExcelAndFormat(ownerLists)
+        groupedOwnerLists = createScheduleGroupedOwnerObjOfDfs(ownerLists)
+        if writeObjOfDfsToJSON(scheduleListsOwnersGroupedJSONPath, groupedOwnerLists):
+            writeGroupListsToExcelAndFormat(groupedOwnerLists)
     
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the schedule Excel files for the owner lists.', getTraceback(e))
@@ -83,18 +90,18 @@ def createScheduleExcelFilesByGroupedOwnerLists():
         teacherSchedulesByGroups, classroomSchedulesByGroups, subjectSchedulesByGroups = {}, {}, {}
 
         concatAndFilterSingleGroupListDataFrames('teachers', teacherSchedules, groupedOwnerLists['teachers'], teacherSchedulesByGroups)
-        writerForWriteObjOfDfsToExcel(scheduleExcelTeachersGroupedPath, teacherSchedulesByGroups)
-        writeObjOfDfsToJSON(scheduleTeachersGroupedDfsJSONPath, teacherSchedulesByGroups)
+        if writeObjOfDfsToJSON(scheduleTeachersGroupedDfsJSONPath, teacherSchedulesByGroups):
+            writerForWriteObjOfDfsToExcel(scheduleExcelTeachersGroupedPath, teacherSchedulesByGroups)
 
 
         concatAndFilterSingleGroupListDataFrames('classrooms', classroomSchedules, groupedOwnerLists['classrooms'], classroomSchedulesByGroups)
-        writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsGroupedPath, classroomSchedulesByGroups)
-        writeObjOfDfsToJSON(scheduleClassroomsGroupedDfsJSONPath, classroomSchedulesByGroups)
+        if writeObjOfDfsToJSON(scheduleClassroomsGroupedDfsJSONPath, classroomSchedulesByGroups):
+            writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsGroupedPath, classroomSchedulesByGroups)
         
         
         concatAndFilterSingleGroupListDataFrames('subjects', subjectSchedules, groupedOwnerLists['subjects'], subjectSchedulesByGroups)
-        writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsGroupedPath, subjectSchedulesByGroups)
-        writeObjOfDfsToJSON(scheduleSubjectsGroupedDfsJSONPath, subjectSchedulesByGroups)
+        if writeObjOfDfsToJSON(scheduleSubjectsGroupedDfsJSONPath, subjectSchedulesByGroups):
+            writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsGroupedPath, subjectSchedulesByGroups)
 
 
     except Exception as e:
@@ -203,7 +210,7 @@ def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='',
 
 
 
-def sortScheduleOwnersList(dataToSort=None):
+def sortScheduleOwnerLists(dataToSort=None):
     msgText = ''
     try:
         pattern = re.compile(r'\d+')
@@ -238,7 +245,7 @@ def sortScheduleOwnersList(dataToSort=None):
             dataToSort[key] = [int(x)   if x.isdigit()   else x   for x in dataToSort[key]]
         
     except Exception as e:
-        msgText = handleErrorMsg('\nError loading complete classes data.', getTraceback(e))
+        msgText = handleErrorMsg('\nError while sorting schedule owner lists.', getTraceback(e))
 
     if msgText: print(msgText)
 
@@ -248,7 +255,7 @@ def sortScheduleOwnersList(dataToSort=None):
 
 def createScheduleGroupedOwnerObjOfDfs(dataToEnter={}):
     
-    dataToEnter = sortScheduleOwnersList(dataToEnter)
+    dataToEnter = sortScheduleOwnerLists(dataToEnter)
     sheetsData = {sheetName: dataToEnter[sheetName]   for sheetName in dataToEnter.keys()}
     objOfDfs = {}
 
@@ -320,61 +327,30 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='grou
 
 
 
-def writeGroupListsToExcel(excelPath=None, dataToEnter=None):
+def writeGroupListsToExcel(excelPath='', objOfDfs={}):
     msgText = ''
-    dataToReturn = None
 
     if not excelPath:
         excelPath = createFileNameWithNr()
 
     try:
-        dataToEnter = sortScheduleOwnersList(dataToEnter)
-        objOfDfs = {}
-        
+        sheetGroups={}
         with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:
-            dataToEnter = {sheetName: dataToEnter[sheetName]   for sheetName in sorted(dataToEnter.keys())}
-
-            sheetsGroups = {}
-
-            # basic structure for the group list sheets
-            for sheetName, sheetData in dataToEnter.items():
-                
-                namesBaseList = createGroupsInListBy(sheetName, sheetData)
-                
-                dfBase = {  'names_base': namesBaseList,
-                            'names': sheetData }
-                
-                objOfDfs[sheetName] = DataFrame(dfBase)
-                objOfDfs[sheetName]['names_No.'] = RangeIndex(start=1, stop=len(objOfDfs[sheetName])+1, step=1)
             
-            
-            # develop the structure of the worksheet objects
-            for listName in objOfDfs:
-                df = objOfDfs[listName]
-
-                # indices & their columns
-                df['group_No.'] = (df.groupby('names_base', sort=False).ngroup() + 1).astype(str) + '.'
-                df['names_in_group_No.'] = (df.groupby('names_base', sort=False).cumcount() + 1).astype(str) + '.'
-                
-                df.set_index(keys=['group_No.', 'names_base', 'names_in_group_No.'], inplace=True)
-                
-                sheetsGroups[listName] = createObjForDfRowsColoring(df)
-
-                objOfDfs[listName] = df
+            for listName, df in objOfDfs.items():
                 df.to_excel(writer, sheet_name=listName, merge_cells=True)
+                sheetGroups[listName] = createObjForDfRowsColoring(df)
+            
+            addBgToExcelSheetRowsBasedOnObj(writer, sheetGroups)
 
-            dataToReturn = objOfDfs
-            addBgToExcelSheetRowsBasedOnObj(writer, sheetsGroups)
-
-        msgText = f'\nData loaded into the schedule Excel file   ' + os.path.basename(excelPath)
-
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelPath)[1][1:]).upper()} file   {os.path.basename(excelPath)}'
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while writing group lists to excel sheets.', getTraceback(e))
     
     if msgText: print(msgText)
 
-    return dataToReturn
+    return objOfDfs
 
 
 
