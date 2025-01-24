@@ -20,6 +20,7 @@ def loadClassesDataVariables(classesData):
     classesDataDfsJSON = convertObjOfDfsToJSON(classesDataDfs)
 
 
+
 def createOrEditMainExcelFile():
     
     global classesDataJSON, classesDataDfs, classesDataDfsJSON
@@ -47,7 +48,7 @@ def createOrEditMainExcelFile():
                     print( handleErrorMsg( f'\nError while writing to the main Excel file: {writeError}' ) )
 
         else:
-            print(f'\nNothing to be updated in the file   {os.path.basename(scheduleExcelClassesPath)}.')
+            print(f'\nNothing to be updated in the {(os.path.splitext(scheduleExcelClassesPath)[1][1:]).upper()} file   {os.path.basename(scheduleExcelClassesPath)}.')
 
 
 
@@ -60,6 +61,7 @@ def createOrEditMainExcelFile():
     compareAndUpdateFile(scheduleExcelClassesDfsJSONPath, currExcelAsDfsJSON)
     compareAndUpdateFile(scheduleClassesDfsJSONPath, classesDataDfsJSON)
     compareAndUpdateFile(scheduleClassesJSONPath, classesDataJSON)
+
 
 
 def getClassesDataDfs():
