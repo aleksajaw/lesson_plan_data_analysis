@@ -37,7 +37,7 @@ def listSubdirectories(basePath=''):
                 dirList.append(dirName)
     
     except Exception as e:
-        msgText = handleErrorMsg('\nError loading complete classes data.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while getting the list of the subdirectories for {os.path.basename(basePath)}.', getTraceback(e))
         
         if msgText: print(msgText)
     
@@ -60,17 +60,23 @@ def doesFileExist(filePath='', shouldPrintMsg=False):
 
 def writeDataToFile(filePath='', dataToEnter=None):
     msgText=''
+    isSuccess=False
 
     try:
         with open(filePath, 'w') as file:
             file.write(dataToEnter)
             file.close()
-            msgText = f'\nFile   {os.path.basename(filePath)}   saved.'
+        
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(filePath)[1][1:]).upper()} file   {os.path.basename(filePath)}.'
+
+        isSuccess = True
 
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while writing data to the file   {os.path.basename(filePath)}.', getTraceback(e))
 
     if msgText: print(msgText)
+
+    return isSuccess
 
 
 
@@ -89,19 +95,19 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
                 file.write(dataToCompare)
                 # make sure to delete old redundant value
                 file.truncate()
-                msgText = f'\nFile   {os.path.basename(filePath)}   updated with new data.'
+                msgText = f'\nUpdated with new data the {(os.path.splitext(filePath)[1][1:]).upper()} file   {os.path.basename(filePath)}.'
                 isFileChanged = True
                 
             else:
-                msgText = f'\nNothing to be updated in the file   {os.path.basename(filePath)}.'
+                msgText = f'\nNothing to be updated in the {(os.path.splitext(filePath)[1][1:]).upper()} file   {os.path.basename(filePath)}.'
 
             file.close()
 
     except FileNotFoundError as e:
-        writeDataToFile(filePath, dataToCompare)
+        isFileChanged = writeDataToFile(filePath, dataToCompare)
     
     except Exception as e:
-        msgText = handleErrorMsg('\nError while comparing and updating file content.', getTraceback(e))
+        msgText = handleErrorMsg('\nError while comparing and updating the file content.', getTraceback(e))
 
     if msgText: print(msgText)
 

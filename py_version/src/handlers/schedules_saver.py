@@ -3,6 +3,7 @@ from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExc
 from src.utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatScheduleExcel
 import json
 from pandas import ExcelWriter
+import os
 
 
 classesDataJSON = ''
@@ -46,7 +47,8 @@ def createOrEditMainExcelFile():
                     print( handleErrorMsg( f'\nError while writing to the main Excel file: {writeError}' ) )
 
         else:
-            print('Nothing to be updated in the main Excel file.')
+            print(f'\nNothing to be updated in the file   {os.path.basename(scheduleExcelClassesPath)}.')
+
 
 
     except Exception as e:

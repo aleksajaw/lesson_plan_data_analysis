@@ -118,7 +118,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
         for groupName in groupDfs:   
             groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
 
-        msgText = '\nData loaded into the schedule Excel file   ' + os.path.basename(scheduleExcelClassesPath)
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(scheduleExcelClassesPath)[1][1:]).upper()} file   {os.path.basename(scheduleExcelClassesPath)}'
 
     except Exception as e:
         msgText = handleErrorMsg('\nError loading complete classes data.', getTraceback(e))
@@ -139,7 +139,7 @@ def writerForWriteObjOfDfsToExcel(excelPath='', objOfDfs=None, doesNeedFormat=Tr
                 autoFormatScheduleExcel(writer.book, excelPath)
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while writing to the {os.path.basename(excelPath)} Excel file.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while writing to the file {os.path.basename(excelPath)}.', getTraceback(e))
     
     if msgText: print(msgText)
 
@@ -148,15 +148,18 @@ def writerForWriteObjOfDfsToExcel(excelPath='', objOfDfs=None, doesNeedFormat=Tr
 def writeObjOfDfsToJSON(filePath='', objOfDfs=None):
     from src.utils.files_utils import compareAndUpdateFile
     msgText = ''
+    isFileChanged = False
 
     try:
         dataToEnter = convertObjOfDfsToJSON(objOfDfs)
-        compareAndUpdateFile(filePath, dataToEnter)
+        isFileChanged = compareAndUpdateFile(filePath, dataToEnter)
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while writing data to the {os.path.basename(filePath)} JSON file.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while writing data to the file {os.path.basename(filePath)}.', getTraceback(e))
 
     if msgText: print(msgText)
+
+    return isFileChanged
 
 
 
