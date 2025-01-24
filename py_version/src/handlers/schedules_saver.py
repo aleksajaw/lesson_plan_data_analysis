@@ -26,9 +26,9 @@ def createOrEditMainExcelFile():
     createDraftSheetIfNecessary()
 
     currExcelAsDfsJSON = convertExcelToDfsJSON()
-    
+
     try:
-        if str(currExcelAsDfsJSON) != str(classesDataDfsJSON):
+        if currExcelAsDfsJSON.strip() != classesDataDfsJSON.strip():
             with ExcelWriter(scheduleExcelClassesPath, mode='w+', engine=excelEngineName) as writer:
                 
                 try:
