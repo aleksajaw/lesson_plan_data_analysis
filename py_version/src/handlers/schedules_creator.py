@@ -246,6 +246,39 @@ def sortScheduleOwnersList(dataToSort=None):
 
 
 
+def createScheduleGroupedOwnerObjOfDfs(dataToEnter={}):
+    
+    dataToEnter = sortScheduleOwnersList(dataToEnter)
+    sheetsData = {sheetName: dataToEnter[sheetName]   for sheetName in dataToEnter.keys()}
+    objOfDfs = {}
+
+    # basic structure for the group list sheets
+    for sheetName, sheetData in sheetsData.items():
+
+        namesBaseList = createGroupsInListBy(sheetName, sheetData)
+        dfBase = {  'names_base': namesBaseList,
+                    'names': sheetData }
+        
+        objOfDfs[sheetName] = DataFrame(dfBase)
+        objOfDfs[sheetName]['names_No.'] = RangeIndex(start=1, stop=len(objOfDfs[sheetName])+1, step=1)
+    
+
+    # develop the structure of the worksheet objects
+    for listName in objOfDfs:
+        df = objOfDfs[listName]
+
+        # indices & their columns
+        df['group_No.'] = (df.groupby('names_base', sort=False).ngroup() + 1).astype(str) + '.'
+        df['names_in_group_No.'] = (df.groupby('names_base', sort=False).cumcount() + 1).astype(str) + '.'
+        
+        df.set_index(keys=['group_No.', 'names_base', 'names_in_group_No.'], inplace=True)
+        objOfDfs[listName] = df
+
+
+    return objOfDfs
+
+
+
 def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='group_No.', strToDelete='.'):
     msgText = ''
     try:
