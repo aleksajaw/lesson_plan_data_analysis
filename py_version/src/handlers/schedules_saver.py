@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExcelClassesDfsJSONPath, scheduleClassesDfsJSONPath, scheduleClassesJSONPath
+from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExcelClassesDfsJSONPath, scheduleClassesDfsJSONPath, scheduleClassesJSONPath, JSONIndentValue
 from src.utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatScheduleExcel
 import json
 from pandas import ExcelWriter
@@ -15,7 +15,7 @@ def loadClassesDataVariables(classesData):
     
     global classesDataJSON, classesDataDfs, classesDataDfsJSON
 
-    classesDataJSON = json.dumps(classesData, indent=4)
+    classesDataJSON = json.dumps(classesData, indent=JSONIndentValue)
     classesDataDfs = convertToObjOfDfs(classesData)
     classesDataDfsJSON = convertObjOfDfsToJSON(classesDataDfs)
 

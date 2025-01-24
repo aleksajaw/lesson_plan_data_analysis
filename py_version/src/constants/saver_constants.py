@@ -96,6 +96,8 @@ scheduleSubjectsDfsJSONPath = os.path.join(schedulePath, scheduleSubjectsDfsJSON
 scheduleExcelClassesDfsJSONPath =  os.path.join(schedulePath, scheduleExcelClassesJSONName)
 
 
+JSONIndentValue = 4
+
 
 # variables for handling pandas' Data Frame and excel
 timeIndexNames = ['Nr','Godz']

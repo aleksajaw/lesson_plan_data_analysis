@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexNames
+from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexNames, JSONIndentValue
 import json
 import re
 from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
@@ -456,7 +456,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
     if msgText: print(msgText)
 
-    return json.dumps(objOfDfsJSON, indent=4)
+    return json.dumps(objOfDfsJSON, indent=JSONIndentValue)
 
 
 
@@ -504,7 +504,7 @@ def convertExcelToDfsJSON(defaultIndexes = timeIndexNames):
         if msgText: print(msgText)
 
 
-    return json.dumps(dataToConvert, indent=4)
+    return json.dumps(dataToConvert, indent=JSONIndentValue)
 
 
 
