@@ -448,13 +448,12 @@ def convertObjOfDfsToJSON(dataToConvert=None):
         for sheetName, df in dataToConvert.items():
             objOfDfsJSON[sheetName] = df.to_json(orient='split')
 
-        objOfDfsJSON = json.dumps(objOfDfsJSON, indent=4)
-
     except Exception as e:
         msgText = handleErrorMsg('\nError while converting object of DataFrames to JSON.', getTraceback(e))
 
     if msgText: print(msgText)
-    return objOfDfsJSON
+
+    return json.dumps(objOfDfsJSON, indent=4)
 
 
 
@@ -462,17 +461,14 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 #                    =>   JSON
 def convertExcelToDfsJSON(defaultIndexes = timeIndexNames):
     from files_utils import doesFileExist
-    excelJSON = {}
+    dataToConvert = {}
     msgText = ''
 
-    if not doesFileExist(scheduleExcelClassesPath):
-        return excelJSON
+    if doesFileExist(scheduleExcelClassesPath):
 
-    try:
-        excelData = read_excel(io=scheduleExcelClassesPath, sheet_name=None, engine=excelEngineName,
-                                keep_default_na=False)
-
-        if(bool(excelData)):
+        try:
+            excelData = read_excel(io=scheduleExcelClassesPath, sheet_name=None, engine=excelEngineName,
+                                    keep_default_na=False)
 
             # old columns version
             #lessonColumns = dataToConvert[0]
@@ -484,29 +480,28 @@ def convertExcelToDfsJSON(defaultIndexes = timeIndexNames):
 
                     # multi-dimensional column names
                     df.columns = MultiIndex.from_tuples(tuples = dfColNamesTuples)
-
+                    
                     # useful if there are repeated index cells in the table
                     # e.g. when there are more than one lesson
                     # at the same time for one class and its groups
                     for indexName in defaultIndexes:
                         df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
-                    
+                                            
                     df.set_index(keys=defaultIndexes, inplace=True)
                 
                 else:
                     df = oldDf
                 excelData[sheetName] = df.to_json(orient='split')
 
-        excelJSON = json.dumps(excelData, indent=4)
+            dataToConvert = excelData
+
+        except Exception as e:
+            msgText = handleErrorMsg('\nError converting existing schedule Excel file to JSON.', getTraceback(e))
+
+        if msgText: print(msgText)
 
 
-    except Exception as e:
-        msgText = handleErrorMsg('\nError converting existing schedule Excel file to JSON.', getTraceback(e))
-
-    if msgText: print(msgText)
-
-
-    return excelJSON 
+    return json.dumps(dataToConvert, indent=4)
 
 
 
