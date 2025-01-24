@@ -386,23 +386,15 @@ def dropnaInDfByAxis(el=None, axis=-1, both=True):
 
 
 # DATA   =>   DATA FRAME
-def convertToDf(dataToConvert=None, rowIndexesAsList=timeIndexNames, colNamesAsTuples=dfColNamesTuples):
+def convertToDf(dataToConvert=None):
     df = None
     msgText=''
 
     try:
         if(dataToConvert):
-
+            df = DataFrame(dataToConvert[1:])
             # multi-dimensional column names
-            lessonColumns = MultiIndex.from_tuples(tuples = colNamesAsTuples)
-
-            # old columns version
-            #lessonColumns = dataToConvert[0]
-
-            # schedule without column names
-            lessonRows = dataToConvert[1:]
-
-            df = DataFrame(data=lessonRows, columns=lessonColumns)
+            df.columns = MultiIndex.from_tuples(tuples = dfColNamesTuples)
 
             # use empty string instead of null/NaN
             df = df.fillna('')
@@ -410,18 +402,8 @@ def convertToDf(dataToConvert=None, rowIndexesAsList=timeIndexNames, colNamesAsT
             # Restore 111 from '111.0'.
             # The problem is probably caused by the creation of the DataFrame.
             df = df.map(convertFloatToInt)
-
-            # Useful if there are repeated index cells in the table,
-            # e.g. when there are more than one lesson
-            # at the same time for one class and its groups.
-
-            # FOR NOW, LEAVE THIS AS A COMMENT
-            # IF YOU WANT TO KEEP CREATING THE TEACHERS' TIMETABLE FUNCTIONAL.
-            #for indexName in timeIndexNames:
-            #    df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
             
-            # set actual columns as row indices
-            df.set_index(keys=rowIndexesAsList, inplace=True)
+            df.set_index(keys=timeIndexNames, inplace=True)
             
     except Exception as e:
         msgText = handleErrorMsg('\nError while converting data do DataFrame.', getTraceback(e))
@@ -449,6 +431,8 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
     try:
         for sheetName, df in dataToConvert.items():
+            # use empty string instead of null/NaN
+            df = df.fillna('')
             objOfDfsJSON[sheetName] = df.to_json(orient='split')
 
     except Exception as e:
@@ -462,7 +446,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
 # EXCEL CONTENT   =>   OBJECT OF DATA FRAMES
 #                    =>   JSON
-def convertExcelToDfsJSON(defaultIndexes = timeIndexNames):
+def convertExcelToDfsJSON():
     from files_utils import doesFileExist
     dataToConvert = {}
     msgText = ''
@@ -471,32 +455,10 @@ def convertExcelToDfsJSON(defaultIndexes = timeIndexNames):
 
         try:
             excelData = read_excel(io=scheduleExcelClassesPath, sheet_name=None, engine=excelEngineName,
-                                    keep_default_na=False)
+                                    keep_default_na=False, header=[0,1], index_col=[0,1])
 
-            # old columns version
-            #lessonColumns = dataToConvert[0]
-
-            for sheetName, oldDf in excelData.items():
-            
-                if not oldDf.empty:
-                    df = DataFrame(oldDf[2:])
-
-                    # multi-dimensional column names
-                    df.columns = MultiIndex.from_tuples(tuples = dfColNamesTuples)
-                    
-                    # useful if there are repeated index cells in the table
-                    # e.g. when there are more than one lesson
-                    # at the same time for one class and its groups
-                    for indexName in defaultIndexes:
-                        df[indexName] = df[indexName].where(df[indexName] != df[indexName].shift(), '')
-                                            
-                    df.set_index(keys=defaultIndexes, inplace=True)
-                
-                else:
-                    df = oldDf
-                excelData[sheetName] = df.to_json(orient='split')
-
-            dataToConvert = excelData
+            for sheetName, df in excelData.items():
+                dataToConvert[sheetName] = df.to_json(orient='split')
 
         except Exception as e:
             msgText = handleErrorMsg('\nError converting existing schedule Excel file to JSON.', getTraceback(e))
