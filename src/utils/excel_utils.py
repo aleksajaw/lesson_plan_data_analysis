@@ -470,6 +470,31 @@ def convertExcelToDfsJSON(excelFilePath=scheduleExcelClassesPath):
 
 
 
+# JSON WITH OBJECT OF DATA FRAMES
+#    =>   OBJECT OF DATA FRAMES
+def convertDfsJSONToObjOfDfs(JSONFilePath = ''):
+    msgText=''
+    objOfDfs = {}
+
+    try:
+        with open(JSONFilePath, 'r') as file:
+            objOfDfsTemp = json.load(file)
+            
+        for dfName, dfData in objOfDfsTemp.items():
+          dfData = json.loads(dfData)
+          dfData['index'] = MultiIndex.from_tuples(dfData['index'], names=timeIndexNames)
+          dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples5el)
+          objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
+
+    except Exception as e:
+        msgText = handleErrorMsg('Error while converting JSON file with Data Frames to object with Data Frames.', getTraceback(e))
+    
+    if msgText: print(msgText)
+
+    return objOfDfs
+
+
+
 # 111.0   =>   111
 def convertFloatToInt(value=None):
     isValueFloat = isinstance(value, float) and value.is_integer()
