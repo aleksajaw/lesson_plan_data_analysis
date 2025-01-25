@@ -52,7 +52,7 @@ def doesFileExist(filePath='', shouldPrintMsg=False):
     msgText += ( 'exists.'   if doesFileExistBool
                              else 'does not exist.' )
     
-    if shouldPrintMsg: print(msgText)
+    if shouldPrintMsg or not doesFileExistBool: print(msgText)
 
     return doesFileExistBool
 
@@ -231,7 +231,7 @@ def removeEmptyStrFromArr(arr=[]):
 
 def openFileWithDefApp(filePath=''):
 
-    if filePath!='' and not doesFileExist(filePath, True):
+    if filePath!='' and not doesFileExist(filePath):
         return
 
     try:
