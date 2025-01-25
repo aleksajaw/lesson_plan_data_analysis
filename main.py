@@ -201,6 +201,7 @@ def main():
         from src.handlers.schedules_saver import loadClassesDataVariables, createOrEditMainExcelFile, getClassesDataDfs
         from src.handlers.schedules_creator import createScheduleExcelFiles
         from src.handlers.schedules_opener import openScheduleFilesWithDefApps
+        from src.handlers.overviews_creator import createScheduleOverviews
         
         #turnOffFutureWarnings()
 
@@ -211,6 +212,7 @@ def main():
             createOrEditMainExcelFile()
             createScheduleExcelFiles(getClassesDataDfs())
             #openScheduleFilesWithDefApps()
+            createScheduleOverviews()
 
 
 
