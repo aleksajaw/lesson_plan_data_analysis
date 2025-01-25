@@ -1,6 +1,7 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import scheduleExcelClassesPath, weekdays, timeIndexNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, lessonTimePeriods
-from src.utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
+from src.constants.paths_constants import scheduleExcelClassesPath
+from src.constants.schedule_structures_constants import weekdays, timeIndexNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, lessonTimePeriods
+from src.utils.excel_utils import autoFormatExcelCellSizes, formatCellBackground, formatCellBorder, dropnaInDfByAxis
 import pandas as pd
 from pandas import DataFrame
 import numpy as np

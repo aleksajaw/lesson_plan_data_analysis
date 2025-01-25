@@ -1,6 +1,9 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import scheduleExcelClassesPath, excelEngineName, scheduleExcelClassesDfsJSONPath, scheduleClassesDfsJSONPath, scheduleClassesBaseJSONPath, JSONIndentValue
-from src.utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary, compareAndUpdateFile, autoFormatScheduleExcel
+from src.constants.paths_constants import scheduleExcelClassesPath, scheduleExcelClassesDfsJSONPath, scheduleClassesDfsJSONPath, scheduleClassesBaseJSONPath
+from src.constants.conversion_constants import excelEngineName, JSONIndentValue
+from src.utils.excel_utils import convertToObjOfDfs, convertObjOfDfsToJSON, createDraftSheetIfNecessary, convertExcelToDfsJSON, writeObjOfDfsToExcel, delDraftIfNecessary
+from src.utils.files_utils import compareAndUpdateFile
+from src.utils.schedule_utils import autoFormatScheduleExcel
 import json
 from pandas import ExcelWriter
 import os

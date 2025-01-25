@@ -1,8 +1,10 @@
-from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import scheduleExcelClassesPath, excelEngineName, draftSheetName, dfColNamesTuples, timeIndexNames, JSONIndentValue
+from error_utils import handleErrorMsg, getTraceback
+from src.constants.paths_constants import scheduleExcelClassesPath
+from src.constants.conversion_constants import excelEngineName, draftSheetName, JSONIndentValue
+from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dfColWeekDayNamesTuples5el
 import json
 import re
-from pandas import ExcelWriter, DataFrame, read_excel, MultiIndex
+from pandas import ExcelWriter, DataFrame, MultiIndex, read_excel
 import numpy as np
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment as openpyxlAlignment
@@ -31,9 +33,9 @@ def createDraftSheet(excelFilePath=scheduleExcelClassesPath):
 
 
 
-def createDraftSheetIfNecessary(excelPath=scheduleExcelClassesPath):
+def createDraftSheetIfNecessary(excelFilePath=scheduleExcelClassesPath):
     from files_utils import doesFileExist
-    if not doesFileExist(excelPath):
+    if not doesFileExist(excelFilePath):
         createDraftSheet()
 
 
@@ -127,26 +129,26 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
 
 
 
-def writerForWriteObjOfDfsToExcel(excelPath='', objOfDfs=None, doesNeedFormat=True):
+def writerForWriteObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedFormat=True):
     from schedule_utils import autoFormatScheduleExcel
     msgText=''
 
     try:
-        with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:       
-            writeObjOfDfsToExcel(writer, excelPath, objOfDfs)
+        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
+            writeObjOfDfsToExcel(writer, excelFilePath, objOfDfs)
 
             if doesNeedFormat:
-                autoFormatScheduleExcel(writer.book, excelPath)
+                autoFormatScheduleExcel(writer.book, excelFilePath)
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while writing to the file {os.path.basename(excelPath)}.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while writing to the file {os.path.basename(excelFilePath)}.', getTraceback(e))
     
     if msgText: print(msgText)
 
 
 
 def writeObjOfDfsToJSON(filePath='', objOfDfs=None):
-    from src.utils.files_utils import compareAndUpdateFile
+    from files_utils import compareAndUpdateFile
     msgText = ''
     isFileChanged = False
 
@@ -444,17 +446,15 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
 
 
-# EXCEL CONTENT   =>   OBJECT OF DATA FRAMES
-#                    =>   JSON
-def convertExcelToDfsJSON():
+# EXCEL CONTENT   =>   OBJECT OF DATA FRAMES   =>   JSON
+def convertExcelToDfsJSON(excelFilePath=scheduleExcelClassesPath):
     from files_utils import doesFileExist
     dataToConvert = {}
     msgText = ''
 
-    if doesFileExist(scheduleExcelClassesPath):
-
+    if doesFileExist(excelFilePath):
         try:
-            excelData = read_excel(io=scheduleExcelClassesPath, sheet_name=None, engine=excelEngineName,
+            excelData = read_excel(io=excelFilePath, sheet_name=None, engine=excelEngineName,
                                     keep_default_na=False, header=[0,1], index_col=[0,1])
 
             for sheetName, df in excelData.items():

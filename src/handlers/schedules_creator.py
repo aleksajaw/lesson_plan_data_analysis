@@ -1,6 +1,10 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import weekdays, scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, excelEngineName, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
-from src.utils import writerForWriteObjOfDfsToExcel, writeObjOfDfsToJSON, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, createFileNameWithNr, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, concatAndFilterScheduleDataFrames, createGroupsInListBy, dropnaInDfByAxis, filterAndConvertScheduleDataFrames, getListOfKeys
+from src.constants.schedule_structures_constants import weekdays
+from src.constants.paths_constants import scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
+from src.constants.conversion_constants import excelEngineName
+from src.utils.excel_utils import writerForWriteObjOfDfsToExcel, writeObjOfDfsToJSON, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, dropnaInDfByAxis, getListOfKeys
+from src.utils.files_utils import createFileNameWithNr
+from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
@@ -44,7 +48,6 @@ def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs):
         teacherSchedules = { key: teacherSchedules[key]   for key in getPureList(groupedOwnerLists['teachers']) }
         classroomSchedules = { str(key): classroomSchedules[str(key)]   for key in getPureList(groupedOwnerLists['classrooms']) }
         subjectSchedules = { key: subjectSchedules[key]   for key in getPureList(groupedOwnerLists['subjects']) }
-
         if writeObjOfDfsToJSON(scheduleTeachersDfsJSONPath, teacherSchedules):
             writerForWriteObjOfDfsToExcel(scheduleExcelTeachersPath, teacherSchedules)
             
@@ -327,15 +330,15 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='grou
 
 
 
-def writeGroupListsToExcel(excelPath='', objOfDfs={}):
+def writeGroupListsToExcel(excelFilePath='', objOfDfs={}):
     msgText = ''
 
-    if not excelPath:
-        excelPath = createFileNameWithNr()
+    if not excelFilePath:
+        excelFilePath = createFileNameWithNr()
 
     try:
         sheetGroups={}
-        with ExcelWriter(excelPath, mode='w+', engine=excelEngineName) as writer:
+        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:
             
             for listName, df in objOfDfs.items():
                 df.to_excel(writer, sheet_name=listName, merge_cells=True)
@@ -343,7 +346,7 @@ def writeGroupListsToExcel(excelPath='', objOfDfs={}):
             
             addBgToExcelSheetRowsBasedOnObj(writer, sheetGroups)
 
-        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelPath)[1][1:]).upper()} file   {os.path.basename(excelPath)}'
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while writing group lists to excel sheets.', getTraceback(e))

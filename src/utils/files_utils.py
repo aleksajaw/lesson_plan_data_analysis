@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants import schedulePath
+from src.constants.paths_constants import schedulePath
 
 
 

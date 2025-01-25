@@ -1,11 +1,11 @@
-# INITIAL VARIABLES
+###   INITIAL VARIABLES   ###
 schoolAndPlanURLs = [ ('https://zamkowa15.edu.pl', '/plan/plan.html'),
                       ('https://www.mechaniksieradz.edu.pl', '/DANE/Plan/Uczen/biezacy/') ]
 
 schoolURL, partPlanURL = schoolAndPlanURLs[0]
 planURL = schoolURL + partPlanURL
 
-# frame name attributes
+# The frame names (for attributes).
 linksFrameName = 'list'
 planFrameName = 'plan'
 
@@ -21,10 +21,5 @@ scraperPresenceLocators = { 'list': (By.NAME, linksFrameName),
                             'plan': (By.NAME, planFrameName) }
 
 
-# driver constant
+# The WebDriver possible locations.
 driverLocationStates = ['default', linksFrameName, planFrameName]
-
-# VARIABLES FOR EXCEL CREATOR
-#excelEngineName = 'xlsxwriter'
-excelEngineName = 'openpyxl'
-draftSheetName = 'draft_sheet'

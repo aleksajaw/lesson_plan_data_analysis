@@ -197,10 +197,10 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
 def main():
     if addAllOfTheProjectDirs():
     
-        from src import ( getClassesDataFromSchoolWebPage,
-                          loadClassesDataVariables, createOrEditMainExcelFile, getClassesDataDfs,
-                          createScheduleExcelFiles,
-                          openScheduleFilesWithDefApps )
+        from src.handlers.schedules_scraper import getClassesDataFromSchoolWebPage
+        from src.handlers.schedules_saver import loadClassesDataVariables, createOrEditMainExcelFile, getClassesDataDfs
+        from src.handlers.schedules_creator import createScheduleExcelFiles
+        from src.handlers.schedules_opener import openScheduleFilesWithDefApps
         
         #turnOffFutureWarnings()
 
