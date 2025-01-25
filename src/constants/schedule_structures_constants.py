@@ -59,3 +59,6 @@ dfColWeekDayEmptyRow = {
     ('Środa', 'przedmiot'): np.nan, ('Środa', 'grupa'): np.nan, ('Środa', 'nauczyciel'): np.nan, ('Środa', 'klasa'): np.nan, ('Środa', 'sala'): np.nan,
     ('Czwartek', 'przedmiot'): np.nan, ('Czwartek', 'grupa'): np.nan, ('Czwartek', 'nauczyciel'): np.nan, ('Czwartek', 'klasa'): np.nan, ('Czwartek', 'sala'): np.nan,
     ('Piątek', 'przedmiot'): np.nan, ('Piątek', 'grupa'): np.nan, ('Piątek', 'nauczyciel'): np.nan, ('Piątek', 'klasa'): np.nan, ('Piątek', 'sala'): np.nan }
+
+noGroupMarker = '-'
+wholeClassGroupName = 'cała klasa'

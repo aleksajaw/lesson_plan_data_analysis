@@ -1,5 +1,5 @@
 from src.constants.scraper_constants import planURL, driverLocationStates, scraperFindKeys, scraperPresenceLocators
-from src.constants.schedule_structures_constants import timeIndexNames
+from src.constants.schedule_structures_constants import timeIndexNames, noGroupMarker
 from src.utils.excel_utils import splitHTMLAndRemoveTags, delInvalidChars
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from selenium import webdriver
@@ -153,7 +153,7 @@ def scrapeClassTables():
                                 groupPart = elWithGroup[2]
                             else:
                                 # subject without division into the groups
-                                groupPart = 'X'
+                                groupPart = noGroupMarker
                             partsOfLine.insert(1, groupPart)
                             partsOfLineLength = len(partsOfLine)
                         
