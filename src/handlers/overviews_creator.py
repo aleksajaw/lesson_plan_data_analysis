@@ -35,10 +35,7 @@ def createScheduleOverviews():
                     lvl2ColContent = df.xs(colName, level=1, axis=1).astype(str).replace('', pd.NA)
                     
                     # Count the value occurrences there.
-                    try:
-                        lvl2ColUniqueValCounter = lvl2ColContent.apply( lambda col: col.dropna().value_counts() ).fillna(0)
-                    except:
-                        lvl2ColUniqueValCounter = lvl2ColContent.apply( lambda col: col.dropna().value_counts() ).fillna(0)
+                    lvl2ColUniqueValCounter = lvl2ColContent.apply( lambda col: col.dropna().value_counts() ).fillna(0)
 
                     lvl2ColUniqueValCounter['Razem'] = lvl2ColUniqueValCounter.sum(axis=1)                    
 
@@ -53,9 +50,12 @@ def createScheduleOverviews():
                     # Create a new MultiIndex.
                     for singleElInCol in lvl2ColUniqueValArr:
                         
-                        if singleElInCol == noGroupMarker:
+                        if singleElInCol.isdigit():
+                            singleElInCol = int(singleElInCol)
+                        
+                        elif singleElInCol == noGroupMarker:
                             singleElInCol = wholeClassGroupName
-
+                        
                         singleElIndexTuple = (colName, singleElInCol)
                         newIndex.append(singleElIndexTuple)
 
