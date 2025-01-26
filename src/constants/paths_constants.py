@@ -205,10 +205,10 @@ scheduleExcelClassroomsPath =  os.path.join(schedulePath, scheduleExcelClassroom
 scheduleExcelSubjectsPath =  os.path.join(schedulePath, scheduleExcelSubjectsName)
 
 # For all of the above
-allScheduleExcelPath = [ #scheduleExcelClassesPath,
-                         scheduleExcelTeachersPath,
-                         scheduleExcelClassroomsPath,
-                         scheduleExcelSubjectsPath ]
+allScheduleExcelPaths = [ scheduleExcelClassesPath,
+                          scheduleExcelTeachersPath,
+                          scheduleExcelClassroomsPath,
+                          scheduleExcelSubjectsPath ]
 
 
 # For schedule lists with grouped owners
@@ -224,10 +224,10 @@ scheduleExcelClassroomsGroupedPath =  os.path.join(schedulePath, scheduleExcelCl
 scheduleExcelSubjectsGroupedPath =  os.path.join(schedulePath, scheduleExcelSubjectsGroupedName)
 
 # For all of the above
-allScheduleExcelGroupedPath = [ #scheduleExcelClassesGroupedPath,
-                                scheduleExcelTeachersGroupedPath,
-                                scheduleExcelClassroomsGroupedPath,
-                                scheduleExcelSubjectsGroupedPath ]
+allScheduleExcelGroupedPaths = [ #scheduleExcelClassesGroupedPath,
+                                 scheduleExcelTeachersGroupedPath,
+                                 scheduleExcelClassroomsGroupedPath,
+                                 scheduleExcelSubjectsGroupedPath ]
 
 
 # For the classes overview
@@ -240,10 +240,10 @@ scheduleExcelClassroomsOverviewPath =  os.path.join(schedulePath, scheduleExcelC
 scheduleExcelSubjectsOverviewPath =  os.path.join(schedulePath, scheduleExcelSubjectsOverviewName)
 
 # For all of the above
-allScheduleExcelOverviewPath = [ scheduleExcelClassesOverviewPath,
-                                 scheduleExcelTeachersOverviewPath,
-                                 scheduleExcelClassroomsOverviewPath,
-                                 scheduleExcelSubjectsOverviewPath ]
+allScheduleExcelOverviewPaths = [ scheduleExcelClassesOverviewPath,
+                                  scheduleExcelTeachersOverviewPath,
+                                  scheduleExcelClassroomsOverviewPath,
+                                  scheduleExcelSubjectsOverviewPath ]
 
 
 # For the classes grouped overview
@@ -256,10 +256,10 @@ scheduleExcelClassroomsGroupedOverviewPath =  os.path.join(schedulePath, schedul
 scheduleExcelSubjectsGroupedOverviewPath =  os.path.join(schedulePath, scheduleExcelSubjectsGroupedOverviewName)
 
 # For all of the above
-allScheduleExcelGroupedOverviewPath = [ scheduleExcelClassesGroupedOverviewPath,
-                                        scheduleExcelTeachersGroupedOverviewPath,
-                                        scheduleExcelClassroomsGroupedOverviewPath,
-                                        scheduleExcelSubjectsGroupedOverviewPath ]
+allScheduleExcelGroupedOverviewPaths = [ #scheduleExcelClassesGroupedOverviewPath,
+                                         scheduleExcelTeachersGroupedOverviewPath,
+                                         scheduleExcelClassroomsGroupedOverviewPath,
+                                         scheduleExcelSubjectsGroupedOverviewPath ]
 
 
 ###   JSON   ###
@@ -288,10 +288,10 @@ scheduleClassroomsDfsJSONPath = os.path.join(scheduleJSONPath, scheduleClassroom
 scheduleSubjectsDfsJSONPath = os.path.join(scheduleJSONPath, scheduleSubjectsDfsJSONName)
 
 # For all of the above
-allScheduleDfsJSONPath = [ scheduleClassesDfsJSONPath,
-                           scheduleTeachersDfsJSONPath,
-                           scheduleClassroomsDfsJSONPath,
-                           scheduleSubjectsDfsJSONPath ]
+allScheduleDfsJSONPaths = [ scheduleClassesDfsJSONPath,
+                            scheduleTeachersDfsJSONPath,
+                            scheduleClassroomsDfsJSONPath,
+                            scheduleSubjectsDfsJSONPath ]
 
 
 # For the classes grouped
@@ -304,7 +304,7 @@ scheduleClassroomsGroupedDfsJSONPath = os.path.join(scheduleJSONPath, scheduleCl
 scheduleSubjectsGroupedDfsJSONPath = os.path.join(scheduleJSONPath, scheduleSubjectsGroupedDfsJSONName)
 
 # For all of the above
-allScheduleGroupedDfsJSONPath = [ #scheduleClassesGroupedDfsJSONPath,
-                                  scheduleTeachersGroupedDfsJSONPath,
-                                  scheduleClassroomsGroupedDfsJSONPath,
-                                  scheduleSubjectsGroupedDfsJSONPath ]
+allScheduleGroupedDfsJSONPaths = [ #scheduleClassesGroupedDfsJSONPath,
+                                   scheduleTeachersGroupedDfsJSONPath,
+                                   scheduleClassroomsGroupedDfsJSONPath,
+                                   scheduleSubjectsGroupedDfsJSONPath ]
