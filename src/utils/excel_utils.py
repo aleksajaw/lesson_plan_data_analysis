@@ -147,6 +147,56 @@ def writerForWriteObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedForma
 
 
 
+def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, writingDirection='rows'):
+    msgText = ''
+
+    try:
+        # group contains classes, teachers, subjects
+        groupDfs = {el: convertToObjOfDfs(dataToEnter[el])   for el in dataToEnter}   if not isConverted   else dataToEnter
+        
+        for groupName in groupDfs:
+            coords = { 'row': 0,
+                       'col': 0 }
+
+            for singleDf in groupDfs[groupName]:
+                
+                singleDf.to_excel( writer, sheet_name=delInvalidChars(groupName), merge_cells=True,
+                                   startrow=coords['row'], startcol=coords['col'] )
+                
+                if writingDirection == 'rows':
+                    coords['col'] = coords['col'] + singleDf.shape[1] + 3
+
+                else:
+                    coords['row'] = coords['row'] + singleDf.shape[0] + 4
+
+
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
+
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while loading data into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.', getTraceback(e))
+    
+    if msgText: print(msgText)
+
+
+
+def writerForExcelWorksheetsWithMultipleDfs(excelFilePath='', objOfMultipleDfs=None, doesNeedFormat=True, writingDirection='rows'):
+    from schedule_utils import autoFormatScheduleExcel
+    msgText=''
+
+    try:
+        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
+            writeExcelWorksheetsWithMultipleDfs(writer, excelFilePath, objOfMultipleDfs, True, writingDirection)
+
+            if doesNeedFormat:
+                autoFormatScheduleExcel(writer.book, excelFilePath)
+
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))
+    
+    if msgText: print(msgText)
+
+
+
 def writeObjOfDfsToJSON(filePath='', objOfDfs=None):
     from files_utils import compareAndUpdateFile
     msgText = ''
