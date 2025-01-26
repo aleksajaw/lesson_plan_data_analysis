@@ -16,26 +16,47 @@ logsPath = os.path.join(projectRoot, 'logs')
 
 
 
-#####     FILE BASE NAMES     #####
-
-scheduleClassesBaseName = 'schedule_classes'
-scheduleTeachersBaseName = 'schedule_teachers'
-scheduleClassroomsBaseName = 'schedule_classrooms'
-scheduleSubjectsBaseName = 'schedule_subjects'
-
-scheduleFileBaseNames = [ scheduleClassesBaseName,
-                          scheduleTeachersBaseName,
-                          scheduleClassroomsBaseName,
-                          scheduleSubjectsBaseName ]
-
-
-
 #####     PARTS OF FILE NAMES AND PATHS     #####
 
 extExcel = '.xlsx'
 extJSON = '.json' 
 dfsPrefix = 'dfs_'
 groupedSufix = '-grouped'
+
+
+
+#####     FILE BASE NAMES     #####
+
+# For classes
+scheduleClassesBaseName = 'schedule_classes'
+# For teachers
+scheduleTeachersBaseName = 'schedule_teachers'
+# For classrooms
+scheduleClassroomsBaseName = 'schedule_classrooms'
+# For subjects
+scheduleSubjectsBaseName = 'schedule_subjects'
+
+# For all of the above
+scheduleFileBaseNames = [ scheduleClassesBaseName,
+                          scheduleTeachersBaseName,
+                          scheduleClassroomsBaseName,
+                          scheduleSubjectsBaseName ]
+
+
+# For classes grouped
+scheduleClassesGroupedBaseName = scheduleClassesBaseName + groupedSufix
+# For teachers grouped
+scheduleTeachersGroupedBaseName = scheduleTeachersBaseName + groupedSufix
+# For classrooms grouped
+scheduleClassroomsGroupedBaseName = scheduleClassroomsBaseName + groupedSufix
+# For subjects grouped
+scheduleSubjectsGroupedBaseName = scheduleSubjectsBaseName + groupedSufix
+
+# For all of the above 
+scheduleFileGroupedBaseNames = [ scheduleClassesGroupedBaseName,
+                                 scheduleTeachersGroupedBaseName,
+                                 scheduleClassroomsGroupedBaseName,
+                                 scheduleSubjectsGroupedBaseName ]
 
 
 
@@ -58,13 +79,13 @@ scheduleListsExcelOwnersGroupedName = 'schedule-lists_owners' + groupedSufix + e
 
 
 # For the classes grouped
-scheduleExcelClassesGroupedName = scheduleClassesBaseName + groupedSufix + extExcel
+scheduleExcelClassesGroupedName = scheduleClassesGroupedBaseName + extExcel
 # For the teachers grouped
-scheduleExcelTeachersGroupedName = scheduleTeachersBaseName + groupedSufix + extExcel
+scheduleExcelTeachersGroupedName = scheduleTeachersGroupedBaseName + extExcel
 # For the classrooms grouped
-scheduleExcelClassroomsGroupedName = scheduleClassroomsBaseName + groupedSufix + extExcel
+scheduleExcelClassroomsGroupedName = scheduleClassroomsGroupedBaseName + extExcel
 # For the subjects grouped
-scheduleExcelSubjectsGroupedName = scheduleSubjectsBaseName + groupedSufix + extExcel
+scheduleExcelSubjectsGroupedName = scheduleSubjectsGroupedBaseName + extExcel
 
 
 
@@ -90,33 +111,29 @@ scheduleClassroomsDfsJSONName = dfsPrefix + scheduleClassroomsBaseName + extJSON
 scheduleSubjectsDfsJSONName = dfsPrefix + scheduleSubjectsBaseName + extJSON
 
 # For all of the above
-allScheduleDfsJSONNames = [
-                            scheduleClassesDfsJSONName,
+allScheduleDfsJSONNames = [ scheduleClassesDfsJSONName,
                             scheduleTeachersDfsJSONName,
                             scheduleClassroomsDfsJSONName,
-                            scheduleSubjectsDfsJSONName
-                          ]
+                            scheduleSubjectsDfsJSONName ]
 
 
 # For the list of the schedule owners
 scheduleListsOwnersGroupedDfsJSONName = dfsPrefix + 'schedule-lists_owners' + groupedSufix + extJSON
 
 # For the classes grouped
-scheduleClassesGroupedDfsJSONName = dfsPrefix + scheduleClassesBaseName + '' + groupedSufix + extJSON
+scheduleClassesGroupedDfsJSONName = dfsPrefix + scheduleClassesGroupedBaseName + extJSON
 # For the teachers grouped
-scheduleTeachersGroupedDfsJSONName = dfsPrefix + scheduleTeachersBaseName + '' + groupedSufix + extJSON
+scheduleTeachersGroupedDfsJSONName = dfsPrefix + scheduleTeachersGroupedBaseName + extJSON
 # For the classrooms grouped
-scheduleClassroomsGroupedDfsJSONName = dfsPrefix + scheduleClassroomsBaseName + '' + groupedSufix + extJSON
+scheduleClassroomsGroupedDfsJSONName = dfsPrefix + scheduleClassroomsGroupedBaseName + extJSON
 # For the subjects grouped
-scheduleSubjectsGroupedDfsJSONName = dfsPrefix + scheduleSubjectsBaseName + '' + groupedSufix + extJSON
+scheduleSubjectsGroupedDfsJSONName = dfsPrefix + scheduleSubjectsGroupedBaseName + extJSON
 
 # For all of the above
-allScheduleGroupedDfsJSONNames = [
-                                   scheduleClassesGroupedDfsJSONName,
+allScheduleGroupedDfsJSONNames = [ scheduleClassesGroupedDfsJSONName,
                                    scheduleTeachersGroupedDfsJSONName,
                                    scheduleClassroomsGroupedDfsJSONName,
-                                   scheduleSubjectsGroupedDfsJSONName
-                                 ]
+                                   scheduleSubjectsGroupedDfsJSONName ]
 
 
 
@@ -136,12 +153,10 @@ scheduleExcelClassroomsPath =  os.path.join(schedulePath, scheduleExcelClassroom
 scheduleExcelSubjectsPath =  os.path.join(schedulePath, scheduleExcelSubjectsName)
 
 # For all of the above
-allScheduleExcelPath = [
-                         #scheduleExcelClassesPath,
+allScheduleExcelPath = [ #scheduleExcelClassesPath,
                          scheduleExcelTeachersPath,
                          scheduleExcelClassroomsPath,
-                         scheduleExcelSubjectsPath
-                       ]
+                         scheduleExcelSubjectsPath ]
 
 
 # For schedule lists with grouped owners
@@ -157,12 +172,10 @@ scheduleExcelClassroomsGroupedPath =  os.path.join(schedulePath, scheduleExcelCl
 scheduleExcelSubjectsGroupedPath =  os.path.join(schedulePath, scheduleExcelSubjectsGroupedName)
 
 # For all of the above
-allScheduleExcelGroupedPath = [ 
-                                #scheduleExcelClassesGroupedPath,
+allScheduleExcelGroupedPath = [ #scheduleExcelClassesGroupedPath,
                                 scheduleExcelTeachersGroupedPath,
                                 scheduleExcelClassroomsGroupedPath,
-                                scheduleExcelSubjectsGroupedPath
-                              ]
+                                scheduleExcelSubjectsGroupedPath ]
 
 
 
@@ -192,12 +205,10 @@ scheduleClassroomsDfsJSONPath = os.path.join(scheduleJSONPath, scheduleClassroom
 scheduleSubjectsDfsJSONPath = os.path.join(scheduleJSONPath, scheduleSubjectsDfsJSONName)
 
 # For all of the above
-allScheduleDfsJSONPath = [
-                           scheduleClassesDfsJSONPath,
+allScheduleDfsJSONPath = [ scheduleClassesDfsJSONPath,
                            scheduleTeachersDfsJSONPath,
                            scheduleClassroomsDfsJSONPath,
-                           scheduleSubjectsDfsJSONPath
-                         ]
+                           scheduleSubjectsDfsJSONPath ]
 
 
 # For the classes grouped
@@ -210,9 +221,7 @@ scheduleClassroomsGroupedDfsJSONPath = os.path.join(scheduleJSONPath, scheduleCl
 scheduleSubjectsGroupedDfsJSONPath = os.path.join(scheduleJSONPath, scheduleSubjectsGroupedDfsJSONName)
 
 # For all of the above
-allScheduleGroupedDfsJSONPath = [
-                                  #scheduleClassesGroupedDfsJSONPath,
+allScheduleGroupedDfsJSONPath = [ #scheduleClassesGroupedDfsJSONPath,
                                   scheduleTeachersGroupedDfsJSONPath,
                                   scheduleClassroomsGroupedDfsJSONPath,
-                                  scheduleSubjectsGroupedDfsJSONPath
-                                ]
+                                  scheduleSubjectsGroupedDfsJSONPath ]
