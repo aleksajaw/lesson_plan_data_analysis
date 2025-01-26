@@ -63,7 +63,7 @@ def writerForWriteObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedForma
 
 
 
-def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, writingDirection='rows'):
+def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, writingDirection='row'):
     msgText = ''
 
     try:
@@ -78,12 +78,12 @@ def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', da
                 
                 singleDf.to_excel( writer, sheet_name=delInvalidChars(groupName), merge_cells=True,
                                    startrow=coords['row'], startcol=coords['col'] )
-                
-                if writingDirection == 'rows':
-                    coords['col'] = coords['col'] + singleDf.shape[1] + 3
 
-                else:
-                    coords['row'] = coords['row'] + singleDf.shape[0] + 4
+                if writingDirection == 'row':
+                    coords['col'] = coords['col'] + singleDf.shape[1] + singleDf.index.nlevels + 1
+
+                elif writingDirection == 'col':
+                    coords['row'] = coords['row'] + singleDf.shape[0] + singleDf.columns.nlevels + 1
 
 
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'

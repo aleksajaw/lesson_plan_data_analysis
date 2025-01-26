@@ -76,7 +76,7 @@ def createScheduleOverviews():
 
 
             scheduleOverviewFileName = f'{scheduleOverviewBaseNames[i]}_overview.xlsx'
-            writerForExcelWorksheetsWithMultipleDfs( os.path.join(schedulePath, scheduleOverviewFileName), aNew, False, 'rows')
+            writerForExcelWorksheetsWithMultipleDfs( os.path.join(schedulePath, scheduleOverviewFileName), aNew, False, 'row')
 
 
     except Exception as e:
