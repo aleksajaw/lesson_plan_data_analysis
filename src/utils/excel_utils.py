@@ -110,7 +110,7 @@ def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
 
 
 
-def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataToEnter=None, isConverted=True):
+def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True):
     msgText = ''
 
     try:
@@ -120,10 +120,10 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, scheduleExcelClassesPath='', dataTo
         for groupName in groupDfs:   
             groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
 
-        msgText = f'\nThe data has been loaded into the {(os.path.splitext(scheduleExcelClassesPath)[1][1:]).upper()} file   {os.path.basename(scheduleExcelClassesPath)}'
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
 
     except Exception as e:
-        msgText = handleErrorMsg('\nError loading complete classes data.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError loading data into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.', getTraceback(e))
     
     if msgText: print(msgText)
 
@@ -141,7 +141,7 @@ def writerForWriteObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedForma
                 autoFormatScheduleExcel(writer.book, excelFilePath)
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while writing to the file {os.path.basename(excelFilePath)}.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))
     
     if msgText: print(msgText)
 
@@ -157,7 +157,7 @@ def writeObjOfDfsToJSON(filePath='', objOfDfs=None):
         isFileChanged = compareAndUpdateFile(filePath, dataToEnter)
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while writing data to the file {os.path.basename(filePath)}.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(filePath)}.', getTraceback(e))
 
     if msgText: print(msgText)
 
