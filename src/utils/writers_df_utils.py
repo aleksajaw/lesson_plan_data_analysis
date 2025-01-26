@@ -71,7 +71,7 @@ def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', da
         groupDfs = {el: convertToObjOfDfs(dataToEnter[el])   for el in dataToEnter}   if not isConverted   else dataToEnter
         
         for groupName in groupDfs:
-            coords = excelMargin
+            coords = excelMargin.copy()
 
             for singleDf in groupDfs[groupName]:
                 
@@ -93,7 +93,7 @@ def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', da
 
 
 
-def writerForExcelWorksheetsWithMultipleDfs(excelFilePath='', objOfMultipleDfs=None, doesNeedFormat=True, writingDirection='rows'):
+def writerForExcelWorksheetsWithMultipleDfs(excelFilePath='', objOfMultipleDfs=None, doesNeedFormat=True, writingDirection='row'):
     msgText=''
 
     try:
