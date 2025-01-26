@@ -33,7 +33,7 @@ def createOrEditMainExcelFile():
     currExcelAsDfsJSON = convertExcelToDfsJSON()
 
     try:
-        if currExcelAsDfsJSON.strip() != classesDataDfsJSON.strip():
+        if not currExcelAsDfsJSON.strip()   or   ( currExcelAsDfsJSON.strip() != classesDataDfsJSON.strip() ):
             with ExcelWriter(scheduleExcelClassesPath, mode='w+', engine=excelEngineName) as writer:
                 
                 try:
