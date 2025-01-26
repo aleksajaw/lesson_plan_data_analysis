@@ -22,6 +22,7 @@ extExcel = '.xlsx'
 extJSON = '.json' 
 dfsPrefix = 'dfs_'
 groupedSufix = '-grouped'
+overviewSufix = '_overview'
 
 
 
@@ -59,6 +60,38 @@ scheduleFileGroupedBaseNames = [ scheduleClassesGroupedBaseName,
                                  scheduleSubjectsGroupedBaseName ]
 
 
+# For classes overview
+scheduleClassesOverviewBaseName = scheduleClassesBaseName + overviewSufix
+# For teachers overview
+scheduleTeachersOverviewBaseName = scheduleTeachersBaseName + overviewSufix
+# For classrooms overview
+scheduleClassroomsOverviewBaseName = scheduleClassroomsBaseName + overviewSufix
+# For subjects overview
+scheduleSubjectsOverviewBaseName = scheduleSubjectsBaseName +  overviewSufix
+
+# For all of the above 
+scheduleFileGroupedOverviewBaseNames = [ scheduleClassesOverviewBaseName,
+                                         scheduleTeachersOverviewBaseName,
+                                         scheduleClassroomsOverviewBaseName,
+                                         scheduleSubjectsOverviewBaseName ]
+
+
+# For classes grouped overview
+scheduleClassesGroupedOverviewBaseName = scheduleClassesBaseName + groupedSufix + overviewSufix
+# For teachers grouped overview
+scheduleTeachersGroupedOverviewBaseName = scheduleTeachersBaseName + groupedSufix + overviewSufix
+# For classrooms grouped overview
+scheduleClassroomsGroupedOverviewBaseName = scheduleClassroomsBaseName + groupedSufix + overviewSufix
+# For subjects grouped overview
+scheduleSubjectsGroupedOverviewBaseName = scheduleSubjectsBaseName + groupedSufix + overviewSufix
+
+# For all of the above 
+scheduleFileGroupedOverviewBaseNames = [ scheduleClassesGroupedOverviewBaseName,
+                                         scheduleTeachersGroupedOverviewBaseName,
+                                         scheduleClassroomsGroupedOverviewBaseName,
+                                         scheduleSubjectsGroupedOverviewBaseName ]
+
+
 
 #####     FILE NAMES     #####
 
@@ -86,6 +119,26 @@ scheduleExcelTeachersGroupedName = scheduleTeachersGroupedBaseName + extExcel
 scheduleExcelClassroomsGroupedName = scheduleClassroomsGroupedBaseName + extExcel
 # For the subjects grouped
 scheduleExcelSubjectsGroupedName = scheduleSubjectsGroupedBaseName + extExcel
+
+
+# For the classes overview
+scheduleExcelClassesOverviewName = scheduleClassesOverviewBaseName + extExcel
+# For the teachers overview
+scheduleExcelTeachersOverviewName = scheduleTeachersOverviewBaseName + extExcel
+# For the classrooms overview
+scheduleExcelClassroomsOverviewName = scheduleClassroomsOverviewBaseName + extExcel
+# For the subjects overview
+scheduleExcelSubjectsOverviewName = scheduleSubjectsOverviewBaseName + extExcel
+
+
+# For the classes grouped overview
+scheduleExcelClassesGroupedOverviewName = scheduleClassesGroupedOverviewBaseName + extExcel
+# For the teachers grouped overview
+scheduleExcelTeachersGroupedOverviewName = scheduleTeachersGroupedOverviewBaseName + extExcel
+# For the classrooms grouped overview
+scheduleExcelClassroomsGroupedOverviewName = scheduleClassroomsGroupedOverviewBaseName + extExcel
+# For the subjects grouped overview
+scheduleExcelSubjectsGroupedOverviewName = scheduleSubjectsGroupedOverviewBaseName + extExcel
 
 
 
@@ -176,6 +229,37 @@ allScheduleExcelGroupedPath = [ #scheduleExcelClassesGroupedPath,
                                 scheduleExcelClassroomsGroupedPath,
                                 scheduleExcelSubjectsGroupedPath ]
 
+
+# For the classes overview
+scheduleExcelClassesOverviewPath = os.path.join(schedulePath, scheduleExcelClassesOverviewName)
+# For the teachers overview
+scheduleExcelTeachersOverviewPath =  os.path.join(schedulePath, scheduleExcelTeachersOverviewName)
+# For the classrooms overview
+scheduleExcelClassroomsOverviewPath =  os.path.join(schedulePath, scheduleExcelClassroomsOverviewName)
+# For the subjects overview
+scheduleExcelSubjectsOverviewPath =  os.path.join(schedulePath, scheduleExcelSubjectsOverviewName)
+
+# For all of the above
+allScheduleExcelOverviewPath = [ scheduleExcelClassesOverviewPath,
+                                 scheduleExcelTeachersOverviewPath,
+                                 scheduleExcelClassroomsOverviewPath,
+                                 scheduleExcelSubjectsOverviewPath ]
+
+
+# For the classes grouped overview
+scheduleExcelClassesGroupedOverviewPath =  os.path.join(schedulePath, scheduleExcelClassesGroupedOverviewName)
+# For the teachers grouped overview
+scheduleExcelTeachersGroupedOverviewPath =  os.path.join(schedulePath, scheduleExcelTeachersGroupedOverviewName)
+# For the classrooms grouped overview
+scheduleExcelClassroomsGroupedOverviewPath =  os.path.join(schedulePath, scheduleExcelClassroomsGroupedOverviewName)
+# For the subjects grouped overview
+scheduleExcelSubjectsGroupedOverviewPath =  os.path.join(schedulePath, scheduleExcelSubjectsGroupedOverviewName)
+
+# For all of the above
+allScheduleExcelGroupedOverviewPath = [ scheduleExcelClassesGroupedOverviewPath,
+                                        scheduleExcelTeachersGroupedOverviewPath,
+                                        scheduleExcelClassroomsGroupedOverviewPath,
+                                        scheduleExcelSubjectsGroupedOverviewPath ]
 
 
 ###   JSON   ###
