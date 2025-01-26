@@ -64,3 +64,9 @@ noGroupMarker = '-'
 wholeClassGroupName = 'cała klasa'
 sumRowsCellName = 'Razem'
 sumColsCellName = 'Razem'
+
+excelMargin = { 'row' : 1,
+                'col' : 1 }
+
+excelDistance = { 'row' : 1,
+                  'col' : 1 }
