@@ -1,7 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleExcelClassesPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName, JSONIndentValue
-from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dfColWeekDayNamesTuples5el
+from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el
 import json
 import re
 from pandas import ExcelWriter, DataFrame, MultiIndex, read_excel
@@ -533,8 +533,13 @@ def convertDfsJSONToObjOfDfs(JSONFilePath = ''):
         for dfName, dfData in objOfDfsTemp.items():
           dfData = json.loads(dfData)
           dfData['index'] = MultiIndex.from_tuples(dfData['index'], names=timeIndexNames)
-          dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples5el)
-          objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
+          try:
+              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples5el)
+              objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
+
+          except:              
+              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples4el)
+              objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
 
     except Exception as e:
         msgText = handleErrorMsg('Error while converting JSON file with Data Frames to object with Data Frames.', getTraceback(e))
