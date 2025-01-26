@@ -20,7 +20,6 @@ def createScheduleOverviews():
             a = convertDfsJSONToObjOfDfs(scheduleFilePath)
             
             aNew = {}
-            aT = {}
 
             for sheetName, df in a.items():
                 
@@ -41,36 +40,39 @@ def createScheduleOverviews():
                     except:
                         lvl2ColUniqueValCounter = lvl2ColContent.apply( lambda col: col.dropna().value_counts() ).fillna(0)
 
-                    lvl2ColUniqueValCounter['Razem'] = lvl2ColUniqueValCounter.sum(axis=1)
+                    lvl2ColUniqueValCounter['Razem'] = lvl2ColUniqueValCounter.sum(axis=1)                    
 
                     # Convert .values   =>   np.array()
                     #                .flatten()   =>   flat array
                     lvl2ColUniqueValArr = pd.unique( lvl2ColContent.values.flatten() )
+                    lvl2ColUniqueValArr = [ val for val in lvl2ColUniqueValArr   if pd.notna(val)]
 
+                    sumRows = lvl2ColUniqueValCounter.sum(axis=0)
+                    sumRows.name = ('Razem', len(lvl2ColUniqueValArr))
 
                     # Create a new MultiIndex.
                     for singleElInCol in lvl2ColUniqueValArr:
-                        # Ignore the empty values.
-                        if pd.notna(singleElInCol):
-                            if singleElInCol == noGroupMarker:
-                                singleElInCol = wholeClassGroupName
+                        
+                        if singleElInCol == noGroupMarker:
+                            singleElInCol = wholeClassGroupName
 
-                            singleElIndexTuple = (colName, singleElInCol)
-                            newIndex.append(singleElIndexTuple)
+                        singleElIndexTuple = (colName, singleElInCol)
+                        newIndex.append(singleElIndexTuple)
 
                     newIndex = MultiIndex.from_tuples(newIndex)
 
 
                     # Complete the data and concatenate with the existing data.
                     lvl2ColUniqueValCounter.index = newIndex
+                    lvl2ColUniqueValCounter = pd.concat([lvl2ColUniqueValCounter, sumRows.to_frame().T])
+
                     newDf = lvl2ColUniqueValCounter
 
                     try:
                         aNew[sheetName].append(newDf)
-                        aT[sheetName].append(newDf.T)
                     except:
                         aNew[sheetName] = [newDf]
-                        aT[sheetName] = [newDf.T]
+
 
             scheduleOverviewFileName = f'{scheduleOverviewBaseNames[i]}_overview.xlsx'
             writerForExcelWorksheetsWithMultipleDfs( os.path.join(schedulePath, scheduleOverviewFileName), aNew, False, 'rows')
