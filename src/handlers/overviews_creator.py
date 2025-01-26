@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import schedulePath, allScheduleGroupedDfsJSONPath, allScheduleDfsJSONPath, scheduleFileBaseNames, scheduleFileGroupedBaseNames
-from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName
+from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, sumColsCellName, sumRowsCellName
 from src.utils.converters_utils import convertDfsJSONToObjOfDfs
 from src.utils.writers_df_utils import writerForExcelWorksheetsWithMultipleDfs
 import pandas as pd
@@ -38,7 +38,7 @@ def createScheduleOverviews():
                     # Count the value occurrences there.
                     lvl2ColUniqueValCounter = lvl2ColContent.apply( lambda col: col.dropna().value_counts() ).fillna(0)
 
-                    lvl2ColUniqueValCounter['Razem'] = lvl2ColUniqueValCounter.sum(axis=1)                    
+                    lvl2ColUniqueValCounter[sumRowsCellName] = lvl2ColUniqueValCounter.sum(axis=1)                    
 
                     # Convert .values   =>   np.array()
                     #                .flatten()   =>   flat array
@@ -46,7 +46,7 @@ def createScheduleOverviews():
                     lvl2ColUniqueValArr = [ val for val in lvl2ColUniqueValArr   if pd.notna(val)]
 
                     sumRows = lvl2ColUniqueValCounter.sum(axis=0)
-                    sumRows.name = ('Razem', len(lvl2ColUniqueValArr))
+                    sumRows.name = (sumColsCellName, len(lvl2ColUniqueValArr))
 
                     # Create a new MultiIndex.
                     for singleElInCol in lvl2ColUniqueValArr:

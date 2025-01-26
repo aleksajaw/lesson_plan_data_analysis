@@ -62,3 +62,5 @@ dfColWeekDayEmptyRow = {
 
 noGroupMarker = '-'
 wholeClassGroupName = 'cała klasa'
+sumRowsCellName = 'Razem'
+sumColsCellName = 'Razem'
