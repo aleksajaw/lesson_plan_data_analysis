@@ -1,5 +1,6 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.conversion_constants import excelEngineName
+from src.constants.schedule_structures_constants import excelMargin, excelDistance
 from pandas import ExcelWriter
 import os
 from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON
@@ -7,21 +8,19 @@ from excel_styles_utils import autoFormatScheduleExcel
 
 
 
-def writeAsDfToExcelSheet(desire=None, sheetName='', dataToEnter=None):
+def writeAsDfToExcelSheet(writer=ExcelWriter, excelFilePath='', sheetName='', dataToEnter=None, coords={'row':0, 'col':0}, isConverted=True, doesWriteMsg=False):
     msgText = ''
-
-    # desire should be Excel.Writer or filePath
-    if not desire:
-        from files_utils import createFileNameWithNr
-        desire = createFileNameWithNr
-
+    
     try:
-        df = convertToDf(dataToEnter)
-        df.to_excel(desire, sheet_name=sheetName, merge_cells=True)
-        msgText = f'\nData for sheet {sheetName} loaded.'
+        df = dataToEnter   if isConverted   else convertToDf(dataToEnter)
+        
+        df.to_excel(writer, sheet_name=delInvalidChars(sheetName), startrow=coords['row'], startcol=coords['col'], merge_cells=True)
+
+        if doesWriteMsg:
+            msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}[{sheetName}].'
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError loading data into {sheetName}.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while loading data into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}[{sheetName}].', getTraceback(e))
 
     if msgText: print(msgText)
 
@@ -35,12 +34,13 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None,
         groupDfs = convertToObjOfDfs(dataToEnter)   if not isConverted   else dataToEnter
 
         for groupName in groupDfs:   
-            groupDfs[groupName].to_excel(writer, sheet_name=delInvalidChars(groupName), merge_cells=True)
+            writeAsDfToExcelSheet(writer, excelFilePath, groupName, groupDfs[groupName])
 
-        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
+
 
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError loading data into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while loading data into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.', getTraceback(e))
     
     if msgText: print(msgText)
 
@@ -71,19 +71,17 @@ def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', da
         groupDfs = {el: convertToObjOfDfs(dataToEnter[el])   for el in dataToEnter}   if not isConverted   else dataToEnter
         
         for groupName in groupDfs:
-            coords = { 'row': 0,
-                       'col': 0 }
+            coords = excelMargin
 
             for singleDf in groupDfs[groupName]:
                 
-                singleDf.to_excel( writer, sheet_name=delInvalidChars(groupName), merge_cells=True,
-                                   startrow=coords['row'], startcol=coords['col'] )
+                writeAsDfToExcelSheet( writer, excelFilePath, groupName, singleDf, coords )
 
                 if writingDirection == 'row':
-                    coords['col'] = coords['col'] + singleDf.shape[1] + singleDf.index.nlevels + 1
+                    coords['col'] = coords['col'] + singleDf.shape[1] + singleDf.index.nlevels + excelDistance['col']
 
                 elif writingDirection == 'col':
-                    coords['row'] = coords['row'] + singleDf.shape[0] + singleDf.columns.nlevels + 1
+                    coords['row'] = coords['row'] + singleDf.shape[0] + singleDf.columns.nlevels + excelDistance['row']
 
 
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
