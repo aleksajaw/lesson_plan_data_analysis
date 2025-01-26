@@ -1,7 +1,7 @@
 import os
 import sys
 import subprocess
-from src.utils.error_utils import handleErrorMsg, getTraceback
+from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import schedulePath
 
 
@@ -205,7 +205,7 @@ def createFileNameWithDateTime(fileNameBase='log', fileExt='txt', mainSeparator=
         
 
 def findFileNameDifference(fileName='', fileNameToBeCompared=''):
-    from excel_utils import convertDigitInStrToInt
+    from src.utils.excel_utils import convertDigitInStrToInt
 
     difference = ''
     nameToRemove=''

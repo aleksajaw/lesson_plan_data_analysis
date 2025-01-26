@@ -2,9 +2,12 @@ from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import weekdays
 from src.constants.paths_constants import scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
-from src.utils.excel_utils import writerForWriteObjOfDfsToExcel, writeObjOfDfsToJSON, autoFormatExcelCellSizes, removeLastEmptyRowsInDataFrames, addBgToExcelSheetRowsBasedOnObj, filterNumpyNdarray, dropnaInDfByAxis, getListOfKeys
+from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupList, getPureList
+from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
+from src.utils.excel_styles_utils import autoFormatExcelCellSizes, addBgToExcelSheetRowsBasedOnObj
 from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
+from src.utils.writers_df_utils import writerForWriteObjOfDfsToExcel, writeObjOfDfsToJSON
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
@@ -357,12 +360,12 @@ def writeGroupListsToExcel(excelFilePath='', objOfDfs={}):
 
 
 
-def writeGroupListsToExcelAndFormat(groupLists={}):
+def writeGroupListsToExcelAndFormat(groupLists={}, excelFilePath=scheduleListsExcelOwnersGroupedPath):
     msgText = ''
 
     try:
-        newObjOfDfs = writeGroupListsToExcel(scheduleListsExcelOwnersGroupedPath, groupLists)
-        autoFormatExcelCellSizes(excelFilePath=scheduleListsExcelOwnersGroupedPath)
+        newObjOfDfs = writeGroupListsToExcel(excelFilePath, groupLists)
+        autoFormatExcelCellSizes(excelFilePath)
         
     except Exception as e:
         msgText = handleErrorMsg('\nError while writing and formatting the excel files for group lists.', getTraceback(e))
@@ -370,27 +373,6 @@ def writeGroupListsToExcelAndFormat(groupLists={}):
     if msgText: print(msgText)
 
     return newObjOfDfs
-
-
-
-def getPureGroupList(df=DataFrame, colToGroupBy='names_base', colToCreateList='names'):
-    # Group data in Data Frame by unique values in column (index) colToGroupBy.
-    # Then, make list from colToCreateList.
-    newDf = None
-    if colToGroupBy in df.index.names   and colToCreateList in df.columns:
-        newDf = df.groupby(colToGroupBy, sort=False)[colToCreateList].apply(list).to_dict()
-
-    return newDf
-
-
-
-def getPureList(df=DataFrame, colToCreateList='names'):
-    # Make list from colToCreateList.
-    newDf = None
-    if colToCreateList in df.columns:
-        newDf = list(df[colToCreateList])
-
-    return newDf
 
 
 

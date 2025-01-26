@@ -1,6 +1,6 @@
 from src.constants.scraper_constants import planURL, driverLocationStates, scraperFindKeys, scraperPresenceLocators
 from src.constants.schedule_structures_constants import timeIndexNames, noGroupMarker
-from src.utils.excel_utils import splitHTMLAndRemoveTags, delInvalidChars
+from src.utils.converters_utils import splitHTMLAndRemoveTags, delInvalidChars
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait

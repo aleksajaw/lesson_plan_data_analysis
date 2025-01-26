@@ -1,7 +1,8 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import schedulePath, allScheduleGroupedDfsJSONPath, allScheduleDfsJSONPath, scheduleFileBaseNames, scheduleFileGroupedBaseNames
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName
-from src.utils.excel_utils import convertDfsJSONToObjOfDfs, writerForExcelWorksheetsWithMultipleDfs
+from src.utils.converters_utils import convertDfsJSONToObjOfDfs
+from src.utils.writers_df_utils import writerForExcelWorksheetsWithMultipleDfs
 import pandas as pd
 from pandas import  MultiIndex
 import numpy as np
