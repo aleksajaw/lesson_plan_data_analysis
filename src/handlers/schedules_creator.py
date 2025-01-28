@@ -120,7 +120,7 @@ def createScheduleExcelFilesByGroupedOwnerLists():
 
 def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='', newColValue='', newMainColKey='class'):
 
-    if (isinstance(baseDf,DataFrame)) and (ownersType!='') and (newColValue!=''):
+    if isinstance(baseDf, DataFrame)   and   ownersType   and   newColValue:
         
         # main group in basic schedule is class
         ownerTypes = { 'teacher'  :  'nauczyciel',
@@ -294,7 +294,7 @@ def createScheduleGroupedOwnerObjOfDfs(dataToEnter={}):
 
 
 
-def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='group_No.', strToDelete='.'):
+def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyColToGroupBy='group_No.', strToDelete='.'):
     msgText = ''
     try:
         df = dfWithRowsToColor
@@ -308,7 +308,7 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyToGroupBy='grou
         #                                          ).to_dict()
         dfReset = df.copy().reset_index()
         dfReset['index_loc'] = dfReset.index + 1
-        groupedRows = dfReset.groupby(keyToGroupBy, sort=False)['index_loc'].apply(list).to_dict()
+        groupedRows = dfReset.groupby(keyColToGroupBy, sort=False)['index_loc'].apply(list).to_dict()
         
         groupedRowsFiltered = {}
         

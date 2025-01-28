@@ -52,7 +52,7 @@ def doesFileExist(filePath='', shouldPrintMsg=False):
     msgText += ( 'exists.'   if doesFileExistBool
                              else 'does not exist.' )
     
-    if shouldPrintMsg or not doesFileExistBool: print(msgText)
+    if shouldPrintMsg   or   not doesFileExistBool: print(msgText)
 
     return doesFileExistBool
 
@@ -122,7 +122,7 @@ def findFileGroup(desiredBase='', desiredExt='', getSplitFileName=False):
     for fileName in os.listdir(schedulePath):
         basename, ext = splitFileName(fileName)
 
-        if desiredExt in ('', '*', ext) and desiredBase in ('', '*', basename):
+        if desiredExt in ('', '*', ext)   and   desiredBase in ('', '*', basename):
             el = (basename, ext)   if getSplitFileName   else fileName
 
             group.append(el)
@@ -175,13 +175,13 @@ def createFileNameWithNr(basicFileName = 'schedule', fileExt = 'xlsx', separator
         if hasSeparator:
             tempDifference = getFileMarker(difference, separator)
             
-            if len(tempDifference) == 1 and type(tempDifference) == int:
+            if len(tempDifference) == 1   and   isinstance(tempDifference, int):
                 difference = tempDifference+1
         
         else:
             difference = 1
 
-        finalFileName+= separator + difference
+        finalFileName += separator + difference
 
 
     return finalFileName + '.' + fileExt
@@ -215,7 +215,7 @@ def findFileNameDifference(fileName='', fileNameToBeCompared=''):
         isReplacementRequired = True
 
 
-    difference = fileName   if not isReplacementRequired   else fileNameToBeCompared
+    difference   = fileName               if not isReplacementRequired   else fileNameToBeCompared
     nameToRemove = fileNameToBeCompared   if not isReplacementRequired   else fileName
 
     difference.replace(nameToRemove, '')
@@ -225,13 +225,13 @@ def findFileNameDifference(fileName='', fileNameToBeCompared=''):
 
 
 def removeEmptyStrFromArr(arr=[]):
-    return [el   for el in arr   if el!='']
+    return [el   for el in arr   if el]
 
 
 
 def openFileWithDefApp(filePath=''):
 
-    if filePath!='' and not doesFileExist(filePath):
+    if filePath   and   not doesFileExist(filePath):
         return
 
     try:
