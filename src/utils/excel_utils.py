@@ -1,6 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleExcelClassesPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName
+from src.constants.schedule_structures_constants import excelMargin
 from pandas import ExcelWriter, DataFrame
 from openpyxl import load_workbook, Workbook
 from openpyxl.cell.cell import MergedCell as openpyxlMergedCell
@@ -13,7 +14,7 @@ def createDraftSheet(excelFilePath=scheduleExcelClassesPath):
     try:
         with ExcelWriter(excelFilePath, engine=excelEngineName, mode='w+') as writer:
             draftDf = DataFrame()  # Create an empty DataFrame
-            draftDf.to_excel(writer, sheet_name=draftSheetName, merge_cells=True)
+            draftDf.to_excel(writer, sheet_name=draftSheetName, startrow=excelMargin['row'], startcol=excelMargin['col'], merge_cells=True)
 
     except Exception as e:
         msgTxt = handleErrorMsg('\nError while creating draft sheet for Excel file.', getTraceback(e))
