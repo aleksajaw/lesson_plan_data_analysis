@@ -63,6 +63,19 @@ def writerForWriteObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedForma
 
 
 
+def writerForObjOfDfsToJSONAndExcel(schedulesObj={}, dfsJSONFilePath='', excelFilePath=''):
+    msgText=''
+    try:
+        if writeObjOfDfsToJSON(dfsJSONFilePath, schedulesObj):
+            writerForWriteObjOfDfsToExcel(excelFilePath, schedulesObj)
+    
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(dfsJSONFilePath)} and {os.path.basename(excelFilePath)}.', getTraceback(e))
+
+    if msgText: print(msgText)
+
+
+
 def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, writingDirection='row'):
     msgText = ''
 
