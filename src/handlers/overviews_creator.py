@@ -75,7 +75,7 @@ def createScheduleOverviews():
                         aNew[sheetName] = [newDf]
 
 
-            writerForExcelWorksheetsWithMultipleDfs( overviewFilePaths[i], aNew, 'row')
+            writerForExcelWorksheetsWithMultipleDfs(overviewFilePaths[i], aNew, 'row')
 
 
     except Exception as e:
