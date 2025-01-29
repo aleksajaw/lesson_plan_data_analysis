@@ -25,8 +25,13 @@ currEssentialEnvPaths = essentialEnvPaths[currSys]
 
 
 
+def checkIfExists(pathEl=''):
+    return os.path.exists(pathEl)
+
+
+
 def checkIfNotExists(pathEl=''):
-    return not os.path.exists(pathEl)
+    return not checkIfExists(pathEl)
 
 
 
@@ -43,7 +48,7 @@ def checkIsDir(baseName='', entry=''):
 
 def checkIsAnyDirInside():
     global envName
-    doesEnvDirExist = not checkIfNotExists(envName)
+    doesEnvDirExist = checkIfExists(envName)
     dirEntries = os.listdir(envName)
     return any( checkIsDir(envName, entry)   for entry in dirEntries )   if doesEnvDirExist   else False
 
@@ -176,11 +181,12 @@ def addAllOfTheProjectDirs():
 def removeEnvironment(endHere=False):
     global envName
     
-    if checkIsDir(envName):
+    if checkIfExists(envName):
         import shutil
 
         try:
             shutil.rmtree(envName)
+            print(f'\nThe directory "{envName}" has been removed.')
 
         except Exception as e:
             msgTxt = f'\nError while removing the environmental directory "{envName}".'
@@ -314,8 +320,8 @@ def chooseStart(args=None):
             if round(execTime%60, 2):
                 print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
-        if isForceOnly:
-            raise Exception('The "--force" argument cannot be used alone.')
+    if isForceOnly:
+        raise Exception('The "--force" argument cannot be used alone.')
 
 
 
