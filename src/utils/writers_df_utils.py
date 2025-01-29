@@ -4,7 +4,7 @@ from src.constants.schedule_structures_constants import excelMargin, excelDistan
 from pandas import ExcelWriter
 import os
 from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON
-from excel_styles_utils import autoFormatScheduleExcel#, autoFormatOverviewExcel
+from excel_styles_utils import autoFormatScheduleExcel, autoFormatOverviewExcel
 
 
 
@@ -93,15 +93,15 @@ def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', da
 
 
 
-def writerForExcelWorksheetsWithMultipleDfs(excelFilePath='', objOfMultipleDfs=None, doesNeedFormat=True, writingDirection='row'):
+def writerForExcelWorksheetsWithMultipleDfs(excelFilePath='', objOfMultipleDfs=None, writingDirection='row', doesNeedFormat=True):
     msgText=''
 
     try:
         with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
             writeExcelWorksheetsWithMultipleDfs(writer, excelFilePath, objOfMultipleDfs, True, writingDirection)
 
-            #if doesNeedFormat:
-                #autoFormatOverwiewExcel(writer.book, excelFilePath)
+            if doesNeedFormat:
+                autoFormatOverviewExcel(writer.book, excelFilePath)
 
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))

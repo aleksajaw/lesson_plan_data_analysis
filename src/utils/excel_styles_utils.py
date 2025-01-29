@@ -20,6 +20,12 @@ def autoFormatScheduleExcel(workbook=Workbook(), excelFilePath=scheduleExcelClas
 
 
 
+def autoFormatOverviewExcel(workbook=Workbook(), excelFilePath=''):
+    autoFormatExcelCellSizes(workbook, excelFilePath)
+    #autoFormatScheduleExcelCellStyles(workbook, excelFilePath)
+
+
+
 def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=scheduleExcelClassesPath, shouldPrintSuccessMsg=False):
     from src.utils.excel_utils import getNrOfLastNonEmptyCellInCol
     msgText=''
