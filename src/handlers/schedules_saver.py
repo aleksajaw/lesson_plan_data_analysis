@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import scheduleExcelClassesPath, scheduleExcelClassesDfsJSONPath, scheduleClassesDfsJSONPath, scheduleClassesBaseJSONPath
+from src.constants.paths_constants import scheduleClassesExcelPath, scheduleClassesExcelDfsJSONPath, scheduleClassesDfsJSONPath, scheduleClassesBaseJSONPath
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
 from src.utils.converters_utils import convertToObjOfDfs, convertObjOfDfsToJSON, convertExcelToDfsJSON
 from src.utils.excel_utils import createDraftSheetIfNecessary, delDraftIfNecessary
@@ -36,11 +36,11 @@ def createOrEditMainExcelFile():
 
     try:
         if not currExcelAsDfsJSON.strip()   or   ( currExcelAsDfsJSON.strip() != classesDataDfsJSON.strip() ):
-            with ExcelWriter(scheduleExcelClassesPath, mode='w+', engine=excelEngineName) as writer:
+            with ExcelWriter(scheduleClassesExcelPath, mode='w+', engine=excelEngineName) as writer:
                 
                 try:
-                    writeObjOfDfsToExcel(writer, scheduleExcelClassesPath, classesDataDfs)
-                    autoFormatScheduleExcel(writer.book, scheduleExcelClassesPath)
+                    writeObjOfDfsToExcel(writer, scheduleClassesExcelPath, classesDataDfs)
+                    autoFormatScheduleExcel(writer.book, scheduleClassesExcelPath)
 
                     try:
                         delDraftIfNecessary()
@@ -53,7 +53,7 @@ def createOrEditMainExcelFile():
                     print( handleErrorMsg( f'\nError while writing to the main Excel file: {writeError}' ) )
 
         else:
-            print(f'\nNothing to be updated in the {(os.path.splitext(scheduleExcelClassesPath)[1][1:]).upper()} file   {os.path.basename(scheduleExcelClassesPath)}.')
+            print(f'\nNothing to be updated in the {(os.path.splitext(scheduleClassesExcelPath)[1][1:]).upper()} file   {os.path.basename(scheduleClassesExcelPath)}.')
 
 
 
@@ -63,7 +63,7 @@ def createOrEditMainExcelFile():
 
     # to avoid issues, compare file contents
     # & update if it's neccessarry
-    compareAndUpdateFile(scheduleExcelClassesDfsJSONPath, currExcelAsDfsJSON)
+    compareAndUpdateFile(scheduleClassesExcelDfsJSONPath, currExcelAsDfsJSON)
     compareAndUpdateFile(scheduleClassesDfsJSONPath, classesDataDfsJSON)
     compareAndUpdateFile(scheduleClassesBaseJSONPath, classesDataJSON)
 

@@ -1,5 +1,5 @@
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import scheduleExcelClassesPath
+from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName, JSONIndentValue
 from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, excelMargin
 import json
@@ -71,7 +71,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
 
 # EXCEL CONTENT   =>   OBJECT OF DATA FRAMES   =>   JSON
-def convertExcelToDfsJSON(excelFilePath=scheduleExcelClassesPath):
+def convertExcelToDfsJSON(excelFilePath=scheduleClassesExcelPath):
     from files_utils import doesFileExist
     dataToConvert = {}
     msgText = ''

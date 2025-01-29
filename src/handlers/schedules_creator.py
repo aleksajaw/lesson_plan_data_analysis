@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import weekdays, excelMargin
-from src.constants.paths_constants import scheduleExcelTeachersPath, scheduleExcelClassroomsPath, scheduleExcelSubjectsPath, scheduleExcelTeachersGroupedPath, scheduleExcelClassroomsGroupedPath, scheduleExcelSubjectsGroupedPath, scheduleListsExcelOwnersGroupedPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
+from src.constants.paths_constants import scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupList, getPureList
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
@@ -53,13 +53,13 @@ def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs):
         subjectSchedules   = { key     :  subjectSchedules[key]          for key in getPureList(groupedOwnerLists['subjects']) }
         
         if writeObjOfDfsToJSON(scheduleTeachersDfsJSONPath, teacherSchedules):
-            writerForWriteObjOfDfsToExcel(scheduleExcelTeachersPath, teacherSchedules)
+            writerForWriteObjOfDfsToExcel(scheduleTeachersExcelPath, teacherSchedules)
             
         if writeObjOfDfsToJSON(scheduleClassroomsDfsJSONPath, classroomSchedules):
-            writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsPath, classroomSchedules)
+            writerForWriteObjOfDfsToExcel(scheduleClassroomsExcelPath, classroomSchedules)
 
         if writeObjOfDfsToJSON(scheduleSubjectsDfsJSONPath, subjectSchedules):
-            writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsPath, subjectSchedules)
+            writerForWriteObjOfDfsToExcel(scheduleSubjectsExcelPath, subjectSchedules)
             
         
     except Exception as e:
@@ -100,19 +100,19 @@ def createScheduleExcelFilesByGroupedOwnerLists():
         concatAndFilterSingleGroupListDataFrames('teachers', teacherSchedules, groupedOwnerLists['teachers'], teacherSchedulesByGroups)
         
         if writeObjOfDfsToJSON(scheduleTeachersGroupedDfsJSONPath, teacherSchedulesByGroups):
-            writerForWriteObjOfDfsToExcel(scheduleExcelTeachersGroupedPath, teacherSchedulesByGroups)
+            writerForWriteObjOfDfsToExcel(scheduleTeachersGroupedExcelPath, teacherSchedulesByGroups)
 
 
         concatAndFilterSingleGroupListDataFrames('classrooms', classroomSchedules, groupedOwnerLists['classrooms'], classroomSchedulesByGroups)
         
         if writeObjOfDfsToJSON(scheduleClassroomsGroupedDfsJSONPath, classroomSchedulesByGroups):
-            writerForWriteObjOfDfsToExcel(scheduleExcelClassroomsGroupedPath, classroomSchedulesByGroups)
+            writerForWriteObjOfDfsToExcel(scheduleClassroomsGroupedExcelPath, classroomSchedulesByGroups)
         
         
         concatAndFilterSingleGroupListDataFrames('subjects', subjectSchedules, groupedOwnerLists['subjects'], subjectSchedulesByGroups)
         
         if writeObjOfDfsToJSON(scheduleSubjectsGroupedDfsJSONPath, subjectSchedulesByGroups):
-            writerForWriteObjOfDfsToExcel(scheduleExcelSubjectsGroupedPath, subjectSchedulesByGroups)
+            writerForWriteObjOfDfsToExcel(scheduleSubjectsGroupedExcelPath, subjectSchedulesByGroups)
 
 
     except Exception as e:
@@ -339,7 +339,7 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyColToGroupBy='g
 
 
 
-def writeGroupListsToExcelAndFormat(objOfDfs={}, excelFilePath=scheduleListsExcelOwnersGroupedPath):
+def writeGroupListsToExcelAndFormat(objOfDfs={}, excelFilePath=scheduleListsOwnersGroupedExcelPath):
     msgText = ''
 
     if not excelFilePath:

@@ -1,5 +1,5 @@
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import scheduleExcelClassesPath
+from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName
 from src.constants.schedule_structures_constants import excelMargin
 from pandas import ExcelWriter, DataFrame
@@ -9,7 +9,7 @@ from openpyxl.cell.cell import MergedCell as openpyxlMergedCell
 
 
 ###   DRAFTS   ###
-def createDraftSheet(excelFilePath=scheduleExcelClassesPath):
+def createDraftSheet(excelFilePath=scheduleClassesExcelPath):
     msgTxt=''
     try:
         with ExcelWriter(excelFilePath, engine=excelEngineName, mode='w+') as writer:
@@ -23,14 +23,14 @@ def createDraftSheet(excelFilePath=scheduleExcelClassesPath):
 
 
 
-def createDraftSheetIfNecessary(excelFilePath=scheduleExcelClassesPath):
+def createDraftSheetIfNecessary(excelFilePath=scheduleClassesExcelPath):
     from files_utils import doesFileExist
     if not doesFileExist(excelFilePath):
         createDraftSheet()
 
 
 
-def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleExcelClassesPath):
+def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath):
     from files_utils import doesFileExist
     msgTxt=''
 

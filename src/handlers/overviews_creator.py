@@ -1,5 +1,5 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleExcelOverviewPaths, allScheduleExcelGroupedOverviewPaths
+from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, sumColsCellName, sumRowsCellName
 from src.utils.converters_utils import convertDfsJSONToObjOfDfs
 from src.utils.writers_df_utils import writerForExcelWorksheetsWithMultipleDfs
@@ -14,7 +14,7 @@ def createScheduleOverviews():
     msgText=''
     
     try:
-        overviewFilePaths = allScheduleExcelOverviewPaths + allScheduleExcelGroupedOverviewPaths
+        overviewFilePaths = allScheduleOverviewResourcesExcelPaths + allScheduleGroupedOverviewResourcesExcelPaths
         i=-1
         for filePath in ( allScheduleDfsJSONPaths + allScheduleGroupedDfsJSONPaths ):
             i=i+1
