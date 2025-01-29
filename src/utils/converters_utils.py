@@ -1,7 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleExcelClassesPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName, JSONIndentValue
-from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el
+from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, excelMargin
 import json
 import re
 from pandas import DataFrame, MultiIndex, read_excel
@@ -20,7 +20,7 @@ def convertToDf(dataToConvert=None):
         if(dataToConvert):
             df = DataFrame(dataToConvert[1:])
             # multi-dimensional column names
-            df.columns = MultiIndex.from_tuples(tuples = dfColNamesTuples)
+            df.columns = MultiIndex.from_tuples(tuples=dfColNamesTuples, names=dayAndAttrNames)
 
             # use empty string instead of null/NaN
             df = df.fillna('')
@@ -78,8 +78,8 @@ def convertExcelToDfsJSON(excelFilePath=scheduleExcelClassesPath):
 
     if doesFileExist(excelFilePath):
         try:
-            excelData = read_excel(io=excelFilePath, sheet_name=None, engine=excelEngineName,
-                                    keep_default_na=False, header=[0,1], index_col=[0,1])
+            excelData = read_excel( io=excelFilePath, sheet_name=None, engine=excelEngineName, keep_default_na=False,
+                                    header=[ excelMargin['row'], excelMargin['row']+1], index_col=[excelMargin['col'], excelMargin['col']+1])
 
             for sheetName, df in excelData.items():
                 dataToConvert[sheetName] = df.to_json(orient='split')
@@ -110,11 +110,11 @@ def convertDfsJSONToObjOfDfs(JSONFilePath = ''):
           dfData['index'] = MultiIndex.from_tuples(dfData['index'], names=timeIndexNames)
 
           try:
-              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples5el)
+              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples5el, names=dayAndAttrNames)
               objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
 
-          except:              
-              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples4el)
+          except:
+              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples4el, names=dayAndAttrNames)
               objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
 
 
@@ -129,7 +129,7 @@ def convertDfsJSONToObjOfDfs(JSONFilePath = ''):
 
 # 111.0   =>   111
 def convertFloatToInt(value=None):
-    isValueFloat = isinstance(value, float) and value.is_integer()
+    isValueFloat = isinstance(value, float)   and   value.is_integer()
     if isValueFloat:
         return int(value)
     return value
@@ -137,7 +137,7 @@ def convertFloatToInt(value=None):
 
 # '1'   =>   1
 def convertDigitInStrToInt(text=''):
-    return int(text)  if str.isdigit(text)  else text
+    return int(text)   if str.isdigit(text)   else text
 
 
 # <br>
@@ -177,7 +177,7 @@ def delInvalidChars(name='', target='sheetName'):
     if target=='sheetName':
         invalidScheetNameChars = ['/', '\\', ':', '*', '?', '[', ']']
         # replace invalid characters with character '_'
-        return ''.join('_'  if c in invalidScheetNameChars   else c   for c in name)
+        return ''.join('_'   if c in invalidScheetNameChars   else c   for c in name)
     else:
         return name
     
@@ -205,7 +205,7 @@ def getPureGroupList(df=DataFrame, colToGroupBy='names_base', colToCreateList='n
     # Group data in Data Frame by unique values in column (index) colToGroupBy.
     # Then, make list from colToCreateList.
     newDf = None
-    if colToGroupBy in df.index.names   and colToCreateList in df.columns:
+    if colToGroupBy in df.index.names   and   colToCreateList in df.columns:
         newDf = df.groupby(colToGroupBy, sort=False)[colToCreateList].apply(list).to_dict()
 
     return newDf
