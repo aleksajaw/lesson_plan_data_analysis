@@ -1,5 +1,5 @@
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.schedule_structures_constants import weekdays, timeIndexNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, lessonTimePeriods
+from src.constants.schedule_structures_constants import weekdays, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, lessonTimePeriods
 from excel_utils import dropnaInDfByAxis
 import pandas as pd
 from pandas import DataFrame
@@ -126,7 +126,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
         if addNewCol or ( len(newDf.columns.get_level_values(0).unique()) < len(weekdays) ):
 
-            columnsVal = pd.MultiIndex.from_tuples(colDayNamesTuples)
+            columnsVal = pd.MultiIndex.from_tuples(colDayNamesTuples, names=dayAndAttrNames)
         
         else:
             columnsVal = newDf.columns
