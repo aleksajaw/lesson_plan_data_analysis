@@ -1,5 +1,6 @@
 # variables for handling a pandas' Data Frame and an Excel content
 timeIndexNames = ['Nr','Godz']
+dayAndAttrNames = ['Dzień', 'Atrybuty']
 weekdays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek']
 lessonAttrs3el = ['przedmiot', 'grupa', 'nauczyciel', 'sala']
 lessonAttrs4el = ['przedmiot', 'nauczyciel', 'klasa', 'sala']
