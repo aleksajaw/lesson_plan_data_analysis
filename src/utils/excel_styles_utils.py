@@ -38,10 +38,10 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
                 lastBoldRowAtBeggining = findLastBoldRowAtBeggining(ws, rowIndexesLastCol, excelRangeStartRow)
 
                 # merge and format empty cells in the corner between the MultiIndexes
-                mergeEmptyCellsAndColorBg(ws, { 'startRow':  excelRangeStartRow,
+                mergeEmptyCellsAndFormat(ws, { 'startRow':  excelRangeStartRow,
                                                 'startCol':  excelRangeStartCol,
                                                 'endRow'  :  lastBoldRowAtBeggining,
-                                                'endCol'  :  rowIndexesLastCol } )
+                                                'endCol'  :  rowIndexesLastCol-1 } )
                 
                 # cells in the 1st two columns which row nr equals contentRowsStart
                 # contains the names for the rows' MultiIndex
@@ -275,7 +275,7 @@ def addBgToExcelSheetRowsBasedOnObj(writer=ExcelWriter, sheetRowsToColor={'rows'
     if msgText: print(msgText)
 
 
-def mergeEmptyCellsAndColorBg(ws=None, mergedCellObj={'startRow':int, 'startCol': int, 'endRow': int, 'endCol': int}):
+def mergeEmptyCellsAndFormat(ws=None, mergedCellObj={'startRow':int, 'startCol': int, 'endRow': int, 'endCol': int}):
     msgText=''
 
     try:
