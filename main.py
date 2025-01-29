@@ -8,7 +8,8 @@ startTime=None
 
 
 # Remember to write this name to the .gitignore file.
-envName='venv'
+# Have to change envName to the two-level directory name due to the problem with removing the venv/Scripts/python.exe.
+envName=os.path.join('venv','venv')
 essentialEnvPaths = { 'win32':  [ os.path.join(envName, 'Scripts', 'python.exe'),
                                   os.path.join(envName, 'Scripts', 'activate') ],
                       'linux':  [ os.path.join(envName, 'bin', 'python'),
@@ -61,21 +62,18 @@ def createVirtualEnvIfNecessary(forceReinstall=False):
         print('\n' + msgText + '...')
 
         try:
-            subprocess.check_call(f'{sys.executable} -m venv {envName}')
+            subprocess.check_call(f'"{sys.executable}" -m venv {envName}')
 
             if checkIsAnyPathMissing():
-                import shutil
-                shutil.rmtree(envName)
-                print(f'\nHad to remove the old {envName} directory.')
+                removeEnvironment()
                 setupEnvironment(True)
             
             # Ensure that pip is upgraded to the latest version.
-            subprocess.check_call(f'{currEssentialEnvPaths[0]} -m pip install --upgrade pip')
+            subprocess.check_call(f'"{currEssentialEnvPaths[0]}" -m pip install --upgrade pip')
             # Automatic installation of the requirements.
-            subprocess.check_call(f'{currEssentialEnvPaths[0]} -m pip install -r requirements.txt')
+            subprocess.check_call(f'"{currEssentialEnvPaths[0]}" -m pip install -r requirements.txt')
 
-            print('Ends successfully.')
-
+            print(f'\n{msgText} ends successfully.')
 
         except Exception as e:
             print(f'\nError while {msgText[0].lower() + msgText[1:]}: {e}')
@@ -98,22 +96,22 @@ def runVirtualEnv(forceStart=False):
     command = []
 
     if currSys == "win32":
-        cBefore = 'cmd /c \"'
+        cBefore = 'cmd /c "'
 
     elif currSys in ['linux', 'darwin']:
-        cBefore = 'bash -c \"source '
+        cBefore = 'bash -c "source '
     
     try:
         # Remove the comment characters in this function if you want to automate 
         # installation of the missing virtual environment or needed packages.
         # Remember to correct the indentations.
     #if not checkIsAnyPathMissing()   and   checkIsAnyDirInside():
-        cActivatePart = currEssentialEnvPaths[1]
+        cActivatePart = f'"{currEssentialEnvPaths[1]}"'
         cInfo = f'echo The virtual environment \"{envName}\" activated.'
-        cMain = 'python -c \"import main; main.main()\"'
+        cMain = 'python -c "import main; main.main()"'
         cDeactivate = 'deactivate'
 
-        command = cBefore + cActivatePart + ' && ' + cInfo + ' && ' + cMain + ' && ' + cDeactivate + '\"'
+        command = cBefore + cActivatePart + ' && ' + cInfo + ' && ' + cMain + ' && ' + cDeactivate + '"'
 
         subprocess.run(command, shell=True, check=True, text=True, stderr=subprocess.PIPE)
 
@@ -136,8 +134,8 @@ def runVirtualEnv(forceStart=False):
 
 
 def addToSysPath(basePath='', innerDirName=''):
-    dirPathToAdd = ( basePath  if    not innerDirName
-                                  else  os.path.join(basePath, innerDirName) )
+    dirPathToAdd = ( basePath   if    not innerDirName
+                                else  os.path.join(basePath, innerDirName) )
 
     if checkIfNotExists(dirPathToAdd):
         print(f'\nThe directory "{dirPathToAdd}" does not exist.')
@@ -155,7 +153,6 @@ def addToSysPath(basePath='', innerDirName=''):
 
 
 def addAllOfTheProjectDirs():
-    
     projectRoot = os.path.dirname(__file__)
     srcDir = os.path.join(projectRoot, 'src')
 
@@ -175,15 +172,65 @@ def addAllOfTheProjectDirs():
 
 
 
+def removeEnvironment(endHere=False):
+    global envName
+    
+    if checkIsDir(envName):
+        import shutil
+
+        try:
+            shutil.rmtree(envName)
+
+        except Exception as e:
+            msgTxt = f'\nError while removing the environmental directory "{envName}".'
+            msgTxt += f' Probably you will have to remove some files manually.\n{e}'
+            print(msgTxt)
+            shutil.rmtree(envName, ignore_errors=True)
+            sys.exit()
+
+    else:
+        print(f'\nThe directory "{envName}" does not exist.')
+
+    if not endHere:
+        execTime  = (time.perf_counter() - startTime)
+        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+
+
+
+def removeFiles(endHere=False):
+    try:
+        projectRoot = os.path.dirname(__file__)
+        schedulesDir = os.path.join(projectRoot, 'schedules')
+
+        for dirpath, dirnames, filenames in os.walk(schedulesDir):
+            for file in filenames:
+                file_path = os.path.join(dirpath, file)
+                os.remove(file_path)
+    
+        print(f'\nFiles inside the "{os.path.basename(schedulesDir)}" directory removed, if they exist.')
+
+    except Exception as e:
+        print(f'\nError while removing the files in the directory {os.path.basename(schedulesDir)}: {e}')
+
+    if endHere:
+        execTime  = (time.perf_counter() - startTime)
+        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+
+
+
+######################################################################################################################################################
+
+
+
 def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
     if forceReinstall:
         print('\nReinstall environment.')
     
     try:
-      createVirtualEnvIfNecessary(forceReinstall)
+        createVirtualEnvIfNecessary(forceReinstall)
         
     except Exception as e:
-        print(f'\nError: {e}')
+        print(f'\nError while setting up the environment: {e}')
 
         execTime  = (time.perf_counter() - startTime)
         print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
@@ -211,8 +258,8 @@ def main():
             loadClassesDataVariables(classesData)
             createOrEditMainExcelFile()
             createScheduleExcelFiles(getClassesDataDfs())
-            #openScheduleFilesWithDefApps()
             createScheduleOverviews()
+            #openScheduleFilesWithDefApps()
             openOverviewFilesWithDefApps()
 
 
@@ -221,28 +268,50 @@ def chooseStart(args=None):
     global startTime
     startTime = time.perf_counter()
     
-    if args.setup:
-        setupEnvironment(args.force)
+    isStart = args.start
+    isSetup = args.setup
+    isSetupOrStart = isSetup or isStart
 
-    # The 2nd part of the condition prevents the situation where '--force' is the only flag being used.
-    # Also, it allows running the program without any flags.
-    if args.start   or   (not args.setup and not args.force):
-        try:
-            runVirtualEnv(args.force)
-            
-        except Exception as e:
-            print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
-        
-        execTime  = (time.perf_counter() - startTime)
-        if round(execTime%60, 2):
-            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+    isRmFiles = args.rm_files
+    isRmVenv = args.rm_venv
+    isRemove = isRmFiles or isRmVenv
+    isRemoveOnly = isRemove and not isSetupOrStart
+
+    isForce = args.force
+    isForceOnly = isForce and not isSetupOrStart
+
+    noFlags =  not any(vars(args).values())
+
+    if isRmFiles:
+        removeFiles(isRemoveOnly and not isRmVenv)
     
-    else:
-        execTime  = (time.perf_counter() - startTime)
-        if round(execTime%60, 2):
-            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+    if isRmVenv:
+        removeEnvironment(isRemoveOnly)
 
-        raise Exception('The "--force" argument cannot be used alone.')
+    if isSetupOrStart   or   noFlags:
+        if isSetup:
+            setupEnvironment(isForce)
+
+        # The 2nd part of the condition prevents the situation where '--force' is the only flag being used.
+        # Also, it allows running the program without any flags.
+        if isStart   or   noFlags:
+            try:
+                runVirtualEnv(isForce)
+                
+            except Exception as e:
+                print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
+            
+            execTime  = (time.perf_counter() - startTime)
+            if round(execTime%60, 2):
+                print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+        
+        elif not isSetup:
+            execTime  = (time.perf_counter() - startTime)
+            if round(execTime%60, 2):
+                print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+
+        if isForceOnly:
+            raise Exception('The "--force" argument cannot be used alone.')
 
 
 
@@ -251,8 +320,10 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(exit_on_error=False)
     parser.add_argument('--setup', action='store_true', help='Run the automatic setup or add the missing or corrupted packages.')
-    parser.add_argument('--force', action='store_true', help='Force the action.')
     parser.add_argument('--start', action='store_true', help='Activate the virtual environment.')
+    parser.add_argument('--force', action='store_true', help='Force the action.')
+    parser.add_argument('--rm-files', action='store_true', help='Remove all of the output files placed in /schedules and /schedules/json.')
+    parser.add_argument('--rm-venv', action='store_true', help='Remove the directory for the virtual environment /venv.')
     args = None
 
     try:
