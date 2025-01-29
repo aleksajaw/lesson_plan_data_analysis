@@ -270,7 +270,7 @@ def main():
             createScheduleExcelFiles(getClassesDataDfs())
             createScheduleOverviews()
             #openScheduleFilesWithDefApps()
-            openOverviewFilesWithDefApps()
+            #openOverviewFilesWithDefApps()
 
 
 
