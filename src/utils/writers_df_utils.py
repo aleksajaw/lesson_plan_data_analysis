@@ -46,7 +46,7 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None,
 
 
 
-def writerForWriteObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedFormat=True):
+def writerForObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedFormat=True):
     msgText=''
 
     try:
@@ -67,7 +67,7 @@ def writerForObjOfDfsToJSONAndExcel(schedulesObj={}, dfsJSONFilePath='', excelFi
     msgText=''
     try:
         if writeObjOfDfsToJSON(dfsJSONFilePath, schedulesObj):
-            writerForWriteObjOfDfsToExcel(excelFilePath, schedulesObj)
+            writerForObjOfDfsToExcel(excelFilePath, schedulesObj)
     
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(dfsJSONFilePath)} and {os.path.basename(excelFilePath)}.', getTraceback(e))
