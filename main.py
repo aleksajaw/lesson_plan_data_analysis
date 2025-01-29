@@ -140,8 +140,9 @@ def addToSysPath(basePath='', innerDirName=''):
     if checkIfNotExists(dirPathToAdd):
         print(f'\nThe directory "{dirPathToAdd}" does not exist.')
         
-        execTime  = (time.perf_counter() - startTime)
-        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+        execTime = (time.perf_counter() - startTime)
+        if round(execTime%60, 2):
+            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
         raise Exception(FileNotFoundError)
 
@@ -191,9 +192,10 @@ def removeEnvironment(endHere=False):
     else:
         print(f'\nThe directory "{envName}" does not exist.')
 
-    if not endHere:
-        execTime  = (time.perf_counter() - startTime)
-        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+    if endHere:
+        execTime = (time.perf_counter() - startTime)
+        if round(execTime%60, 2):
+            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
 
 
@@ -207,14 +209,15 @@ def removeFiles(endHere=False):
                 file_path = os.path.join(dirpath, file)
                 os.remove(file_path)
     
-        print(f'\nFiles inside the "{os.path.basename(schedulesDir)}" directory removed, if they exist.')
+        print(f'\nFiles inside the "{os.path.basename(schedulesDir)}" directory have been removed, if they exist.')
 
     except Exception as e:
         print(f'\nError while removing the files in the directory {os.path.basename(schedulesDir)}: {e}')
 
     if endHere:
-        execTime  = (time.perf_counter() - startTime)
-        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+        execTime = (time.perf_counter() - startTime)
+        if round(execTime%60, 2):
+            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
 
 
@@ -232,8 +235,9 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
     except Exception as e:
         print(f'\nError while setting up the environment: {e}')
 
-        execTime  = (time.perf_counter() - startTime)
-        print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+        execTime = (time.perf_counter() - startTime)
+        if round(execTime%60, 2):
+            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
 
 
@@ -301,12 +305,12 @@ def chooseStart(args=None):
             except Exception as e:
                 print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
             
-            execTime  = (time.perf_counter() - startTime)
+            execTime = (time.perf_counter() - startTime)
             if round(execTime%60, 2):
                 print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
         
         elif not isSetup:
-            execTime  = (time.perf_counter() - startTime)
+            execTime = (time.perf_counter() - startTime)
             if round(execTime%60, 2):
                 print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
 
