@@ -10,16 +10,16 @@ from openpyxl.cell.cell import MergedCell as openpyxlMergedCell
 
 ###   DRAFTS   ###
 def createDraftSheet(excelFilePath=scheduleClassesExcelPath):
-    msgTxt=''
+    msgText=''
     try:
         with ExcelWriter(excelFilePath, engine=excelEngineName, mode='w+') as writer:
             draftDf = DataFrame()  # Create an empty DataFrame
             draftDf.to_excel(writer, sheet_name=draftSheetName, startrow=excelMargin['row'], startcol=excelMargin['col'], merge_cells=True)
 
     except Exception as e:
-        msgTxt = handleErrorMsg('\nError while creating draft sheet for Excel file.', getTraceback(e))
+        msgText = handleErrorMsg('\nError while creating draft sheet for Excel file.', getTraceback(e))
 
-    if msgTxt: print(msgTxt)
+    if msgText: print(msgText)
 
 
 
@@ -32,7 +32,7 @@ def createDraftSheetIfNecessary(excelFilePath=scheduleClassesExcelPath):
 
 def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath):
     from files_utils import doesFileExist
-    msgTxt=''
+    msgText=''
 
     if not bool(workbook) and doesFileExist(excelFilePath):
 
@@ -48,10 +48,10 @@ def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleClassesExcelP
 
 
         except Exception as e:
-            msgTxt = handleErrorMsg('\nUnable to open the Excel file to check and delete the draft sheet.', getTraceback(e))
+            msgText = handleErrorMsg('\nUnable to open the Excel file to check and delete the draft sheet.', getTraceback(e))
             return
     
-    if msgTxt: print(msgTxt)
+    if msgText: print(msgText)
     
 
 

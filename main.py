@@ -189,9 +189,9 @@ def removeEnvironment(endHere=False):
             print(f'\nThe directory "{envName}" has been removed.')
 
         except Exception as e:
-            msgTxt = f'\nError while removing the environmental directory "{envName}".'
-            msgTxt += f' Probably you will have to remove some files manually.\n{e}'
-            print(msgTxt)
+            msgText = f'\nError while removing the environmental directory "{envName}".'
+            msgText += f' Probably you will have to remove some files manually.\n{e}'
+            print(msgText)
             shutil.rmtree(envName, ignore_errors=True)
             sys.exit()
 
