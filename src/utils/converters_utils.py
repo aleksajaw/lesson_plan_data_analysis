@@ -79,9 +79,13 @@ def convertExcelToDfsJSON(excelFilePath=scheduleExcelClassesPath):
     if doesFileExist(excelFilePath):
         try:
             excelData = read_excel( io=excelFilePath, sheet_name=None, engine=excelEngineName, keep_default_na=False,
-                                    header=[ excelMargin['row'], excelMargin['row']+1], index_col=[excelMargin['col'], excelMargin['col']+1])
+                                    header=[excelMargin['row'], excelMargin['row']+1], index_col=[excelMargin['col'], excelMargin['col']+1])
 
             for sheetName, df in excelData.items():
+                unnamedColIndices = [col   for i, col in enumerate(df.columns)   if 'Unnamed' in str(col[0])]
+                if len(unnamedColIndices):
+                    df = df.drop(unnamedColIndices, axis=1)
+
                 dataToConvert[sheetName] = df.to_json(orient='split')
 
         except Exception as e:
