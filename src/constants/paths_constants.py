@@ -22,13 +22,14 @@
     #####     3. FILE BASE NAMES     #####
 
           ##  3.1. BASIC
-          ##  3.2. BASIC GROUPED
-          ##  3.3. OVERVIEW
-          ##  3.4. OVERVIEW [BASIC GROUPED]
-          ##  3.5. OVERVIEW FOR RESOURCES
-          ##  3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES
-          ##  3.7. OVERVIEW FOR TIME
-          ##  3.8. OVERVIEW [BASIC GROUPED] FOR TIME
+          ##  3.2. BASIC EXTRA
+          ##  3.3. BASIC GROUPED
+          ##  3.4. OVERVIEW
+          ##  3.5. OVERVIEW [BASIC GROUPED]
+          ##  3.6. OVERVIEW FOR RESOURCES
+          ##  3.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES
+          ##  3.8. OVERVIEW FOR TIME
+          ##  3.9. OVERVIEW [BASIC GROUPED] FOR TIME
 
 
 
@@ -125,6 +126,7 @@ groupedSufix = '-grouped'
 overviewSufix = '_overview'
 resourcesSufix = '_resources'
 timeSufix = '_time'
+verticallySufix = '_vertically'
 
 
 
@@ -154,7 +156,14 @@ allScheduleBaseNames = [ scheduleClassesBaseName,
 
 
 
-##  3.2. BASIC GROUPED  ##
+##  3.2. BASIC EXTRA  ##
+
+# For the classes vertically
+scheduleClassesVerticallyBaseName = scheduleClassesBaseName + verticallySufix
+
+
+
+##  3.3. BASIC GROUPED  ##
 
 # For the classes grouped
 scheduleClassesGroupedBaseName = scheduleClassesBaseName + groupedSufix
@@ -173,7 +182,7 @@ allScheduleGroupedBaseNames = [ scheduleClassesGroupedBaseName,
 
 
 
-##  3.3. OVERVIEW  ##
+##  3.4. OVERVIEW  ##
 
 # For the classes overview
 scheduleClassesOverviewBaseName = scheduleClassesBaseName + overviewSufix
@@ -192,7 +201,7 @@ allScheduleGroupedOverviewBaseNames = [ scheduleClassesOverviewBaseName,
 
 
 
-##  3.4. OVERVIEW [BASIC GROUPED]  ##
+##  3.5. OVERVIEW [BASIC GROUPED]  ##
 
 # For the classes grouped overview
 scheduleClassesGroupedOverviewBaseName = scheduleClassesGroupedBaseName + overviewSufix
@@ -211,7 +220,7 @@ allScheduleGroupedOverviewBaseNames = [ scheduleClassesGroupedOverviewBaseName,
 
 
 
-##  3.5. OVERVIEW FOR RESOURCES  ##
+##  3.6. OVERVIEW FOR RESOURCES  ##
 
 # For the classes overview for the resources
 scheduleClassesOverviewResourcesBaseName = scheduleClassesOverviewBaseName + resourcesSufix
@@ -230,7 +239,7 @@ allScheduleOverviewResourcesBaseNames = [ scheduleClassesOverviewResourcesBaseNa
 
 
 
-##  3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
+##  3.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
 
 # For the classes grouped overview for the resources
 scheduleClassesGroupedOverviewResourcesBaseName = scheduleClassesGroupedOverviewBaseName + resourcesSufix
@@ -249,7 +258,7 @@ allScheduleGroupedOverviewResourcesBaseNames = [ scheduleClassesGroupedOverviewR
 
 
 
-##  3.7. OVERVIEW FOR TIME  ##
+##  3.8. OVERVIEW FOR TIME  ##
 
 # For the classes overview for the time
 scheduleClassesOverviewTimeBaseName = scheduleClassesOverviewBaseName + timeSufix
@@ -268,7 +277,7 @@ allScheduleOverviewTimeBaseNames = [ scheduleClassesOverviewTimeBaseName,
 
 
 
-##  3.8. OVERVIEW [BASIC GROUPED] FOR TIME  ##
+##  3.9. OVERVIEW [BASIC GROUPED] FOR TIME  ##
 
 # For the classes grouped overview for time
 scheduleClassesGroupedOverviewTimeBaseName = scheduleClassesGroupedOverviewBaseName + timeSufix
@@ -317,6 +326,10 @@ allScheduleExcelNames = [ scheduleClassesExcelName,
 
 
 ##  4.1.2. BASIC EXTRA  ##
+
+# For the classes vertically
+
+scheduleClassesVerticallyExcelName = scheduleClassesVerticallyBaseName + extExcel
 
 # For the lists of schedule owners
 scheduleListsOwnersGroupedExcelName = 'schedule-lists_owners' + groupedSufix + extExcel
@@ -517,6 +530,10 @@ allScheduleExcelPaths = [ scheduleClassesExcelPath,
 
 
 ##  5.1.2. BASIC EXTRA  ##
+
+# For the classes vertically
+
+scheduleClassesVerticallyExcelPath = os.path.join(schedulePath, scheduleClassesVerticallyExcelName)
 
 # For schedule lists with grouped owners
 scheduleListsOwnersGroupedExcelPath =  os.path.join(schedulePath, scheduleListsOwnersGroupedExcelName)
