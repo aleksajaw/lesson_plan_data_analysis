@@ -2,7 +2,7 @@ from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import weekdays, excelMargin
 from src.constants.paths_constants import scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
-from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupList, getPureList
+from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
 from src.utils.excel_styles_utils import autoFormatExcelCellSizes, addBgToExcelSheetRowsBasedOnObj
 from src.utils.files_utils import createFileNameWithNr
@@ -373,10 +373,10 @@ def concatAndFilterSingleGroupListDataFrames(ownersType='', sheetsForOwnerTypes=
                     'subjects'  :  'przedmiot', 
                     'teachers'  :  'nauczyciel' }
     
-    ownersPureGroupList = getPureGroupList(ownersList)
+    ownersPureGroupedList = getPureGroupedList(ownersList)
 
     # get group names like 'ang', '100' etc.
-    for groupName, groupList in ownersPureGroupList.items():
+    for groupName, groupList in ownersPureGroupedList.items():
         
         # get elements like 'ang.r', '101' etc.
         for el in groupList:

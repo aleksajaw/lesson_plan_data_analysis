@@ -194,6 +194,23 @@ def getListOfKeys(obj={}):
 
 
 
+# Convert the keys in an object using the order from the listOfOrderedKeys.
+def convertObjKeysToDesiredOrder(obj={}, listOfOrderedKeys=[], convertToStr=True):
+    objToReturn={}
+
+    for key in listOfOrderedKeys:
+
+        if convertToStr:
+            objToReturn[str(key)] = obj[str(key)]
+
+        else:
+            objToReturn[key] = obj[key]
+    
+    return objToReturn
+
+
+
+# Filter nd.array
 def filterNumpyNdarray(arr=np.ndarray, elToDel=''):
     # convert values to string
     arrAsStr = arr.astype(str)
@@ -205,19 +222,25 @@ def filterNumpyNdarray(arr=np.ndarray, elToDel=''):
 
 
 
-def getPureGroupList(df=DataFrame, colToGroupBy='names_base', colToCreateList='names'):
+# Group items by their base names, which are the common parts of some (full) names.
+def getPureGroupedList(df=DataFrame, colToGroupBy='names_base', colToCreateList='names'):
     # Group data in Data Frame by unique values in column (index) colToGroupBy.
-    # Then, make list from colToCreateList.
+    # Then, make the list from the values in the column named colToCreateList.
     newDf = None
+    dataToReturn = []
+
     if colToGroupBy in df.index.names   and   colToCreateList in df.columns:
-        newDf = df.groupby(colToGroupBy, sort=False)[colToCreateList].apply(list).to_dict()
+        newDf = df.groupby(colToGroupBy, sort=False)[colToCreateList]
+        # Ignore the column names. Get the values as a list. 
+        newDfWithoutCols = newDf.apply(list)
+        dataToReturn = newDfWithoutCols.to_dict()
 
-    return newDf
+    return dataToReturn
 
 
 
+# Make the list with the pure values from the column named colToCreateList.
 def getPureList(df=DataFrame, colToCreateList='names'):
-    # Make list from colToCreateList.
     newDf = None
     if colToCreateList in df.columns:
         newDf = list(df[colToCreateList])
