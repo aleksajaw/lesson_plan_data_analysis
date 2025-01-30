@@ -194,6 +194,50 @@ def getListOfKeys(obj={}):
 
 
 
+# Sort the object keys. More below.
+def sortObjKeys(dataToSort=None):
+    msgText = ''
+    try:
+        pattern = re.compile(r'\d+')
+
+        for key in dataToSort.keys():
+            # sort by numbers (which are keys here) inside list elements,
+            # especially for classroom names like _08, s1, 1, 100
+            # moreover, it prevents missorting like 1, 10, 100, 2, 20, 200 :)
+            #dataToEnter[key].sort( key = lambda x: int( re.findall(r'\d+', x)[0] ) )
+
+            # also add sorting strings between the values with numbers like: 1, s1, st1, 2, _02, s2
+            # so we will have s1, s2, st1, _02, 1, 2
+            dataToSort[key].sort( key=lambda x: (
+                                      # False values are treated as smaller,
+                                      # so they will appear earlier in the sorted list
+                                      # so at first sort by letters
+                                      not x[0].isalpha(),
+                                      # put values like _07 before digits
+                                      # for easier grouping
+                                      x.isdigit(),
+                                      x.lower() if isinstance(x, str) and x[0].isalpha()
+                                                # sort by first digit in elements
+                                                else  int(pattern.search(x).group(0))
+                                                      if pattern.search(x)
+                                                      # if element does not have digit,
+                                                      # use inf(inity) to move element
+                                                      # at the end of the sorting here
+                                                      else float('inf')
+                                  )
+                                )
+            # convert strings to integer, if it is possible
+            dataToSort[key] = [int(x)   if x.isdigit()   else x   for x in dataToSort[key]]
+        
+    except Exception as e:
+        msgText = handleErrorMsg('\nError while sorting schedule owner lists.', getTraceback(e))
+
+    if msgText: print(msgText)
+
+    return dataToSort
+
+
+
 # Convert the keys in an object using the order from the listOfOrderedKeys.
 def convertObjKeysToDesiredOrder(obj={}, listOfOrderedKeys=[], convertToStr=True):
     objToReturn={}
