@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin
-from src.constants.paths_constants import testExcelPath, testJSONPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
+from src.constants.paths_constants import testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
@@ -55,7 +55,7 @@ def createScheduleExcelFileVertical(classSchedulesDfs=''):
             objOfDfs[dfKey] = dfVertical
         
 
-        writerForObjOfDfsToExcel(testExcelPath, objOfDfs, False)
+        writerForObjOfDfsToExcel(scheduleClassesVerticallyExcelPath, objOfDfs, False)
 
 
     except Exception as e:
