@@ -4,9 +4,19 @@ dayAndAttrNames = ['Dzień', 'Atrybuty']
 weekdays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek']
 lessonAttrs3el = ['przedmiot', 'grupa', 'nauczyciel', 'sala']
 lessonAttrs4el = ['przedmiot', 'nauczyciel', 'klasa', 'sala']
-dfRowIndexNamesTuples = [
-    ('Nr', ''),
-    ('Godz', '')
+dfRowNrs = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
 ]
 lessonTimePeriods = [
     '8:00-8:45',
@@ -35,6 +45,10 @@ dfRowNrAndTimeTuples = [
     (10, '15:50-16:35'),
     (11, '16:40-17:25'),
     (12, '17:30-18:15')
+]
+dfRowIndexNamesTuples = [
+    ('Nr', ''),
+    ('Godz', '')
 ]
 dfColWeekDayNamesTuples4el = [
     ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'grupa'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'sala'),
