@@ -1,28 +1,67 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.schedule_structures_constants import weekdays, excelMargin
-from src.constants.paths_constants import scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
+from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin
+from src.constants.paths_constants import testExcelPath, testJSONPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
 from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
-from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel
+from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForObjOfDfsToExcel
+from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 import pandas as pd
-from pandas import ExcelWriter, DataFrame, RangeIndex
+from pandas import ExcelWriter, DataFrame, RangeIndex, CategoricalDtype
 import numpy as np
 import re
 import os
 
 
 teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists = {}, {}, {}, {}
-
+mondaySchedules, tuesdaySchedules, wednesdaySchedules, thursdaySchedules, fridaySchedules = {}, {}, {}, {}, {}
 
 
 def createScheduleExcelFiles(classSchedulesDfs):
-    
+    createScheduleExcelFileVertical(classSchedulesDfs)
     createScheduleExcelFilesByOwnerTypes(classSchedulesDfs)
     #createScheduleExcelFileForOwnerLists()
     createScheduleExcelFilesByGroupedOwnerLists()
+
+
+
+def createScheduleExcelFileVertical(classSchedulesDfs=''):
+    global mondaySchedules, tuesdaySchedules, wednesdaySchedules, thursdaySchedules, fridaySchedules
+    msgText=''
+
+    try:
+        objOfDfs = {}
+        temp = readExcelFileAsObjOfDfs()
+
+        # Get the 1st DataFrame in the list
+        for dfKey, df in temp.items():
+            
+            # Transform DataFrame into a vertical order where column names become the 1st level of the MultiIndex for the rows. 
+            dfVertical = df.stack( dayAndAttrNames[0], dropna=False)
+            
+            # Correct the order of the levels in the hierarchy.
+            dfVertical.index = dfVertical.index.reorder_levels( [2, 0, 1] )
+            
+            # Making the 1st lvl CategoricalDType to simplify the sorting proccess. 
+            weekdaysCatDtype = CategoricalDtype(categories=weekdays, ordered=True)
+            dfVertical.index = dfVertical.index.set_levels(
+                                          dfVertical.index.levels[0].astype(weekdaysCatDtype), level=0
+                                      )
+            # Sort the values in row index levels, except the last (it is not needed). 
+            dfVertical = dfVertical.sort_values(dfVertical.index.names[:-1])
+
+            objOfDfs[dfKey] = dfVertical
+        
+
+        writerForObjOfDfsToExcel(testExcelPath, objOfDfs, False)
+
+
+    except Exception as e:
+        msgText = handleErrorMsg('\nError while creating the schedule Excel files (by workday).', getTraceback(e))
+
+    if msgText: print(msgText)
 
 
 
@@ -323,7 +362,7 @@ def writeGroupListsToExcelAndFormat(objOfDfs={}, excelFilePath=scheduleListsOwne
 
 
 
-def concatAndFilterSingleGroupListDataFrames(ownersType='', sheetsForOwnerTypes={}, ownersList=DataFrame, newDf={}):
+def concatAndFilterSingleGroupListDataFrames(ownersType='', sheetsForOwnerTypes={}, ownersList=DataFrame, newDf={}, addNewCol=True):
     
     newColNames = { 'classes'   :  'klasa',
                     'classrooms':  'sala',
@@ -348,9 +387,16 @@ def concatAndFilterSingleGroupListDataFrames(ownersType='', sheetsForOwnerTypes=
                 #   To retain the old behavior, exclude the relevant entries before the concat operation.
                 x = dropnaInDfByAxis(x, 1)
                 #y = dropnaInDfByAxis(y, 1)
-                newDf[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColNames[ownersType], str(el))
-
+                if addNewCol:
+                    newDf[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColNames[ownersType], str(el))
+                else:
+                    newDf[str(groupName)] = concatAndFilterScheduleDataFrames(x, y)
+                    
             else:
-                newDf[str(groupName)] = filterAndConvertScheduleDataFrames(y, True, newColNames[ownersType], str(el))
+                if addNewCol:
+                    newDf[str(groupName)] = filterAndConvertScheduleDataFrames(y, True, newColNames[ownersType], str(el))
+                else:
+                    newDf[str(groupName)] = y
+                    
     
     return newDf
