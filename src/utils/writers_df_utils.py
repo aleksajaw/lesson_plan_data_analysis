@@ -4,7 +4,7 @@ from src.constants.schedule_structures_constants import excelMargin, excelDistan
 from pandas import ExcelWriter
 import os
 from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON
-from excel_styles_utils import autoFormatScheduleExcel, autoFormatOverviewExcel
+from excel_styles_utils import autoFormatScheduleExcel, autoFormatExcelCellSizes, autoFormatScheduleExcelCellStyles, autoFormatOverviewExcel
 
 
 
@@ -46,15 +46,14 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None,
 
 
 
-def writerForObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedFormat=True):
+def writerForObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedFormatStyle=True, doesNeedFormatSize=True):
     msgText=''
 
     try:
         with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
             writeObjOfDfsToExcel(writer, excelFilePath, objOfDfs)
 
-            if doesNeedFormat:
-                autoFormatScheduleExcel(writer.book, excelFilePath)
+            autoFormatScheduleExcel(writer.book, excelFilePath, doesNeedFormatStyle, doesNeedFormatSize)
 
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))
