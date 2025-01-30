@@ -2,9 +2,8 @@ from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import weekdays, excelMargin
 from src.constants.paths_constants import scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
-from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList
+from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
-from src.utils.excel_styles_utils import autoFormatExcelCellSizes, addBgToExcelSheetRowsBasedOnObj
 from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
 from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel
@@ -48,13 +47,13 @@ def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs):
     
         createScheduleExcelFileForOwnerLists()
 
-        teacherSchedules   = { key     :  teacherSchedules[key]          for key in getPureList(groupedOwnerLists['teachers']) }
+        teacherSchedules = convertObjKeysToDesiredOrder(teacherSchedulesTemp, getPureList(groupedOwnerLists['teachers']), False)
         writerForObjOfDfsToJSONAndExcel(teacherSchedules, scheduleTeachersDfsJSONPath, scheduleTeachersExcelPath)
 
-        classroomSchedules = { str(key):  classroomSchedules[str(key)]   for key in getPureList(groupedOwnerLists['classrooms']) }
+        classroomSchedules = convertObjKeysToDesiredOrder(classroomSchedulesTemp, getPureList(groupedOwnerLists['classrooms']), True)
         writerForObjOfDfsToJSONAndExcel(classroomSchedules, scheduleClassroomsDfsJSONPath, scheduleClassroomsExcelPath)
 
-        subjectSchedules   = { key     :  subjectSchedules[key]          for key in getPureList(groupedOwnerLists['subjects']) }
+        subjectSchedules = convertObjKeysToDesiredOrder(subjectSchedulesTemp, getPureList(groupedOwnerLists['subjects']), False)
         writerForObjOfDfsToJSONAndExcel(subjectSchedules, scheduleSubjectsDfsJSONPath, scheduleSubjectsExcelPath)
         
         
@@ -221,52 +220,9 @@ def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='',
 
 
 
-def sortScheduleOwnerLists(dataToSort=None):
-    msgText = ''
-    try:
-        pattern = re.compile(r'\d+')
-        for key in dataToSort.keys():
-
-            # sort by numbers (which are keys here) inside list elements,
-            # especially for classroom names like _08, s1, 1, 100
-            # moreover, it prevents missorting like 1, 10, 100, 2, 20, 200 :)
-            #dataToEnter[key].sort( key = lambda x: int( re.findall(r'\d+', x)[0] ) )
-
-            # also add sorting strings between the values with numbers like: 1, s1, st1, 2, _02, s2
-            # so we will have s1, s2, st1, _02, 1, 2
-            dataToSort[key].sort( key=lambda x: (
-                                      # False values are treated as smaller,
-                                      # so they will appear earlier in the sorted list
-                                      # so at first sort by letters
-                                      not x[0].isalpha(),
-                                      # put values like _07 before digits
-                                      # for easier grouping
-                                      x.isdigit(),
-                                      x.lower() if isinstance(x, str) and x[0].isalpha()
-                                                # sort by first digit in elements
-                                                else  int(pattern.search(x).group(0))
-                                                      if pattern.search(x)
-                                                      # if element does not have digit,
-                                                      # use inf(inity) to move element
-                                                      # at the end of the sorting here
-                                                      else float('inf')
-                                  )
-                                )
-            # convert strings to integer, if it is possible
-            dataToSort[key] = [int(x)   if x.isdigit()   else x   for x in dataToSort[key]]
-        
-    except Exception as e:
-        msgText = handleErrorMsg('\nError while sorting schedule owner lists.', getTraceback(e))
-
-    if msgText: print(msgText)
-
-    return dataToSort
-
-
-
 def createScheduleGroupedOwnerObjOfDfs(dataToEnter={}):
     
-    dataToEnter = sortScheduleOwnerLists(dataToEnter)
+    dataToEnter = sortObjKeys(dataToEnter)
     sheetsData = { sheetName: dataToEnter[sheetName]   for sheetName in dataToEnter.keys() }
     objOfDfs = {}
 
@@ -339,10 +295,11 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyColToGroupBy='g
 
 
 def writeGroupListsToExcelAndFormat(objOfDfs={}, excelFilePath=scheduleListsOwnersGroupedExcelPath):
+    from src.utils.excel_styles_utils import autoFormatExcelCellSizes, addBgToExcelSheetRowsBasedOnObj
     msgText = ''
 
-    if not excelFilePath:
-        excelFilePath = createFileNameWithNr()
+    #if not excelFilePath:
+    #    excelFilePath = createFileNameWithNr()
 
     try:
         sheetGroups={}
