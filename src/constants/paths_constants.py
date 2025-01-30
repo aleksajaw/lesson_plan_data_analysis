@@ -130,6 +130,11 @@ timeSufix = '_time'
 
 #####     3. FILE BASE NAMES     #####
 
+##  3.0. TEST  ##
+testBaseName = 'test'
+
+
+
 ##  3.1. BASIC  ##
 
 # For the classes
@@ -287,6 +292,11 @@ allScheduleGroupedOverviewTimeBaseNames = [ scheduleClassesGroupedOverviewTimeBa
 
 ###   4.1. Excel   ###
 
+##  4.0. TEST  ##
+testExcelName = testBaseName + extExcel
+
+
+
 ##  4.1.1. BASIC  ##
 
 # For the classes
@@ -410,6 +420,12 @@ allScheduleGroupedOverviewResourcesExcelNames = [ scheduleClassesGroupedOverview
 
 ###   4.2. JSON   ###
 
+##  4.2.0 TEST  ##
+
+testJSONName = testBaseName + extJSON
+
+
+
 ##  4.2.1. BASIC MAIN  ##
 
 # For the scraped classes data, base for other files
@@ -475,6 +491,11 @@ allScheduleGroupedDfsJSONNames = [ scheduleClassesGroupedDfsJSONName,
 
 
 ###    5.1 Excel   ###
+
+##  5.1.0 TEST  ##
+testExcelPath = os.path.join(schedulePath, testExcelName)
+
+
 
 ##  5.1.1. BASIC  ##
 
@@ -598,6 +619,11 @@ allScheduleGroupedOverviewResourcesExcelPaths = [ scheduleClassesGroupedOverview
 
 
 ###   5.2. JSON   ###
+
+##  5.2.0 TEST  ##
+testJSONPath = os.path.join(schedulePath, testJSONName)
+
+
 
 ##  5.2.1 BASIC MAIN  ##
 
