@@ -43,7 +43,6 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
     
     try:
         newDf = df.copy()
-        #print('\nnewDf.index ', list(newDf.index))
         rowsFiltered = []
 
         prepareNewColVal = addNewCol   and   newColName   and   newColVal
@@ -54,9 +53,6 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
         # iterate through rows (time indices)
         for (lessonNr, time), row in newDf.groupby(timeIndexNames, sort=False):
-            #print(lessonNr)
-            #print(time)
-            #print(row)
             rowFrame = row
             singleRowBase = {}
             singleRowBase[timeKey1] = int(lessonNr)
@@ -65,11 +61,8 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
             innerRows = []
 
             for col in newDf.columns:
-                #print(rowFrame.keys())
-                #print(col)
                 booleanMask = rowFrame[col] != ''
-                nonEmptyValues = [x for x in rowFrame[col][booleanMask] if pd.notna(x)]
-                #print(nonEmptyValues)
+                nonEmptyValues = [x   for x in rowFrame[col][booleanMask]   if pd.notna(x)]
 
                 if nonEmptyValues:
                     for index, value in enumerate(nonEmptyValues):
@@ -90,9 +83,6 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
                             missingNrs = list( range( lastFilteredRowNr+1, currRowNr ) )
                             
                             while len(missingNrs):
-                                #print([r[timeKey1]   for r in rowsFiltered])
-                                #print((singleRowBase[timeKey1]))
-                                #print(missingNrs)
                                 desiredNr = missingNrs[0]
                                 singleRowTemp = {}
                                 
@@ -102,13 +92,12 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
                                 desiredPreviousTime = lessonTimePeriods[ desiredNr-1 ]
                                 singleRowTemp[timeKey1] = desiredNr
                                 singleRowTemp[timeKey2] = desiredPreviousTime
-                                rowsFiltered.append(singleRowTemp.copy())
+                                rowsFiltered.append( singleRowTemp.copy() )
                                 missingNrs = missingNrs[1:]   if missingNrs   else []
                                 singleRowTemp = {}
 
 
                         innerRows[index][col] = value
-                        #print('innerRows[index]:', innerRows[index])
 
 
                     if prepareNewColVal:
@@ -131,12 +120,9 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
         else:
             columnsVal = newDf.columns
 
-        #print('rowsFiltered indexy ', [row[timeKey1]   for row in rowsFiltered])
         newDfFiltered = pd.DataFrame(rowsFiltered)
-        #print('newDfFiltered.index ', newDfFiltered.index)
         newDfFiltered = newDfFiltered.reset_index()
         newDfFiltered.set_index(keys=timeIndexNames, inplace=True)
-        #print('newDfFiltered.index ', newDfFiltered.index)
         newDfFiltered = newDfFiltered.reindex(columns=columnsVal, fill_value=np.nan)
 
     except Exception as e:
