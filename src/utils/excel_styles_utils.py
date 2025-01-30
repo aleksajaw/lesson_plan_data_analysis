@@ -14,9 +14,11 @@ from openpyxl.utils import get_column_letter
 
 
 
-def autoFormatScheduleExcel(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath):
-    autoFormatExcelCellSizes(workbook, excelFilePath)
-    autoFormatScheduleExcelCellStyles(workbook, excelFilePath)
+def autoFormatScheduleExcel(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath, doesNeedFormatStyle=True, doesNeedFormatSize=True):
+    if doesNeedFormatSize:
+        autoFormatExcelCellSizes(workbook, excelFilePath)
+    if doesNeedFormatStyle:
+        autoFormatScheduleExcelCellStyles(workbook, excelFilePath)
 
 
 
@@ -45,9 +47,9 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
 
                 # merge and format empty cells in the corner between the MultiIndexes
                 mergeEmptyCellsAndFormat(ws, { 'startRow':  excelRangeStartRow,
-                                                'startCol':  excelRangeStartCol,
-                                                'endRow'  :  lastBoldRowAtBeggining,
-                                                'endCol'  :  rowIndexesLastCol-1 } )
+                                               'startCol':  excelRangeStartCol,
+                                               'endRow'  :  lastBoldRowAtBeggining,
+                                               'endCol'  :  rowIndexesLastCol-1 } )
                 
                 # cells in the 1st two columns which row nr equals contentRowsStart
                 # contains the names for the rows' MultiIndex
@@ -287,12 +289,21 @@ def mergeEmptyCellsAndFormat(ws=None, mergedCellObj={'startRow':int, 'startCol':
     try:
         permEmptyCellStyle = openpyxlPatternFill(fill_type='lightTrellis')
 
-        ws.merge_cells( start_row=mergedCellObj['startRow'],
-                        start_column=mergedCellObj['startCol'],
-                        end_row=mergedCellObj['endRow'],
-                        end_column=mergedCellObj['endCol'] )
+        startRow = mergedCellObj['startRow']
+        startCol = mergedCellObj['startCol']
+        endRow = mergedCellObj['endRow']
+        endCol = mergedCellObj['endCol']
 
-        ws.cell(row=mergedCellObj['startRow'], column=mergedCellObj['startCol']).fill = permEmptyCellStyle
+        if startRow != endRow or startCol != endCol:
+            ws.merge_cells( start_row=mergedCellObj['startRow'],
+                            start_column=mergedCellObj['startCol'],
+                            end_row=mergedCellObj['endRow'],
+                            end_column=mergedCellObj['endCol'] )
+            
+        cell = ws.cell(row=mergedCellObj['startRow'], column=mergedCellObj['startCol'])
+        
+        if not cell.value:
+            cell.fill = permEmptyCellStyle
 
 
     except Exception as e:
