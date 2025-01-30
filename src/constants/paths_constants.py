@@ -609,7 +609,7 @@ scheduleClassroomsOverviewResourcesExcelPath =  os.path.join(schedulePath, sched
 scheduleSubjectsOverviewResourcesExcelPath =  os.path.join(schedulePath, scheduleSubjectsOverviewResourcesExcelName)
 
 # For all of the above
-allScheduleOverviewResourcesExcelPaths = [ #scheduleClassesOverviewResourcesExcelPath,
+allScheduleOverviewResourcesExcelPaths = [ scheduleClassesOverviewResourcesExcelPath,
                                            scheduleTeachersOverviewResourcesExcelPath,
                                            scheduleClassroomsOverviewResourcesExcelPath,
                                            scheduleSubjectsOverviewResourcesExcelPath ]
@@ -628,7 +628,7 @@ scheduleClassroomsGroupedOverviewResourcesExcelPath =  os.path.join(schedulePath
 scheduleSubjectsGroupedOverviewResourcesExcelPath =  os.path.join(schedulePath, scheduleSubjectsGroupedOverviewResourcesExcelName)
 
 # For all of the above
-allScheduleGroupedOverviewResourcesExcelPaths = [ scheduleClassesGroupedOverviewResourcesExcelPath,
+allScheduleGroupedOverviewResourcesExcelPaths = [ #scheduleClassesGroupedOverviewResourcesExcelPath,
                                                   scheduleTeachersGroupedOverviewResourcesExcelPath,
                                                   scheduleClassroomsGroupedOverviewResourcesExcelPath,
                                                   scheduleSubjectsGroupedOverviewResourcesExcelPath ]
