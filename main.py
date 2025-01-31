@@ -223,7 +223,7 @@ def removeFiles(endHere=False, isClearLogs=False):
         for mainDir in dirList:
             for dirPath, dirNames, fileNames in os.walk(mainDir):
                 for fileName in fileNames:
-                    if fileName != '.gitkeep':
+                    if fileName != '.gitkeep'   and   dirPath != 'prototypes':
                         filePath = os.path.join(dirPath, fileName)
                         os.remove(filePath)
 
