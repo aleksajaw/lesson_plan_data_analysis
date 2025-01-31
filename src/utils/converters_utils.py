@@ -239,7 +239,7 @@ def sortObjKeys(dataToSort=None):
 
 
 # Convert the keys in an object using the order from the listOfOrderedKeys.
-def convertObjKeysToDesiredOrder(obj={}, listOfOrderedKeys=[], convertToStr=True):
+def convertObjKeysToDesiredOrder(obj={}, listOfOrderedKeys=[], convertToStr=False):
     objToReturn={}
 
     for key in listOfOrderedKeys:

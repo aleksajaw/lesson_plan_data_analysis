@@ -86,13 +86,13 @@ def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs):
     
         createScheduleExcelFileForOwnerLists()
 
-        teacherSchedules = convertObjKeysToDesiredOrder(teacherSchedulesTemp, getPureList(groupedOwnerLists['teachers']), False)
+        teacherSchedules = convertObjKeysToDesiredOrder(teacherSchedulesTemp, getPureList(groupedOwnerLists['teachers']))
         writerForObjOfDfsToJSONAndExcel(teacherSchedules, scheduleTeachersDfsJSONPath, scheduleTeachersExcelPath)
 
         classroomSchedules = convertObjKeysToDesiredOrder(classroomSchedulesTemp, getPureList(groupedOwnerLists['classrooms']), True)
         writerForObjOfDfsToJSONAndExcel(classroomSchedules, scheduleClassroomsDfsJSONPath, scheduleClassroomsExcelPath)
 
-        subjectSchedules = convertObjKeysToDesiredOrder(subjectSchedulesTemp, getPureList(groupedOwnerLists['subjects']), False)
+        subjectSchedules = convertObjKeysToDesiredOrder(subjectSchedulesTemp, getPureList(groupedOwnerLists['subjects']))
         writerForObjOfDfsToJSONAndExcel(subjectSchedules, scheduleSubjectsDfsJSONPath, scheduleSubjectsExcelPath)
         
         
