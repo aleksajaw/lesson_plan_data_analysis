@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import schedulePath
+from src.constants.paths_constants import documentsPath
 
 
 
@@ -115,11 +115,11 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
 
 
 
-def findFileGroup(desiredBase='', desiredExt='', getSplitFileName=False):
+def findFileGroup(desiredBase='', desiredExt='', getSplitFileName=False, dirPath=documentsPath):
     from collections import defaultdict
     group = defaultdict(list)
 
-    for fileName in os.listdir(schedulePath):
+    for fileName in os.listdir(dirPath):
         basename, ext = splitFileName(fileName)
 
         if desiredExt in ('', '*', ext)   and   desiredBase in ('', '*', basename):
