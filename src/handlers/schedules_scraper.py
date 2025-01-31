@@ -1,6 +1,6 @@
 from src.constants.scraper_constants import planURL, driverLocationStates, scraperFindKeys, scraperPresenceLocators
 from src.constants.schedule_structures_constants import timeIndexNames, noGroupMarker
-from src.utils.converters_utils import splitHTMLAndRemoveTags, delInvalidChars
+from src.utils.converters_utils import splitHTMLAndRemoveTags, delInvalidChars, convertObjKeysToDesiredOrder
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -246,6 +246,7 @@ def scrapeClassTables():
 
             driver.switch_to.parent_frame()
     
+        classesData = convertObjKeysToDesiredOrder(classesData, sorted(classesData.keys()))
 
         # IMPORTANT: This line prevents memory leaks.
         driver.quit()
