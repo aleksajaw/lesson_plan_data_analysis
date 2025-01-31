@@ -168,6 +168,9 @@ allScheduleBaseNames = [ scheduleClassesBaseName,
 # For the classes vertically
 scheduleClassesVerticallyBaseName = scheduleClassesBaseName + verticallySufix
 
+# For the classrooms grouped overview for the resources vertically
+
+scheduleClassroomsGroupedOverviewResourcesVerticallyBaseName  = scheduleClassroomsBaseName + overviewSufix + resourcesSufix + verticallySufix + extExcel
 
 
 ##  3.3. BASIC GROUPED  ##
@@ -337,6 +340,10 @@ allScheduleExcelNames = [ scheduleClassesExcelName,
 # For the classes vertically
 
 scheduleClassesVerticallyExcelName = scheduleClassesVerticallyBaseName + extExcel
+
+# For the classrooms grouped overview for the resources vertically
+
+scheduleClassroomsGroupedOverviewResourcesVerticallyExcelName  = scheduleClassroomsGroupedOverviewResourcesVerticallyBaseName + extExcel
 
 # For the lists of schedule owners
 scheduleListsOwnersGroupedExcelName = 'schedule-lists_owners' + groupedSufix + extExcel
@@ -541,6 +548,11 @@ allScheduleExcelPaths = [ scheduleClassesExcelPath,
 # For the classes vertically
 
 scheduleClassesVerticallyExcelPath = os.path.join(documentsPrototypesPath, scheduleClassesVerticallyExcelName)
+
+# For the classrooms grouped overview for the resources vertically
+
+scheduleClassroomsGroupedOverviewResourcesVerticallyExcelPath =  os.path.join(documentsPrototypesPath, scheduleClassroomsGroupedOverviewResourcesVerticallyExcelName)
+
 
 # For schedule lists with grouped owners
 scheduleListsOwnersGroupedExcelPath =  os.path.join(processingFilesExcelPath, scheduleListsOwnersGroupedExcelName)
