@@ -205,12 +205,18 @@ def removeEnvironment(endHere=False):
 
 
 
-def removeFiles(endHere=False):
+def removeFiles(endHere=False, isClearLogs=False):
     projectRoot = os.path.dirname(__file__)
-    #schedulesDir = os.path.join(projectRoot, 'schedules')
-    documentsDir = os.path.join(projectRoot, 'documents')
-    processingFilesDir = os.path.join(projectRoot, 'processing_files')
-    dirList = [documentsDir, processingFilesDir]
+    
+    if not isClearLogs:
+        #schedulesDir = os.path.join(projectRoot, 'schedules')
+        documentsDir = os.path.join(projectRoot, 'documents')
+        processingFilesDir = os.path.join(projectRoot, 'processing_files')
+        dirList = [documentsDir, processingFilesDir]
+    else:
+        logsDir = os.path.join(projectRoot, 'logs')
+        dirList = [logsDir]
+
     dirListBasenames = [os.path.basename(dirName)   for dirName in dirList]
 
     try:
@@ -288,15 +294,20 @@ def chooseStart(args=None):
     isSetup = args.setup
     isSetupOrStart = isSetup or isStart
 
+    isClearLogs = args.clear_logs
     isRmFiles = args.rm_files
     isRmVenv = args.rm_venv
     isRemove = isRmFiles or isRmVenv
     isRemoveOnly = isRemove and not isSetupOrStart
+    isClearLogsOnly = isClearLogs and not (isRemove or isSetupOrStart)
 
     isForce = args.force
     isForceOnly = isForce and not isSetupOrStart
 
     noFlags =  not any(vars(args).values())
+
+    if isClearLogs:
+        removeFiles(isClearLogsOnly, True)
 
     if isRmFiles:
         removeFiles(isRemoveOnly and not isRmVenv)
@@ -338,8 +349,9 @@ if __name__ == '__main__':
     parser.add_argument('--setup', action='store_true', help='Run the automatic setup or add the missing or corrupted packages.')
     parser.add_argument('--start', action='store_true', help='Activate the virtual environment.')
     parser.add_argument('--force', action='store_true', help='Force the action.')
-    parser.add_argument('--rm-files', action='store_true', help='Remove all of the output files placed in /schedules and /schedules/json.')
-    parser.add_argument('--rm-venv', action='store_true', help='Remove the directory for the virtual environment /venv.')
+    parser.add_argument('--rm-files', action='store_true', help='Remove recursively all of the output files placed in /documents and /processing_files.')
+    parser.add_argument('--rm-venv', action='store_true', help=f'Remove the directory for the virtual environment {envName}.')
+    parser.add_argument('--clear-logs', action='store_true', help='Remove the logs.')
     args = None
 
     try:
