@@ -162,7 +162,7 @@ def addAllOfTheProjectDirs():
     projectRoot = os.path.dirname(__file__)
     srcDir = os.path.join(projectRoot, 'src')
 
-    for dirName in ['logs', 'schedules']:
+    for dirName in ['logs', 'processing_files', 'documents']:
         addToSysPath(projectRoot, dirName)
 
     dirList = [ 'constants', 'handlers', 'utils' ]
@@ -206,19 +206,25 @@ def removeEnvironment(endHere=False):
 
 
 def removeFiles(endHere=False):
-    try:
-        projectRoot = os.path.dirname(__file__)
-        schedulesDir = os.path.join(projectRoot, 'schedules')
+    projectRoot = os.path.dirname(__file__)
+    #schedulesDir = os.path.join(projectRoot, 'schedules')
+    documentsDir = os.path.join(projectRoot, 'documents')
+    processingFilesDir = os.path.join(projectRoot, 'processing_files')
+    dirList = [documentsDir, processingFilesDir]
+    dirListBasenames = [os.path.basename(dirName)   for dirName in dirList]
 
-        for dirpath, dirnames, filenames in os.walk(schedulesDir):
-            for file in filenames:
-                file_path = os.path.join(dirpath, file)
-                os.remove(file_path)
-    
-        print(f'\nFiles inside the "{os.path.basename(schedulesDir)}" directory have been removed, if they exist.')
+    try:
+        for mainDir in dirList:
+            for dirPath, dirNames, fileNames in os.walk(mainDir):
+                for fileName in fileNames:
+                    if fileName != '.gitkeep':
+                        filePath = os.path.join(dirPath, fileName)
+                        os.remove(filePath)
+
+        print(f'\nFiles inside the "{ ', '.join(dirListBasenames) }" directory have been removed, if they exist.')
 
     except Exception as e:
-        print(f'\nError while removing the files in the directory {os.path.basename(schedulesDir)}: {e}')
+        print(f'\nError while removing the files in the directory { ', '.join(dirListBasenames) }: {e}')
 
     if endHere:
         execTime = (time.perf_counter() - startTime)
