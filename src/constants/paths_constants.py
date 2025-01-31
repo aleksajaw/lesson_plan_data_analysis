@@ -540,7 +540,7 @@ allScheduleExcelPaths = [ scheduleClassesExcelPath,
 
 # For the classes vertically
 
-scheduleClassesVerticallyExcelPath = os.path.join(documentsPath, scheduleClassesVerticallyExcelName)
+scheduleClassesVerticallyExcelPath = os.path.join(documentsPrototypesPath, scheduleClassesVerticallyExcelName)
 
 # For schedule lists with grouped owners
 scheduleListsOwnersGroupedExcelPath =  os.path.join(processingFilesExcelPath, scheduleListsOwnersGroupedExcelName)
