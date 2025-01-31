@@ -65,6 +65,7 @@ def createScheduleOverviews():
 
                     # Complete the data and concatenate with the existing data.
                     lvl2ColUniqueValCounter.index = newIndex
+                    lvl2ColUniqueValCounter = lvl2ColUniqueValCounter.sort_index()
                     lvl2ColUniqueValCounter = pd.concat([lvl2ColUniqueValCounter, sumRows.to_frame().T])
 
                     newDf = lvl2ColUniqueValCounter
