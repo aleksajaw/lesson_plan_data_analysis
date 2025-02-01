@@ -1,15 +1,15 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin
+from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
 from src.constants.paths_constants import testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
 from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
-from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForObjOfDfsToExcel
+from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForObjOfDfsToExcel, writerForDfToExcelSheet
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 import pandas as pd
-from pandas import ExcelWriter, DataFrame, RangeIndex, CategoricalDtype
+from pandas import ExcelWriter, DataFrame, RangeIndex, CategoricalDtype, MultiIndex
 import numpy as np
 import re
 import os
@@ -19,7 +19,7 @@ teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists = {}, 
 mondaySchedules, tuesdaySchedules, wednesdaySchedules, thursdaySchedules, fridaySchedules = {}, {}, {}, {}, {}
 
 
-def createScheduleExcelFiles(classSchedulesDfs):
+def createScheduleExcelFiles(classSchedulesDfs={}):
     createScheduleExcelFileVertical(classSchedulesDfs)
     createScheduleExcelFilesByOwnerTypes(classSchedulesDfs)
     #createScheduleExcelFileForOwnerLists()
@@ -32,30 +32,59 @@ def createScheduleExcelFileVertical(classSchedulesDfs=''):
     msgText=''
 
     try:
-        objOfDfs = {}
-        temp = readExcelFileAsObjOfDfs()
+        objOfDfs = readExcelFileAsObjOfDfs()
+        newDf = DataFrame()
 
         # Get the 1st DataFrame in the list
-        for dfKey, df in temp.items():
+        for dfKey, df in objOfDfs.items():
             
             # Transform DataFrame into a vertical order where column names become the 1st level of the MultiIndex for the rows. 
-            dfVertical = df.stack( dayAndAttrNames[0], dropna=False)
+            dfVertical = df.stack( level=0, dropna=False)
             
             # Correct the order of the levels in the hierarchy.
             dfVertical.index = dfVertical.index.reorder_levels( [2, 0, 1] )
             
-            # Making the 1st lvl CategoricalDType to simplify the sorting proccess. 
+            # Making the 1st lvl a CategoricalDType to simplify the sorting proccess. 
             weekdaysCatDtype = CategoricalDtype(categories=weekdays, ordered=True)
             dfVertical.index = dfVertical.index.set_levels(
                                           dfVertical.index.levels[0].astype(weekdaysCatDtype), level=0
                                       )
-            # Sort the values in row index levels, except the last (it is not needed). 
+            
+            # Sort the values in the row index levels, except the last row (it is not needed). 
             dfVertical = dfVertical.sort_values(dfVertical.index.names[:-1])
 
-            objOfDfs[dfKey] = dfVertical
-        
+            # Add the parent name for the class columns.
+            dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=['Klasa']+dfVertical.columns.names)
+            
+            if not newDf.empty:
+                '''
+                # Getting the index differences between two DataFrames.
+                # Count the occurrences of the index elements.
+                index2 = dfVertical.index.to_frame(index=False).value_counts()
+                index1 = newDf.index.to_frame(index=False).value_counts()
+                
+                # Subtract the values of one Index from another. Use a specified fill_value for missing elements in one of the indices.
+                # Get the absolute values to reduce calculations. (otherwise, we would need to perform reverse subtraction.)
+                missingIndex = index2.subtract(index1, fill_value=0).loc[lambda x: x != 0].abs()
+                missingIndexFrame = MultiIndex.from_frame(missingIndex.reset_index())
+                '''
 
-        writerForObjOfDfsToExcel(scheduleClassesVerticallyExcelPath, objOfDfs, False)
+                newDf['idx_temp']      = newDf.groupby(newDf.index).cumcount()
+                dfVertical['idx_temp'] = dfVertical.groupby(dfVertical.index).cumcount()
+
+                newDf      = newDf.set_index(['idx_temp'], append=True)
+                dfVertical = dfVertical.set_index(['idx_temp'], append=True)
+                
+                merged = pd.concat([newDf, dfVertical], axis=1).reset_index(level=['idx_temp'], drop=True)
+
+                newDf = merged.sort_index()
+                
+            else:
+                newDf = dfVertical
+
+
+        writerForDfToExcelSheet(scheduleClassesVerticallyExcelPath, newDf, 'klasa')
+        #writerForObjOfDfsToExcel(scheduleClassesVerticallyExcelPath, newDf, False)
 
 
     except Exception as e:
@@ -65,7 +94,7 @@ def createScheduleExcelFileVertical(classSchedulesDfs=''):
 
 
 
-def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs):
+def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs={}):
     global teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
     msgText=''
 
