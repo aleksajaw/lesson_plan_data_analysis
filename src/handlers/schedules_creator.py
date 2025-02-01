@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
-from src.constants.paths_constants import testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths
+from src.constants.paths_constants import allOwnerTypeNames, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
@@ -8,6 +8,7 @@ from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
 from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForObjOfDfsToExcel, writerForDfToExcelSheet
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
+from src.utils.transl_utils import getTranslation, getTranslByPlural
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex, CategoricalDtype, MultiIndex
 import numpy as np
@@ -31,7 +32,7 @@ def createScheduleExcelFileVertical():
 
     try:
         newObjOfDfs = {}
-        sheetNames = [ 'klasa', 'nauczyciel', 'sala', 'przedmiot' ]
+        sheetNames = [ getTranslByPlural(ownerTypeName)   for ownerTypeName in allOwnerTypeNames ]
         i = 0
 
         for excelFilePath in allScheduleExcelPaths:
@@ -102,9 +103,9 @@ def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs={}):
     try:
         for className, classDf in classSchedulesDfs.items():
             
-            buildOwnersTypeScheduleBasedOnCol(teacherSchedulesTemp, classDf, 'teacher', className)
-            buildOwnersTypeScheduleBasedOnCol(classroomSchedulesTemp, classDf, 'classroom', className)
-            buildOwnersTypeScheduleBasedOnCol(subjectSchedulesTemp, classDf, 'subject', className)
+            buildOwnersTypeScheduleBasedOnCol(teacherSchedulesTemp, classDf, 'teachers', className)
+            buildOwnersTypeScheduleBasedOnCol(classroomSchedulesTemp, classDf, 'classrooms', className)
+            buildOwnersTypeScheduleBasedOnCol(subjectSchedulesTemp, classDf, 'subjects', className)
 
         removeLastEmptyRowsInDataFrames([teacherSchedulesTemp, classroomSchedulesTemp, subjectSchedulesTemp])
 
@@ -190,23 +191,15 @@ def fullConstructAndWriteScheduleByGroup(ownersType='', schedulesObj={}, dfsJSON
 def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='', newColValue='', newMainColKey='class'):
 
     if isinstance(baseDf, DataFrame)   and   ownersType   and   newColValue:
-        
-        # main group in basic schedule is class
-        ownerTypes = { 'teacher'  :  'nauczyciel',
-                       'classroom':  'sala',
-                       'subject'  :  'przedmiot' }
-        
+     
         # column name in timetable to be changed
-        colToBeChanged = ownerTypes[ownersType]
+        colToBeChanged = getTranslByPlural(ownersType)
 
         # make life (program) easier to understand:)
         newScheduleOwner = colToBeChanged
 
         # main column in basic schedule is subject
-        newMainCol = { 'class'    :  'klasa',
-                       'teacher'  :  'nauczyciel',
-                       'classroom':  'sala' }
-        newMainColName = newMainCol[newMainColKey]
+        newMainColName = getTranslation(newMainColKey)
                
         # get the list of teachers/classrooms/subjects inside the timetable
         group = baseDf.xs(newScheduleOwner, axis=1, level=1).stack(sort=False).unique()
@@ -392,10 +385,7 @@ def writeGroupListsToExcelAndFormat(objOfDfs={}, excelFilePath=scheduleListsOwne
 
 def concatAndFilterSingleGroupListDataFrames(ownersType='', sheetsForOwnerTypes={}, ownersList=DataFrame, newDf={}, addNewCol=True):
     
-    newColNames = { 'classes'   :  'klasa',
-                    'classrooms':  'sala',
-                    'subjects'  :  'przedmiot', 
-                    'teachers'  :  'nauczyciel' }
+    newColName = getTranslByPlural(ownersType)
     
     ownersPureGroupedList = getPureGroupedList(ownersList)
 
@@ -416,13 +406,13 @@ def concatAndFilterSingleGroupListDataFrames(ownersType='', sheetsForOwnerTypes=
                 x = dropnaInDfByAxis(x, 1)
                 #y = dropnaInDfByAxis(y, 1)
                 if addNewCol:
-                    newDf[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColNames[ownersType], str(el))
+                    newDf[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColName, str(el))
                 else:
                     newDf[str(groupName)] = concatAndFilterScheduleDataFrames(x, y)
                     
             else:
                 if addNewCol:
-                    newDf[str(groupName)] = filterAndConvertScheduleDataFrames(y, True, newColNames[ownersType], str(el))
+                    newDf[str(groupName)] = filterAndConvertScheduleDataFrames(y, True, newColName, str(el))
                 else:
                     newDf[str(groupName)] = y
                     
