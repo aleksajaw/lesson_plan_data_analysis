@@ -1,7 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName, JSONIndentValue
-from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, excelMargin
+from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, colWithNumbersNames, excelMargin
 import json
 import re
 from pandas import DataFrame, MultiIndex, read_excel
@@ -19,15 +19,14 @@ def convertToDf(dataToConvert=None):
     try:
         if(dataToConvert):
             df = DataFrame(dataToConvert[1:])
-            # multi-dimensional column names
+            # Multi-dimensional column names.
             df.columns = MultiIndex.from_tuples(tuples=dfColNamesTuples, names=dayAndAttrNames)
 
-            # use empty string instead of null/NaN
+            # Use an empty string instead of null/NaN.
             df = df.fillna('')
             
-            # Restore 111 from '111.0'.
-            # The problem is probably caused by the creation of the DataFrame.
-            df = df.map(convertFloatToInt)
+            # Restore 111 from values like '111.0'.
+            df = correctValsInColsWithNumbers(df)
             
             df.set_index(keys=timeIndexNames, inplace=True)
             
@@ -57,8 +56,11 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
     try:
         for sheetName, df in dataToConvert.items():
-            # use empty string instead of null/NaN
-            df = df.fillna('')
+            # Use an empty string instead of null/NaN
+            df = df.fillna('')            
+            # Restore 111 from values like '111.0'.
+            df = correctValsInColsWithNumbers(df)
+            
             objOfDfsJSON[sheetName] = df.to_json(orient='split')
 
     except Exception as e:
@@ -131,12 +133,19 @@ def convertDfsJSONToObjOfDfs(JSONFilePath = ''):
 
 
 
+def correctValsInColsWithNumbers(df=DataFrame):
+    for colWithNrTuple in colWithNumbersNames:
+        if colWithNrTuple in df.columns:
+            df[colWithNrTuple] = df[colWithNrTuple].map(convertFloatToInt)
+
+    return df
+
+
 # 111.0   =>   111
 def convertFloatToInt(value=None):
-    isValueFloat = isinstance(value, float)   and   value.is_integer()
-    if isValueFloat:
-        return int(value)
-    return value
+    isValueFloatAndInt = isinstance(value, float)   and   value.is_integer()
+
+    return int(value)   if isValueFloatAndInt   else   value
 
 
 # '1'   =>   1
