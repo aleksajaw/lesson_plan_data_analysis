@@ -1,5 +1,6 @@
 # variables for handling a pandas' Data Frame and an Excel content
 timeIndexNames = ['Nr','Godz']
+dayTimeIndexNames = ['Dzień', 'Nr', 'Godz']
 dayAndAttrNames = ['Dzień', 'Atrybuty']
 weekdays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek']
 lessonAttrs4el = ['przedmiot', 'grupa', 'nauczyciel', 'sala']
@@ -89,6 +90,9 @@ sumColsCellName = 'Razem'
 excelFontSize = 11
 excelMargin = { 'row' : 1,
                 'col' : 1 }
+
+defRowNamesLen = len(timeIndexNames)
+defColNamesLen = len(dayAndAttrNames)
 
 excelDistance = { 'row' : 1,
                   'col' : 1 }
