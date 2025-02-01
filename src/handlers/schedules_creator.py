@@ -62,6 +62,7 @@ def createScheduleExcelFileVertical():
                 dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=['Klasa']+dfVertical.columns.names)
                 
                 if not newDf.empty:
+                # THE IMPORTANT WAY TO COMBINE TWO DATAFRAMES WHICH DIFFER IN INDICES.
 
                     # Create a new column named 'idx_temp' containing the numeric index.
                     newDf['idx_temp']      = newDf.groupby(newDf.index).cumcount()
@@ -83,12 +84,11 @@ def createScheduleExcelFileVertical():
             newObjOfDfs[sheetNames[i]] = newDf
             i=i+1
 
-        #writerForDfToExcelSheet(scheduleClassesVerticallyExcelPath, newDf, 'klasa')
         writerForObjOfDfsToExcel(schedulesWideAndVerticallyExcelPath, newObjOfDfs, False)
 
 
     except Exception as e:
-        msgText = handleErrorMsg('\nError while creating the schedule Excel files (by workday).', getTraceback(e))
+        msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written wide and vertically.', getTraceback(e))
 
     if msgText: print(msgText)
 
