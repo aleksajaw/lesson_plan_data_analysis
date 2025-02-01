@@ -131,6 +131,7 @@ extJSON = '.json'
 ##  2.2 NAMES  ##
 
 scheduleName = 'schedule'
+schedulesName = 'schedules'
 
 classesName = 'classes'
 teachersName = 'teachers'
@@ -152,6 +153,7 @@ groupedSufix = '-grouped'
 overviewSufix = '_overview'
 resourcesSufix = '_resources'
 timeSufix = '_time'
+wideSuffix = '_wide'
 verticallySufix = '_vertically'
 
 
@@ -164,6 +166,9 @@ testBaseName = 'test'
 
 
 ##  3.1. BASIC  ##
+
+# For all the schedules
+schedulesBaseName = schedulesName
 
 # For the classes
 scheduleClassesBaseName = schedulePrefixMain + classesName
@@ -184,11 +189,13 @@ allScheduleBaseNames = [ scheduleClassesBaseName,
 
 ##  3.2. BASIC EXTRA  ##
 
+# For all the schedules wide and vertically
+schedulesWideAndVerticallyBaseName = schedulesBaseName + wideSuffix + verticallySufix
+
 # For the classes vertically
 scheduleClassesVerticallyBaseName = scheduleClassesBaseName + verticallySufix
 
 # For the classrooms grouped overview for the resources vertically
-
 scheduleClassroomsGroupedOverviewResourcesVerticallyBaseName  = scheduleClassroomsBaseName + overviewSufix + resourcesSufix + verticallySufix + extExcel
 
 
@@ -356,12 +363,13 @@ allScheduleExcelNames = [ scheduleClassesExcelName,
 
 ##  4.1.2. BASIC EXTRA  ##
 
-# For the classes vertically
+# For all the schedules wide and vertically
+schedulesWideAndVerticallyExcelName = schedulesWideAndVerticallyBaseName + extExcel
 
+# For the classes vertically
 scheduleClassesVerticallyExcelName = scheduleClassesVerticallyBaseName + extExcel
 
 # For the classrooms grouped overview for the resources vertically
-
 scheduleClassroomsGroupedOverviewResourcesVerticallyExcelName  = scheduleClassroomsGroupedOverviewResourcesVerticallyBaseName + extExcel
 
 # For the lists of schedule owners
@@ -564,12 +572,13 @@ allScheduleExcelPaths = [ scheduleClassesExcelPath,
 
 ##  5.1.2. BASIC EXTRA  ##
 
-# For the classes vertically
+# For all the schedules
+schedulesWideAndVerticallyExcelPath = os.path.join(documentsPath, schedulesWideAndVerticallyExcelName)
 
+# For the classes vertically
 scheduleClassesVerticallyExcelPath = os.path.join(documentsPrototypesPath, scheduleClassesVerticallyExcelName)
 
 # For the classrooms grouped overview for the resources vertically
-
 scheduleClassroomsGroupedOverviewResourcesVerticallyExcelPath =  os.path.join(documentsPrototypesPath, scheduleClassroomsGroupedOverviewResourcesVerticallyExcelName)
 
 
