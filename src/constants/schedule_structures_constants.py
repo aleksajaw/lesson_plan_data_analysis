@@ -75,6 +75,12 @@ dfColWeekDayEmptyRow = {
     ('Czwartek', 'przedmiot'): np.nan, ('Czwartek', 'grupa'): np.nan, ('Czwartek', 'nauczyciel'): np.nan, ('Czwartek', 'klasa'): np.nan, ('Czwartek', 'sala'): np.nan,
     ('Piątek', 'przedmiot'): np.nan, ('Piątek', 'grupa'): np.nan, ('Piątek', 'nauczyciel'): np.nan, ('Piątek', 'klasa'): np.nan, ('Piątek', 'sala'): np.nan }
 
+colWithNumbersNames = [ ('Poniedziałek', 'sala'),
+                        ('Wtorek', 'sala'),
+                        ('Środa', 'sala'),
+                        ('Czwartek', 'sala'),
+                        ('Piątek', 'sala') ]
+
 noGroupMarker = '-'
 wholeClassGroupName = 'cała klasa'
 sumRowsCellName = 'Razem'
