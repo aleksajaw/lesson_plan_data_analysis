@@ -14,8 +14,9 @@
 
     #####     2. PARTS OF FILE NAMES AND PATHS     #####
 
-          ##  2.1. EXTENSIONS
-          ##  2.2. SUFIXES AND PREFIXES
+          ##  2.1. NAMES
+          ##  2.2. EXTENSIONS
+          ##  2.3. SUFIXES AND PREFIXES
 
 
 
@@ -127,8 +128,26 @@ extJSON = '.json'
 
 
 
-##  2.2 SUFIXES AND PREFIXES  ##
+##  2.2 NAMES  ##
+
+scheduleName = 'schedule'
+
+classesName = 'classes'
+teachersName = 'teachers'
+classroomsName = 'classrooms'
+subjectsName = 'subjects'
+
+allOwnerTypeNames = [ classesName,
+                      teachersName,
+                      classroomsName,
+                      subjectsName ] 
+
+
+
+##  2.3 SUFIXES AND PREFIXES  ##
 dfsPrefix = 'dfs_'
+schedulePrefixMain = scheduleName + '_'
+schedulePartOfPrefix = scheduleName + '-'
 groupedSufix = '-grouped'
 overviewSufix = '_overview'
 resourcesSufix = '_resources'
@@ -147,13 +166,13 @@ testBaseName = 'test'
 ##  3.1. BASIC  ##
 
 # For the classes
-scheduleClassesBaseName = 'schedule_classes'
+scheduleClassesBaseName = schedulePrefixMain + classesName
 # For the teachers
-scheduleTeachersBaseName = 'schedule_teachers'
+scheduleTeachersBaseName = schedulePrefixMain + teachersName
 # For the classrooms
-scheduleClassroomsBaseName = 'schedule_classrooms'
+scheduleClassroomsBaseName = schedulePrefixMain + classroomsName
 # For the subjects
-scheduleSubjectsBaseName = 'schedule_subjects'
+scheduleSubjectsBaseName = schedulePrefixMain + subjectsName
 
 # For all of the above
 allScheduleBaseNames = [ scheduleClassesBaseName,
@@ -311,7 +330,7 @@ allScheduleGroupedOverviewTimeBaseNames = [ scheduleClassesGroupedOverviewTimeBa
 
 ###   4.1. Excel   ###
 
-##  4.0. TEST  ##
+##  4.1.0. TEST  ##
 testExcelName = testBaseName + extExcel
 
 
@@ -346,7 +365,7 @@ scheduleClassesVerticallyExcelName = scheduleClassesVerticallyBaseName + extExce
 scheduleClassroomsGroupedOverviewResourcesVerticallyExcelName  = scheduleClassroomsGroupedOverviewResourcesVerticallyBaseName + extExcel
 
 # For the lists of schedule owners
-scheduleListsOwnersGroupedExcelName = 'schedule-lists_owners' + groupedSufix + extExcel
+scheduleListsOwnersGroupedExcelName = schedulePartOfPrefix + 'lists_owners' + groupedSufix + extExcel
 
 
 
@@ -465,7 +484,7 @@ scheduleClassesBaseJSONName = 'base_' + scheduleClassesBaseName + extJSON
 ##  4.3.1. BASIC MAIN  ##
 
 # For the classes read from Excel
-scheduleClassesExcelDfsJSONName = dfsPrefix + 'schedule-excel_classes' + extJSON
+scheduleClassesExcelDfsJSONName = dfsPrefix + schedulePartOfPrefix + 'excel_classes' + extJSON
 
 
 
@@ -491,7 +510,7 @@ allScheduleDfsJSONNames = [ scheduleClassesDfsJSONName,
 ##  4.3.3. BASIC EXTRA  ##
 
 # For the list of the schedule owners
-scheduleListsOwnersGroupedDfsJSONName = dfsPrefix + 'schedule-lists_owners' + groupedSufix + extJSON
+scheduleListsOwnersGroupedDfsJSONName = dfsPrefix + schedulePartOfPrefix + 'lists_owners' + groupedSufix + extJSON
 
 
 
