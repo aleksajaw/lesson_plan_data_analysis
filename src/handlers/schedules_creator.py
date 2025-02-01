@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
-from src.constants.paths_constants import testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
+from src.constants.paths_constants import testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
@@ -30,52 +30,60 @@ def createScheduleExcelFileVertical():
     msgText=''
 
     try:
-        objOfDfs = readExcelFileAsObjOfDfs()
-        newDf = DataFrame()
+        newObjOfDfs = {}
+        sheetNames = [ 'klasa', 'nauczyciel', 'sala', 'przedmiot' ]
+        i = 0
 
-        # Get the 1st DataFrame in the list
-        for dfKey, df in objOfDfs.items():
+        for excelFilePath in allScheduleExcelPaths:
             
-            # Transform DataFrame into a vertical order where column names become the 1st level of the MultiIndex for the rows. 
-            dfVertical = df.stack( level=0, dropna=False)
-            
-            # Correct the order of the levels in the hierarchy.
-            dfVertical.index = dfVertical.index.reorder_levels( [2, 0, 1] )
-            
-            # Making the 1st lvl a CategoricalDType to simplify the sorting proccess. 
-            weekdaysCatDtype = CategoricalDtype(categories=weekdays, ordered=True)
-            dfVertical.index = dfVertical.index.set_levels(
-                                          dfVertical.index.levels[0].astype(weekdaysCatDtype), level=0
-                                      )
-            
-            # Sort the values in the row index levels, except the last row (it is not needed). 
-            dfVertical = dfVertical.sort_values(dfVertical.index.names[:-1])
+            objOfDfs = readExcelFileAsObjOfDfs(excelFilePath)
+            newDf = DataFrame()
 
-            # Add the parent name for the class columns.
-            dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=['Klasa']+dfVertical.columns.names)
-            
-            if not newDf.empty:
-
-                # Create a new column named 'idx_temp' containing the numeric index.
-                newDf['idx_temp']      = newDf.groupby(newDf.index).cumcount()
-                dfVertical['idx_temp'] = dfVertical.groupby(dfVertical.index).cumcount()
-
-                # Set the column 'idx_temp' as an extra lvl of the current DataFrame index.
-                newDf      = newDf.set_index(['idx_temp'], append=True)
-                dfVertical = dfVertical.set_index(['idx_temp'], append=True)
+            # Get the 1st DataFrame in the list
+            for dfKey, df in objOfDfs.items():
                 
-                # Combine two DataFrames along the columns axis
-                # and then remove the 'idx_temp' level from the MultiIndex, completely removing it from the columns.
-                merged = pd.concat([newDf, dfVertical], axis=1).reset_index(level=['idx_temp'], drop=True)
-
-                newDf = merged.sort_index()
+                # Transform DataFrame into a vertical order where column names become the 1st level of the MultiIndex for the rows. 
+                dfVertical = df.stack( level=0, dropna=False)
                 
-            else:
-                newDf = dfVertical
+                # Correct the order of the levels in the hierarchy.
+                dfVertical.index = dfVertical.index.reorder_levels( [2, 0, 1] )
+                
+                # Making the 1st lvl a CategoricalDType to simplify the sorting proccess. 
+                weekdaysCatDtype = CategoricalDtype(categories=weekdays, ordered=True)
+                dfVertical.index = dfVertical.index.set_levels(
+                                              dfVertical.index.levels[0].astype(weekdaysCatDtype), level=0
+                                          )
+                
+                # Sort the values in the row index levels, except the last row (it is not needed). 
+                dfVertical = dfVertical.sort_values(dfVertical.index.names[:-1])
 
+                # Add the parent name for the class columns.
+                dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=['Klasa']+dfVertical.columns.names)
+                
+                if not newDf.empty:
 
-        writerForDfToExcelSheet(scheduleClassesVerticallyExcelPath, newDf, 'klasa')
-        #writerForObjOfDfsToExcel(scheduleClassesVerticallyExcelPath, newDf, False)
+                    # Create a new column named 'idx_temp' containing the numeric index.
+                    newDf['idx_temp']      = newDf.groupby(newDf.index).cumcount()
+                    dfVertical['idx_temp'] = dfVertical.groupby(dfVertical.index).cumcount()
+
+                    # Set the column 'idx_temp' as an extra lvl of the current DataFrame index.
+                    newDf      = newDf.set_index(['idx_temp'], append=True)
+                    dfVertical = dfVertical.set_index(['idx_temp'], append=True)
+                    
+                    # Combine two DataFrames along the columns axis
+                    # and then remove the 'idx_temp' level from the MultiIndex, completely removing it from the columns.
+                    merged = pd.concat([newDf, dfVertical], axis=1).reset_index(level=['idx_temp'], drop=True)
+
+                    newDf = merged.sort_index()
+                    
+                else:
+                    newDf = dfVertical
+
+            newObjOfDfs[sheetNames[i]] = newDf
+            i=i+1
+
+        #writerForDfToExcelSheet(scheduleClassesVerticallyExcelPath, newDf, 'klasa')
+        writerForObjOfDfsToExcel(scheduleClassesVerticallyExcelPath, newObjOfDfs, False)
 
 
     except Exception as e:
