@@ -2,8 +2,8 @@
 timeIndexNames = ['Nr','Godz']
 dayAndAttrNames = ['Dzień', 'Atrybuty']
 weekdays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek']
-lessonAttrs3el = ['przedmiot', 'grupa', 'nauczyciel', 'sala']
-lessonAttrs4el = ['przedmiot', 'nauczyciel', 'klasa', 'sala']
+lessonAttrs4el = ['przedmiot', 'grupa', 'nauczyciel', 'sala']
+lessonAttrs5el = ['przedmiot', 'grupa', 'nauczyciel', 'klasa', 'sala']
 dfRowNrs = [
     1,
     2,
