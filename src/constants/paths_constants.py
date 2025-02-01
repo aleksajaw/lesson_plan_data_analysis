@@ -106,6 +106,7 @@ projectRoot = os.path.dirname(srcDirPath)
 ##  1.2. OUTPUTS  ##
 
 documentsPath = os.path.join(projectRoot, 'documents')
+documentsGroupedPath = os.path.join(documentsPath, 'grouped')
 documentsOverviewsPath = os.path.join(documentsPath, 'overviews')
 documentsPrototypesPath = os.path.join(documentsPath, 'prototypes')
 #schedulesPath = os.path.join(srcDirPath, 'schedules')
@@ -590,13 +591,13 @@ scheduleListsOwnersGroupedExcelPath =  os.path.join(processingFilesExcelPath, sc
 ##  5.1.3. BASIC GROUPED  ##
 
 # For the classes grouped
-scheduleClassesGroupedExcelPath =  os.path.join(documentsPath, scheduleClassesGroupedExcelName)
+scheduleClassesGroupedExcelPath =  os.path.join(documentsGroupedPath, scheduleClassesGroupedExcelName)
 # For the teachers grouped
-scheduleTeachersGroupedExcelPath =  os.path.join(documentsPath, scheduleTeachersGroupedExcelName)
+scheduleTeachersGroupedExcelPath =  os.path.join(documentsGroupedPath, scheduleTeachersGroupedExcelName)
 # For the classrooms grouped
-scheduleClassroomsGroupedExcelPath =  os.path.join(documentsPath, scheduleClassroomsGroupedExcelName)
+scheduleClassroomsGroupedExcelPath =  os.path.join(documentsGroupedPath, scheduleClassroomsGroupedExcelName)
 # For the subjects grouped
-scheduleSubjectsGroupedExcelPath =  os.path.join(documentsPath, scheduleSubjectsGroupedExcelName)
+scheduleSubjectsGroupedExcelPath =  os.path.join(documentsGroupedPath, scheduleSubjectsGroupedExcelName)
 
 # For all of the above
 allScheduleGroupedExcelPaths = [ #scheduleClassesGroupedExcelPath,
