@@ -57,18 +57,7 @@ def createScheduleExcelFileVertical(classSchedulesDfs=''):
             dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=['Klasa']+dfVertical.columns.names)
             
             if not newDf.empty:
-                '''
-                # Getting the index differences between two DataFrames.
-                # Count the occurrences of the index elements.
-                index2 = dfVertical.index.to_frame(index=False).value_counts()
-                index1 = newDf.index.to_frame(index=False).value_counts()
                 
-                # Subtract the values of one Index from another. Use a specified fill_value for missing elements in one of the indices.
-                # Get the absolute values to reduce calculations. (otherwise, we would need to perform reverse subtraction.)
-                missingIndex = index2.subtract(index1, fill_value=0).loc[lambda x: x != 0].abs()
-                missingIndexFrame = MultiIndex.from_frame(missingIndex.reset_index())
-                '''
-
                 newDf['idx_temp']      = newDf.groupby(newDf.index).cumcount()
                 dfVertical['idx_temp'] = dfVertical.groupby(dfVertical.index).cumcount()
 
@@ -76,7 +65,6 @@ def createScheduleExcelFileVertical(classSchedulesDfs=''):
                 dfVertical = dfVertical.set_index(['idx_temp'], append=True)
                 
                 merged = pd.concat([newDf, dfVertical], axis=1).reset_index(level=['idx_temp'], drop=True)
-
                 newDf = merged.sort_index()
                 
             else:
