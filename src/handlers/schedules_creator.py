@@ -16,19 +16,17 @@ import os
 
 
 teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists = {}, {}, {}, {}
-mondaySchedules, tuesdaySchedules, wednesdaySchedules, thursdaySchedules, fridaySchedules = {}, {}, {}, {}, {}
 
 
 def createScheduleExcelFiles(classSchedulesDfs={}):
-    createScheduleExcelFileVertical(classSchedulesDfs)
     createScheduleExcelFilesByOwnerTypes(classSchedulesDfs)
+    createScheduleExcelFileVertical()
     #createScheduleExcelFileForOwnerLists()
     createScheduleExcelFilesByGroupedOwnerLists()
 
 
 
-def createScheduleExcelFileVertical(classSchedulesDfs=''):
-    global mondaySchedules, tuesdaySchedules, wednesdaySchedules, thursdaySchedules, fridaySchedules
+def createScheduleExcelFileVertical():
     msgText=''
 
     try:
@@ -57,14 +55,19 @@ def createScheduleExcelFileVertical(classSchedulesDfs=''):
             dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=['Klasa']+dfVertical.columns.names)
             
             if not newDf.empty:
-                
+
+                # Create a new column named 'idx_temp' containing the numeric index.
                 newDf['idx_temp']      = newDf.groupby(newDf.index).cumcount()
                 dfVertical['idx_temp'] = dfVertical.groupby(dfVertical.index).cumcount()
 
+                # Set the column 'idx_temp' as an extra lvl of the current DataFrame index.
                 newDf      = newDf.set_index(['idx_temp'], append=True)
                 dfVertical = dfVertical.set_index(['idx_temp'], append=True)
                 
+                # Combine two DataFrames along the columns axis
+                # and then remove the 'idx_temp' level from the MultiIndex, completely removing it from the columns.
                 merged = pd.concat([newDf, dfVertical], axis=1).reset_index(level=['idx_temp'], drop=True)
+
                 newDf = merged.sort_index()
                 
             else:
