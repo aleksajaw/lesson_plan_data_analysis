@@ -1,6 +1,6 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleClassesExcelPath
-from src.constants.schedule_structures_constants import excelMargin, excelFontSize, excelRangeStartCol, excelRangeStartRow
+from src.constants.schedule_structures_constants import excelMargin, excelFontSize, excelRangeStartCol, excelRangeStartRow, timeIndexNames
 from pandas import ExcelWriter
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment as openpyxlAlignment
@@ -40,7 +40,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
             for ws in workbook.worksheets:
                 
                 # column nr where the row indices end
-                rowIndexesLastCol = excelMargin['col'] + 2
+                rowIndexesLastCol = excelMargin['col'] + len(timeIndexNames)
 
                 # bold rows are for headers
                 lastBoldRowAtBeggining = findLastBoldRowAtBeggining(ws, rowIndexesLastCol, excelRangeStartRow)
@@ -49,7 +49,7 @@ def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=schedul
                 mergeEmptyCellsAndFormat(ws, { 'startRow':  excelRangeStartRow,
                                                'startCol':  excelRangeStartCol,
                                                'endRow'  :  lastBoldRowAtBeggining,
-                                               'endCol'  :  rowIndexesLastCol-1 } )
+                                               'endCol'  :  rowIndexesLastCol } )
                 
                 # cells in the 1st two columns which row nr equals contentRowsStart
                 # contains the names for the rows' MultiIndex
@@ -294,13 +294,26 @@ def mergeEmptyCellsAndFormat(ws=None, mergedCellObj={'startRow':int, 'startCol':
         endRow = mergedCellObj['endRow']
         endCol = mergedCellObj['endCol']
 
-        if startRow != endRow or startCol != endCol:
-            ws.merge_cells( start_row=mergedCellObj['startRow'],
-                            start_column=mergedCellObj['startCol'],
-                            end_row=mergedCellObj['endRow'],
-                            end_column=mergedCellObj['endCol'] )
+        for col in range(endRow, startRow-1, -1):
+            cell = None
+
+            for row in range(endRow, startRow, -1):
+                cell = ws.cell(row=row, column=col)
+
+                if not cell.value:
+                    endRow = row
+                    break
             
-        cell = ws.cell(row=mergedCellObj['startRow'], column=mergedCellObj['startCol'])
+            if cell and not cell.value:
+                endCol = col
+                break
+        
+        ws.merge_cells( start_row=startRow,
+                        start_column=startCol,
+                        end_row=endRow,
+                        end_column=endCol )
+            
+        cell = ws.cell(row=startRow, column=startCol)
         
         if not cell.value:
             cell.fill = permEmptyCellStyle
