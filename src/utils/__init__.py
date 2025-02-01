@@ -11,3 +11,4 @@ from excel_styles_utils import *
 from files_utils import *
 from schedule_utils import *
 from writers_df_utils import *
+from transl_utils import *
