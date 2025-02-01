@@ -223,14 +223,14 @@ def removeFiles(endHere=False, isClearLogs=False):
         for mainDir in dirList:
             for dirPath, dirNames, fileNames in os.walk(mainDir):
                 for fileName in fileNames:
-                    if fileName != '.gitkeep'   and   dirPath != 'prototypes':
+                    if fileName != '.gitkeep'   and   'prototypes' not in dirPath:
                         filePath = os.path.join(dirPath, fileName)
                         os.remove(filePath)
 
-        print(f'\nFiles inside the "{ ', '.join(dirListBasenames) }" directory have been removed, if they exist.')
+        print(f'\nFiles inside the { ', '.join(f'"{directory}"' for directory in dirListBasenames) } directory have been removed, if they exist.')
 
     except Exception as e:
-        print(f'\nError while removing the files in the directory { ', '.join(dirListBasenames) }: {e}')
+        print(f'\nError while removing the files in the directory { ', '.join(f'"{directory}"' for directory in dirListBasenames) }: {e}')
 
     if endHere:
         execTime = (time.perf_counter() - startTime)
