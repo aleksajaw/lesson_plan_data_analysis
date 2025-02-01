@@ -1,14 +1,14 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.conversion_constants import excelEngineName
 from src.constants.schedule_structures_constants import excelMargin, excelDistance
-from pandas import ExcelWriter
+from pandas import ExcelWriter, DataFrame
 import os
 from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON
 from excel_styles_utils import autoFormatScheduleExcel, autoFormatExcelCellSizes, autoFormatScheduleExcelCellStyles, autoFormatOverviewExcel
 
 
 
-def writeAsDfToExcelSheet(writer=ExcelWriter, excelFilePath='', sheetName='', dataToEnter=None, coords={'row':0, 'col':0}, isConverted=True, doesWriteMsg=False):
+def writeDfToExcelSheet(writer=ExcelWriter, excelFilePath='', sheetName='', dataToEnter=None, coords={'row':0, 'col':0}, isConverted=True, doesWriteMsg=False):
     msgText = ''
     
     try:
@@ -26,6 +26,23 @@ def writeAsDfToExcelSheet(writer=ExcelWriter, excelFilePath='', sheetName='', da
 
 
 
+def writerForDfToExcelSheet(excelFilePath='', df=DataFrame, groupName=''):
+    
+    msgText=''
+
+    try:
+        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
+            writeDfToExcelSheet(writer, excelFilePath, groupName, df)
+
+            #autoFormatScheduleExcel(writer.book, excelFilePath, doesNeedFormatStyle, doesNeedFormatSize)
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
+
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))
+    
+    if msgText: print(msgText)
+
+
 def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True):
     msgText = ''
 
@@ -33,11 +50,10 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None,
         # group contains classes, teachers, subjects
         groupDfs = convertToObjOfDfs(dataToEnter)   if not isConverted   else dataToEnter
 
-        for groupName in groupDfs:   
-            writeAsDfToExcelSheet(writer, excelFilePath, groupName, groupDfs[groupName])
+        for groupName in groupDfs:
+            writeDfToExcelSheet(writer, excelFilePath, groupName, groupDfs[groupName])
 
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
-
 
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while loading data into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.', getTraceback(e))
@@ -54,6 +70,8 @@ def writerForObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedFormatStyl
             writeObjOfDfsToExcel(writer, excelFilePath, objOfDfs)
 
             autoFormatScheduleExcel(writer.book, excelFilePath, doesNeedFormatStyle, doesNeedFormatSize)
+
+        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
 
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))
@@ -87,7 +105,7 @@ def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', da
 
             for singleDf in groupDfs[groupName]:
                 
-                writeAsDfToExcelSheet( writer, excelFilePath, groupName, singleDf, coords )
+                writeDfToExcelSheet( writer, excelFilePath, groupName, singleDf, coords )
 
                 if writingDirection == 'row':
                     coords['col'] = coords['col'] + singleDf.shape[1] + singleDf.index.nlevels + excelDistance['col']
