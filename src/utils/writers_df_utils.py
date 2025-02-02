@@ -131,7 +131,7 @@ def writeListOfObjsWithMultipleDfsToExcel(writer=ExcelWriter, excelFilePath='', 
 
 
 
-def writerListOfObjsWithMultipleDfsToExcel(excelFilePath='', objOfMultipleDfs=None, writingDirection='row', doesNeedFormat=True):
+def writerForListOfObjsWithMultipleDfsToExcel(excelFilePath='', objOfMultipleDfs=None, writingDirection='row', doesNeedFormat=True):
     msgText=''
 
     try:
