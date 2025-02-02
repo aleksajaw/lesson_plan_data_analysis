@@ -547,6 +547,44 @@ allScheduleGroupedDfsJSONNames = [ scheduleClassesGroupedDfsJSONName,
 
 
 
+##  4.3.5. OVERVIEW FOR RESOURCES  ##
+
+# For the classes overview for the resources
+scheduleClassesOverviewResourcesDfsJSONName = scheduleClassesOverviewResourcesBaseName + extJSON
+# For the teachers overview for the resources
+scheduleTeachersOverviewResourcesDfsJSONName = scheduleTeachersOverviewResourcesBaseName + extJSON
+# For the classrooms overview for the resources
+scheduleClassroomsOverviewResourcesDfsJSONName = scheduleClassroomsOverviewResourcesBaseName + extJSON
+# For the subjects overview for the resources
+scheduleSubjectsOverviewResourcesDfsJSONName = scheduleSubjectsOverviewResourcesBaseName + extJSON
+
+# For all of the above
+allScheduleOverviewResourcesDfsJSONNames = [ scheduleClassesOverviewResourcesDfsJSONName,
+                                             scheduleTeachersOverviewResourcesDfsJSONName,
+                                             scheduleClassroomsOverviewResourcesDfsJSONName,
+                                             scheduleSubjectsOverviewResourcesDfsJSONName ]
+
+
+
+##  4.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
+
+# For the classes grouped overview for the resources
+scheduleClassesGroupedOverviewResourcesDfsJSONName = scheduleClassesGroupedOverviewResourcesBaseName + extJSON
+# For the teachers grouped overview for the resources
+scheduleTeachersGroupedOverviewResourcesDfsJSONName = scheduleTeachersGroupedOverviewResourcesBaseName + extJSON
+# For the classrooms grouped overview for the resources
+scheduleClassroomsGroupedOverviewResourcesDfsJSONName = scheduleClassroomsGroupedOverviewResourcesBaseName + extJSON
+# For the subjects grouped overview for the resources
+scheduleSubjectsGroupedOverviewResourcesDfsJSONName = scheduleSubjectsGroupedOverviewResourcesBaseName + extJSON
+
+# For all of the above
+allScheduleGroupedOverviewResourcesDfsJSONNames = [ scheduleClassesGroupedOverviewResourcesDfsJSONName,
+                                                    scheduleTeachersGroupedOverviewResourcesDfsJSONName,
+                                                    scheduleClassroomsGroupedOverviewResourcesDfsJSONName,
+                                                    scheduleSubjectsGroupedOverviewResourcesDfsJSONName ]
+
+
+
 #####     5. FILE PATHS     #####
 
 
@@ -756,3 +794,41 @@ allScheduleGroupedDfsJSONPaths = [ scheduleClassesGroupedDfsJSONPath,
                                    scheduleTeachersGroupedDfsJSONPath,
                                    scheduleClassroomsGroupedDfsJSONPath,
                                    scheduleSubjectsGroupedDfsJSONPath ]
+
+
+
+##  5.3.5. OVERVIEW FOR RESOURCES  ##
+
+# For the classes overview for the resources
+scheduleClassesOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleClassesOverviewResourcesDfsJSONName)
+# For the teachers overview for the resources
+scheduleTeachersOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleTeachersOverviewResourcesDfsJSONName)
+# For the classrooms overview for the resources
+scheduleClassroomsOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleClassroomsOverviewResourcesDfsJSONName)
+# For the subjects overview for the resources
+scheduleSubjectsOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleSubjectsOverviewResourcesDfsJSONName)
+
+# For all of the above
+allScheduleOverviewResourcesDfsJSONPaths = [ scheduleClassesOverviewResourcesDfsJSONPath,
+                                             scheduleTeachersOverviewResourcesDfsJSONPath,
+                                             scheduleClassroomsOverviewResourcesDfsJSONPath,
+                                             scheduleSubjectsOverviewResourcesDfsJSONPath ]
+
+
+
+##  5.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
+
+# For the classes grouped overview for the resources
+scheduleClassesGroupedOverviewResourcesDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassesGroupedOverviewResourcesDfsJSONName)
+# For the teachers grouped overview for the resources
+scheduleTeachersGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleTeachersGroupedOverviewResourcesDfsJSONName)
+# For the classrooms grouped overview for the resources
+scheduleClassroomsGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleClassroomsGroupedOverviewResourcesDfsJSONName)
+# For the subjects grouped overview for the resources
+scheduleSubjectsGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleSubjectsGroupedOverviewResourcesDfsJSONName)
+
+# For all of the above
+allScheduleGroupedOverviewResourcesDfsJSONPaths = [ scheduleClassesGroupedOverviewResourcesDfsJSONPath,
+                                                    scheduleTeachersGroupedOverviewResourcesDfsJSONPath,
+                                                    scheduleClassroomsGroupedOverviewResourcesDfsJSONPath,
+                                                    scheduleSubjectsGroupedOverviewResourcesDfsJSONPath ]
