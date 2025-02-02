@@ -107,19 +107,26 @@ projectRoot = os.path.dirname(srcDirPath)
 ##  1.2. OUTPUTS  ##
 
 documentsPath = os.path.join(projectRoot, 'documents')
+
 documentsGroupedPath = os.path.join(documentsPath, 'grouped')
 documentsOverviewsPath = os.path.join(documentsPath, 'overviews')
 documentsOverviewsGroupedPath = os.path.join(documentsOverviewsPath, 'grouped')
-documentsPrototypesPath = os.path.join(documentsPath, 'prototypes')
-#schedulesPath = os.path.join(srcDirPath, 'schedules')
-schedulesPath = os.path.join(projectRoot, 'schedules')
-#scheduleJSONPath = os.path.join(schedulesPath, 'json')
 
-logsPath = os.path.join(projectRoot, 'logs')
+documentsPrototypesPath = os.path.join(documentsPath, 'prototypes')
+
 
 processingFilesPath = os.path.join(projectRoot, 'processing_files')
+
 processingFilesJSONPath = os.path.join(processingFilesPath, 'json')
+processingFilesJSONGroupedPath = os.path.join(processingFilesJSONPath, 'grouped')
+processingFilesJSONOverviewsPath = os.path.join(processingFilesJSONPath, 'overviews')
+processingFilesJSONOverviewsGroupedPath = os.path.join(processingFilesJSONOverviewsPath, 'grouped')
+
 processingFilesExcelPath = os.path.join(processingFilesPath, 'excel')
+
+
+logsPath = os.path.join(projectRoot, 'logs')
+schedulesPath = os.path.join(projectRoot, 'schedules')
 
 
 
@@ -781,13 +788,13 @@ schedulesWideAndVerticallyDfsJSONPath = os.path.join(processingFilesJSONPath, sc
 ##  5.3.4. BASIC GROUPED  ##
 
 # For the classes grouped
-scheduleClassesGroupedDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassesGroupedDfsJSONName)
+scheduleClassesGroupedDfsJSONPath = os.path.join(processingFilesJSONGroupedPath, scheduleClassesGroupedDfsJSONName)
 # For the teachers grouped
-scheduleTeachersGroupedDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleTeachersGroupedDfsJSONName)
+scheduleTeachersGroupedDfsJSONPath = os.path.join(processingFilesJSONGroupedPath, scheduleTeachersGroupedDfsJSONName)
 # For the classrooms grouped
-scheduleClassroomsGroupedDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassroomsGroupedDfsJSONName)
+scheduleClassroomsGroupedDfsJSONPath = os.path.join(processingFilesJSONGroupedPath, scheduleClassroomsGroupedDfsJSONName)
 # For the subjects grouped
-scheduleSubjectsGroupedDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleSubjectsGroupedDfsJSONName)
+scheduleSubjectsGroupedDfsJSONPath = os.path.join(processingFilesJSONGroupedPath, scheduleSubjectsGroupedDfsJSONName)
 
 # For all of the above
 allScheduleGroupedDfsJSONPaths = [ scheduleClassesGroupedDfsJSONPath,
@@ -800,13 +807,13 @@ allScheduleGroupedDfsJSONPaths = [ scheduleClassesGroupedDfsJSONPath,
 ##  5.3.5. OVERVIEW FOR RESOURCES  ##
 
 # For the classes overview for the resources
-scheduleClassesOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleClassesOverviewResourcesDfsJSONName)
+scheduleClassesOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassesOverviewResourcesDfsJSONName)
 # For the teachers overview for the resources
-scheduleTeachersOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleTeachersOverviewResourcesDfsJSONName)
+scheduleTeachersOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleTeachersOverviewResourcesDfsJSONName)
 # For the classrooms overview for the resources
-scheduleClassroomsOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleClassroomsOverviewResourcesDfsJSONName)
+scheduleClassroomsOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassroomsOverviewResourcesDfsJSONName)
 # For the subjects overview for the resources
-scheduleSubjectsOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleSubjectsOverviewResourcesDfsJSONName)
+scheduleSubjectsOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleSubjectsOverviewResourcesDfsJSONName)
 
 # For all of the above
 allScheduleOverviewResourcesDfsJSONPaths = [ scheduleClassesOverviewResourcesDfsJSONPath,
@@ -819,13 +826,13 @@ allScheduleOverviewResourcesDfsJSONPaths = [ scheduleClassesOverviewResourcesDfs
 ##  5.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
 
 # For the classes grouped overview for the resources
-scheduleClassesGroupedOverviewResourcesDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassesGroupedOverviewResourcesDfsJSONName)
+scheduleClassesGroupedOverviewResourcesDfsJSONPath = os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassesGroupedOverviewResourcesDfsJSONName)
 # For the teachers grouped overview for the resources
-scheduleTeachersGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleTeachersGroupedOverviewResourcesDfsJSONName)
+scheduleTeachersGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleTeachersGroupedOverviewResourcesDfsJSONName)
 # For the classrooms grouped overview for the resources
-scheduleClassroomsGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleClassroomsGroupedOverviewResourcesDfsJSONName)
+scheduleClassroomsGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassroomsGroupedOverviewResourcesDfsJSONName)
 # For the subjects grouped overview for the resources
-scheduleSubjectsGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONPath, scheduleSubjectsGroupedOverviewResourcesDfsJSONName)
+scheduleSubjectsGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleSubjectsGroupedOverviewResourcesDfsJSONName)
 
 # For all of the above
 allScheduleGroupedOverviewResourcesDfsJSONPaths = [ scheduleClassesGroupedOverviewResourcesDfsJSONPath,
