@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
-from src.constants.paths_constants import allOwnerTypeNames, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, schedulesWideAndVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleClassesGroupedExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleClassesGroupedDfsJSONPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths
+from src.constants.paths_constants import allOwnerTypeNames, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, schedulesWideAndVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleClassesGroupedExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, schedulesWideAndVerticallyDfsJSONPath, scheduleClassesGroupedDfsJSONPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
@@ -88,8 +88,7 @@ def createScheduleExcelFileVertical():
             newObjOfDfs[currSheetName] = newDf
             i=i+1
 
-        writerForObjOfDfsToExcel(schedulesWideAndVerticallyExcelPath, newObjOfDfs)
-
+        writerForObjOfDfsToJSONAndExcel(newObjOfDfs, schedulesWideAndVerticallyDfsJSONPath, schedulesWideAndVerticallyExcelPath)
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written wide and vertically.', getTraceback(e))

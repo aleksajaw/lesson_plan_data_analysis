@@ -7,7 +7,7 @@
 
     #####     1. DIR PATHS     #####
 
-          ##  1.1 MAIN
+          ##  1.1. MAIN
           ##  1.2. OUTPUTS
 
 
@@ -52,7 +52,7 @@
           ##  4.2.1. BASIC MAIN
 
 
-        ###   4.3 JSON with Data Frames   ###
+        ###   4.3 JSON with DataFrames   ###
 
           ##  4.3.1. BASIC MAIN
           ##  4.3.2. BASIC
@@ -79,11 +79,12 @@
           ##  5.2.1 BASIC MAIN
 
 
-        ###   5.3. JSON with Data Frames   ###
+        ###   5.3. JSON with DataFrames   ###
 
           ##  5.3.1. BASIC MAIN
           ##  5.3.2. BASIC
-          ##  5.3.3. BASIC GROUPED
+          ##  5.3.3. BASIC EXTRA
+          ##  5.3.4. BASIC GROUPED
 
 
 
@@ -489,7 +490,7 @@ scheduleClassesBaseJSONName = 'base_' + scheduleClassesBaseName + extJSON
 
 
 
-###   4.3 JSON with Data Frames   ###
+###   4.3 JSON with DataFrames   ###
 
 ##  4.3.1. BASIC MAIN  ##
 
@@ -521,6 +522,9 @@ allScheduleDfsJSONNames = [ scheduleClassesDfsJSONName,
 
 # For the list of the schedule owners
 scheduleListsOwnersGroupedDfsJSONName = dfsPrefix + schedulePartOfPrefix + 'lists_owners' + groupedSufix + extJSON
+
+# For all the schedules wide and vertically
+schedulesWideAndVerticallyDfsJSONName = dfsPrefix + schedulesWideAndVerticallyBaseName + extJSON
 
 
 
@@ -574,7 +578,7 @@ allScheduleExcelPaths = [ scheduleClassesExcelPath,
 
 ##  5.1.2. BASIC EXTRA  ##
 
-# For all the schedules
+# For all the schedules wide and vertically
 schedulesWideAndVerticallyExcelPath = os.path.join(documentsPath, schedulesWideAndVerticallyExcelName)
 
 # For the classes vertically
@@ -701,7 +705,7 @@ scheduleListsOwnersGroupedJSONPath =  os.path.join(processingFilesJSONPath, sche
 
 
 
-###   5.3. JSON with Data Frames   ###
+###   5.3. JSON with DataFrames   ###
 
 ##  5.3.1. BASIC MAIN  ##
 
@@ -729,7 +733,14 @@ allScheduleDfsJSONPaths = [ scheduleClassesDfsJSONPath,
 
 
 
-##  5.3.3. BASIC GROUPED  ##
+##  5.3.3. BASIC EXTRA  ##
+
+# For all the schedules written wide and vertically
+schedulesWideAndVerticallyDfsJSONPath = os.path.join(processingFilesJSONPath, schedulesWideAndVerticallyDfsJSONName)
+
+
+
+##  5.3.4. BASIC GROUPED  ##
 
 # For the classes grouped
 scheduleClassesGroupedDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassesGroupedDfsJSONName)
