@@ -84,7 +84,7 @@ def createScheduleExcelFileVertical():
             newObjOfDfs[sheetNames[i]] = newDf
             i=i+1
 
-        writerForObjOfDfsToExcel(schedulesWideAndVerticallyExcelPath, newObjOfDfs, False)
+        writerForObjOfDfsToExcel(schedulesWideAndVerticallyExcelPath, newObjOfDfs)
 
 
     except Exception as e:
