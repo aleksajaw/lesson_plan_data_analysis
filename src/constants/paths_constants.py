@@ -108,6 +108,7 @@ projectRoot = os.path.dirname(srcDirPath)
 documentsPath = os.path.join(projectRoot, 'documents')
 documentsGroupedPath = os.path.join(documentsPath, 'grouped')
 documentsOverviewsPath = os.path.join(documentsPath, 'overviews')
+documentsOverviewsGroupedPath = os.path.join(documentsOverviewsPath, 'grouped')
 documentsPrototypesPath = os.path.join(documentsPath, 'prototypes')
 #schedulesPath = os.path.join(srcDirPath, 'schedules')
 schedulesPath = os.path.join(projectRoot, 'schedules')
@@ -600,7 +601,7 @@ scheduleClassroomsGroupedExcelPath =  os.path.join(documentsGroupedPath, schedul
 scheduleSubjectsGroupedExcelPath =  os.path.join(documentsGroupedPath, scheduleSubjectsGroupedExcelName)
 
 # For all of the above
-allScheduleGroupedExcelPaths = [ #scheduleClassesGroupedExcelPath,
+allScheduleGroupedExcelPaths = [ scheduleClassesGroupedExcelPath,
                                  scheduleTeachersGroupedExcelPath,
                                  scheduleClassroomsGroupedExcelPath,
                                  scheduleSubjectsGroupedExcelPath ]
@@ -667,16 +668,16 @@ allScheduleOverviewResourcesExcelPaths = [ scheduleClassesOverviewResourcesExcel
 ##  5.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
 
 # For the classes grouped overview for the resources
-scheduleClassesGroupedOverviewResourcesExcelPath = os.path.join(documentsOverviewsPath, scheduleClassesGroupedOverviewResourcesExcelName)
+scheduleClassesGroupedOverviewResourcesExcelPath = os.path.join(documentsOverviewsGroupedPath, scheduleClassesGroupedOverviewResourcesExcelName)
 # For the teachers grouped overview for the resources
-scheduleTeachersGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsPath, scheduleTeachersGroupedOverviewResourcesExcelName)
+scheduleTeachersGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleTeachersGroupedOverviewResourcesExcelName)
 # For the classrooms grouped overview for the resources
-scheduleClassroomsGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassroomsGroupedOverviewResourcesExcelName)
+scheduleClassroomsGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleClassroomsGroupedOverviewResourcesExcelName)
 # For the subjects grouped overview for the resources
-scheduleSubjectsGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsPath, scheduleSubjectsGroupedOverviewResourcesExcelName)
+scheduleSubjectsGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleSubjectsGroupedOverviewResourcesExcelName)
 
 # For all of the above
-allScheduleGroupedOverviewResourcesExcelPaths = [ #scheduleClassesGroupedOverviewResourcesExcelPath,
+allScheduleGroupedOverviewResourcesExcelPaths = [ scheduleClassesGroupedOverviewResourcesExcelPath,
                                                   scheduleTeachersGroupedOverviewResourcesExcelPath,
                                                   scheduleClassroomsGroupedOverviewResourcesExcelPath,
                                                   scheduleSubjectsGroupedOverviewResourcesExcelPath ]
@@ -740,7 +741,7 @@ scheduleClassroomsGroupedDfsJSONPath = os.path.join(processingFilesJSONPath, sch
 scheduleSubjectsGroupedDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleSubjectsGroupedDfsJSONName)
 
 # For all of the above
-allScheduleGroupedDfsJSONPaths = [ #scheduleClassesGroupedDfsJSONPath,
+allScheduleGroupedDfsJSONPaths = [ scheduleClassesGroupedDfsJSONPath,
                                    scheduleTeachersGroupedDfsJSONPath,
                                    scheduleClassroomsGroupedDfsJSONPath,
                                    scheduleSubjectsGroupedDfsJSONPath ]
