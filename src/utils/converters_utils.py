@@ -23,7 +23,7 @@ def convertToDf(dataToConvert=None):
             df.columns = MultiIndex.from_tuples(tuples=dfColNamesTuples, names=dayAndAttrNames)
 
             # Use an empty string instead of null/NaN.
-            #df = df.fillna('')
+            df = df.fillna('')
             
             # Restore 111 from values like '111.0'.
             df = correctValsInColsWithNumbers(df)
@@ -57,7 +57,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
     try:
         for sheetName, df in dataToConvert.items():
             # Use an empty string instead of null/NaN
-            #df = df.fillna('')
+            df = df.fillna('')
             # Restore 111 from values like '111.0'.
             df = correctValsInColsWithNumbers(df)
             

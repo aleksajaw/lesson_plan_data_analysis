@@ -126,7 +126,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
         newDfFiltered = newDfFiltered.reindex(columns=columnsVal, fill_value=np.nan)
 
     except Exception as e:
-        msgText = handleErrorMsg('\nError while filter and convert schedule Data Frames for Excel worksheet.', getTraceback(e))
+        msgText = handleErrorMsg('\nError while filtering and converting schedule Data Frames for Excel worksheet.', getTraceback(e))
         
     if msgText: print(msgText)
     
