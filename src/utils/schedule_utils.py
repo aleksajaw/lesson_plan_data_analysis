@@ -225,7 +225,7 @@ def createGroupsInListByFirstLetter(data=[]):
 
 
 
-def createGroupsInListByNumbers(data=[], optionalPartInNrPrefix='0'):
+def createGroupsInListByStringAndNumbers(data=[], optionalPartInNrPrefix='0'):
     msgText=''
 
     try:
@@ -247,7 +247,7 @@ def createGroupsInListByNumbers(data=[], optionalPartInNrPrefix='0'):
                 item = int(item)
             
             else:
-                # match e.g. '.9', '_09', '09' or '9'
+                # matches e.g. '.9', '_09', '09' or '9'
                 pattern = r'([^a-zA-Z0-9]*' + re.escape(optionalPartInNrPrefix) + r'*[^a-zA-Z0-9]*)\d+'
                 match = re.match(pattern, itemStr)
                 
@@ -255,6 +255,32 @@ def createGroupsInListByNumbers(data=[], optionalPartInNrPrefix='0'):
                     # '.', '_0', '0'   only if   optionalPartInNrPrefix = 0
                     item = match.group(1)
             
+            groupsInList.append(item)
+        
+        return groupsInList
+    
+    except Exception as e:
+        msgText = handleErrorMsg('\nError while creating groups in list by string and numbers.', getTraceback(e))
+    
+    if msgText: print(msgText)
+
+
+
+def createGroupsInListByNumbers(data=[]):
+    msgText=''
+
+    try:
+        groupsInList = []
+        for item in data:
+            itemStr = str(item)
+            
+            # matches numbers
+            pattern = r'\d+'
+            match = re.match(pattern, itemStr)
+                
+            if match:
+                item = int(match.group(0))
+          
             groupsInList.append(item)
         
         return groupsInList
@@ -282,6 +308,10 @@ def createGroupsInListBy(listName='', data=[]):
                 groupingKey = 'first letter'
 
             case 'classrooms':
+                result = createGroupsInListByStringAndNumbers(data)
+                groupingKey = 'string and numbers'
+
+            case 'classes':
                 result = createGroupsInListByNumbers(data)
                 groupingKey = 'numbers'
 
