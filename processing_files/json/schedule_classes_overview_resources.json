@@ -1,0 +1,486 @@
+{
+    "1B 1gas_log": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"b.h.p\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"e.d.b\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"k.p.s\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"niem\"],[\"przedmiot\",\"o.m.z\"],[\"przedmiot\",\"o.p.mag\"],[\"przedmiot\",\"plastyka\"],[\"przedmiot\",\"pod.gas\"],[\"przedmiot\",\"pod.log\"],[\"przedmiot\",\"pr.gas\"],[\"przedmiot\",\"pr.wyp.tech\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",25]],\"data\":[[0,2,0,0,0,2],[0,0,0,0,1,1],[1,0,0,0,1,2],[2,0,0,0,0,2],[0,1,0,0,1,2],[0,0,2,2,0,4],[0,1,0,0,0,1],[1,0,0,2,0,3],[1,0,0,0,0,1],[0,0,0,0,1,1],[0,1,0,0,0,1],[0,0,1,0,0,1],[0,0,2,0,0,2],[1,0,0,0,0,1],[1,0,0,0,1,2],[0,0,1,2,0,3],[0,2,0,0,2,4],[0,1,0,0,2,3],[0,1,0,2,0,3],[4,0,0,4,0,8],[2,0,2,2,0,6],[0,1,0,0,0,1],[0,0,1,0,1,2],[0,0,1,0,0,1],[0,0,1,1,0,2],[13,10,11,15,10,59]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"gas\"],[\"grupa\",\"log\"],[\"Razem\",3]],\"data\":[[3,6,2,0,6,17],[5,2,6,8,2,23],[5,2,3,7,2,19],[13,10,11,15,10,59]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"AJ\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"IJ\"],[\"nauczyciel\",\"JG\"],[\"nauczyciel\",\"JT\"],[\"nauczyciel\",\"MG\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"MW\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PE\"],[\"nauczyciel\",\"PK\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"SI\"],[\"nauczyciel\",\"SM\"],[\"nauczyciel\",\"SS\"],[\"nauczyciel\",\"SZ\"],[\"nauczyciel\",\"UL\"],[\"Razem\",19]],\"data\":[[0,1,0,0,1,2],[3,1,0,4,0,8],[1,0,0,0,2,3],[0,1,0,0,0,1],[0,0,2,0,0,2],[1,0,0,0,1,2],[0,0,2,2,0,4],[1,0,1,0,1,3],[0,0,1,2,0,3],[0,0,1,1,0,2],[0,2,0,0,2,4],[2,1,2,2,0,7],[4,0,1,4,0,9],[0,1,0,0,2,3],[0,1,0,0,0,1],[1,0,0,0,0,1],[0,2,0,0,0,2],[0,0,1,0,0,1],[0,0,0,0,1,1],[13,10,11,15,10,59]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",2],[\"sala\",7],[\"sala\",102],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",115],[\"sala\",116],[\"sala\",202],[\"sala\",207],[\"sala\",208],[\"sala\",210],[\"sala\",\"_01\"],[\"sala\",\"_07\"],[\"sala\",\"s2\"],[\"Razem\",18]],\"data\":[[2,0,2,0,1,5],[2,0,2,2,0,6],[0,2,0,0,0,2],[0,0,2,0,0,2],[0,2,0,0,2,4],[1,0,1,0,1,3],[0,1,2,2,1,6],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,0,1,1],[4,0,0,4,0,8],[0,0,0,0,1,1],[0,1,0,0,1,2],[1,0,0,0,0,1],[0,0,2,2,0,4],[3,0,0,2,0,5],[0,2,0,2,1,5],[0,2,0,0,0,2],[13,10,11,15,10,59]]}"
+        }
+    ],
+    "1d 1wz": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"b.i.z\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"e.d.b\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",12]],\"data\":[[1,0,0,0,0,1],[0,1,0,0,0,1],[1,0,0,0,0,1],[3,0,3,0,0,6],[0,0,2,0,0,2],[0,1,1,0,0,2],[0,0,1,0,0,1],[1,1,0,0,0,2],[0,1,0,0,0,1],[1,1,0,0,0,2],[2,0,2,0,0,4],[0,1,1,0,0,2],[9,6,10,0,0,25]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"j1\"],[\"grupa\",\"j2\"],[\"Razem\",3]],\"data\":[[3,0,3,0,0,6],[4,6,3,0,0,13],[2,0,4,0,0,6],[9,6,10,0,0,25]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"JG\"],[\"nauczyciel\",\"KZ\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PI\"],[\"nauczyciel\",\"PJ\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"RT\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",11]],\"data\":[[3,1,1,0,0,5],[0,1,1,0,0,2],[0,0,1,0,0,1],[0,1,1,0,0,2],[0,1,0,0,0,1],[1,0,2,0,0,3],[0,0,2,0,0,2],[2,0,2,0,0,4],[1,0,0,0,0,1],[1,2,0,0,0,3],[1,0,0,0,0,1],[9,6,10,0,0,25]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",7],[\"sala\",109],[\"sala\",110],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",203],[\"sala\",210],[\"sala\",\"s2\"],[\"Razem\",10]],\"data\":[[2,0,0,0,0,2],[1,2,0,0,0,3],[0,1,0,0,0,1],[1,2,1,0,0,4],[1,0,0,0,0,1],[0,0,2,0,0,2],[3,0,3,0,0,6],[0,0,1,0,0,1],[0,1,3,0,0,4],[1,0,0,0,0,1],[9,6,10,0,0,25]]}"
+        }
+    ],
+    "2A 2ek_fry": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"b.h.p\"],[\"przedmiot\",\"b.i.z\"],[\"przedmiot\",\"biol.r\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"dok.zd.gos\"],[\"przedmiot\",\"f.p.gos\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"h.i.t\"],[\"przedmiot\",\"higiena\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"mark\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"p.i.d.fry\"],[\"przedmiot\",\"pod.fry\"],[\"przedmiot\",\"pr.est\"],[\"przedmiot\",\"pr.fry.dam\"],[\"przedmiot\",\"pr.fry.men\"],[\"przedmiot\",\"pr.t.biu\"],[\"przedmiot\",\"pra.d.g\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"stat\"],[\"przedmiot\",\"t.fry\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",32]],\"data\":[[0,1,0,1,0,2],[0,2,1,0,0,3],[0,0,0,1,0,1],[0,0,0,0,1,1],[1,0,1,0,0,2],[1,0,0,1,0,2],[0,0,2,0,2,4],[0,0,0,0,1,1],[0,0,2,0,2,4],[0,1,0,0,0,1],[0,1,1,0,0,2],[1,0,0,1,0,2],[0,1,1,0,0,2],[0,1,0,0,0,1],[1,0,0,0,0,1],[0,0,1,1,0,2],[0,0,0,0,1,1],[0,3,0,0,0,3],[1,0,0,0,0,1],[0,0,1,0,1,2],[4,0,0,4,0,8],[0,0,1,0,1,2],[0,0,0,2,0,2],[0,0,0,1,0,1],[1,0,0,0,0,1],[2,0,0,2,0,4],[2,2,1,1,0,6],[0,0,0,0,1,1],[0,0,1,0,1,2],[3,0,0,0,0,3],[0,0,0,1,0,1],[1,0,0,0,0,1],[18,12,13,16,11,70]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"ek\"],[\"grupa\",\"fry\"],[\"Razem\",3]],\"data\":[[10,4,4,8,4,30],[0,5,5,2,4,16],[8,3,4,6,3,24],[18,12,13,16,11,70]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"AJ\"],[\"nauczyciel\",\"BW\"],[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"JG\"],[\"nauczyciel\",\"KF\"],[\"nauczyciel\",\"KM\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"KY\"],[\"nauczyciel\",\"KZ\"],[\"nauczyciel\",\"MA\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PL\"],[\"nauczyciel\",\"RB\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"ZM\"],[\"Razem\",19]],\"data\":[[0,0,2,0,2,4],[0,1,1,1,0,3],[0,0,0,1,0,1],[0,1,0,1,1,3],[1,0,1,0,0,2],[0,2,1,0,1,4],[0,0,0,0,1,1],[2,0,0,0,0,2],[3,1,1,2,0,7],[0,0,1,0,1,2],[2,1,1,2,1,7],[0,3,1,1,0,5],[2,0,0,1,0,3],[0,0,0,1,0,1],[6,0,0,6,1,13],[0,0,2,0,2,4],[2,0,0,0,0,2],[0,2,1,0,0,3],[0,1,1,0,1,3],[18,12,13,16,11,70]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",2],[\"sala\",7],[\"sala\",11],[\"sala\",101],[\"sala\",102],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",111],[\"sala\",116],[\"sala\",201],[\"sala\",202],[\"sala\",207],[\"sala\",208],[\"sala\",209],[\"sala\",\"_08\"],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"Razem\",19]],\"data\":[[0,0,1,0,1,2],[3,0,0,2,0,5],[0,2,1,0,0,3],[0,1,0,0,2,3],[0,3,1,0,0,4],[0,0,2,0,0,2],[3,0,0,2,0,5],[0,1,1,1,1,4],[0,0,2,0,2,4],[0,0,0,1,0,1],[2,0,0,1,0,3],[0,0,1,1,0,2],[0,1,1,0,1,3],[1,1,1,1,0,4],[0,1,0,1,1,3],[0,0,0,0,1,1],[1,0,1,0,1,3],[8,0,0,6,0,14],[0,2,1,0,1,4],[18,12,13,16,11,70]]}"
+        }
+    ],
+    "2B 2gas": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"b.i.z\"],[\"przedmiot\",\"biol.r\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"h.i.t\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"k.p.s\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"ob.kon\"],[\"przedmiot\",\"pod.gas\"],[\"przedmiot\",\"pr.gas\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",21]],\"data\":[[0,0,0,0,1,1],[0,0,1,0,0,1],[1,0,0,0,0,1],[0,0,0,1,1,2],[0,0,0,1,0,1],[2,0,2,2,0,6],[0,0,0,0,1,1],[0,0,1,2,0,3],[0,0,0,0,2,2],[0,1,0,0,0,1],[0,2,0,0,0,2],[0,2,0,0,1,3],[1,1,0,0,0,2],[0,0,1,0,0,1],[2,0,0,0,2,4],[0,0,1,0,0,1],[1,1,0,0,2,4],[0,0,0,1,0,1],[0,0,0,1,1,2],[1,0,0,0,0,1],[8,4,8,4,0,24],[16,11,14,12,11,64]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"gas\"],[\"grupa\",\"j1\"],[\"grupa\",\"j2\"],[\"Razem\",4]],\"data\":[[4,0,2,0,2,8],[2,5,4,6,7,24],[8,4,8,4,0,24],[2,2,0,2,2,8],[16,11,14,12,11,64]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"#re2\"],[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"JG\"],[\"nauczyciel\",\"KM\"],[\"nauczyciel\",\"KZ\"],[\"nauczyciel\",\"LU\"],[\"nauczyciel\",\"MG\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"MP\"],[\"nauczyciel\",\"MW\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PK\"],[\"nauczyciel\",\"PS\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"SI\"],[\"nauczyciel\",\"SS\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",19]],\"data\":[[0,2,0,0,0,2],[1,0,0,0,1,2],[1,0,0,2,0,3],[0,0,1,0,0,1],[1,1,0,0,0,2],[4,4,4,4,0,16],[0,0,1,0,0,1],[0,0,1,2,0,3],[0,0,0,1,1,2],[0,2,0,0,1,3],[0,1,0,0,0,1],[0,0,0,1,1,2],[1,0,0,1,1,3],[0,0,1,0,0,1],[1,0,2,0,0,3],[2,0,0,0,2,4],[0,0,0,0,2,2],[1,1,0,1,2,5],[4,0,4,0,0,8],[16,11,14,12,11,64]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",2],[\"sala\",7],[\"sala\",109],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",115],[\"sala\",201],[\"sala\",202],[\"sala\",203],[\"sala\",208],[\"sala\",210],[\"sala\",\"_01\"],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"sala\",\"s3\"],[\"Razem\",17]],\"data\":[[1,0,0,0,1,2],[0,0,0,0,2,2],[0,0,0,2,0,2],[0,2,0,0,0,2],[0,1,1,0,0,2],[2,0,0,0,2,4],[1,0,2,0,0,3],[1,0,0,0,0,1],[8,4,8,4,0,24],[0,2,0,0,1,3],[1,0,0,1,1,3],[1,1,0,0,2,4],[0,0,1,1,0,2],[0,0,1,2,1,4],[1,1,0,0,0,2],[0,0,0,1,1,2],[0,0,1,1,0,2],[16,11,14,12,11,64]]}"
+        }
+    ],
+    "2C 2hot": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"ang-hot\"],[\"przedmiot\",\"b.i.z\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"dz.w.rec\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"h.i.t\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"k.p.s\"],[\"przedmiot\",\"mark.hot\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"o.m.z\"],[\"przedmiot\",\"o.p.hot\"],[\"przedmiot\",\"ob.kon\"],[\"przedmiot\",\"pr.hot\"],[\"przedmiot\",\"pr.ob.inf\"],[\"przedmiot\",\"pr.ob.kon\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",27]],\"data\":[[1,0,0,0,1,2],[0,0,0,1,0,1],[2,0,0,1,0,3],[1,0,0,0,1,2],[0,0,1,0,0,1],[1,0,0,0,0,1],[0,1,0,0,0,1],[0,0,0,0,4,4],[1,0,0,0,0,1],[1,0,2,0,0,3],[0,2,0,0,0,2],[0,0,1,0,0,1],[0,1,2,1,0,4],[0,0,0,0,4,4],[0,4,0,0,0,4],[0,0,0,1,0,1],[0,0,0,1,0,1],[0,0,1,0,0,1],[0,2,0,0,0,2],[0,0,0,0,2,2],[1,0,0,0,1,2],[0,2,0,0,0,2],[0,0,0,1,0,1],[0,0,2,2,0,4],[0,0,0,1,0,1],[1,0,0,0,0,1],[0,0,0,1,0,1],[9,12,9,10,13,53]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"hot\"],[\"Razem\",2]],\"data\":[[9,1,5,7,5,27],[0,11,4,3,8,26],[9,12,9,10,13,53]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"#re2\"],[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"JG\"],[\"nauczyciel\",\"JT\"],[\"nauczyciel\",\"KF\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"KZ\"],[\"nauczyciel\",\"LU\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PE\"],[\"nauczyciel\",\"PJ\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"RB\"],[\"nauczyciel\",\"SI\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"nauczyciel\",\"ZM\"],[\"Razem\",19]],\"data\":[[0,0,2,2,0,4],[0,2,0,0,0,2],[0,0,0,0,2,2],[1,0,0,0,1,2],[2,0,0,1,0,3],[0,0,0,1,4,5],[1,0,0,0,0,1],[0,0,0,1,0,1],[0,1,2,1,0,4],[1,5,1,0,0,7],[0,0,1,1,0,2],[0,0,0,1,4,5],[1,0,0,0,1,2],[0,0,1,0,0,1],[0,4,0,0,0,4],[1,0,0,0,0,1],[1,0,0,1,1,3],[1,0,2,0,0,3],[0,0,0,1,0,1],[9,12,9,10,13,53]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",2],[\"sala\",7],[\"sala\",11],[\"sala\",101],[\"sala\",102],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",112],[\"sala\",115],[\"sala\",201],[\"sala\",202],[\"sala\",203],[\"sala\",208],[\"sala\",\"_02\"],[\"sala\",\"s1\"],[\"sala\",\"s3\"],[\"Razem\",18]],\"data\":[[1,0,0,0,0,1],[0,0,0,1,0,1],[1,0,0,0,0,1],[0,0,0,1,0,1],[1,0,0,0,0,1],[0,1,2,1,2,6],[0,0,0,0,4,4],[1,0,0,0,1,2],[0,0,0,1,1,2],[1,0,1,0,0,2],[0,4,0,0,0,4],[2,5,1,0,0,8],[0,0,1,1,0,2],[0,0,0,2,4,6],[2,0,0,3,1,6],[0,2,0,0,0,2],[0,0,2,0,0,2],[0,0,2,0,0,2],[9,12,9,10,13,53]]}"
+        }
+    ],
+    "2L 2log": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"b.h.p\"],[\"przedmiot\",\"b.i.z\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"h.i.t\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"p.i.w.zap\"],[\"przedmiot\",\"pod.log\"],[\"przedmiot\",\"przech.zap\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"przedmiot\",\"zab.maj\"],[\"Razem\",22]],\"data\":[[0,1,0,0,1,2],[0,0,0,1,0,1],[1,1,1,0,0,3],[0,0,0,1,1,2],[0,2,0,0,2,4],[0,0,0,1,0,1],[0,0,0,1,1,2],[1,0,0,0,0,1],[0,1,2,0,0,3],[1,0,0,0,1,2],[0,1,0,1,0,2],[0,0,1,0,0,1],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,1,0,0,0,1],[0,0,1,0,0,1],[2,2,2,0,2,8],[0,2,0,0,0,2],[1,0,0,0,1,2],[3,0,3,0,0,6],[1,1,0,1,0,3],[10,12,10,8,10,50]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"log\"],[\"Razem\",2]],\"data\":[[5,6,5,8,6,30],[5,6,5,0,4,20],[10,12,10,8,10,50]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"AJ\"],[\"nauczyciel\",\"BJ\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"JG\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"KY\"],[\"nauczyciel\",\"KZ\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"MP\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"SI\"],[\"nauczyciel\",\"SM\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"nauczyciel\",\"ZM\"],[\"Razem\",17]],\"data\":[[0,0,0,1,1,2],[1,0,0,0,0,1],[0,1,2,0,0,3],[2,2,2,0,2,8],[1,1,0,1,0,3],[0,1,0,0,1,2],[0,0,0,0,1,1],[0,1,0,1,0,2],[0,0,1,0,0,1],[0,0,0,1,0,1],[0,0,0,1,1,2],[3,2,3,0,0,8],[0,1,0,2,0,3],[1,1,1,0,0,3],[1,0,0,0,1,2],[1,2,0,1,3,7],[0,0,1,0,0,1],[10,12,10,8,10,50]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",7],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",203],[\"sala\",207],[\"sala\",208],[\"sala\",209],[\"sala\",\"_07\"],[\"sala\",\"s1\"],[\"Razem\",14]],\"data\":[[0,1,0,0,0,1],[0,1,0,1,2,4],[2,2,2,0,2,8],[0,0,1,0,0,1],[3,2,3,0,0,8],[0,0,0,1,1,2],[1,1,0,1,0,3],[0,1,1,0,0,2],[1,0,0,0,0,1],[1,1,0,3,0,5],[2,0,0,1,2,5],[0,1,2,0,0,3],[0,0,1,1,1,3],[0,2,0,0,2,4],[10,12,10,8,10,50]]}"
+        }
+    ],
+    "2d 2wz": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",9]],\"data\":[[0,0,0,2,0,2],[0,0,0,3,3,6],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,1,1,2],[0,0,0,2,2,4],[0,0,0,1,1,2],[0,0,0,0,1,1],[0,0,0,11,9,20]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"j1\"],[\"grupa\",\"j2\"],[\"grupa\",\"mat\"],[\"grupa\",\"pol\"],[\"Razem\",5]],\"data\":[[0,0,0,4,2,6],[0,0,0,1,1,2],[0,0,0,1,1,2],[0,0,0,2,3,5],[0,0,0,3,2,5],[0,0,0,11,9,20]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"PJ\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"RB\"],[\"nauczyciel\",\"RT\"],[\"nauczyciel\",\"SM\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",8]],\"data\":[[0,0,0,2,1,3],[0,0,0,2,0,2],[0,0,0,1,2,3],[0,0,0,1,2,3],[0,0,0,1,1,2],[0,0,0,1,1,2],[0,0,0,1,0,1],[0,0,0,2,2,4],[0,0,0,11,9,20]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",7],[\"sala\",102],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",202],[\"sala\",203],[\"sala\",\"_02\"],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"Razem\",10]],\"data\":[[0,0,0,1,1,2],[0,0,0,2,1,3],[0,0,0,1,2,3],[0,0,0,1,1,2],[0,0,0,2,0,2],[0,0,0,1,0,1],[0,0,0,1,2,3],[0,0,0,1,1,2],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,11,9,20]]}"
+        }
+    ],
+    "3A 3ra_fry": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"ang-ra\"],[\"przedmiot\",\"biol.r\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"h.i.t\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"p.i.d.fry\"],[\"przedmiot\",\"pod.prz\"],[\"przedmiot\",\"pod.stat\"],[\"przedmiot\",\"pr.est\"],[\"przedmiot\",\"pr.fry\"],[\"przedmiot\",\"pr.fry-M\"],[\"przedmiot\",\"pr.kosm\"],[\"przedmiot\",\"pr.s.k-p\\u0142a\"],[\"przedmiot\",\"pro.gos.fin\"],[\"przedmiot\",\"rach.fin\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"t.fry\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",29]],\"data\":[[0,0,0,0,1,1],[2,0,1,0,0,3],[0,3,2,0,0,5],[1,0,0,1,0,2],[0,0,0,0,1,1],[1,0,0,1,0,2],[0,1,1,0,0,2],[0,1,0,0,0,1],[0,0,0,1,0,1],[0,0,0,2,0,2],[1,2,0,0,0,3],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,1,0,0,1],[0,0,0,1,1,2],[0,0,0,0,4,4],[0,1,1,0,1,3],[0,0,2,0,2,4],[0,2,2,0,0,4],[0,0,0,1,0,1],[0,0,1,0,0,1],[0,0,0,0,1,1],[0,3,3,0,0,6],[0,0,0,1,0,1],[0,0,1,0,0,1],[1,0,2,0,0,3],[1,0,0,0,0,1],[1,0,0,0,0,1],[0,0,0,2,0,2],[8,13,17,11,12,61]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"fry\"],[\"grupa\",\"ra\"],[\"Razem\",3]],\"data\":[[8,3,3,7,1,22],[0,6,8,2,8,24],[0,4,6,2,3,15],[8,13,17,11,12,61]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"BW\"],[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"DS\"],[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"JB\"],[\"nauczyciel\",\"JG\"],[\"nauczyciel\",\"KF\"],[\"nauczyciel\",\"KJ\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"MA\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PJ\"],[\"nauczyciel\",\"PK\"],[\"nauczyciel\",\"PL\"],[\"nauczyciel\",\"PS\"],[\"nauczyciel\",\"ST\"],[\"Razem\",18]],\"data\":[[1,0,0,0,0,1],[1,1,2,0,0,4],[0,0,0,0,1,1],[0,0,1,2,0,3],[1,0,0,1,0,2],[2,0,1,0,0,3],[0,0,0,2,0,2],[0,0,0,1,1,2],[0,0,3,0,2,5],[0,0,0,0,4,4],[0,0,0,1,0,1],[1,2,0,0,0,3],[0,1,1,0,1,3],[0,3,3,0,1,7],[0,3,3,2,0,8],[0,3,3,0,2,8],[1,0,0,1,0,2],[1,0,0,1,0,2],[8,13,17,11,12,61]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",2],[\"sala\",7],[\"sala\",11],[\"sala\",101],[\"sala\",102],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",202],[\"sala\",208],[\"sala\",209],[\"sala\",\"_08\"],[\"sala\",\"_09\"],[\"sala\",\"s1\"],[\"Razem\",19]],\"data\":[[0,1,2,0,0,3],[0,3,3,1,0,7],[1,0,0,0,1,2],[3,0,2,1,0,6],[0,1,1,0,0,2],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,2,2,0,0,4],[0,0,2,0,2,4],[1,2,0,0,0,3],[0,0,0,1,0,1],[0,0,1,2,0,3],[1,0,0,0,0,1],[0,0,0,1,1,2],[1,0,0,0,0,1],[1,0,0,2,0,3],[0,1,1,0,1,3],[0,3,3,0,6,12],[0,0,0,2,0,2],[8,13,17,11,12,61]]}"
+        }
+    ],
+    "3B 3gas": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"biol.r\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"h.i.t\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"ob.kon\"],[\"przedmiot\",\"pod.gas\"],[\"przedmiot\",\"pod.prz\"],[\"przedmiot\",\"pod.\\u017cyw\"],[\"przedmiot\",\"pr.gas\"],[\"przedmiot\",\"pr.ob.inf\"],[\"przedmiot\",\"pr.ob.kon\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"us.w.gas\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",24]],\"data\":[[0,4,0,4,4,12],[1,0,0,0,1,2],[0,1,0,0,0,1],[0,0,0,0,1,1],[0,0,1,0,0,1],[2,0,1,0,0,3],[0,0,1,0,0,1],[0,0,1,0,0,1],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,2,2,2,6],[2,0,0,2,0,4],[0,0,0,2,2,4],[0,4,2,0,0,6],[2,0,0,2,0,4],[1,0,2,0,0,3],[1,0,0,0,0,1],[0,1,0,0,0,1],[1,0,0,0,0,1],[0,0,0,0,1,1],[0,1,0,0,0,1],[0,0,1,0,0,1],[2,0,0,0,0,2],[0,1,0,0,0,1],[12,12,11,13,12,60]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"gas\"],[\"grupa\",\"j1\"],[\"grupa\",\"j2\"],[\"Razem\",4]],\"data\":[[6,4,7,1,4,22],[0,8,2,4,4,18],[3,0,0,3,4,10],[3,0,2,5,0,10],[12,12,11,13,12,60]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"AJ\"],[\"nauczyciel\",\"BW\"],[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"IJ\"],[\"nauczyciel\",\"JT\"],[\"nauczyciel\",\"KM\"],[\"nauczyciel\",\"MG\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"MW\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PK\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"RB\"],[\"nauczyciel\",\"SS\"],[\"nauczyciel\",\"ST\"],[\"Razem\",18]],\"data\":[[0,0,2,0,0,2],[2,0,0,2,2,6],[1,0,0,0,1,2],[1,0,2,0,0,3],[0,1,0,0,0,1],[0,5,2,0,0,7],[1,0,0,0,0,1],[0,0,0,0,1,1],[2,0,1,1,0,4],[2,0,0,2,0,4],[0,1,0,0,0,1],[1,0,0,0,1,2],[2,0,0,2,0,4],[0,0,0,1,2,3],[0,0,1,0,0,1],[0,5,1,4,4,14],[0,0,0,0,1,1],[0,0,2,1,0,3],[12,12,11,13,12,60]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",2],[\"sala\",7],[\"sala\",11],[\"sala\",101],[\"sala\",109],[\"sala\",110],[\"sala\",112],[\"sala\",115],[\"sala\",116],[\"sala\",201],[\"sala\",202],[\"sala\",203],[\"sala\",210],[\"sala\",\"_01\"],[\"sala\",\"_02\"],[\"sala\",\"s1\"],[\"sala\",\"s3\"],[\"Razem\",18]],\"data\":[[1,0,0,0,1,2],[0,3,2,0,0,5],[0,1,0,0,1,2],[0,0,0,2,0,2],[2,0,0,2,0,4],[1,0,2,0,0,3],[0,0,0,0,2,2],[2,0,0,0,0,2],[0,4,0,4,4,12],[0,0,0,1,0,1],[0,0,2,2,0,4],[2,0,1,0,0,3],[1,0,0,0,1,2],[0,4,2,0,0,6],[2,0,0,0,2,4],[0,0,2,0,0,2],[0,0,0,2,0,2],[1,0,0,0,1,2],[12,12,11,13,12,60]]}"
+        }
+    ],
+    "3C 3hot": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"dz.w.rec\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"h.i.t\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"mark.hot\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"o.p.hot\"],[\"przedmiot\",\"ob.kon\"],[\"przedmiot\",\"pod.prz\"],[\"przedmiot\",\"pr.hot\"],[\"przedmiot\",\"pr.ob.inf\"],[\"przedmiot\",\"pr.ob.kon\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",24]],\"data\":[[0,1,0,0,0,1],[0,0,0,0,1,1],[0,1,0,0,2,3],[0,1,1,0,0,2],[0,0,0,2,0,2],[0,0,1,0,0,1],[0,1,0,0,0,1],[0,0,0,1,1,2],[0,0,0,2,0,2],[0,0,0,0,1,1],[0,0,1,0,0,1],[0,0,1,0,0,1],[1,0,0,1,0,2],[0,0,1,0,0,1],[0,2,2,0,0,4],[0,0,1,0,0,1],[0,0,1,0,0,1],[2,0,0,1,0,3],[2,1,0,0,0,3],[1,0,0,0,0,1],[2,1,0,1,1,5],[0,0,0,4,0,4],[0,1,0,0,0,1],[1,0,0,0,0,1],[9,9,9,12,6,45]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"hot\"],[\"Razem\",2]],\"data\":[[7,6,6,3,6,28],[2,3,3,9,0,17],[9,9,9,12,6,45]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"BW\"],[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"DS\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"KM\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"KY\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"MO\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PK\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"RB\"],[\"nauczyciel\",\"ST\"],[\"Razem\",15]],\"data\":[[0,1,0,0,2,3],[0,1,0,0,0,1],[0,0,1,0,0,1],[2,1,1,0,0,4],[2,0,0,1,0,3],[0,0,1,0,1,2],[0,0,0,1,1,2],[1,0,0,1,0,2],[1,0,0,0,0,1],[0,0,1,0,0,1],[1,0,1,0,0,2],[0,3,3,0,0,6],[0,0,0,4,0,4],[0,2,1,4,1,8],[2,1,0,1,1,5],[9,9,9,12,6,45]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",2],[\"sala\",7],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",203],[\"sala\",207],[\"sala\",208],[\"sala\",\"_02\"],[\"sala\",\"s1\"],[\"sala\",\"st2\"],[\"Razem\",16]],\"data\":[[0,0,1,0,0,1],[2,1,0,2,1,6],[0,1,0,0,0,1],[0,0,1,0,2,3],[2,1,1,0,0,4],[1,0,0,1,0,2],[2,0,0,1,0,3],[0,0,0,0,2,2],[0,1,0,0,0,1],[0,2,1,4,1,8],[0,0,1,0,0,1],[0,0,0,4,0,4],[1,0,0,0,0,1],[1,0,1,0,0,2],[0,2,2,0,0,4],[0,1,1,0,0,2],[9,9,9,12,6,45]]}"
+        }
+    ],
+    "3JL": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"pod.prz\"],[\"przedmiot\",\"w\\u0142o\"],[\"Razem\",11]],\"data\":[[0,0,0,1,0,1],[0,2,0,0,0,2],[2,0,0,1,0,3],[0,0,0,1,1,2],[0,0,2,0,0,2],[1,0,0,0,0,1],[0,0,0,0,1,1],[0,1,0,0,0,1],[0,0,1,0,0,1],[0,0,0,2,0,2],[0,1,0,0,0,1],[3,4,3,5,2,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"Razem\",1]],\"data\":[[3,4,3,5,2,17],[3,4,3,5,2,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"BJ\"],[\"nauczyciel\",\"DS\"],[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"KY\"],[\"nauczyciel\",\"KZ\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"ZM\"],[\"Razem\",11]],\"data\":[[0,2,0,0,0,2],[0,0,0,2,0,2],[0,0,0,1,1,2],[0,0,0,1,0,1],[0,0,2,0,0,2],[0,0,0,0,1,1],[0,1,0,0,0,1],[0,0,1,0,0,1],[2,0,0,1,0,3],[1,0,0,0,0,1],[0,1,0,0,0,1],[3,4,3,5,2,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",7],[\"sala\",102],[\"sala\",103],[\"sala\",109],[\"sala\",201],[\"sala\",202],[\"sala\",207],[\"sala\",\"B\"],[\"Razem\",9]],\"data\":[[1,1,0,0,1,3],[0,0,0,1,0,1],[1,0,0,0,0,1],[0,0,0,1,0,1],[0,3,0,2,0,5],[0,0,1,0,0,1],[1,0,0,0,0,1],[0,0,0,1,1,2],[0,0,2,0,0,2],[3,4,3,5,2,17]]}"
+        }
+    ],
+    "3L 3log": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"ang-log\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"h.i.t\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"o.k.i.k\"],[\"przedmiot\",\"p.i.w.zap\"],[\"przedmiot\",\"pl.p.trans\"],[\"przedmiot\",\"pod.prz\"],[\"przedmiot\",\"przech.zap\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",22]],\"data\":[[0,1,0,0,0,1],[0,1,0,0,0,1],[1,0,0,0,0,1],[0,2,2,0,0,4],[4,2,0,0,0,6],[0,0,0,1,0,1],[0,0,0,0,2,2],[1,0,0,0,0,1],[0,0,0,2,1,3],[0,2,2,0,0,4],[0,0,2,0,1,3],[4,0,0,4,0,8],[0,0,0,0,1,1],[2,0,0,0,0,2],[0,0,1,0,0,1],[0,0,1,0,0,1],[0,0,1,0,1,2],[0,1,0,0,0,1],[0,2,2,0,0,4],[0,0,0,4,0,4],[0,0,0,0,1,1],[2,0,2,0,0,4],[14,11,13,11,7,56]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"log\"],[\"Razem\",2]],\"data\":[[12,8,8,8,0,36],[2,3,5,3,7,20],[14,11,13,11,7,56]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"AJ\"],[\"nauczyciel\",\"BJ\"],[\"nauczyciel\",\"BW\"],[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"JB\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"MG\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PE\"],[\"nauczyciel\",\"PK\"],[\"nauczyciel\",\"PS\"],[\"nauczyciel\",\"SI\"],[\"nauczyciel\",\"ST\"],[\"Razem\",17]],\"data\":[[0,1,0,0,0,1],[0,0,1,0,0,1],[0,2,2,4,0,8],[0,2,2,0,0,4],[2,0,0,2,1,5],[2,1,0,0,0,3],[4,2,2,4,0,12],[0,0,1,0,1,2],[2,0,2,0,0,4],[0,0,1,0,1,2],[0,0,0,1,0,1],[2,0,0,0,0,2],[2,1,0,0,0,3],[0,0,2,0,1,3],[0,0,0,0,2,2],[0,1,0,0,1,2],[0,1,0,0,0,1],[14,11,13,11,7,56]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",2],[\"sala\",7],[\"sala\",11],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",202],[\"sala\",203],[\"sala\",209],[\"sala\",210],[\"sala\",\"_07\"],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"Razem\",16]],\"data\":[[0,2,2,4,0,8],[0,2,2,0,0,4],[2,0,2,0,0,4],[0,0,1,0,0,1],[0,1,0,0,2,3],[0,0,0,2,0,2],[2,1,0,0,0,3],[0,1,0,1,0,2],[0,0,1,0,0,1],[0,0,1,0,1,2],[2,1,0,0,0,3],[0,1,0,0,0,1],[0,0,2,0,1,3],[2,0,0,0,3,5],[2,0,0,0,0,2],[4,2,2,4,0,12],[14,11,13,11,7,56]]}"
+        }
+    ],
+    "3S 3sport": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"ang.r\"],[\"przedmiot\",\"biol.r\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"infor\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"pod.prz\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w\\u0142o\"],[\"przedmiot\",\"z.r.w\\u0142o\"],[\"przedmiot\",\"z.z.w\"],[\"przedmiot\",\"zaj.sport\"],[\"Razem\",19]],\"data\":[[0,1,1,0,1,3],[1,0,0,1,0,2],[0,0,1,0,0,1],[0,1,1,1,0,3],[1,0,0,0,1,2],[0,0,1,1,0,2],[0,1,1,0,0,2],[0,0,0,2,0,2],[0,0,0,1,0,1],[0,3,0,0,4,7],[0,0,1,1,0,2],[0,0,1,0,0,1],[1,0,0,0,0,1],[1,1,0,0,0,2],[1,0,0,1,1,3],[3,0,0,0,0,3],[1,0,0,0,0,1],[0,2,0,1,1,4],[0,0,2,0,0,2],[9,9,9,9,8,44]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"1\\/2\"],[\"grupa\",\"2\\/2\"],[\"grupa\",\"ca\\u0142a klasa\"],[\"Razem\",3]],\"data\":[[0,1,0,0,0,1],[0,0,1,0,0,1],[9,8,8,9,8,42],[9,9,9,9,8,44]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"BJ\"],[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"KY\"],[\"nauczyciel\",\"KZ\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"MP\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PK\"],[\"nauczyciel\",\"ST\"],[\"Razem\",13]],\"data\":[[1,1,1,0,1,4],[0,0,1,1,0,2],[1,1,0,2,0,4],[0,1,1,0,0,2],[0,0,0,1,0,1],[0,1,1,1,0,3],[1,0,2,1,1,5],[0,0,1,0,0,1],[0,0,1,1,0,2],[1,0,1,1,0,3],[0,2,0,1,1,4],[1,0,0,0,1,2],[4,3,0,0,4,11],[9,9,9,9,8,44]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",7],[\"sala\",11],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",202],[\"sala\",207],[\"sala\",\"st1\"],[\"Razem\",12]],\"data\":[[0,0,1,1,0,2],[1,2,0,2,1,6],[0,0,1,1,0,2],[1,0,0,0,0,1],[3,3,0,0,4,10],[0,1,1,0,0,2],[0,0,2,1,1,4],[0,1,0,2,0,3],[1,0,1,1,0,3],[2,0,2,1,1,6],[1,1,1,0,1,4],[0,1,0,0,0,1],[9,9,9,9,8,44]]}"
+        }
+    ],
+    "3d 3wz": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",9]],\"data\":[[0,0,0,1,0,1],[0,0,0,2,4,6],[0,0,0,1,1,2],[0,0,0,0,1,1],[0,0,0,2,0,2],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,2,0,2],[0,0,0,10,7,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"j1\"],[\"grupa\",\"j2\"],[\"Razem\",3]],\"data\":[[0,0,0,6,3,9],[0,0,0,2,2,4],[0,0,0,2,2,4],[0,0,0,10,7,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"JB\"],[\"nauczyciel\",\"JT\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"SM\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",8]],\"data\":[[0,0,0,2,0,2],[0,0,0,1,0,1],[0,0,0,1,1,2],[0,0,0,2,0,2],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,1,0,1],[0,0,0,2,5,7],[0,0,0,10,7,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",7],[\"sala\",111],[\"sala\",112],[\"sala\",115],[\"sala\",201],[\"sala\",203],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"sala\",\"s3\"],[\"Razem\",9]],\"data\":[[0,0,0,1,0,1],[0,0,0,1,1,2],[0,0,0,4,1,5],[0,0,0,1,2,3],[0,0,0,1,0,1],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,0,2,2],[0,0,0,10,7,17]]}"
+        }
+    ],
+    "3e 3wz": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",9]],\"data\":[[0,0,0,0,1,1],[0,0,0,0,1,1],[0,0,0,1,1,2],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,4,2,6],[0,0,0,0,2,2],[0,0,0,1,1,2],[0,0,0,8,9,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"j1\"],[\"grupa\",\"j2\"],[\"Razem\",3]],\"data\":[[0,0,0,2,2,4],[0,0,0,4,5,9],[0,0,0,2,2,4],[0,0,0,8,9,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"JT\"],[\"nauczyciel\",\"KZ\"],[\"nauczyciel\",\"PT\"],[\"nauczyciel\",\"RT\"],[\"nauczyciel\",\"SM\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",9]],\"data\":[[0,0,0,2,1,3],[0,0,0,1,1,2],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,1,1,2],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,0,3,3],[0,0,0,2,1,3],[0,0,0,8,9,17]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",7],[\"sala\",11],[\"sala\",112],[\"sala\",115],[\"sala\",201],[\"sala\",203],[\"sala\",208],[\"sala\",210],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"sala\",\"s3\"],[\"Razem\",11]],\"data\":[[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,0,2,2],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,0,0,1,2,3],[0,0,0,4,0,4],[0,0,0,0,1,1],[0,0,0,0,1,1],[0,0,0,0,1,1],[0,0,0,8,9,17]]}"
+        }
+    ],
+    "4A 4ra_log": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"ang-log\"],[\"przedmiot\",\"ang-ra\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"dok.r.pr.tr\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"niem\"],[\"przedmiot\",\"o.k.i.k\"],[\"przedmiot\",\"or.proc.tr\"],[\"przedmiot\",\"pl.p.trans\"],[\"przedmiot\",\"pr.rach\"],[\"przedmiot\",\"pr.s.k-p\\u0142a\"],[\"przedmiot\",\"pro.gos.fin\"],[\"przedmiot\",\"rach.fin\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w.o.s\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",25]],\"data\":[[0,1,0,0,0,1],[0,2,2,0,0,4],[3,0,0,0,0,3],[0,1,0,0,0,1],[1,0,0,0,0,1],[0,0,2,0,0,2],[0,0,0,1,1,2],[0,2,0,0,2,4],[0,1,0,0,0,1],[0,0,0,1,1,2],[0,2,2,1,1,6],[1,0,0,0,0,1],[0,0,0,1,0,1],[0,1,0,0,2,3],[0,0,0,1,0,1],[0,0,0,1,1,2],[0,2,2,1,1,6],[1,0,1,0,0,2],[2,0,0,0,1,3],[0,1,1,0,0,2],[0,0,1,1,0,2],[0,0,0,0,1,1],[0,0,0,3,0,3],[0,0,1,0,0,1],[3,0,0,0,0,3],[11,13,12,11,11,58]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"log\"],[\"grupa\",\"ra\"],[\"Razem\",3]],\"data\":[[5,4,1,3,5,18],[3,5,5,4,3,20],[3,4,6,4,3,20],[11,13,12,11,11,58]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"#re4\"],[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"BJ\"],[\"nauczyciel\",\"BW\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"JB\"],[\"nauczyciel\",\"KF\"],[\"nauczyciel\",\"KM\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"MG\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PJ\"],[\"nauczyciel\",\"PS\"],[\"nauczyciel\",\"SI\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",17]],\"data\":[[1,0,0,0,0,1],[0,1,0,0,0,1],[0,0,0,1,0,1],[3,2,2,0,2,9],[0,0,0,1,1,2],[1,0,0,0,1,2],[0,1,0,1,0,2],[2,0,0,0,1,3],[0,2,2,0,0,4],[0,2,2,1,1,6],[3,1,1,3,0,8],[0,1,1,0,0,2],[0,0,1,2,1,4],[0,0,2,1,0,3],[1,1,1,0,2,5],[0,0,0,1,1,2],[0,2,0,0,1,3],[11,13,12,11,11,58]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",2],[\"sala\",7],[\"sala\",11],[\"sala\",101],[\"sala\",102],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",209],[\"sala\",210],[\"sala\",\"_02\"],[\"sala\",\"_07\"],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"Razem\",18]],\"data\":[[0,0,0,1,0,1],[0,0,1,1,1,3],[0,1,0,0,0,1],[0,0,0,1,1,2],[1,1,1,0,2,5],[0,0,0,0,1,1],[0,0,2,0,0,2],[0,1,0,0,0,1],[3,2,2,0,0,7],[3,2,4,3,0,12],[0,0,0,0,2,2],[0,2,0,1,1,4],[1,1,0,1,1,4],[2,0,0,0,1,3],[0,1,0,0,0,1],[1,0,0,0,0,1],[0,2,2,1,1,6],[0,0,0,2,0,2],[11,13,12,11,11,58]]}"
+        }
+    ],
+    "4B 4gas_fry": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"ang-fry\"],[\"przedmiot\",\"ang-gas\"],[\"przedmiot\",\"biol.r\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"chemia\"],[\"przedmiot\",\"fizyka\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"k.p.s\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"niem\"],[\"przedmiot\",\"ob.kon\"],[\"przedmiot\",\"p.i.d.fry\"],[\"przedmiot\",\"pod.gas\"],[\"przedmiot\",\"pod.\\u017cyw\"],[\"przedmiot\",\"pr.fry\"],[\"przedmiot\",\"pr.fry-M\"],[\"przedmiot\",\"pr.gas\"],[\"przedmiot\",\"pr.k.p.fry\"],[\"przedmiot\",\"pr.ob.inf\"],[\"przedmiot\",\"pr.ob.kon\"],[\"przedmiot\",\"pr.p.est\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"t.fry\"],[\"przedmiot\",\"us.w.gas\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w.o.s\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",31]],\"data\":[[0,0,0,1,0,1],[2,0,0,0,0,2],[0,0,1,0,0,1],[1,0,0,0,0,1],[2,0,0,0,1,3],[0,0,1,0,0,1],[0,2,2,0,0,4],[0,0,0,0,1,1],[1,0,0,2,0,3],[1,0,0,0,0,1],[0,0,0,1,1,2],[1,1,0,0,0,2],[0,0,0,0,1,1],[0,0,0,2,0,2],[0,0,1,0,0,1],[0,4,4,0,0,8],[0,0,0,1,0,1],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,1,1,0,4,6],[0,2,2,0,0,4],[1,4,0,1,0,6],[0,0,0,1,0,1],[0,4,4,0,0,8],[0,0,1,0,0,1],[0,0,0,0,1,1],[0,0,0,0,1,1],[0,0,0,0,1,1],[1,0,0,0,0,1],[0,1,0,0,0,1],[0,0,2,0,0,2],[10,19,19,10,12,70]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"fry\"],[\"grupa\",\"gas\"],[\"Razem\",3]],\"data\":[[2,10,10,1,3,26],[5,0,0,8,5,18],[3,9,9,1,4,26],[10,19,19,10,12,70]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"#re4\"],[\"nauczyciel\",\"AD\"],[\"nauczyciel\",\"AJ\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"IJ\"],[\"nauczyciel\",\"JB\"],[\"nauczyciel\",\"JG\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"KY\"],[\"nauczyciel\",\"LU\"],[\"nauczyciel\",\"MK\"],[\"nauczyciel\",\"MW\"],[\"nauczyciel\",\"M\\u015a\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PE\"],[\"nauczyciel\",\"PJ\"],[\"nauczyciel\",\"PL\"],[\"nauczyciel\",\"RB\"],[\"nauczyciel\",\"SI\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",21]],\"data\":[[0,0,1,0,0,1],[0,1,0,0,2,3],[0,0,1,0,2,3],[1,4,4,0,2,11],[0,0,0,1,1,2],[0,0,2,0,0,2],[2,0,0,0,0,2],[1,0,0,2,0,3],[0,2,4,0,0,6],[0,0,0,1,1,2],[2,0,0,2,1,5],[1,1,0,0,0,2],[0,0,0,0,1,1],[0,0,0,1,0,1],[0,1,0,0,0,1],[1,4,0,1,0,6],[0,0,0,1,1,2],[0,2,3,0,0,5],[1,0,0,0,1,2],[0,0,0,1,0,1],[1,4,4,0,0,9],[10,19,19,10,12,70]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",1],[\"sala\",2],[\"sala\",7],[\"sala\",11],[\"sala\",101],[\"sala\",102],[\"sala\",103],[\"sala\",109],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",116],[\"sala\",201],[\"sala\",203],[\"sala\",207],[\"sala\",\"_01\"],[\"sala\",\"_02\"],[\"sala\",\"_07\"],[\"sala\",\"_08\"],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"Razem\",21]],\"data\":[[0,0,0,0,1,1],[0,0,0,0,2,2],[0,6,6,0,2,14],[0,4,4,0,0,8],[2,0,3,0,1,6],[2,0,0,0,0,2],[0,0,0,1,1,2],[1,0,0,0,0,1],[1,4,1,1,0,7],[0,1,0,0,0,1],[0,0,0,1,1,2],[0,1,1,0,2,4],[0,0,0,2,0,2],[1,0,0,2,0,3],[2,0,0,0,0,2],[0,2,3,1,0,6],[0,0,0,1,0,1],[0,0,1,0,1,2],[0,0,0,1,0,1],[0,1,0,0,0,1],[1,0,0,0,1,2],[10,19,19,10,12,70]]}"
+        }
+    ],
+    "5A 5ek_log": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"geogr.r\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w.o.s\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",10]],\"data\":[[0,0,1,0,0,1],[1,0,1,0,1,3],[0,4,2,2,0,8],[0,1,0,2,1,4],[0,0,0,0,1,1],[0,0,1,2,0,3],[1,0,0,0,0,1],[2,4,0,0,2,8],[2,0,1,1,0,4],[0,0,1,0,0,1],[6,9,7,7,5,34]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"ek\"],[\"grupa\",\"log\"],[\"Razem\",3]],\"data\":[[2,4,0,2,0,8],[0,4,2,0,2,8],[4,1,5,5,3,18],[6,9,7,7,5,34]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"MG\"],[\"nauczyciel\",\"MP\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PE\"],[\"nauczyciel\",\"PS\"],[\"Razem\",8]],\"data\":[[0,0,1,2,0,3],[0,1,1,2,1,5],[2,4,0,0,2,8],[0,2,0,2,0,4],[1,0,1,0,1,3],[0,2,2,0,0,4],[2,0,1,1,0,4],[1,0,1,0,1,3],[6,9,7,7,5,34]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",2],[\"sala\",7],[\"sala\",103],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",116],[\"sala\",210],[\"sala\",\"s1\"],[\"sala\",\"s3\"],[\"Razem\",10]],\"data\":[[0,1,1,0,1,3],[0,0,0,2,0,2],[0,1,2,0,0,3],[2,0,1,1,0,4],[0,0,0,0,1,1],[0,3,0,2,0,5],[0,0,1,0,0,1],[2,4,0,0,2,8],[1,0,1,2,0,4],[1,0,1,0,1,3],[6,9,7,7,5,34]]}"
+        }
+    ],
+    "5B 5gas_fry": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"biol.r\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matem.r\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.f\"],[\"przedmiot\",\"w.o.s\"],[\"przedmiot\",\"z.z.w\"],[\"Razem\",10]],\"data\":[[0,1,0,0,2,3],[0,1,0,0,0,1],[0,0,0,0,1,1],[4,2,2,0,0,8],[0,2,0,1,0,3],[0,1,0,1,2,4],[0,1,0,1,2,4],[0,2,4,2,0,8],[1,0,0,0,0,1],[1,0,0,0,0,1],[6,10,6,5,7,34]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"grupa\",\"fry\"],[\"grupa\",\"gas\"],[\"Razem\",3]],\"data\":[[2,2,4,0,0,8],[2,2,2,2,0,8],[2,6,0,3,7,18],[6,10,6,5,7,34]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"JT\"],[\"nauczyciel\",\"KM\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"RB\"],[\"nauczyciel\",\"RT\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",9]],\"data\":[[1,1,0,1,2,5],[2,0,2,0,0,4],[0,1,0,1,2,4],[2,2,0,0,0,4],[1,1,0,0,0,2],[0,1,0,0,2,3],[0,2,0,1,0,3],[0,2,4,2,0,8],[0,0,0,0,1,1],[6,10,6,5,7,34]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",2],[\"sala\",103],[\"sala\",110],[\"sala\",111],[\"sala\",112],[\"sala\",115],[\"sala\",116],[\"sala\",201],[\"sala\",\"s1\"],[\"sala\",\"s2\"],[\"sala\",\"s3\"],[\"Razem\",11]],\"data\":[[0,1,0,0,2,3],[2,0,0,0,0,2],[1,1,0,0,2,4],[2,2,0,0,0,4],[0,2,0,1,0,3],[0,0,0,1,0,1],[0,2,4,2,0,8],[0,1,0,1,2,4],[0,0,0,0,1,1],[0,0,2,0,0,2],[1,1,0,0,0,2],[6,10,6,5,7,34]]}"
+        }
+    ],
+    "5MP": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"w.o.s\"],[\"Razem\",6]],\"data\":[[0,1,0,0,0,1],[0,1,0,2,0,3],[0,0,2,0,0,2],[0,1,0,0,0,1],[0,2,0,0,0,2],[1,0,0,1,0,2],[1,5,2,3,0,11]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"Razem\",1]],\"data\":[[1,5,2,3,0,11],[1,5,2,3,0,11]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"IB\"],[\"nauczyciel\",\"KM\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PS\"],[\"Razem\",5]],\"data\":[[1,0,0,1,0,2],[0,0,2,0,0,2],[0,2,0,0,0,2],[0,2,0,0,0,2],[0,1,0,2,0,3],[1,5,2,3,0,11]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",2],[\"sala\",103],[\"sala\",116],[\"sala\",208],[\"sala\",210],[\"sala\",\"B\"],[\"Razem\",6]],\"data\":[[0,1,0,0,0,1],[0,2,2,0,0,4],[0,0,0,1,0,1],[1,0,0,1,0,2],[0,0,0,1,0,1],[0,2,0,0,0,2],[1,5,2,3,0,11]]}"
+        }
+    ],
+    "5OP": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"biologia\"],[\"przedmiot\",\"historia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"przedmiot\",\"religia\"],[\"przedmiot\",\"w.o.s\"],[\"Razem\",7]],\"data\":[[0,0,1,0,0,1],[1,0,0,0,0,1],[0,1,0,0,0,1],[2,0,0,0,0,2],[0,2,0,0,0,2],[1,0,2,0,0,3],[0,0,2,0,0,2],[4,3,5,0,0,12]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"Razem\",1]],\"data\":[[4,3,5,0,0,12],[4,3,5,0,0,12]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"DD\"],[\"nauczyciel\",\"JT\"],[\"nauczyciel\",\"KM\"],[\"nauczyciel\",\"PA\"],[\"nauczyciel\",\"PK\"],[\"nauczyciel\",\"ST\"],[\"nauczyciel\",\"SZ\"],[\"Razem\",7]],\"data\":[[0,2,0,0,0,2],[1,0,0,0,0,1],[0,0,1,0,0,1],[2,0,0,0,0,2],[0,1,0,0,0,1],[1,0,2,0,0,3],[0,0,2,0,0,2],[4,3,5,0,0,12]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",2],[\"sala\",6],[\"sala\",102],[\"sala\",112],[\"sala\",115],[\"sala\",116],[\"sala\",202],[\"Razem\",7]],\"data\":[[0,1,0,0,0,1],[0,2,0,0,0,2],[2,0,0,0,0,2],[1,0,1,0,0,2],[0,0,1,0,0,1],[1,0,2,0,0,3],[0,0,1,0,0,1],[4,3,5,0,0,12]]}"
+        }
+    ],
+    "5ZI": [
+        {
+            "startrow": 0,
+            "startcol": 0,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"przedmiot\",\"ang\"],[\"przedmiot\",\"geografia\"],[\"przedmiot\",\"j\\u0119z.polski\"],[\"przedmiot\",\"matematyka\"],[\"Razem\",4]],\"data\":[[0,0,1,1,1,3],[1,0,1,1,2,5],[1,1,0,1,0,3],[1,0,1,2,0,4],[3,1,3,5,3,15]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 9,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"grupa\",\"ca\\u0142a klasa\"],[\"Razem\",1]],\"data\":[[3,1,3,5,3,15],[3,1,3,5,3,15]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 18,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"nauczyciel\",\"GM\"],[\"nauczyciel\",\"KR\"],[\"nauczyciel\",\"KY\"],[\"nauczyciel\",\"PE\"],[\"Razem\",4]],\"data\":[[1,1,0,1,0,3],[1,0,1,1,2,5],[1,0,1,2,0,4],[0,0,1,1,1,3],[3,1,3,5,3,15]]}"
+        },
+        {
+            "startrow": 0,
+            "startcol": 27,
+            "df": "{\"columns\":[\"Poniedzia\\u0142ek\",\"Wtorek\",\"\\u015aroda\",\"Czwartek\",\"Pi\\u0105tek\",\"Razem\"],\"index\":[[\"sala\",6],[\"Razem\",1]],\"data\":[[3,1,3,5,3,15],[3,1,3,5,3,15]]}"
+        }
+    ]
+}
