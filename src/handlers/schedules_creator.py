@@ -35,13 +35,14 @@ def createScheduleExcelFileVertical():
 
     try:
         newObjOfDfs = {}
-        sheetNames = [ getTranslByPlural(ownerTypeName)   for ownerTypeName in allOwnerTypeNames ]
+        sheetNames = [ getTranslByPlural(ownerTypeName, True)   for ownerTypeName in allOwnerTypeNames ]
         i = 0
 
         for excelFilePath in allScheduleExcelPaths:
             
             objOfDfs = readExcelFileAsObjOfDfs(excelFilePath)
             newDf = DataFrame()
+            currSheetName = sheetNames[i]
 
             # Get the 1st DataFrame in the list
             for dfKey, df in objOfDfs.items():
@@ -62,7 +63,7 @@ def createScheduleExcelFileVertical():
                 dfVertical = dfVertical.sort_values(dfVertical.index.names[:-1])
 
                 # Add the parent name for the class columns.
-                dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=['Klasa']+dfVertical.columns.names)
+                dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=[currSheetName.capitalize()]+dfVertical.columns.names)
                 
                 if not newDf.empty:
                 # THE IMPORTANT WAY TO COMBINE TWO DATAFRAMES WHICH DIFFER IN INDICES.
@@ -84,7 +85,7 @@ def createScheduleExcelFileVertical():
                 else:
                     newDf = dfVertical
 
-            newObjOfDfs[sheetNames[i]] = newDf
+            newObjOfDfs[currSheetName] = newDf
             i=i+1
 
         writerForObjOfDfsToExcel(schedulesWideAndVerticallyExcelPath, newObjOfDfs)
