@@ -243,7 +243,8 @@ def removeFiles(endHere=False, isClearLogs=False):
 
 
 
-def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
+def setupEnvironment(forceReinstall=False, endHere=False):
+    global startTime
     if forceReinstall:
         print('\nReinstall environment.')
     
@@ -253,6 +254,7 @@ def setupEnvironment(forceReinstall=False, requirementsFile='requirements.txt'):
     except Exception as e:
         print(f'\nError while setting up the environment: {e}')
 
+    if endHere:
         execTime = (time.perf_counter() - startTime)
         if round(execTime%60, 2):
             print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
@@ -290,7 +292,9 @@ def chooseStart(args=None):
     global startTime
     startTime = time.perf_counter()
     
-    isStart = args.start
+    noFlags =  not any(vars(args).values())
+
+    isStart = args.start or noFlags
     isSetup = args.setup
     isSetupOrStart = isSetup or isStart
 
@@ -304,7 +308,6 @@ def chooseStart(args=None):
     isForce = args.force
     isForceOnly = isForce and not isSetupOrStart
 
-    noFlags =  not any(vars(args).values())
 
     if isClearLogs:
         removeFiles(isClearLogsOnly, True)
@@ -315,24 +318,19 @@ def chooseStart(args=None):
     if isRmVenv:
         removeEnvironment(isRemoveOnly)
 
-    if isSetupOrStart   or   noFlags:
+    if isSetupOrStart:
         if isSetup:
-            setupEnvironment(isForce)
+            setupEnvironment(isForce, not isStart)
 
         # The 2nd part of the condition prevents the situation where '--force' is the only flag being used.
         # Also, it allows running the program without any flags.
-        if isStart   or   noFlags:
+        if isStart:
             try:
                 runVirtualEnv(isForce)
                 
             except Exception as e:
                 print(f'\nError: {e}\n\nTry command: python main.py --setup\n')
             
-            execTime = (time.perf_counter() - startTime)
-            if round(execTime%60, 2):
-                print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
-        
-        elif not isSetup:
             execTime = (time.perf_counter() - startTime)
             if round(execTime%60, 2):
                 print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
