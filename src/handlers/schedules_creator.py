@@ -316,7 +316,7 @@ def createScheduleGroupedOwnerObjOfDfs(dataToEnter={}):
 def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyColToGroupBy='group_No.', strToDelete='.'):
     msgText = ''
     try:
-        df = dfWithRowsToColor
+        df = dfWithRowsToColor.copy()
         # Create the object for coloring the backgrounds of odd groups.
         # get_loc() starts counting rows from 1, not 0.
         # (Column headers are excluded here.)
@@ -325,9 +325,10 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyColToGroupBy='g
         #                                              group: [  df.index.get_loc(x) + 1
         #                                                        for x in group.index ]
         #                                          ).to_dict()
-        dfReset = df.copy().reset_index()
-        dfReset['index_loc'] = dfReset.index + 1
-        groupedRows = dfReset.groupby(keyColToGroupBy, sort=False)['index_loc'].apply(list).to_dict()
+        dfReset = df.reset_index()
+        # Create a temporary numeric index to simplify row counting.
+        dfReset['idx_temp'] = dfReset.index + 1
+        groupedRows = dfReset.groupby(keyColToGroupBy, sort=False)['idx_temp'].apply(list).to_dict()
         
         groupedRowsFiltered = {}
         
@@ -340,10 +341,9 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyColToGroupBy='g
             if convertedKey.isdigit()   and   (int(convertedKey) & 1):
                 groupedRowsFiltered[key] = value
         
-        # Headers are in the 1st row of the worksheet,
-        # so we add 1 to the item's value.
-        return { 'rows'      :  [ excelMargin['row']+item+1   for groupList in groupedRowsFiltered.values()
-                                                                 for item in groupList ],
+        # Add the length of the column levels to the margin and the item's value.
+        return { 'rows'      :  [ excelMargin['row'] + df.columns.nlevels + item   for groupList in groupedRowsFiltered.values()
+                                                                                      for item in groupList ],
                  'colsLength':  len((df.reset_index()).columns) }
     
 
