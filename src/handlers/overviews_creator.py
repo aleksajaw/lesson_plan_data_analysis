@@ -2,7 +2,7 @@ from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, sumColsCellName, sumRowsCellName
 from src.utils.converters_utils import convertDfsJSONToObjOfDfs
-from src.utils.writers_df_utils import writerForMultipleDfsToExcelWorksheets, writerForObjWithMultipleDfsToJSONAndExcel
+from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToExcel, writerForObjWithMultipleDfsToJSONAndExcel
 import pandas as pd
 from pandas import  MultiIndex
 import numpy as np
