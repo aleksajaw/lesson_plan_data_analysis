@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
-from src.constants.paths_constants import allOwnerTypeNames, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, schedulesWideAndVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths
+from src.constants.paths_constants import allOwnerTypeNames, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, schedulesWideAndVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleClassesGroupedExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleClassesGroupedDfsJSONPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
@@ -16,11 +16,14 @@ import re
 import os
 
 
-teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists = {}, {}, {}, {}
+classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists = {}, {}, {}, {}, {}
 
 
 def createScheduleExcelFiles(classSchedulesDfs={}):
-    createScheduleExcelFilesByOwnerTypes(classSchedulesDfs)
+    global classSchedules
+    classSchedules = classSchedulesDfs.copy()
+
+    createScheduleExcelFilesByOwnerTypes()
     createScheduleExcelFileVertical()
     #createScheduleExcelFileForOwnerLists()
     createScheduleExcelFilesByGroupedOwnerLists()
@@ -94,14 +97,14 @@ def createScheduleExcelFileVertical():
 
 
 
-def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs={}):
-    global teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
+def createScheduleExcelFilesByOwnerTypes():
+    global classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
     msgText=''
 
     teacherSchedulesTemp, classroomSchedulesTemp, subjectSchedulesTemp = {}, {}, {}
 
     try:
-        for className, classDf in classSchedulesDfs.items():
+        for className, classDf in classSchedules.items():
             
             buildOwnersTypeScheduleBasedOnCol(teacherSchedulesTemp, classDf, 'teachers', className)
             buildOwnersTypeScheduleBasedOnCol(classroomSchedulesTemp, classDf, 'classrooms', className)
@@ -133,11 +136,12 @@ def createScheduleExcelFilesByOwnerTypes(classSchedulesDfs={}):
 
 
 def createScheduleExcelFileForOwnerLists():
-    global teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
+    global classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
     msgText=''
 
     try:
-        ownerLists = { 'teachers'  :  getListOfKeys(teacherSchedules),
+        ownerLists = { 'classes'   :  getListOfKeys(classSchedules),
+                       'teachers'  :  getListOfKeys(teacherSchedules),
                        'classrooms':  getListOfKeys(classroomSchedules),
                        'subjects'  :  getListOfKeys(subjectSchedules) }
         
@@ -155,10 +159,11 @@ def createScheduleExcelFileForOwnerLists():
 
 
 def createScheduleExcelFilesByGroupedOwnerLists():
-    global teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
+    global classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
     msgText=''
 
     try:
+        fullConstructAndWriteScheduleByGroup('classes', classSchedules, scheduleClassesGroupedDfsJSONPath, scheduleClassesGroupedExcelPath)
         fullConstructAndWriteScheduleByGroup('teachers', teacherSchedules, scheduleTeachersGroupedDfsJSONPath, scheduleTeachersGroupedExcelPath)
         fullConstructAndWriteScheduleByGroup('classrooms', classroomSchedules, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsGroupedExcelPath)
         fullConstructAndWriteScheduleByGroup('subjects', subjectSchedules, scheduleSubjectsGroupedDfsJSONPath, scheduleSubjectsGroupedExcelPath)
