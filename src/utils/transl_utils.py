@@ -28,5 +28,5 @@ def getTranslation(word='', getPlural=False, toLang='pl', fromLang='en'):
 
 
 
-def getTranslByPlural(word='', toLang='pl', fromLang='en'):
-    return getTranslation(word, False, toLang, fromLang)
+def getTranslByPlural(word='', getPlural=False, toLang='pl', fromLang='en'):
+    return getTranslation(word, getPlural, toLang, fromLang)
