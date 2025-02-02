@@ -1,20 +1,21 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.conversion_constants import excelEngineName
 from src.constants.schedule_structures_constants import excelMargin, excelDistance
+from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON, correctValsInColsWithNumbers
+from excel_styles_utils import autoFormatScheduleExcel, autoFormatExcelCellSizes, autoFormatScheduleExcelCellStyles, autoFormatOverviewExcel
+from files_utils import compareAndUpdateFile
 from pandas import ExcelWriter, DataFrame
 import os
-from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON
-from excel_styles_utils import autoFormatScheduleExcel, autoFormatExcelCellSizes, autoFormatScheduleExcelCellStyles, autoFormatOverviewExcel
 
 
 
-def writeDfToExcelSheet(writer=ExcelWriter, excelFilePath='', sheetName='', dataToEnter=None, coords={'row':0, 'col':0}, isConverted=True, doesWriteMsg=False):
+def writeDfToExcelSheet(writer=ExcelWriter, excelFilePath='', sheetName='', dataToEnter=None, innerCoords={'row':0, 'col':0}, isConverted=True, doesWriteMsg=False):
     msgText = ''
     
     try:
         df = dataToEnter   if isConverted   else convertToDf(dataToEnter)
         
-        df.to_excel(writer, sheet_name=delInvalidChars(sheetName), startrow=excelMargin['row']+coords['row'], startcol=excelMargin['col']+coords['col'], merge_cells=True)
+        df.to_excel(writer, sheet_name=delInvalidChars(sheetName), startrow=excelMargin['row']+innerCoords['row'], startcol=excelMargin['col']+innerCoords['col'], merge_cells=True)
 
         if doesWriteMsg:
             msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}[{sheetName}].'
@@ -41,6 +42,7 @@ def writerForDfToExcelSheet(excelFilePath='', df=DataFrame, groupName=''):
         msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))
     
     if msgText: print(msgText)
+
 
 
 def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, doesWriteMsg=True):
@@ -98,7 +100,7 @@ def writerForObjOfDfsToJSONAndExcel(schedulesObj={}, dfsJSONFilePath='', excelFi
 
 
 
-def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, writingDirection='row'):
+def writeListOfObjsWithMultipleDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, writingDirection='row'):
     msgText = ''
 
     try:
@@ -106,17 +108,17 @@ def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', da
         groupDfs = {el: convertToObjOfDfs(dataToEnter[el])   for el in dataToEnter}   if not isConverted   else dataToEnter
         
         for groupName in groupDfs:
-            coords = {'row':0, 'col':0}
+            innerCoords = {'row':0, 'col':0}
 
             for singleDf in groupDfs[groupName]:
                 
-                writeDfToExcelSheet( writer, excelFilePath, groupName, singleDf, coords )
+                writeDfToExcelSheet( writer, excelFilePath, groupName, singleDf, innerCoords )
 
                 if writingDirection == 'row':
-                    coords['col'] = coords['col'] + singleDf.shape[1] + singleDf.index.nlevels + excelDistance['col']
+                    innerCoords['col'] = innerCoords['col'] + singleDf.shape[1] + singleDf.index.nlevels + excelDistance['col']
 
                 elif writingDirection == 'col':
-                    coords['row'] = coords['row'] + singleDf.shape[0] + singleDf.columns.nlevels + excelDistance['row']
+                    innerCoords['row'] = innerCoords['row'] + singleDf.shape[0] + singleDf.columns.nlevels + excelDistance['row']
 
 
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
@@ -128,12 +130,12 @@ def writeExcelWorksheetsWithMultipleDfs(writer=ExcelWriter, excelFilePath='', da
 
 
 
-def writerForExcelWorksheetsWithMultipleDfs(excelFilePath='', objOfMultipleDfs=None, writingDirection='row', doesNeedFormat=True):
+def writerListOfObjsWithMultipleDfsToExcel(excelFilePath='', objOfMultipleDfs=None, writingDirection='row', doesNeedFormat=True):
     msgText=''
 
     try:
         with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
-            writeExcelWorksheetsWithMultipleDfs(writer, excelFilePath, objOfMultipleDfs, True, writingDirection)
+            writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, objOfMultipleDfs, True, writingDirection)
 
             if doesNeedFormat:
                 autoFormatOverviewExcel(writer.book, excelFilePath)
@@ -146,7 +148,6 @@ def writerForExcelWorksheetsWithMultipleDfs(excelFilePath='', objOfMultipleDfs=N
 
 
 def writeObjOfDfsToJSON(filePath='', objOfDfs=None):
-    from files_utils import compareAndUpdateFile
     msgText = ''
     isFileChanged = False
 
