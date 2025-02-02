@@ -1,11 +1,12 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleClassesExcelPath, scheduleClassesExcelDfsJSONPath, scheduleClassesDfsJSONPath, scheduleClassesBaseJSONPath
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
-from src.utils.converters_utils import convertToObjOfDfs, convertObjOfDfsToJSON, convertExcelToDfsJSON
+from src.utils.converters_utils import convertToObjOfDfs, convertObjOfDfsToJSON
 from src.utils.excel_utils import createDraftSheetIfNecessary, delDraftIfNecessary
 from src.utils.excel_styles_utils import autoFormatScheduleExcel
 from src.utils.files_utils import compareAndUpdateFile
 from src.utils.writers_df_utils import writeObjOfDfsToExcel
+from src.utils.readers_df_utils import readExcelAsDfsJSON
 import json
 from pandas import ExcelWriter
 import os
@@ -32,7 +33,7 @@ def createOrEditMainExcelFile():
 
     createDraftSheetIfNecessary()
 
-    currExcelAsDfsJSON = convertExcelToDfsJSON()
+    currExcelAsDfsJSON = readExcelAsDfsJSON()
 
     try:
         if not currExcelAsDfsJSON.strip()   or   ( currExcelAsDfsJSON.strip() != classesDataDfsJSON.strip() ):
