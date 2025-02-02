@@ -1,8 +1,8 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths
+from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, sumColsCellName, sumRowsCellName
 from src.utils.converters_utils import convertDfsJSONToObjOfDfs
-from src.utils.writers_df_utils import writerForExcelWorksheetsWithMultipleDfs
+from src.utils.writers_df_utils import writerForMultipleDfsToExcelWorksheets, writerForObjWithMultipleDfsToJSONAndExcel
 import pandas as pd
 from pandas import  MultiIndex
 import numpy as np
@@ -14,7 +14,9 @@ def createScheduleOverviews():
     msgText=''
     
     try:
-        overviewFilePaths = allScheduleOverviewResourcesExcelPaths + allScheduleGroupedOverviewResourcesExcelPaths
+        overviewExcelPaths = allScheduleOverviewResourcesExcelPaths + allScheduleGroupedOverviewResourcesExcelPaths
+        overviewDfsJSONPaths = allScheduleOverviewResourcesDfsJSONPaths + allScheduleGroupedOverviewResourcesDfsJSONPaths
+
         i=-1
         for filePath in ( allScheduleDfsJSONPaths + allScheduleGroupedDfsJSONPaths ):
             i=i+1
@@ -76,8 +78,8 @@ def createScheduleOverviews():
                         aNew[sheetName] = [newDf]
 
 
-            writerForExcelWorksheetsWithMultipleDfs(overviewFilePaths[i], aNew, 'row')
-
+            #writerForExcelWorksheetsWithMultipleDfs(overviewFilePaths[i], aNew, 'row')
+            writerForObjWithMultipleDfsToJSONAndExcel(aNew, overviewDfsJSONPaths[i], overviewExcelPaths[i])
 
     except Exception as e:
         msgText = handleErrorMsg('Error', getTraceback(e))
