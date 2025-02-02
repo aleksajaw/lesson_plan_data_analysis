@@ -1,6 +1,6 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleClassesExcelPath
-from src.constants.schedule_structures_constants import excelMargin, excelFontSize, excelRangeStartCol, excelRangeStartRow, timeIndexNames
+from src.constants.schedule_structures_constants import excelMargin, excelFontSize, excelRangeStartCol, excelRangeStartRow, timeIndexNames, defRowNamesLen, defColNamesLen
 from pandas import ExcelWriter
 from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Alignment as openpyxlAlignment
@@ -14,11 +14,11 @@ from openpyxl.utils import get_column_letter
 
 
 
-def autoFormatScheduleExcel(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath, doesNeedFormatStyle=True, doesNeedFormatSize=True):
+def autoFormatScheduleExcel(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath, doesNeedFormatStyle=True,  dfRowIndexLen=defRowNamesLen, dfColNamesLen=defColNamesLen, doesNeedFormatSize=True):
     if doesNeedFormatSize:
         autoFormatExcelCellSizes(workbook, excelFilePath)
     if doesNeedFormatStyle:
-        autoFormatScheduleExcelCellStyles(workbook, excelFilePath)
+        autoFormatScheduleExcelCellStyles(workbook, excelFilePath, dfRowIndexLen, dfColNamesLen)
 
 
 
@@ -28,7 +28,7 @@ def autoFormatOverviewExcel(workbook=Workbook(), excelFilePath=''):
 
 
 
-def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath, shouldPrintSuccessMsg=False):
+def autoFormatScheduleExcelCellStyles(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath, dfRowIndexLen=defRowNamesLen, dfColNamesLen=defColNamesLen, shouldPrintSuccessMsg=False):
     from src.utils.excel_utils import getNrOfLastNonEmptyCellInCol
     msgText=''
 

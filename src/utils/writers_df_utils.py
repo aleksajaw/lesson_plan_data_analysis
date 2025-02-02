@@ -43,7 +43,7 @@ def writerForDfToExcelSheet(excelFilePath='', df=DataFrame, groupName=''):
     if msgText: print(msgText)
 
 
-def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True):
+def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, doesWriteMsg=True):
     msgText = ''
 
     try:
@@ -53,7 +53,8 @@ def writeObjOfDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None,
         for groupName in groupDfs:
             writeDfToExcelSheet(writer, excelFilePath, groupName, groupDfs[groupName])
 
-        msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
+        if doesWriteMsg:
+            msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
 
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while loading data into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.', getTraceback(e))
@@ -66,10 +67,14 @@ def writerForObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedFormatStyl
     msgText=''
 
     try:
-        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
-            writeObjOfDfsToExcel(writer, excelFilePath, objOfDfs)
+        firstDf = next(iter(objOfDfs.values()))
+        dfsRowIndexLen = firstDf.index.nlevels
+        dfsdefColNamesLen = firstDf.columns.nlevels
 
-            autoFormatScheduleExcel(writer.book, excelFilePath, doesNeedFormatStyle, doesNeedFormatSize)
+        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
+            writeObjOfDfsToExcel(writer, excelFilePath, objOfDfs, True, False)
+
+            autoFormatScheduleExcel(writer.book, excelFilePath, doesNeedFormatStyle, dfsRowIndexLen, dfsdefColNamesLen, doesNeedFormatSize)
 
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
 
