@@ -157,6 +157,7 @@ allOwnerTypeNames = [ classesName,
 
 ##  2.3 SUFIXES AND PREFIXES  ##
 dfsPrefix = 'dfs_'
+multiDfsPrefix = 'multi-dfs_'
 schedulePrefixMain = scheduleName + '_'
 schedulePartOfPrefix = scheduleName + '-'
 groupedSufix = '-grouped'
@@ -557,13 +558,13 @@ allScheduleGroupedDfsJSONNames = [ scheduleClassesGroupedDfsJSONName,
 ##  4.3.5. OVERVIEW FOR RESOURCES  ##
 
 # For the classes overview for the resources
-scheduleClassesOverviewResourcesDfsJSONName = scheduleClassesOverviewResourcesBaseName + extJSON
+scheduleClassesOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleClassesOverviewResourcesBaseName + extJSON
 # For the teachers overview for the resources
-scheduleTeachersOverviewResourcesDfsJSONName = scheduleTeachersOverviewResourcesBaseName + extJSON
+scheduleTeachersOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleTeachersOverviewResourcesBaseName + extJSON
 # For the classrooms overview for the resources
-scheduleClassroomsOverviewResourcesDfsJSONName = scheduleClassroomsOverviewResourcesBaseName + extJSON
+scheduleClassroomsOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleClassroomsOverviewResourcesBaseName + extJSON
 # For the subjects overview for the resources
-scheduleSubjectsOverviewResourcesDfsJSONName = scheduleSubjectsOverviewResourcesBaseName + extJSON
+scheduleSubjectsOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleSubjectsOverviewResourcesBaseName + extJSON
 
 # For all of the above
 allScheduleOverviewResourcesDfsJSONNames = [ scheduleClassesOverviewResourcesDfsJSONName,
@@ -576,13 +577,13 @@ allScheduleOverviewResourcesDfsJSONNames = [ scheduleClassesOverviewResourcesDfs
 ##  4.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
 
 # For the classes grouped overview for the resources
-scheduleClassesGroupedOverviewResourcesDfsJSONName = scheduleClassesGroupedOverviewResourcesBaseName + extJSON
+scheduleClassesGroupedOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleClassesGroupedOverviewResourcesBaseName + extJSON
 # For the teachers grouped overview for the resources
-scheduleTeachersGroupedOverviewResourcesDfsJSONName = scheduleTeachersGroupedOverviewResourcesBaseName + extJSON
+scheduleTeachersGroupedOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleTeachersGroupedOverviewResourcesBaseName + extJSON
 # For the classrooms grouped overview for the resources
-scheduleClassroomsGroupedOverviewResourcesDfsJSONName = scheduleClassroomsGroupedOverviewResourcesBaseName + extJSON
+scheduleClassroomsGroupedOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleClassroomsGroupedOverviewResourcesBaseName + extJSON
 # For the subjects grouped overview for the resources
-scheduleSubjectsGroupedOverviewResourcesDfsJSONName = scheduleSubjectsGroupedOverviewResourcesBaseName + extJSON
+scheduleSubjectsGroupedOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleSubjectsGroupedOverviewResourcesBaseName + extJSON
 
 # For all of the above
 allScheduleGroupedOverviewResourcesDfsJSONNames = [ scheduleClassesGroupedOverviewResourcesDfsJSONName,
