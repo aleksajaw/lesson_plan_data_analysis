@@ -1,11 +1,12 @@
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.conversion_constants import excelEngineName
+from src.constants.conversion_constants import excelEngineName, JSONIndentValue
 from src.constants.schedule_structures_constants import excelMargin, excelDistance
 from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON, correctValsInColsWithNumbers
 from excel_styles_utils import autoFormatScheduleExcel, autoFormatExcelCellSizes, autoFormatScheduleExcelCellStyles, autoFormatOverviewExcel
 from files_utils import compareAndUpdateFile
 from pandas import ExcelWriter, DataFrame
 import os
+import json
 
 
 
@@ -144,6 +145,52 @@ def writerListOfObjsWithMultipleDfsToExcel(excelFilePath='', objOfMultipleDfs=No
         msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))
     
     if msgText: print(msgText)
+
+
+
+def writerForObjWithMultipleDfsToJSONAndExcel(objOfMultipleDfs=None, dfsJSONFilePath='', excelFilePath='', writingDirection='row', doesNeedFormat=True):
+    msgText = ''
+    isFileChanged = False
+
+    try:
+        groupDfs = {}
+        groupDfsJSON = {}
+        
+        for groupName in objOfMultipleDfs:
+            innerCoords = { 'row': 0,
+                            'col': 0 }
+            
+            groupDfs[groupName] = []
+            groupDfsJSON[groupName] = []
+
+            for singleDf in objOfMultipleDfs[groupName]:
+                
+                groupDfs[groupName].append(         { 'startrow' : innerCoords['row'],
+                                                      'startcol' : innerCoords['col'],
+                                                      'df'       : singleDf           } )
+                
+                # Restore 111 from values like '111.0'.
+                singleDf = correctValsInColsWithNumbers(singleDf, True)
+                
+                groupDfsJSON[groupName].append(     { 'startrow' : innerCoords['row'],
+                                                      'startcol' : innerCoords['col'],
+                                                      'df'       : singleDf.to_json(orient='split') } )
+
+                if   writingDirection == 'row':
+                    innerCoords['col'] = innerCoords['col'] + singleDf.shape[1] + singleDf.index.nlevels + excelDistance['col']
+
+                elif writingDirection == 'col':
+                    innerCoords['row'] = innerCoords['row'] + singleDf.shape[0] + singleDf.columns.nlevels + excelDistance['row']
+        
+
+        isFileChanged = compareAndUpdateFile(dfsJSONFilePath, json.dumps(groupDfsJSON, indent=JSONIndentValue))
+    
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while loading data into the file.', getTraceback(e))
+
+    if msgText: print(msgText)
+
+    return isFileChanged
 
 
 
