@@ -22,11 +22,7 @@ def convertToDf(dataToConvert=None):
             # Multi-dimensional column names.
             df.columns = MultiIndex.from_tuples(tuples=dfColNamesTuples, names=dayAndAttrNames)
 
-            # Use an empty string instead of null/NaN.
-            df = df.fillna('')
-            
-            # Restore 111 from values like '111.0'.
-            df = correctValsInColsWithNumbers(df)
+            df = correctDfContent(df)
             
             df.set_index(keys=timeIndexNames, inplace=True)
             
@@ -56,10 +52,7 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
     try:
         for sheetName, df in dataToConvert.items():
-            # Use an empty string instead of null/NaN
-            df = df.fillna('')
-            # Restore 111 from values like '111.0'.
-            df = correctValsInColsWithNumbers(df)
+            df = correctDfContent(df)
             
             objOfDfsJSON[sheetName] = df.to_json(orient='split')
 
@@ -69,6 +62,14 @@ def convertObjOfDfsToJSON(dataToConvert=None):
     if msgText: print(msgText)
 
     return json.dumps(objOfDfsJSON, indent=JSONIndentValue)
+
+
+
+def correctDfContent(df=DataFrame):
+    # Use an empty string instead of null/NaN
+    df = df.fillna('')
+    # Restore 111 from values like '111.0'.
+    return correctValsInColsWithNumbers(df)
 
 
 
