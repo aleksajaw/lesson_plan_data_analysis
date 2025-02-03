@@ -1,7 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName
-from src.constants.schedule_structures_constants import excelMargin
+from src.constants.schedule_structures_constants import excelMargin, excelDistance
 from pandas import ExcelWriter, DataFrame
 from openpyxl import load_workbook, Workbook
 from openpyxl.cell.cell import MergedCell as openpyxlMergedCell
@@ -155,3 +155,14 @@ def dropnaInDfByAxis(el=None, axis=-1, both=True):
     if msgText: print(msgText)
  
     return el
+
+
+
+def countInnerCoords(writingDirection='row', innerCoords={'row':0,'col':0}, df=DataFrame):
+    if   writingDirection == 'row':
+        innerCoords['col'] = innerCoords['col'] + df.shape[1] + df.index.nlevels + excelDistance['col']
+
+    elif writingDirection == 'col':
+        innerCoords['row'] = innerCoords['row'] + df.shape[0] + df.columns.nlevels + excelDistance['row']
+
+    return innerCoords
