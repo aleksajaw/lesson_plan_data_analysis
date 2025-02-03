@@ -2,7 +2,7 @@ from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, sumColsCellName, sumRowsCellName
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs
-from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToExcel, writerForObjWithMultipleDfsToJSONAndExcel
+from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
 from pandas import  MultiIndex
 import numpy as np
@@ -78,8 +78,7 @@ def createScheduleOverviews():
                         aNew[sheetName] = [newDf]
 
 
-            #writerForExcelWorksheetsWithMultipleDfs(overviewFilePaths[i], aNew, 'row')
-            writerForObjWithMultipleDfsToJSONAndExcel(aNew, overviewDfsJSONPaths[i], overviewExcelPaths[i])
+            writerForListOfObjsWithMultipleDfsToJSONAndExcel(overviewDfsJSONPaths[i], overviewExcelPaths[i], aNew)
 
     except Exception as e:
         msgText = handleErrorMsg('Error while creating the overviews of schedules.', getTraceback(e))

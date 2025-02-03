@@ -88,7 +88,7 @@ def createScheduleExcelFileVertical():
             newObjOfDfs[currSheetName] = newDf
             i=i+1
 
-        writerForObjOfDfsToJSONAndExcel(newObjOfDfs, schedulesWideAndVerticallyDfsJSONPath, schedulesWideAndVerticallyExcelPath)
+        writerForObjOfDfsToJSONAndExcel(schedulesWideAndVerticallyDfsJSONPath, schedulesWideAndVerticallyExcelPath, newObjOfDfs)
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written wide and vertically.', getTraceback(e))
@@ -119,13 +119,13 @@ def createScheduleExcelFilesByOwnerTypes():
         createScheduleExcelFileForOwnerLists()
 
         teacherSchedules = convertObjKeysToDesiredOrder(teacherSchedulesTemp, getPureList(groupedOwnerLists['teachers']))
-        writerForObjOfDfsToJSONAndExcel(teacherSchedules, scheduleTeachersDfsJSONPath, scheduleTeachersExcelPath)
+        writerForObjOfDfsToJSONAndExcel(scheduleTeachersDfsJSONPath, scheduleTeachersExcelPath, teacherSchedules)
 
         classroomSchedules = convertObjKeysToDesiredOrder(classroomSchedulesTemp, getPureList(groupedOwnerLists['classrooms']), True)
-        writerForObjOfDfsToJSONAndExcel(classroomSchedules, scheduleClassroomsDfsJSONPath, scheduleClassroomsExcelPath)
+        writerForObjOfDfsToJSONAndExcel(scheduleClassroomsDfsJSONPath, scheduleClassroomsExcelPath, classroomSchedules)
 
         subjectSchedules = convertObjKeysToDesiredOrder(subjectSchedulesTemp, getPureList(groupedOwnerLists['subjects']))
-        writerForObjOfDfsToJSONAndExcel(subjectSchedules, scheduleSubjectsDfsJSONPath, scheduleSubjectsExcelPath)
+        writerForObjOfDfsToJSONAndExcel(scheduleSubjectsDfsJSONPath, scheduleSubjectsExcelPath, subjectSchedules)
         
         
     except Exception as e:
@@ -183,7 +183,7 @@ def fullConstructAndWriteScheduleByGroup(ownersType='', schedulesObj={}, dfsJSON
         schedulesByGroups = {}
         concatAndFilterSingleGroupListDataFrames(ownersType, schedulesObj, groupedOwnerLists[ownersType], schedulesByGroups)
 
-        writerForObjOfDfsToJSONAndExcel(schedulesByGroups, dfsJSONFilePath, excelFilePath)
+        writerForObjOfDfsToJSONAndExcel(dfsJSONFilePath, excelFilePath, schedulesByGroups)
 
 
     except Exception as e:
