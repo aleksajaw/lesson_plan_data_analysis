@@ -53,7 +53,7 @@ def createScheduleExcelFileVertical():
                 # Correct the order of the levels in the hierarchy.
                 dfVertical.index = dfVertical.index.reorder_levels( [2, 0, 1] )
                 
-                # Making the 1st lvl a CategoricalDType to simplify the sorting proccess. 
+                # Making the 1st lvl a CategoricalDType to simplify the sorting proccess.
                 weekdaysCatDtype = CategoricalDtype(categories=weekdays, ordered=True)
                 dfVertical.index = dfVertical.index.set_levels(
                                               dfVertical.index.levels[0].astype(weekdaysCatDtype), level=0
@@ -65,6 +65,9 @@ def createScheduleExcelFileVertical():
                 # Add the parent name for the class columns.
                 dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=[currSheetName.capitalize()]+dfVertical.columns.names)
                 
+                # Remove empty rows.
+                dfVertical = dfVertical[~(dfVertical == '').all(axis=1)]
+
                 if not newDf.empty:
                 # THE IMPORTANT WAY TO COMBINE TWO DATAFRAMES WHICH DIFFER IN INDICES.
 
@@ -75,11 +78,9 @@ def createScheduleExcelFileVertical():
                     # Set the column 'idx_temp' as an extra lvl of the current DataFrame index.
                     newDf      = newDf.set_index(['idx_temp'], append=True)
                     dfVertical = dfVertical.set_index(['idx_temp'], append=True)
-                    
                     # Combine two DataFrames along the columns axis
                     # and then remove the 'idx_temp' level from the MultiIndex, completely removing it from the columns.
                     merged = pd.concat([newDf, dfVertical], axis=1).reset_index(level=['idx_temp'], drop=True)
-
                     newDf = merged.sort_index()
                     
                 else:
