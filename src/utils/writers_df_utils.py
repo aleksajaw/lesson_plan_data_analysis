@@ -155,7 +155,7 @@ def writeListOfObjsWithMultipleDfsToJSON(multiDfsJSONFilePath='', listOfObjsWith
                 
                 listOfObjsWithMultipleDfsJSON[sheetName].append( { 'startrow' : startRow,
                                                                    'startcol' : startCol,
-                                                                   'df'       : correctDfContent(df).to_json(orient='split') } )
+                                                                   'df'       : correctDfContent(df, True).to_json(orient='split') } )
 
         listOfObjsWithMultipleDfsJSON = json.dumps(listOfObjsWithMultipleDfsJSON, indent=JSONIndentValue)
         isFileChanged = compareAndUpdateFile(multiDfsJSONFilePath, listOfObjsWithMultipleDfsJSON)
@@ -186,7 +186,7 @@ def writerForListOfObjsWithMultipleDfsToJSONAndExcel(multiDfsJSONFilePath='', ex
             for df in sheetDfs:
                 listOfObjsWithMultipleDfs[sheetName].append( { 'startrow' : innerCoords['row'],
                                                                'startcol' : innerCoords['col'],
-                                                               'df'       : correctDfContent(df) } )
+                                                               'df'       : correctDfContent(df, True) } )
                 
                 innerCoords = countInnerCoords(writingDirection, innerCoords, df)
         

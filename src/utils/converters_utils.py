@@ -65,11 +65,11 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
 
 
-def correctDfContent(df=DataFrame):
+def correctDfContent(df=DataFrame, forceCorrect=False):
     # Use an empty string instead of null/NaN
     df = df.fillna('')
     # Restore 111 from values like '111.0'.
-    return correctValsInColsWithNumbers(df)
+    return correctValsInColsWithNumbers(df, forceCorrect)
 
 
 
