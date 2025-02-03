@@ -1,7 +1,8 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
 from src.constants.schedule_structures_constants import excelMargin, excelDistance
-from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON, correctValsInColsWithNumbers
+from converters_utils import convertToDf, convertToObjOfDfs, delInvalidChars, convertObjOfDfsToJSON, correctDfContent
+from excel_utils import countInnerCoords
 from excel_styles_utils import autoFormatScheduleExcel, autoFormatExcelCellSizes, autoFormatScheduleExcelCellStyles, autoFormatOverviewExcel
 from files_utils import compareAndUpdateFile
 from pandas import ExcelWriter, DataFrame
@@ -88,7 +89,7 @@ def writerForObjOfDfsToExcel(excelFilePath='', objOfDfs=None, doesNeedFormatStyl
 
 
 
-def writerForObjOfDfsToJSONAndExcel(schedulesObj={}, dfsJSONFilePath='', excelFilePath=''):
+def writerForObjOfDfsToJSONAndExcel(dfsJSONFilePath='', excelFilePath='', schedulesObj={}):
     msgText=''
     try:
         if writeObjOfDfsToJSON(dfsJSONFilePath, schedulesObj):
@@ -101,25 +102,16 @@ def writerForObjOfDfsToJSONAndExcel(schedulesObj={}, dfsJSONFilePath='', excelFi
 
 
 
-def writeListOfObjsWithMultipleDfsToExcel(writer=ExcelWriter, excelFilePath='', dataToEnter=None, isConverted=True, writingDirection='row'):
+def writeListOfObjsWithMultipleDfsToExcel(writer=ExcelWriter, excelFilePath='', listOfObjsWithMultipleDfs={}):
     msgText = ''
 
     try:
-        # group contains classes, teachers, subjects
-        groupDfs = {el: convertToObjOfDfs(dataToEnter[el])   for el in dataToEnter}   if not isConverted   else dataToEnter
-        
-        for groupName in groupDfs:
-            innerCoords = {'row':0, 'col':0}
+        for sheetName, sheetObj in listOfObjsWithMultipleDfs.items():            
+            for excelDfObj in sheetObj:
+                dfInnerCoords = { 'row': excelDfObj['startrow'],
+                                  'col': excelDfObj['startcol'] }
 
-            for singleDf in groupDfs[groupName]:
-                
-                writeDfToExcelSheet( writer, excelFilePath, groupName, singleDf, innerCoords )
-
-                if writingDirection == 'row':
-                    innerCoords['col'] = innerCoords['col'] + singleDf.shape[1] + singleDf.index.nlevels + excelDistance['col']
-
-                elif writingDirection == 'col':
-                    innerCoords['row'] = innerCoords['row'] + singleDf.shape[0] + singleDf.columns.nlevels + excelDistance['row']
+                writeDfToExcelSheet( writer, excelFilePath, sheetName, excelDfObj['df'], dfInnerCoords )
 
 
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
@@ -131,12 +123,12 @@ def writeListOfObjsWithMultipleDfsToExcel(writer=ExcelWriter, excelFilePath='', 
 
 
 
-def writerForListOfObjsWithMultipleDfsToExcel(excelFilePath='', objOfMultipleDfs=None, writingDirection='row', doesNeedFormat=True):
+def writerForListOfObjsWithMultipleDfsToExcel(excelFilePath='', listOfObjsWithMultipleDfs={}, doesNeedFormat=True):
     msgText=''
 
     try:
         with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
-            writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, objOfMultipleDfs, True, writingDirection)
+            writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, listOfObjsWithMultipleDfs)
 
             if doesNeedFormat:
                 autoFormatOverviewExcel(writer.book, excelFilePath)
@@ -148,49 +140,64 @@ def writerForListOfObjsWithMultipleDfsToExcel(excelFilePath='', objOfMultipleDfs
 
 
 
-def writerForObjWithMultipleDfsToJSONAndExcel(objOfMultipleDfs=None, dfsJSONFilePath='', excelFilePath='', writingDirection='row', doesNeedFormat=True):
+def writeListOfObjsWithMultipleDfsToJSON(multiDfsJSONFilePath='', listOfObjsWithMultipleDfs=[]):
     msgText = ''
     isFileChanged = False
 
     try:
-        groupDfs = {}
-        groupDfsJSON = {}
-        
-        for groupName in objOfMultipleDfs:
-            innerCoords = { 'row': 0,
-                            'col': 0 }
-            
-            groupDfs[groupName] = []
-            groupDfsJSON[groupName] = []
+        listOfObjsWithMultipleDfsJSON = {}
 
-            for singleDf in objOfMultipleDfs[groupName]:
+        for sheetName, sheetObj in listOfObjsWithMultipleDfs.items():
+            listOfObjsWithMultipleDfsJSON[sheetName] = []
+
+            for excelDfObj in sheetObj:
+                [startRow, startCol, df] = excelDfObj.values()
                 
-                groupDfs[groupName].append(         { 'startrow' : innerCoords['row'],
-                                                      'startcol' : innerCoords['col'],
-                                                      'df'       : singleDf           } )
-                
-                # Restore 111 from values like '111.0'.
-                singleDf = correctValsInColsWithNumbers(singleDf, True)
-                
-                groupDfsJSON[groupName].append(     { 'startrow' : innerCoords['row'],
-                                                      'startcol' : innerCoords['col'],
-                                                      'df'       : singleDf.to_json(orient='split') } )
+                listOfObjsWithMultipleDfsJSON[sheetName].append( { 'startrow' : startRow,
+                                                                   'startcol' : startCol,
+                                                                   'df'       : correctDfContent(df).to_json(orient='split') } )
 
-                if   writingDirection == 'row':
-                    innerCoords['col'] = innerCoords['col'] + singleDf.shape[1] + singleDf.index.nlevels + excelDistance['col']
+        listOfObjsWithMultipleDfsJSON = json.dumps(listOfObjsWithMultipleDfsJSON, indent=JSONIndentValue)
+        isFileChanged = compareAndUpdateFile(multiDfsJSONFilePath, listOfObjsWithMultipleDfsJSON)
 
-                elif writingDirection == 'col':
-                    innerCoords['row'] = innerCoords['row'] + singleDf.shape[0] + singleDf.columns.nlevels + excelDistance['row']
-        
 
-        isFileChanged = compareAndUpdateFile(dfsJSONFilePath, json.dumps(groupDfsJSON, indent=JSONIndentValue))
-    
     except Exception as e:
-        msgText = handleErrorMsg(f'\nError while loading data into the file.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(multiDfsJSONFilePath)}.', getTraceback(e))
 
     if msgText: print(msgText)
 
+
     return isFileChanged
+
+
+
+def writerForListOfObjsWithMultipleDfsToJSONAndExcel(multiDfsJSONFilePath='', excelFilePath='', objsWithMultipleDfs=[], writingDirection='row', doesNeedFormat=True):
+    msgText = ''
+
+    try:
+        listOfObjsWithMultipleDfs = {}
+        
+        for sheetName, sheetDfs in objsWithMultipleDfs.items():
+            listOfObjsWithMultipleDfs[sheetName] = []
+
+            innerCoords = { 'row': 0,
+                            'col': 0 }
+
+            for df in sheetDfs:
+                listOfObjsWithMultipleDfs[sheetName].append( { 'startrow' : innerCoords['row'],
+                                                               'startcol' : innerCoords['col'],
+                                                               'df'       : correctDfContent(df) } )
+                
+                innerCoords = countInnerCoords(writingDirection, innerCoords, df)
+        
+
+        if writeListOfObjsWithMultipleDfsToJSON(multiDfsJSONFilePath, listOfObjsWithMultipleDfs):
+            writerForListOfObjsWithMultipleDfsToExcel(excelFilePath, listOfObjsWithMultipleDfs)
+    
+    except Exception as e:
+        msgText = handleErrorMsg(f'\nError while loading data into the files {os.path.basename(multiDfsJSONFilePath)} and {os.path.basename(excelFilePath)}.', getTraceback(e))
+
+    if msgText: print(msgText)
 
 
 
