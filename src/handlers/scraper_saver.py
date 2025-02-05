@@ -31,9 +31,9 @@ def createOrEditMainExcelFile():
     
     global classesDataJSON, classesDataDfs, classesDataDfsJSON
 
-    createDraftSheetIfNecessary()
+    createDraftSheetIfNecessary(scheduleClassesExcelPath)
 
-    currExcelAsDfsJSON = readExcelAsDfsJSON()
+    currExcelAsDfsJSON = readExcelAsDfsJSON(scheduleClassesExcelPath)
 
     try:
         if not currExcelAsDfsJSON.strip()   or   ( currExcelAsDfsJSON.strip() != classesDataDfsJSON.strip() ):
@@ -41,10 +41,11 @@ def createOrEditMainExcelFile():
                 
                 try:
                     writeObjOfDfsToExcel(writer, scheduleClassesExcelPath, classesDataDfs)
-                    autoFormatScheduleExcel(writer.book, scheduleClassesExcelPath)
+                    wb = writer.book
+                    autoFormatScheduleExcel(wb)
 
                     try:
-                        delDraftIfNecessary()
+                        delDraftIfNecessary(wb, scheduleClassesExcelPath)
 
                     except Exception as draftError:
                         print( handleErrorMsg( f'\nError while deleting the draft sheet in main Excel file: {draftError}' ) )

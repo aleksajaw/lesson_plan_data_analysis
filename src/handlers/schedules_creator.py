@@ -1,26 +1,29 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.schedule_structures_constants import dayAndAttrNames, weekdays, excelMargin, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
-from src.constants.paths_constants import allOwnerTypeNames, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath, schedulesWideAndVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleClassesGroupedExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, schedulesWideAndVerticallyDfsJSONPath, scheduleClassesGroupedDfsJSONPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths
+from src.constants.schedule_structures_constants import weekdays, excelMargin#, dayAndAttrNames, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
+from src.constants.paths_constants import allOwnerTypeNames, schedulesWideAndVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleClassesGroupedExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, schedulesWideAndVerticallyDfsJSONPath, scheduleClassesGroupedDfsJSONPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths#, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
-from src.utils.files_utils import createFileNameWithNr
+#from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
-from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForObjOfDfsToExcel, writerForDfToExcelSheet
+from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel#, writerForObjOfDfsToExcel, writerForDfToExcelSheet
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 from src.utils.transl_utils import getTranslation, getTranslByPlural
 import pandas as pd
 from pandas import ExcelWriter, DataFrame, RangeIndex, CategoricalDtype, MultiIndex
 import numpy as np
-import re
+#import re
 import os
 
 
 classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists = {}, {}, {}, {}, {}
 
 
-def createScheduleExcelFiles(classSchedulesDfs={}):
+def createScheduleExcelFiles(classSchedulesDfs):
     global classSchedules
+    #if classSchedulesDfs is None:
+    #    classSchedulesDfs = {}
+    
     classSchedules = classSchedulesDfs.copy()
 
     createScheduleExcelFilesByOwnerTypes()
@@ -176,11 +179,14 @@ def createScheduleExcelFilesByGroupedOwnerLists():
 
 
 
-def fullConstructAndWriteScheduleByGroup(ownersType='', schedulesObj={}, dfsJSONFilePath='', excelFilePath=''):
+def fullConstructAndWriteScheduleByGroup(ownersType, schedulesObj, dfsJSONFilePath, excelFilePath):
     global groupedOwnerLists
-
     msgText=''
+
     try:
+        #if schedulesObj is None:
+        #    schedulesObj = {}
+        
         schedulesByGroups = {}
         concatAndFilterSingleGroupListDataFrames(ownersType, schedulesObj, groupedOwnerLists[ownersType], schedulesByGroups)
 
@@ -194,102 +200,106 @@ def fullConstructAndWriteScheduleByGroup(ownersType='', schedulesObj={}, dfsJSON
 
 
 
-def buildOwnersTypeScheduleBasedOnCol(targetDict={}, baseDf=None, ownersType='', newColValue='', newMainColKey='class'):
-
-    if isinstance(baseDf, DataFrame)   and   ownersType   and   newColValue:
-     
-        # column name in timetable to be changed
-        colToBeChanged = getTranslByPlural(ownersType)
-
-        # make life (program) easier to understand:)
-        newScheduleOwner = colToBeChanged
-
-        # main column in basic schedule is subject
-        newMainColName = getTranslation(newMainColKey)
-               
-        # get the list of teachers/classrooms/subjects inside the timetable
-        group = baseDf.xs(newScheduleOwner, axis=1, level=1).stack(sort=False).unique()
-        group = filterNumpyNdarray(group)
-
-        if len(group):
-
-            # loop for each teacher/classroom/subject
-            for el in group:
-
-                # copy for modification
-                baseDfCopy = baseDf.copy().astype('object')
-                # axis  =1 => columns
-                #       =0 => index
-                #
-                # level of MultiIndex in column
-                # level =1 => weekdays
-                #       =2 => subject, teacher, classroom
-                newScheduleOwnerTempData = baseDfCopy.xs(newScheduleOwner, axis=1, level=1)
-                
-                # get cells with value of specific el in group (teacher, classroom or subject)
-                # e.g. KJ, 110, mat
-                # not whole teacher, classroom, subject
-                #
-                # use data type (integer or other)
-                try:
-                    maskToFindDesiredPartOfLessons = newScheduleOwnerTempData == int(el)
-                except:
-                    maskToFindDesiredPartOfLessons = newScheduleOwnerTempData == el
-
-                emptyValue = np.nan
-
-                # use mask to get whole desired lessons
-                # replace not matching whole rows with emptyValue
-                # leave rows with any matches untouched
-                elRows = baseDfCopy.where(maskToFindDesiredPartOfLessons.any(axis=1), emptyValue)
-
-                # divide rows into weekdays
-                # replace value with NaN for not matching days
-                for day in weekdays:
-                    # divide earlier mask to days 
-                    elDayMask = maskToFindDesiredPartOfLessons[day]
-
-                    # go through each day,
-                    # ignore other days to make things easier
-                    # replace not matching day cells with emptyValue
-                    elRows[day] = elRows[day].where(elDayMask, emptyValue)
-
-
-                # restrict loop actions to rows which match mask
-                if not elRows.empty:
-
-                    # change the column name and its value
-                    elRows = elRows.rename( columns={ colToBeChanged: newMainColName } )
-
-                    # asign
-                    #   to the column "klasa" (old "nauczyciel", "przedmiot", "sala")
-                    #   mapped values of the column "klasa" to className
-                    # only if current value is not NaN in numeric arrays,
-                    #   None or NaN in object arrays,
-                    #   NaT in datetimelike
-                    elRows.loc[:,(weekdays, newMainColName)] = elRows.loc[:, (weekdays, newMainColName)].map( lambda x: newColValue   if pd.notna(x)
-                                                                                                                                      else x )
-
-                    elRows = elRows.groupby(level=[0,1], sort=False).first()
-                    #indexLength = len(elRows.index)
-                    #elRows.insert(loc=0, column=timeIndexNames[1], value=lessonTimePeriods[:indexLength])
-
-                    if el not in targetDict:
-                        targetDict[str(el)] = elRows
-
-                    else:
-                        x = targetDict[str(el)].copy()
-                        #y = x.combine_first(elRows)
-                        #y = x.join(elRows)
-
-                        targetDict[str(el)] = concatAndFilterScheduleDataFrames(x, elRows)
-
-
-
-def createScheduleGroupedOwnerObjOfDfs(dataToEnter={}):
+def buildOwnersTypeScheduleBasedOnCol(targetDict, baseDf, ownersType, newColValue, newMainColKey='class'):
+    #if targetDict is None:
+    #    targetDict = {}
+    #if baseDf is None:
+    #    baseDf = DataFrame
     
-    dataToEnter = sortObjKeys(dataToEnter)
-    sheetsData = { sheetName: dataToEnter[sheetName]   for sheetName in dataToEnter.keys() }
+    # column name in timetable to be changed
+    colToBeChanged = getTranslByPlural(ownersType)
+
+    # make life (program) easier to understand:)
+    newScheduleOwner = colToBeChanged
+
+    # main column in basic schedule is subject
+    newMainColName = getTranslation(newMainColKey)
+            
+    # get the list of teachers/classrooms/subjects inside the timetable
+    group = baseDf.xs(newScheduleOwner, axis=1, level=1).stack(sort=False).unique()
+    group = filterNumpyNdarray(group)
+
+    if len(group):
+
+        # loop for each teacher/classroom/subject
+        for el in group:
+
+            # copy for modification
+            baseDfCopy = baseDf.copy().astype('object')
+            # axis  =1 => columns
+            #       =0 => index
+            #
+            # level of MultiIndex in column
+            # level =1 => weekdays
+            #       =2 => subject, teacher, classroom
+            newScheduleOwnerTempData = baseDfCopy.xs(newScheduleOwner, axis=1, level=1)
+            
+            # get cells with value of specific el in group (teacher, classroom or subject)
+            # e.g. KJ, 110, mat
+            # not whole teacher, classroom, subject
+            #
+            # use data type (integer or other)
+            try:
+                maskToFindDesiredPartOfLessons = newScheduleOwnerTempData == int(el)
+            except:
+                maskToFindDesiredPartOfLessons = newScheduleOwnerTempData == el
+
+            emptyValue = np.nan
+
+            # use mask to get whole desired lessons
+            # replace not matching whole rows with emptyValue
+            # leave rows with any matches untouched
+            elRows = baseDfCopy.where(maskToFindDesiredPartOfLessons.any(axis=1), emptyValue)
+
+            # divide rows into weekdays
+            # replace value with NaN for not matching days
+            for day in weekdays:
+                # divide earlier mask to days 
+                elDayMask = maskToFindDesiredPartOfLessons[day]
+
+                # go through each day,
+                # ignore other days to make things easier
+                # replace not matching day cells with emptyValue
+                elRows[day] = elRows[day].where(elDayMask, emptyValue)
+
+
+            # restrict loop actions to rows which match mask
+            if not elRows.empty:
+
+                # change the column name and its value
+                elRows = elRows.rename( columns={ colToBeChanged: newMainColName } )
+
+                # asign
+                #   to the column "klasa" (old "nauczyciel", "przedmiot", "sala")
+                #   mapped values of the column "klasa" to className
+                # only if current value is not NaN in numeric arrays,
+                #   None or NaN in object arrays,
+                #   NaT in datetimelike
+                elRows.loc[:,(weekdays, newMainColName)] = elRows.loc[:, (weekdays, newMainColName)].map( lambda x: newColValue   if pd.notna(x)
+                                                                                                                                  else x )
+
+                elRows = elRows.groupby(level=[0,1], sort=False).first()
+                #indexLength = len(elRows.index)
+                #elRows.insert(loc=0, column=timeIndexNames[1], value=lessonTimePeriods[:indexLength])
+
+                if el not in targetDict:
+                    targetDict[str(el)] = elRows
+
+                else:
+                    x = targetDict[str(el)].copy()
+                    #y = x.combine_first(elRows)
+                    #y = x.join(elRows)
+
+                    targetDict[str(el)] = concatAndFilterScheduleDataFrames(x, elRows)
+
+
+
+def createScheduleGroupedOwnerObjOfDfs(dataToEnter):
+    #if dataToEnter is None:
+    #    dataToEnter = {}
+    
+    dataToEnterSorted = sortObjKeys(dataToEnter)
+    sheetsData = { sheetName: dataToEnterSorted[sheetName]   for sheetName in dataToEnterSorted.keys() }
     objOfDfs = {}
 
     # basic structure for the group list sheets
@@ -319,9 +329,13 @@ def createScheduleGroupedOwnerObjOfDfs(dataToEnter={}):
 
 
 
-def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyColToGroupBy='group_No.', strToDelete='.'):
+def createObjForDfRowsColoring(dfWithRowsToColor, keyColToGroupBy='group_No.', strToDelete='.'):
     msgText = ''
+
     try:
+        #if dfWithRowsToColor is None:
+        #    dfWithRowsToColor = DataFrame
+        
         df = dfWithRowsToColor.copy()
         # Create the object for coloring the backgrounds of odd groups.
         # get_loc() starts counting rows from 1, not 0.
@@ -360,7 +374,7 @@ def createObjForDfRowsColoring(dfWithRowsToColor=DataFrame(), keyColToGroupBy='g
 
 
 
-def writeGroupListsToExcelAndFormat(objOfDfs={}, excelFilePath=scheduleListsOwnersGroupedExcelPath):
+def writeGroupListsToExcelAndFormat(objOfDfs):
     from src.utils.excel_styles_utils import autoFormatExcelCellSizes, addBgToExcelSheetRowsBasedOnObj
     msgText = ''
 
@@ -368,15 +382,21 @@ def writeGroupListsToExcelAndFormat(objOfDfs={}, excelFilePath=scheduleListsOwne
     #    excelFilePath = createFileNameWithNr()
 
     try:
+        #if objOfDfs is None:
+        #    objOfDfs = {}
+
+        excelFilePath = scheduleListsOwnersGroupedExcelPath
         sheetGroups={}
+        
         with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:
             
             for listName, df in objOfDfs.items():
                 df.to_excel(writer, sheet_name=listName, startrow=excelMargin['row'], startcol=excelMargin['col'], merge_cells=True)
                 sheetGroups[listName] = createObjForDfRowsColoring(df)
             
-            addBgToExcelSheetRowsBasedOnObj(writer, sheetGroups)
-            autoFormatExcelCellSizes(writer.book, excelFilePath)
+            wb = writer.book
+            addBgToExcelSheetRowsBasedOnObj(wb, sheetGroups)
+            autoFormatExcelCellSizes(wb)
         
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
 
@@ -389,7 +409,13 @@ def writeGroupListsToExcelAndFormat(objOfDfs={}, excelFilePath=scheduleListsOwne
 
 
 
-def concatAndFilterSingleGroupListDataFrames(ownersType='', sheetsForOwnerTypes={}, ownersList=DataFrame, newDf={}, addNewCol=True):
+def concatAndFilterSingleGroupListDataFrames(ownersType, sheetsForOwnerTypes, ownersList, newDf, addNewCol=True):
+    #if sheetsForOwnerTypes is None:
+    #    sheetsForOwnerTypes = {}
+    #if ownersList is None:
+    #    ownersList = DataFrame
+    #if newDf is None:
+    #    newDf = DataFrame
     
     newColName = getTranslByPlural(ownersType)
     

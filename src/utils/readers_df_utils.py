@@ -1,5 +1,5 @@
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import scheduleClassesExcelPath
+#from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
 from src.constants.schedule_structures_constants import excelMargin, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples5el, dfColWeekDayNamesTuples4el
 from pandas import read_excel, MultiIndex, DataFrame
@@ -7,7 +7,7 @@ import json
 
 
 
-def readExcelFileAsObjOfDfs(excelFilePath=scheduleClassesExcelPath):
+def readExcelFileAsObjOfDfs(excelFilePath):
     from files_utils import doesFileExist
     dataToConvert = {}
     msgText = ''
@@ -24,11 +24,12 @@ def readExcelFileAsObjOfDfs(excelFilePath=scheduleClassesExcelPath):
                     excelData[sheetName] = df.drop(unnamedColIndices, axis=1)
 
             dataToConvert = excelData
+
+
         except Exception as e:
             msgText = handleErrorMsg('\nError converting existing schedule Excel file to JSON.', getTraceback(e))
 
         if msgText: print(msgText)
-
 
     return dataToConvert
 
@@ -36,7 +37,7 @@ def readExcelFileAsObjOfDfs(excelFilePath=scheduleClassesExcelPath):
 
 # JSON WITH OBJECT OF DATA FRAMES
 #    =>   OBJECT OF DATA FRAMES
-def readDfsJSONAsObjOfDfs(JSONFilePath = ''):
+def readDfsJSONAsObjOfDfs(JSONFilePath):
     msgText=''
     objOfDfs = {}
 
@@ -70,7 +71,7 @@ def readDfsJSONAsObjOfDfs(JSONFilePath = ''):
 # EXCEL CONTENT
 #    =>   OBJECT OF DATA FRAMES
 #       =>   JSON
-def readExcelAsDfsJSON(excelFilePath=scheduleClassesExcelPath):
+def readExcelAsDfsJSON(excelFilePath):
     from files_utils import doesFileExist
     dataToConvert = {}
     msgText = ''
@@ -87,10 +88,10 @@ def readExcelAsDfsJSON(excelFilePath=scheduleClassesExcelPath):
 
                 dataToConvert[sheetName] = df.to_json(orient='split')
 
+
         except Exception as e:
             msgText = handleErrorMsg('\nError converting existing schedule Excel file to JSON.', getTraceback(e))
 
         if msgText: print(msgText)
-
 
     return json.dumps(dataToConvert, indent=JSONIndentValue)

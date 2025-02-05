@@ -138,7 +138,7 @@ def runVirtualEnv(forceStart=False):
 
 
 
-def addToSysPath(basePath='', innerDirName=''):
+def addToSysPath(basePath, innerDirName):
     dirPathToAdd = ( basePath   if    not innerDirName
                                 else  os.path.join(basePath, innerDirName) )
 
@@ -178,7 +178,7 @@ def addAllOfTheProjectDirs():
 
 
 
-def removeEnvironment(endHere=False):
+def removeEnvironment(endHere):
     global envName
     
     if checkIfExists(envName):
@@ -205,7 +205,7 @@ def removeEnvironment(endHere=False):
 
 
 
-def removeFiles(endHere=False, isClearLogs=False):
+def removeFiles(endHere, isClearLogs=False):
     projectRoot = os.path.dirname(__file__)
     
     if not isClearLogs:
@@ -288,7 +288,7 @@ def main():
 
 
 
-def chooseStart(args=None):
+def chooseStart(args):
     global startTime
     startTime = time.perf_counter()
     

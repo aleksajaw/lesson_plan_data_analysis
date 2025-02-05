@@ -1,7 +1,7 @@
 from src.constants.transl_constants import translations
 
 
-def findSingular(word='', lang='en'):
+def findSingular(word, lang='en'):
 
     for key, forms in translations.get( lang, {} ).items():
         if forms['plural'] == word:
@@ -12,7 +12,7 @@ def findSingular(word='', lang='en'):
 
 
 
-def findTranslParent(word='', lang='en'):
+def findTranslParent(word, lang='en'):
     for key, forms in translations.get( lang, {} ).items():
         if word in forms.values(): 
             return key
@@ -20,7 +20,7 @@ def findTranslParent(word='', lang='en'):
     return f'There is no parent found for "{word}"'
 
 
-def getTranslation(word='', getPlural=False, toLang='pl', fromLang='en'):
+def getTranslation(word, getPlural=False, toLang='pl', fromLang='en'):
     form = 'plural'   if getPlural   else 'singular'
     parentWord = findTranslParent(word, fromLang)
 
@@ -28,5 +28,5 @@ def getTranslation(word='', getPlural=False, toLang='pl', fromLang='en'):
 
 
 
-def getTranslByPlural(word='', getPlural=False, toLang='pl', fromLang='en'):
+def getTranslByPlural(word, getPlural=False, toLang='pl', fromLang='en'):
     return getTranslation(word, getPlural, toLang, fromLang)

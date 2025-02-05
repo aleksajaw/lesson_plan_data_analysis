@@ -4,7 +4,7 @@ def turnOffFutureWarnings():
 
 
 
-def handleErrorMsg(errorMsg='', tracebackMsg=''):
+def handleErrorMsg(errorMsg, tracebackMsg):
     from src.constants.paths_constants import logsPath
     from files_utils import createDirIfNecessary, createFileNameWithDateTime
     import os

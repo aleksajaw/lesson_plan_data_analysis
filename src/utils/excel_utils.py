@@ -1,15 +1,16 @@
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import scheduleClassesExcelPath
+#from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName
 from src.constants.schedule_structures_constants import excelMargin, excelDistance
 from pandas import ExcelWriter, DataFrame
-from openpyxl import load_workbook, Workbook
+from openpyxl import load_workbook#, Workbook, worksheet
 from openpyxl.cell.cell import MergedCell as openpyxlMergedCell
+#from openpyxl.worksheet.worksheet import Worksheet
 
 
 
 ###   DRAFTS   ###
-def createDraftSheet(excelFilePath=scheduleClassesExcelPath):
+def createDraftSheet(excelFilePath):
     msgText=''
     try:
         with ExcelWriter(excelFilePath, engine=excelEngineName, mode='w+') as writer:
@@ -23,14 +24,14 @@ def createDraftSheet(excelFilePath=scheduleClassesExcelPath):
 
 
 
-def createDraftSheetIfNecessary(excelFilePath=scheduleClassesExcelPath):
+def createDraftSheetIfNecessary(excelFilePath):
     from files_utils import doesFileExist
     if not doesFileExist(excelFilePath):
-        createDraftSheet()
+        createDraftSheet(excelFilePath)
 
 
 
-def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleClassesExcelPath):
+def delDraftIfNecessary(workbook, excelFilePath):
     from files_utils import doesFileExist
     msgText=''
 
@@ -49,29 +50,29 @@ def delDraftIfNecessary(workbook=Workbook(), excelFilePath=scheduleClassesExcelP
 
         except Exception as e:
             msgText = handleErrorMsg('\nUnable to open the Excel file to check and delete the draft sheet.', getTraceback(e))
-            return
     
     if msgText: print(msgText)
     
 
 
 ###   SHEET OPERATIONS   ###
-def doesSheetExist(workbook=Workbook(), sheetName=''):
+def doesSheetExist(workbook, sheetName):
+    #if workbook is None:
+    #    workbook = Workbook
     return bool(sheetName in workbook.sheetnames and len(workbook.sheetnames)>0)
 
 
 
-def deleteExcelSheet(workbook=Workbook(), sheetName=''):
+def deleteExcelSheet(workbook, sheetName):
     msgText = ''
 
     try:
-        if isinstance(workbook, Workbook):
-            worksheet = workbook[sheetName]
-            workbook.remove(worksheet)
-            msgText = f'The sheet {sheetName} deleted.'
-
-        else:
-          raise Exception(f'workbook variable should be Workbook() type, not {type(workbook)}')
+        #if workbook is None:
+        #    workbook = Workbook
+        
+        worksheet = workbook[sheetName]
+        workbook.remove(worksheet)
+        msgText = f'The sheet {sheetName} deleted.'
         
     except Exception as e:
         msgText = handleErrorMsg(f'\nError deleting the sheet {sheetName}.', getTraceback(e))
@@ -80,7 +81,7 @@ def deleteExcelSheet(workbook=Workbook(), sheetName=''):
 
 
 
-def get1stNotMergedCell(group=[]):
+def get1stNotMergedCell(group):
     foundNotMergedCell = False
     i = -1
 
@@ -93,11 +94,14 @@ def get1stNotMergedCell(group=[]):
 
 
 
-def getNrOfLastNonEmptyCellInCol(ws=None, minRow=int, col=int):
+def getNrOfLastNonEmptyCellInCol(ws, minRow=0, col=0):
     msgText=''
     counter = -1
 
     try:
+        #if ws is None:
+        #    ws = Worksheet
+        
         for row in ws.iter_rows(min_row=minRow, min_col=col, max_col=col):
 
             if row[0].value is not None:           
@@ -117,13 +121,10 @@ def getNrOfLastNonEmptyCellInCol(ws=None, minRow=int, col=int):
     return counter
 
                     
-def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
+def removeLastEmptyRowsInDataFrames(elToBeFiltered):
     msgText = ''
 
     try:
-        if not isinstance(elToBeFiltered, list):
-            elToBeFiltered = list(elToBeFiltered)
-
         # keep all the rows up to the last non-empty row
         for singleWorksheet in elToBeFiltered:
             if len(singleWorksheet.items()):
@@ -140,14 +141,16 @@ def removeLastEmptyRowsInDataFrames(elToBeFiltered=None):
 
 
 
-def dropnaInDfByAxis(el=None, axis=-1, both=True):
+def dropnaInDfByAxis(el, axis=-1, both=True):
     msgText=''
 
     try:
-        if isinstance(el, DataFrame):
-            axisList = [axis   if (axis>=0 and not both)   else 0,1]
-            for axis in axisList:
-                el = el.dropna(axis=axis, how='all')
+        #if el is None:
+        #    el = DataFrame
+        
+        axisList = [axis   if (axis>=0 and not both)   else 0,1]
+        for axis in axisList:
+            el = el.dropna(axis=axis, how='all')
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while dropping the NA values in the both axis of Data Frame.', getTraceback(e))
@@ -158,7 +161,10 @@ def dropnaInDfByAxis(el=None, axis=-1, both=True):
 
 
 
-def countInnerCoords(writingDirection='row', innerCoords={'row':0,'col':0}, df=DataFrame):
+def countInnerCoords(df, writingDirection='row', innerCoords={'row':0,'col':0}):
+    #if df is None:
+    #    df = DataFrame
+    
     if   writingDirection == 'row':
         innerCoords['col'] = innerCoords['col'] + df.shape[1] + df.index.nlevels + excelDistance['col']
 

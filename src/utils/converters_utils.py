@@ -1,10 +1,10 @@
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import scheduleClassesExcelPath
-from src.constants.conversion_constants import excelEngineName, draftSheetName, JSONIndentValue
-from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, colsWithNumbersNames, excelMargin
+#from src.constants.paths_constants import scheduleClassesExcelPath
+from src.constants.conversion_constants import draftSheetName, JSONIndentValue#, excelEngineName, 
+from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dayAndAttrNames, colsWithNumbersNames#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, excelMargin
 import json
 import re
-from pandas import DataFrame, MultiIndex, read_excel
+from pandas import DataFrame, MultiIndex, Series#, read_excel
 import numpy as np
 
 
@@ -12,19 +12,21 @@ import numpy as np
 
 
 # DATA   =>   DATA FRAME
-def convertToDf(dataToConvert=None):
+def convertToDf(dataToConvert):
     df = None
     msgText=''
 
     try:
-        if(dataToConvert):
-            df = DataFrame(dataToConvert[1:])
-            # Multi-dimensional column names.
-            df.columns = MultiIndex.from_tuples(tuples=dfColNamesTuples, names=dayAndAttrNames)
+        #if dataToConvert is None:
+        #    dataToConvert = {}
+        
+        df = DataFrame(dataToConvert[1:])
+        # Multi-dimensional column names.
+        df.columns = MultiIndex.from_tuples(tuples=dfColNamesTuples, names=dayAndAttrNames)
 
-            df = correctDfContent(df)
-            
-            df.set_index(keys=timeIndexNames, inplace=True)
+        df = correctDfContent(df)
+        
+        df.set_index(keys=timeIndexNames, inplace=True)
             
     except Exception as e:
         msgText = handleErrorMsg('\nError while converting data do DataFrame.', getTraceback(e))
@@ -36,7 +38,7 @@ def convertToDf(dataToConvert=None):
 
 
 # DATA   =>   OBJECT OF DATA FRAMES 
-def convertToObjOfDfs(dataToConvert=None):
+def convertToObjOfDfs(dataToConvert):
     if dataToConvert:
         return {sheetName: convertToDf(dataToConvert[sheetName])   for sheetName in dataToConvert}
 
@@ -46,11 +48,14 @@ def convertToObjOfDfs(dataToConvert=None):
 
 
 # OBJECT OF DATA FRAMES   =>   JSON
-def convertObjOfDfsToJSON(dataToConvert=None):
+def convertObjOfDfsToJSON(dataToConvert):
     msgText = ''
     objOfDfsJSON = {}
 
     try:
+        #if dataToConvert is None:
+        #    dataToConvert = {}
+        
         for sheetName, df in dataToConvert.items():
             df = correctDfContent(df)
             
@@ -65,7 +70,10 @@ def convertObjOfDfsToJSON(dataToConvert=None):
 
 
 
-def correctDfContent(df=DataFrame, forceCorrect=False):
+def correctDfContent(df, forceCorrect=False):
+    #if df is None:
+    #    df = DataFrame
+    
     # Use an empty string instead of null/NaN
     df = df.fillna('')
     # Restore 111 from values like '111.0'.
@@ -73,7 +81,9 @@ def correctDfContent(df=DataFrame, forceCorrect=False):
 
 
 
-def correctValsInColsWithNumbers(df=DataFrame, forceCorrect=False):
+def correctValsInColsWithNumbers(df, forceCorrect=False):
+    #if df is None:
+    #    df = DataFrame
     
     dfColsToCorrectList = df.select_dtypes(include=['object', 'float']).columns.tolist()
     
@@ -94,34 +104,43 @@ def correctValsInColsWithNumbers(df=DataFrame, forceCorrect=False):
 
 
 # 111.0   =>   111
-def convertFloatToInt(value=None):
+def convertFloatToInt(value):
     isValueFloatAndInt = isinstance(value, float)   and   value.is_integer()
 
     return int(value)   if isValueFloatAndInt   else   value
 
 
 # '1'   =>   1
-def convertDigitInStrToInt(text=''):
+def convertDigitInStrToInt(text):
     return int(text)   if str.isdigit(text)   else text
 
 
+# DataFrame column with values like
 # 3 / 4   =>   '0,75%'
-def divisionResultAsPercentage(val1=None, val2=None):
-    divisionResult = (val1 / val2).fillna(0)
+def divisionResultAsPercentage(val1, val2):
+    if isinstance(val1, Series)   and   isinstance(val2, Series):
+        divisionResult = (val1 / val2).fillna(0)
+
+        return convertDfColValToPercentage(divisionResult)
     
-    return convertDfColValToPercentage(divisionResult)
+    else:
+        return None
 
 
 
 # DataFrame column with values like
 # 0,75   =>   '75%'
-def convertDfColValToPercentage(value=None):
-    return (value * 100).round(2).astype(str) + '%'
+def convertDfColValToPercentage(value):
+    if isinstance(value, Series):
+        return (value * 100).round(2).astype(str) + '%'
+    
+    else:
+        return None
 
 
 
 # 0,75   =>   '75%'
-def convertValToPercentage(value=0):
+def convertValToPercentage(value):
     if not isinstance(value, float):
         value = float(value)
 
@@ -131,7 +150,7 @@ def convertValToPercentage(value=0):
 
 # <br>
 # <br />   =>   \n
-def convertBrInText(text=''):
+def convertBrInText(text):
     if isinstance(text, str):
         text = text.replace("<br>", "\n").replace("<br />", "\n")
 
@@ -143,7 +162,7 @@ def convertBrInText(text=''):
 #   <span>hello</span> <span>world!&nbsp;</span>
 # </p>
 #   =>   helloworld!
-def splitHTMLAndRemoveTags(HTMLText=''):
+def splitHTMLAndRemoveTags(HTMLText):
     #patternSub = r'&nbsp;|\s+'
     patternSub = r'&nbsp;'
     HTMLTextStripped = re.sub(patternSub, '', HTMLText)
@@ -162,27 +181,34 @@ def splitHTMLAndRemoveTags(HTMLText=''):
 
 # 'part 1/2'    =>   'part 1_2'
 # or '[part1]'   =>   '_part1_'
-def delInvalidChars(name='', target='sheetName'):
+def delInvalidChars(name, target='sheetName'):
     if target=='sheetName':
         invalidScheetNameChars = ['/', '\\', ':', '*', '?', '[', ']']
         # replace invalid characters with character '_'
         return ''.join('_'   if c in invalidScheetNameChars   else c   for c in name)
-    else:
-        return name
+    
+    return name
     
 
 
 # for example,
 # {'key1':[], 'key2':[]}   =>   ['key1', 'key2']
-def getListOfKeys(obj={}):
+def getListOfKeys(obj):
+    #if obj is None:
+    #    obj = {}
+    
     return list(obj.keys())
 
 
 
 # Sort the object keys. More below.
-def sortObjKeys(dataToSort=None):
+def sortObjKeys(dataToSort):
     msgText = ''
+
     try:
+        #if dataToSort is None:
+        #    dataToSort = {}
+        
         pattern = re.compile(r'\d+')
 
         for key in dataToSort.keys():
@@ -224,8 +250,11 @@ def sortObjKeys(dataToSort=None):
 
 
 # Convert the keys in an object using the order from the listOfOrderedKeys.
-def convertObjKeysToDesiredOrder(obj={}, listOfOrderedKeys=[], convertToStr=False):
-    objToReturn={}
+def convertObjKeysToDesiredOrder(obj, listOfOrderedKeys, convertToStr=False):
+    #if obj is None:
+    #    obj = {}
+    
+    objToReturn = {}
 
     for key in listOfOrderedKeys:
 
@@ -240,7 +269,10 @@ def convertObjKeysToDesiredOrder(obj={}, listOfOrderedKeys=[], convertToStr=Fals
 
 
 # Filter nd.array
-def filterNumpyNdarray(arr=np.ndarray, elToDel=''):
+def filterNumpyNdarray(arr, elToDel=''):
+    #if arr is None:
+    #    arr = np.ndarray
+    
     # convert values to string
     arrAsStr = arr.astype(str)
     filteredArrAsStr = arrAsStr[ arrAsStr != elToDel]
@@ -252,7 +284,10 @@ def filterNumpyNdarray(arr=np.ndarray, elToDel=''):
 
 
 # Group items by their base names, which are the common parts of some (full) names.
-def getPureGroupedList(df=DataFrame, colToGroupBy='names_base', colToCreateList='names'):
+def getPureGroupedList(df, colToGroupBy='names_base', colToCreateList='names'):
+    #if df is None:
+    #    df = DataFrame
+    
     # Group data in Data Frame by unique values in column (index) colToGroupBy.
     # Then, make the list from the values in the column named colToCreateList.
     newDf = None
@@ -260,6 +295,7 @@ def getPureGroupedList(df=DataFrame, colToGroupBy='names_base', colToCreateList=
 
     if colToGroupBy in df.index.names   and   colToCreateList in df.columns:
         newDf = df.groupby(colToGroupBy, sort=False)[colToCreateList]
+        
         # Ignore the column names. Get the values as a list. 
         newDfWithoutCols = newDf.apply(list)
         dataToReturn = newDfWithoutCols.to_dict()
@@ -269,7 +305,10 @@ def getPureGroupedList(df=DataFrame, colToGroupBy='names_base', colToCreateList=
 
 
 # Make the list with the pure values from the column named colToCreateList.
-def getPureList(df=DataFrame, colToCreateList='names'):
+def getPureList(df, colToCreateList='names'):
+    #if df is None:
+    #    df = DataFrame
+    
     newDf = None
     if colToCreateList in df.columns:
         newDf = list(df[colToCreateList])

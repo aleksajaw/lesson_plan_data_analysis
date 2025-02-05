@@ -2,29 +2,32 @@ from error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import weekdays, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, lessonTimePeriods
 from excel_utils import dropnaInDfByAxis
 import pandas as pd
-from pandas import DataFrame
+#from pandas import DataFrame
 import numpy as np
 import re
 
 
 
-def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newColName='', newColVal=''):
+def concatAndFilterScheduleDataFrames(df1, df2, addNewCol=False, newColName='', newColVal=''):
     msgText = ''
     newDf = None
 
     try:
+        #if df1 is None:
+        #    df1 = DataFrame
+        #if df2 is None:
+        #    df2 = DataFrame
+        
         # two lines below prevents FutureWarning:
         #   The behavior of DataFrame concatenation with empty or all-NA entries is deprecated.
         #   In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes.
         #   To retain the old behavior, exclude the relevant entries before the concat operation.
-        #el1 = dropnaInDfByAxis(el1, 1)
-        if isinstance(el1, DataFrame)   and   isinstance(el2, DataFrame):
-            el2 = dropnaInDfByAxis(el2, 1)
-            newDf = pd.concat([el1, el2], sort=False).reset_index()
-            newDf.set_index(keys=timeIndexNames, inplace=True)
-            newDf = newDf.sort_index(level=0)
-        else:
-            newDf = el1 or el2
+        #df1 = dropnaInDfByAxis(df1, 1)
+        df2 = dropnaInDfByAxis(df2, 1)
+        newDf = pd.concat([df1, df2], sort=False).reset_index()
+        newDf.set_index(keys=timeIndexNames, inplace=True)
+        newDf = newDf.sort_index(level=0)
+        
         newDf = filterAndConvertScheduleDataFrames(newDf, addNewCol, newColName, newColVal)
 
 
@@ -37,11 +40,14 @@ def concatAndFilterScheduleDataFrames(el1=None, el2=None, addNewCol=False, newCo
         
 
 
-def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', newColVal=''):
+def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName='', newColVal=''):
     newDfFiltered = []
     msgText = ''
     
     try:
+        #if df is None:
+        #    df = DataFrame
+        
         newDf = df.copy()
         rowsFiltered = []
 
@@ -135,7 +141,7 @@ def filterAndConvertScheduleDataFrames(df=None, addNewCol=False, newColName='', 
 
 
 # 'r' comes from 'rozszerzony/a' which means the subject is extendend like 'advanced English'
-def createGroupsInListByPrefix(data=[], splitDelimiter = '-', replaceDelimiters = ['.r', 'r_']):
+def createGroupsInListByPrefix(data, splitDelimiter = '-', replaceDelimiters = ['.r', 'r_']):
     msgText = ''
 
     try:
@@ -194,7 +200,7 @@ def createGroupsInListByPrefix(data=[], splitDelimiter = '-', replaceDelimiters 
 
 
 
-def createGroupsInListByFirstLetter(data=[]):
+def createGroupsInListByFirstLetter(data):
     msgText = ''
 
     try:
@@ -225,7 +231,7 @@ def createGroupsInListByFirstLetter(data=[]):
 
 
 
-def createGroupsInListByStringAndNumbers(data=[], optionalPartInNrPrefix='0'):
+def createGroupsInListByStringAndNumbers(data, optionalPartInNrPrefix='0'):
     msgText=''
 
     try:
@@ -266,7 +272,7 @@ def createGroupsInListByStringAndNumbers(data=[], optionalPartInNrPrefix='0'):
 
 
 
-def createGroupsInListByNumbers(data=[]):
+def createGroupsInListByNumbers(data):
     msgText=''
 
     try:
@@ -292,7 +298,7 @@ def createGroupsInListByNumbers(data=[]):
 
 
 
-def createGroupsInListBy(listName='', data=[]):
+def createGroupsInListBy(listName, data):
     result = []
     msgText = ''
     groupingKey = ''

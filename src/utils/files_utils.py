@@ -6,7 +6,7 @@ from src.constants.paths_constants import documentsPath
 
 
 
-def doesDirExist(dirPath='', shouldPrintMsg=False):
+def doesDirExist(dirPath, shouldPrintMsg=False):
     msgText = f'\nDirectory   {os.path.basename(dirPath)}   '
     doesDirExistBool = bool( os.path.isdir(dirPath) )
 
@@ -19,13 +19,13 @@ def doesDirExist(dirPath='', shouldPrintMsg=False):
 
 
 
-def createDirIfNecessary(dirPath=''):
+def createDirIfNecessary(dirPath):
     if dirPath   and   not doesDirExist(dirPath):
         os.mkdir(dirPath)
 
 
 
-def listSubdirectories(basePath=''):
+def listSubdirectories(basePath):
     excludedDirs = ['.old']
     dirList = []
 
@@ -45,7 +45,7 @@ def listSubdirectories(basePath=''):
 
 
 
-def doesFileExist(filePath='', shouldPrintMsg=False):
+def doesFileExist(filePath, shouldPrintMsg=False):
     msgText = f'\nFile   {os.path.basename(filePath)}   '
     doesFileExistBool = bool( os.path.isfile(filePath) )
 
@@ -58,7 +58,7 @@ def doesFileExist(filePath='', shouldPrintMsg=False):
 
 
 
-def writeDataToFile(filePath='', dataToEnter=None):
+def writeDataToFile(filePath, dataToEnter):
     msgText=''
     isSuccess=False
 
@@ -80,7 +80,7 @@ def writeDataToFile(filePath='', dataToEnter=None):
 
 
 
-def compareAndUpdateFile(filePath='', dataToCompare=''):
+def compareAndUpdateFile(filePath, dataToCompare):
     msgText = ''
     isFileChanged = False
     #if bool(filePath) and bool(dataToCompare):
@@ -115,7 +115,7 @@ def compareAndUpdateFile(filePath='', dataToCompare=''):
 
 
 
-def findFileGroup(desiredBase='', desiredExt='', getSplitFileName=False, dirPath=documentsPath):
+def findFileGroup(desiredBase, desiredExt, getSplitFileName=False, dirPath=documentsPath):
     from collections import defaultdict
     group = defaultdict(list)
 
@@ -131,7 +131,7 @@ def findFileGroup(desiredBase='', desiredExt='', getSplitFileName=False, dirPath
 
 
 
-def splitFileName(fileName=''):
+def splitFileName(fileName):
     basename, ext = ('', '')
 
     if fileName:
@@ -141,14 +141,14 @@ def splitFileName(fileName=''):
 
 
 
-def findLastFileInGroup(desiredBase='', desiredExt='', getSplitFileName=False):
+def findLastFileInGroup(desiredBase, desiredExt, getSplitFileName=False):
     filesList = findFileGroup(desiredBase, desiredExt, getSplitFileName)
 
     return filesList[-1]   if len(filesList)   else None
 
 
 
-def getFileMarker(fileName='', separator='-'):
+def getFileMarker(fileName, separator='-'):
     if separator in fileName:
         return removeEmptyStrFromArr(fileName.split(separator))[-1]
 
@@ -157,7 +157,7 @@ def getFileMarker(fileName='', separator='-'):
 
 
 
-def createFileNameWithNr(basicFileName = 'schedule', fileExt = 'xlsx', separator = '-'):
+def createFileNameWithNr(basicFileName='schedule', fileExt = 'xlsx', separator = '-'):
     fileNameParts = findLastFileInGroup(basicFileName, fileExt, True)
     difference = ''
 
@@ -204,7 +204,7 @@ def createFileNameWithDateTime(fileNameBase='log', fileExt='txt', mainSeparator=
 
         
 
-def findFileNameDifference(fileName='', fileNameToBeCompared=''):
+def findFileNameDifference(fileName, fileNameToBeCompared):
     from src.utils.excel_utils import convertDigitInStrToInt
 
     difference = ''
@@ -229,7 +229,7 @@ def removeEmptyStrFromArr(arr=[]):
 
 
 
-def openFileWithDefApp(filePath=''):
+def openFileWithDefApp(filePath):
 
     if filePath   and   not doesFileExist(filePath):
         return
