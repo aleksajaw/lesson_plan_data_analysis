@@ -145,6 +145,27 @@ def convertValToPercentage(value):
 
 
 
+# 'example', 'example2'   =>   ('example', 'example2')
+# ('example'), 'example2'   =>   ('example', 'example2')
+# 7, 'example2'   =>   (7, 'example2')
+def createTupleFromVals(val1, val2):
+    # Check if a value is iterable or convert it to one.
+    if not isinstance(val1, tuple):
+        if not hasattr(val1, '__iter__')   or   isinstance(val1, str):
+            val1 = [val1]
+        
+        val1 = tuple(val1)
+        
+    if not isinstance(val2, tuple):
+        if not hasattr(val2, '__iter__')   or   isinstance(val2, str):
+            val2 = [val2]
+        
+        val2 = tuple(val2)
+        
+    return val1 + val2
+
+
+
 # <br>
 # <br />   =>   \n
 def convertBrInText(text):
