@@ -84,8 +84,8 @@ colWithNumbersNames = [ ('Poniedziałek', 'sala'),
 
 noGroupMarker = '-'
 wholeClassGroupName = 'cała klasa'
-sumRowsCellName = 'Razem'
-sumColsCellName = 'Razem'
+sumCellsInRowsColName = 'Razem'
+sumCellsInColsRowName = 'Razem'
 
 excelFontSize = 11
 excelMargin = { 'row' : 1,
