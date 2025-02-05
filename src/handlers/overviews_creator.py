@@ -82,14 +82,14 @@ def createScheduleOverviews():
                     newDf = DataFrame(index=tempDf.index)
                     
                     overviewColNames = [tempDf.columns.names[0], 'Typ danych']
-
+                    maxPercentage = convertValToPercentage(1)
+                    
                     for col in tempDf.columns:
                         quantityColName = (col, 'Ilość')
 
                         newDf[quantityColName] = tempDf[col]
                         newDf.columns = MultiIndex.from_tuples(tuples=newDf.columns, names=overviewColNames)
 
-                        maxPercentage = convertValToPercentage(1)
 
                         if col != sumCellsInRowsColName:
                             #colWithoutLastRow = newDf.loc[(newDf.index!=sumCellsInColsRowName), quantityColName]
@@ -110,10 +110,10 @@ def createScheduleOverviews():
                         
                         
                         partOfWeekColName = (col, 'Udział w całości tygodnia')
-                        newDf[partOfWeekColName] = divisionResultAsPercentage(newDf[quantityColName], sumValCol)
+                        newDf[partOfWeekColName] = divisionResultAsPercentage(newDf[quantityColName], sumValCol)                    
 
-                        #newDf.loc[(newDf.index==sumCellsInColsRowName), partOfWeekColName] = maxPercentage
-                        newDf.loc[newDf.index[-1], newDf.columns[-1]] = maxPercentage
+                    #newDf.loc[(newDf.index==sumCellsInColsRowName), partOfWeekColName] = maxPercentage
+                    newDf.loc[newDf.index[-1], newDf.columns[-1]] = maxPercentage
 
 
                     #newDf.columns = MultiIndex.from_tuples(newDf.columns)
