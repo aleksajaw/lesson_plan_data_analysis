@@ -74,16 +74,23 @@ def correctDfContent(df=DataFrame, forceCorrect=False):
 
 
 def correctValsInColsWithNumbers(df=DataFrame, forceCorrect=False):
-    if forceCorrect:
-        for col in df.columns:
-            df[col] = df[col].map(convertFloatToInt)
     
-    else:
-        for colWithNrTuple in colWithNumbersNames:
-            if colWithNrTuple in df.columns:
-                df[colWithNrTuple] = df[colWithNrTuple].map(convertFloatToInt)
+    dfColsToCorrectList = df.select_dtypes(include=['object', 'float']).columns.tolist()
+    
+    if len(dfColsToCorrectList):
+        colsList = dfColsToCorrectList   if forceCorrect   else colsWithNumbersNames
+        
+        for colWithNrs in colsList:
+            if forceCorrect   or   (not forceCorrect   and   colWithNrs in df.columns):
+
+              if 'obj' in str(df[colWithNrs].dtype):
+                  df[colWithNrs] = df[colWithNrs].map(convertFloatToInt)
+              
+              else:
+                  df[colWithNrs] = df[colWithNrs].astype(int)
 
     return df
+
 
 
 # 111.0   =>   111
@@ -96,6 +103,30 @@ def convertFloatToInt(value=None):
 # '1'   =>   1
 def convertDigitInStrToInt(text=''):
     return int(text)   if str.isdigit(text)   else text
+
+
+# 3 / 4   =>   '0,75%'
+def divisionResultAsPercentage(val1=None, val2=None):
+    divisionResult = (val1 / val2).fillna(0)
+    
+    return convertDfColValToPercentage(divisionResult)
+
+
+
+# DataFrame column with values like
+# 0,75   =>   '75%'
+def convertDfColValToPercentage(value=None):
+    return (value * 100).round(2).astype(str) + '%'
+
+
+
+# 0,75   =>   '75%'
+def convertValToPercentage(value=0):
+    if not isinstance(value, float):
+        value = float(value)
+
+    return str(round((value * 100), 2)) + '%'
+
 
 
 # <br>
