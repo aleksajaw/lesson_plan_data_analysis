@@ -205,17 +205,12 @@ def removeEnvironment(endHere):
 
 
 
-def removeFiles(endHere, isClearLogs=False):
+def removeFiles(endHere):
     projectRoot = os.path.dirname(__file__)
-    
-    if not isClearLogs:
-        #schedulesDir = os.path.join(projectRoot, 'schedules')
-        documentsDir = os.path.join(projectRoot, 'documents')
-        processingFilesDir = os.path.join(projectRoot, 'processing_files')
-        dirList = [documentsDir, processingFilesDir]
-    else:
-        logsDir = os.path.join(projectRoot, 'logs')
-        dirList = [logsDir]
+    #schedulesDir = os.path.join(projectRoot, 'schedules')
+    documentsDir = os.path.join(projectRoot, 'documents')
+    processingFilesDir = os.path.join(projectRoot, 'processing_files')
+    dirList = [documentsDir, processingFilesDir]
 
     dirListBasenames = [os.path.basename(dirName)   for dirName in dirList]
 
@@ -231,6 +226,36 @@ def removeFiles(endHere, isClearLogs=False):
 
     except Exception as e:
         print(f'\nError while removing the files in the directory { ', '.join(f'"{directory}"' for directory in dirListBasenames) }: {e}')
+
+    if endHere:
+        execTime = (time.perf_counter() - startTime)
+        if round(execTime%60, 2):
+            print(f'\nProgram took {int(execTime//60)} min and {execTime%60:.2f} sec.')
+
+
+
+def clearLogs(endHere):
+    import shutil
+    
+    projectRoot = os.path.dirname(__file__)
+    logsDir = os.path.join(projectRoot, 'logs')
+    logsDirBaseName = os.path.basename(logsDir)
+
+    try:
+        for entry in os.listdir(logsDir):
+            entryPath = os.path.join(logsDir, entry)
+
+            if os.path.isdir(entryPath):
+                shutil.rmtree(entryPath)
+
+            elif entry != '.gitkeep':
+                os.remove(os.path.join(logsDir, entry))
+
+        print(f'\nFiles and directories inside the {logsDirBaseName} directory have been removed, if they exist.')
+
+
+    except Exception as e:
+        print(f'\nError while removing the files and directories in the directory {logsDirBaseName}: {e}')
 
     if endHere:
         execTime = (time.perf_counter() - startTime)
@@ -310,7 +335,7 @@ def chooseStart(args):
 
 
     if isClearLogs:
-        removeFiles(isClearLogsOnly, True)
+        clearLogs(isClearLogsOnly)
 
     if isRmFiles:
         removeFiles(isRemoveOnly and not isRmVenv)
