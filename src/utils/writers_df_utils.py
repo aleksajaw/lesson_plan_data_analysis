@@ -155,7 +155,7 @@ def writeListOfObjsWithMultipleDfsToJSON(multiDfsJSONFilePath='', listOfObjsWith
                 
                 listOfObjsWithMultipleDfsJSON[sheetName].append( { 'startrow' : startRow,
                                                                    'startcol' : startCol,
-                                                                   'df'       : correctDfContent(df, True).to_json(orient='split') } )
+                                                                   'df'       : df.to_json(orient='split') } )
 
         listOfObjsWithMultipleDfsJSON = json.dumps(listOfObjsWithMultipleDfsJSON, indent=JSONIndentValue)
         isFileChanged = compareAndUpdateFile(multiDfsJSONFilePath, listOfObjsWithMultipleDfsJSON)
