@@ -1,7 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 #from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
-from src.constants.schedule_structures_constants import excelMargin, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples5el, dfColWeekDayNamesTuples4el
+from src.constants.schedule_structures_constants import excelMargin, timeIndexNames, dayAndAttrNames, dfColWeekDayNameTuples5el, dfColWeekDayNameTuples4el, dfColWeekDayNameArrays5el, dfColWeekDayNameArrays4el
 from pandas import read_excel, MultiIndex, DataFrame
 import json
 
@@ -48,14 +48,17 @@ def readDfsJSONAsObjOfDfs(JSONFilePath):
             
         for dfName, dfData in objOfDfsTemp.items():
           dfData = json.loads(dfData)
-          dfData['index'] = MultiIndex.from_tuples(dfData['index'], names=timeIndexNames)
+          dfData['index'] = MultiIndex.from_tuples(tuples=dfData['index'], names=timeIndexNames)
+          #dfData['index'] = MultiIndex.from_arrays(arrays=dfData['index'], names=timeIndexNames)
 
           try:
-              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples5el, names=dayAndAttrNames)
+              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNameTuples5el, names=dayAndAttrNames)
+              #dfData['columns'] = MultiIndex.from_arrays(arrays=dfColWeekDayNameArrays5el, names=dayAndAttrNames)
               objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
 
           except:
-              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNamesTuples4el, names=dayAndAttrNames)
+              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNameTuples4el, names=dayAndAttrNames)
+              #dfData['columns'] = MultiIndex.from_arrays(arrays=dfColWeekDayNameArrays4el, names=dayAndAttrNames)
               objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
 
 

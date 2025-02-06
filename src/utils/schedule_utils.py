@@ -1,5 +1,5 @@
 from error_utils import handleErrorMsg, getTraceback
-from src.constants.schedule_structures_constants import weekdays, timeIndexNames, dayAndAttrNames, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, lessonTimePeriods
+from src.constants.schedule_structures_constants import weekdays, timeIndexNames, dayAndAttrNames, dfColWeekDayNameTuples4el, dfColWeekDayNameTuples5el, dfColWeekDayNameArrays4el, dfColWeekDayNameArrays5el, lessonTimePeriods
 from excel_utils import dropnaInDfByAxis
 import pandas as pd
 #from pandas import DataFrame
@@ -53,7 +53,8 @@ def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName='', newCo
 
         prepareNewColVal = addNewCol   and   newColName   and   newColVal
 
-        colDayNamesTuples = dfColWeekDayNamesTuples5el   if addNewCol   else dfColWeekDayNamesTuples4el
+        colDayNameTuples = dfColWeekDayNameTuples5el   if addNewCol   else dfColWeekDayNameTuples4el
+        #colDayNameArrays = dfColWeekDayNameArrays5el   if addNewCol   else dfColWeekDayNameArrays4el
         timeKey1 = timeIndexNames[0]
         timeKey2 = timeIndexNames[1]
 
@@ -92,7 +93,7 @@ def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName='', newCo
                                 desiredNr = missingNrs[0]
                                 singleRowTemp = {}
                                 
-                                for lessonAttr in colDayNamesTuples:
+                                for lessonAttr in colDayNameTuples:
                                     singleRowTemp[lessonAttr] = np.nan
                                 
                                 desiredPreviousTime = lessonTimePeriods[ desiredNr-1 ]
@@ -121,7 +122,8 @@ def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName='', newCo
 
         if addNewCol or ( len(newDf.columns.get_level_values(0).unique()) < len(weekdays) ):
 
-            columnsVal = pd.MultiIndex.from_tuples(colDayNamesTuples, names=dayAndAttrNames)
+            columnsVal = pd.MultiIndex.from_tuples(colDayNameTuples, names=dayAndAttrNames)
+            #columnsVal = pd.MultiIndex.from_arrays(arrays=colDayNameArrays, names=dayAndAttrNames)
         
         else:
             columnsVal = newDf.columns

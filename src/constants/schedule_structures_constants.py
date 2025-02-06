@@ -47,26 +47,55 @@ dfRowNrAndTimeTuples = [
     (11, '16:40-17:25'),
     (12, '17:30-18:15')
 ]
-dfRowIndexNamesTuples = [
+dfRowIndexNameTuples = [
     ('Nr', ''),
     ('Godz', '')
 ]
-dfColWeekDayNamesTuples4el = [
+dfColWeekDayNameTuples4el = [
     ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'grupa'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'sala'),
     ('Wtorek', 'przedmiot'), ('Wtorek', 'grupa'), ('Wtorek', 'nauczyciel'), ('Wtorek', 'sala'),
     ('Środa', 'przedmiot'), ('Środa', 'grupa'), ('Środa', 'nauczyciel'), ('Środa', 'sala'),
     ('Czwartek', 'przedmiot'), ('Czwartek', 'grupa'), ('Czwartek', 'nauczyciel'), ('Czwartek', 'sala'),
     ('Piątek', 'przedmiot'), ('Piątek', 'grupa'), ('Piątek', 'nauczyciel'), ('Piątek', 'sala')
 ]
-dfColWeekDayNamesTuples5el = [
+dfColWeekDayNameTuples5el = [
     ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'grupa'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'klasa'), ('Poniedziałek', 'sala'),
     ('Wtorek', 'przedmiot'), ('Wtorek', 'grupa'), ('Wtorek', 'nauczyciel'), ('Wtorek', 'klasa'), ('Wtorek', 'sala'),
     ('Środa', 'przedmiot'), ('Środa', 'grupa'), ('Środa', 'nauczyciel'), ('Środa', 'klasa'), ('Środa', 'sala'),
     ('Czwartek', 'przedmiot'), ('Czwartek', 'grupa'), ('Czwartek', 'nauczyciel'), ('Czwartek', 'klasa'), ('Czwartek', 'sala'),
     ('Piątek', 'przedmiot'), ('Piątek', 'grupa'), ('Piątek', 'nauczyciel'), ('Piątek', 'klasa'), ('Piątek', 'sala')
 ]
-dfColNamesTuples = dfRowIndexNamesTuples + dfColWeekDayNamesTuples4el
-# dfColNamesTuples = [('Nr', ''), ('Godz', '')] + [(day, attr) for day in weekdays for attr in lessonAttrs]
+dfColNameTuples = dfRowIndexNameTuples + dfColWeekDayNameTuples4el
+
+dfRowIndexNameArrays = [
+                          ['Nr', 'Godz'],
+                          [''] * 2
+                       ]
+dfColWeekDayNameArrays4el = [
+                               ['Poniedziałek'] * 4 + ['Wtorek'] * 4 + ['Środa'] * 4 + ['Czwartek'] * 4 + ['Piątek'] * 4,
+                               ['przedmiot', 'grupa', 'nauczyciel', 'sala'] * 5
+                             ]
+dfColWeekDayNameArrays5el = [
+                               ['Poniedziałek'] * 5 + ['Wtorek'] * 5 + ['Środa'] * 5 + ['Czwartek'] * 5 + ['Piątek'] * 5,
+                               ['przedmiot', 'grupa', 'nauczyciel', 'klasa', 'sala'] * 5
+                             ]
+dfColNameArrays = [
+                     dfRowIndexNameArrays[0] + dfColWeekDayNameArrays4el[0],
+                     dfRowIndexNameArrays[1] + dfColWeekDayNameArrays4el[1]
+                  ]
+
+dfRowIndexNameProducts = [
+                            ['Nr', 'Godz'],
+                            ['']
+                         ]
+dfColWeekDayNameProducts4el = [
+                                 ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'],
+                                 ['przedmiot', 'grupa', 'nauczyciel', 'sala']
+                              ]
+dfColWeekDayNameProducts5el = [
+                                 ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'],
+                                 ['przedmiot', 'grupa', 'nauczyciel', 'klasa', 'sala']
+                              ]
 
 import numpy as np
 dfColWeekDayEmptyRow = {
@@ -76,11 +105,18 @@ dfColWeekDayEmptyRow = {
     ('Czwartek', 'przedmiot'): np.nan, ('Czwartek', 'grupa'): np.nan, ('Czwartek', 'nauczyciel'): np.nan, ('Czwartek', 'klasa'): np.nan, ('Czwartek', 'sala'): np.nan,
     ('Piątek', 'przedmiot'): np.nan, ('Piątek', 'grupa'): np.nan, ('Piątek', 'nauczyciel'): np.nan, ('Piątek', 'klasa'): np.nan, ('Piątek', 'sala'): np.nan }
 
-colsWithNumbersNames = [ ('Poniedziałek', 'sala'),
-                         ('Wtorek', 'sala'),
-                         ('Środa', 'sala'),
-                         ('Czwartek', 'sala'),
-                         ('Piątek', 'sala') ]
+colsWithNumbersNameTuples = [
+                                ('Poniedziałek', 'sala'),
+                                ('Wtorek', 'sala'),
+                                ('Środa', 'sala'),
+                                ('Czwartek', 'sala'),
+                                ('Piątek', 'sala')
+                             ]
+
+colsWithNumbersNameArrays = [
+                               ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'],
+                               ['sala'] * 5
+                            ]
 
 noGroupMarker = '-'
 wholeClassGroupName = 'cała klasa'

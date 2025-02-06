@@ -1,8 +1,8 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths, allScheduleOverviewResourcesByDaysExcelPaths, allScheduleGroupedOverviewResourcesByDaysExcelPaths, allScheduleOverviewResourcesByDaysDfsJSONPaths, allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths,allScheduleOverviewResourcesByHoursExcelPaths, allScheduleGroupedOverviewResourcesByHoursExcelPaths, allScheduleOverviewResourcesByHoursDfsJSONPaths, allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, sumCellsInRowsColName, sumCellsInColsRowName, sumCellsInRowsColName
-from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals#, convertValToPercentage
-from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs
+from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, createListFromVals#, convertValToPercentage
+from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfs
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
 from pandas import  MultiIndex, DataFrame#, Series
@@ -13,7 +13,8 @@ import os
 
 def createScheduleOverviews():
     createOverviewsWithResourcesBy('days')
-    createOverviewsWithResourcesBy('hours')
+    createOverviewsWithResourcesBy('hours')    
+    #readMultiDfsJSONAsObjOfDfs(allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths[0])
 
 
 
@@ -79,8 +80,11 @@ def createOverviewsWithResourcesBy(overviewKey):
                         
                         singleElIndexTuple = (colName, singleElInCol)
                         newIndex.append(singleElIndexTuple)
+                        #singleElIndexArray = [colName, singleElInCol]
+                        #newIndex.append(singleElIndexArray)
 
                     newIndex = MultiIndex.from_tuples(tuples=newIndex, names=['Typ grupy', 'Element grupy'])
+                    #newIndex = MultiIndex.from_arrays(arrays=newIndex, names=['Typ grupy', 'Element grupy'])
 
 
                     # Complete the data and concatenate with the existing data.
@@ -99,9 +103,11 @@ def createOverviewsWithResourcesBy(overviewKey):
                     
                     for col in tempDf.columns:
                         quantityColName = createTupleFromVals(col, 'Ilość')
+                        #quantityColName = createListFromVals(col, 'Ilość')
 
                         newDf[quantityColName] = tempDf[col]
                         newDf.columns = MultiIndex.from_tuples(tuples=newDf.columns, names=overviewColNames)
+                        #newDf.columns = MultiIndex.from_arrays(arrays=newDf.columns, names=overviewColNames)
 
 
                         if sumCellsInRowsColName not in col:
@@ -112,6 +118,7 @@ def createOverviewsWithResourcesBy(overviewKey):
                             lastCellInCol = newDf.loc[newDf.index[-1], quantityColName]
 
                             partOfDayColName = createTupleFromVals(col, 'Udział w dniu')
+                            #partOfDayColName = createListFromVals(col, 'Udział w dniu')
 
                             newDf.loc[newDf.index[:-1], partOfDayColName] = divisionResultAsPercentage(colWithoutLastRow, lastCellInCol)
                             newDf.loc[sumCellsInColsRowNameTuple, partOfDayColName] = maxPercentage   if lastCellInCol   else 'brak zajęć'
@@ -123,6 +130,7 @@ def createOverviewsWithResourcesBy(overviewKey):
                         
                         
                         partOfWeekColName = createTupleFromVals(col, 'Udział w tygodniu')
+                        #partOfWeekColName = createListFromVals(col, 'Udział w tygodniu')
                         newDf[partOfWeekColName] = divisionResultAsPercentage(newDf[quantityColName], sumValCol)                    
 
                     #newDf.loc[(newDf.index==sumCellsInColsRowName), partOfWeekColName] = maxPercentage

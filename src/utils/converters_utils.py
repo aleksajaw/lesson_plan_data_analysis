@@ -1,7 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 #from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import draftSheetName, JSONIndentValue#, excelEngineName, 
-from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dayAndAttrNames, colsWithNumbersNames#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, excelMargin
+from src.constants.schedule_structures_constants import dfColNameTuples, dfColNameArrays, timeIndexNames, dayAndAttrNames, colsWithNumbersNameTuples, colsWithNumbersNameArrays#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, excelMargin
 import json
 import re
 from pandas import DataFrame, MultiIndex, Series, Index#, read_excel
@@ -22,7 +22,8 @@ def convertToDf(dataToConvert):
         
         df = DataFrame(dataToConvert[1:])
         # Multi-dimensional column names.
-        df.columns = MultiIndex.from_tuples(tuples=dfColNamesTuples, names=dayAndAttrNames)
+        df.columns = MultiIndex.from_tuples(tuples=dfColNameTuples, names=dayAndAttrNames)
+        #df.columns = MultiIndex.from_arrays(arrays=dfColNameArrays, names=dayAndAttrNames)
 
         df = correctDfContent(df)
         
@@ -88,7 +89,8 @@ def correctValsInColsWithNumbers(df, forceCorrect=False):
     dfColsToCorrectList = df.select_dtypes(include=['object', 'float']).columns.tolist()
     
     if len(dfColsToCorrectList):
-        colsList = dfColsToCorrectList   if forceCorrect   else colsWithNumbersNames
+        colsList = dfColsToCorrectList   if forceCorrect   else colsWithNumbersNameTuples
+        #colsList = dfColsToCorrectList   if forceCorrect   else colsWithNumbersNameArrays
         
         for colWithNrs in colsList:
             if forceCorrect   or   (not forceCorrect   and   colWithNrs in df.columns):
@@ -161,6 +163,21 @@ def createTupleFromVals(val1, val2):
             val2 = [val2]
         
         val2 = tuple(val2)
+        
+    return val1 + val2
+
+
+
+# 'example', 'example2'   =>   []'example', 'example2']
+# []'example'], 'example2'   =>   []'example', 'example2']
+# 7, 'example2'   =>   [7, 'example2']
+def createListFromVals(val1, val2):
+    # Check if a value is iterable or convert it to one.
+    if not isinstance(val1, list):
+         val1 = list(val1)
+        
+    if not isinstance(val2, list):
+        val2 = list(val2)
         
     return val1 + val2
 
@@ -251,7 +268,8 @@ def sortObjKeys(dataToSort):
 def customSorting(el):
     pattern = re.compile(r'\d+')
 
-    if isinstance(el, tuple):
+    if hasattr(el, '__iter__')   and   not isinstance(el, str):
+    #if isinstance(el, tuple):
         el = el[-1]
     
     el = str(el)
