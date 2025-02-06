@@ -1,7 +1,7 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths, allScheduleOverviewResourcesByDaysExcelPaths, allScheduleGroupedOverviewResourcesByDaysExcelPaths, allScheduleOverviewResourcesByDaysDfsJSONPaths, allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths,allScheduleOverviewResourcesByHoursExcelPaths, allScheduleGroupedOverviewResourcesByHoursExcelPaths, allScheduleOverviewResourcesByHoursDfsJSONPaths, allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, sumCellsInRowsColName, sumCellsInColsRowName, sumCellsInRowsColName
-from src.utils.converters_utils import divisionResultAsPercentage, createTupleFromVals#, convertValToPercentage
+from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals#, convertValToPercentage
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
@@ -13,7 +13,7 @@ import os
 
 def createScheduleOverviews():
     createOverviewsWithResourcesBy('days')
-    createOverviewsWithResourcesBy('hours')    
+    createOverviewsWithResourcesBy('hours')
 
 
 
@@ -85,7 +85,8 @@ def createOverviewsWithResourcesBy(overviewKey):
 
                     # Complete the data and concatenate with the existing data.
                     uniqueValFromColsLvl2Counter.index = newIndex
-                    uniqueValFromColsLvl2Counter = uniqueValFromColsLvl2Counter
+                    newIndexSorted = sorted(uniqueValFromColsLvl2Counter.index, key=lambda x: customSorting(x))
+                    uniqueValFromColsLvl2Counter = uniqueValFromColsLvl2Counter.loc[ newIndexSorted ]
                     uniqueValFromColsLvl2Counter = pd.concat([uniqueValFromColsLvl2Counter, rowForSumEntireCols])
                     
                     tempDf = uniqueValFromColsLvl2Counter
