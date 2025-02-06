@@ -4,7 +4,7 @@ from src.constants.conversion_constants import draftSheetName, JSONIndentValue#,
 from src.constants.schedule_structures_constants import dfColNamesTuples, timeIndexNames, dayAndAttrNames, colsWithNumbersNames#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, excelMargin
 import json
 import re
-from pandas import DataFrame, MultiIndex, Series#, read_excel
+from pandas import DataFrame, MultiIndex, Series, Index#, read_excel
 import numpy as np
 
 
@@ -226,8 +226,6 @@ def sortObjKeys(dataToSort):
     try:
         #if dataToSort is None:
         #    dataToSort = {}
-        
-        pattern = re.compile(r'\d+')
 
         for key in dataToSort.keys():
             # sort by numbers (which are keys here) inside list elements,
@@ -237,33 +235,42 @@ def sortObjKeys(dataToSort):
 
             # also add sorting strings between the values with numbers like: 1, s1, st1, 2, _02, s2
             # so we will have s1, s2, st1, _02, 1, 2
-            dataToSort[key].sort( key=lambda x: (
-                                      # False values are treated as smaller,
-                                      # so they will appear earlier in the sorted list
-                                      # so at first sort by letters
-                                      not x[0].isalpha(),
-                                      # put values like _07 before digits
-                                      # for easier grouping
-                                      x.isdigit(),
-                                      x.lower() if isinstance(x, str) and x[0].isalpha()
-                                                # sort by first digit in elements
-                                                else  int(pattern.search(x).group(0))
-                                                      if pattern.search(x)
-                                                      # if element does not have digit,
-                                                      # use inf(inity) to move element
-                                                      # at the end of the sorting here
-                                                      else float('inf')
-                                  )
-                                )
+            dataToSort[key].sort( key=customSorting )
             # convert strings to integer, if it is possible
             dataToSort[key] = [int(x)   if x.isdigit()   else x   for x in dataToSort[key]]
-        
+    
     except Exception as e:
         msgText = handleErrorMsg('\nError while sorting schedule owner lists.', getTraceback(e))
 
     if msgText: print(msgText)
 
     return dataToSort
+
+
+
+def customSorting(el):
+    pattern = re.compile(r'\d+')
+
+    if isinstance(el, tuple):
+        el = el[-1]
+    
+    el = str(el)
+
+    return ( # False values are treated as smaller,
+             # so they will appear earlier in the sorted list
+             # so at first sort by letters
+             not el[0].isalpha(),
+             # put values like _07 before digits
+             # for easier grouping
+             el.isdigit(),
+             el.lower()   if isinstance(el, str)   and   el[0].isalpha()
+                          # sort by first digit in elements
+                          else  int(pattern.search(el).group(0))
+                              if pattern.search(el)
+                              # if element does not have digit,
+                              # use inf(inity) to move element
+                              # at the end of the sorting here
+                              else float('inf') )
 
 
 
