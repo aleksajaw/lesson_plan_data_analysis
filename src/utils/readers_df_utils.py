@@ -3,7 +3,7 @@ from error_utils import handleErrorMsg, getTraceback
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
 from src.constants.excel_constants import excelMargin
 from src.constants.schedule_structures_constants import timeIndexNames, dayAndAttrNames, dfColWeekDayNameTuples5el, dfColWeekDayNameTuples4el, dfColWeekDayNameArrays5el, dfColWeekDayNameArrays4el
-from pandas import read_excel, MultiIndex, DataFrame
+from pandas import read_excel, MultiIndex, DataFrame, IndexSlice
 import json
 
 
@@ -69,6 +69,39 @@ def readDfsJSONAsObjOfDfs(JSONFilePath):
     if msgText: print(msgText)
 
     return objOfDfs
+
+
+
+# JSON WITH OBJECT WITH LISTS OF MULTIPLE DATA FRAME OBJECTS
+#    =>   OBJECT WITH LISTS OF MULTIPLE CONVERTED DATA FRAMES
+def readMultiDfsJSONAsObjOfDfObjLists(JSONFilePath):
+    msgText=''
+
+    objOfMultiDfs = {}
+    try:
+        with open(JSONFilePath, 'r') as file:
+            objOfMultiDfsTemp = json.load(file)
+
+        for sheetName, dfObjList in objOfMultiDfsTemp.items():
+          objOfMultiDfs[sheetName] = []
+
+          for dfObj in dfObjList:
+              objTemp = dfObj.copy()
+
+              dfTemp = json.loads(objTemp['df'])
+              dfTemp = DataFrame( index=MultiIndex.from_tuples(dfTemp['index']), columns=MultiIndex.from_tuples(dfTemp['columns']), data=dfTemp['data'] )
+              
+              objTemp['df'] = dfTemp
+
+              objOfMultiDfs[sheetName].append(objTemp)
+              
+
+    except Exception as e:
+        msgText = handleErrorMsg('Error while reading JSON file as object with lists of converted Data Frame objects.', getTraceback(e))
+    
+    if msgText: print(msgText)
+
+    return objOfMultiDfs
 
 
 
