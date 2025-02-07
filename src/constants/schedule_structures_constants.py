@@ -120,18 +120,9 @@ colsWithNumbersNameArrays = [
 
 noGroupMarker = '-'
 wholeClassGroupName = 'cała klasa'
-sumCellsInRowsColName = 'Razem'
-sumCellsInColsRowName = 'Razem'
-
-excelFontSize = 11
-excelMargin = { 'row' : 1,
-                'col' : 1 }
 
 defRowNamesLen = len(timeIndexNames)
 defColNamesLen = len(dayAndAttrNames)
 
-excelDistance = { 'row' : 1,
-                  'col' : 1 }
-
-excelRangeStartCol = excelMargin['col'] + 1
-excelRangeStartRow = excelMargin['row'] + 1
+from pandas import CategoricalDtype
+weekdaysCatDtype = CategoricalDtype(categories=weekdays, ordered=True)
