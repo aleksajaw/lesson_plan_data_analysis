@@ -1,5 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.schedule_structures_constants import weekdays, excelMargin#, dayAndAttrNames, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
+from src.constants.excel_constants import excelMargin
+from src.constants.schedule_structures_constants import weekdays, weekdaysCatDtype#, dayAndAttrNames, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
 from src.constants.paths_constants import allOwnerTypeNames, schedulesWideAndVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleClassesGroupedExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, schedulesWideAndVerticallyDfsJSONPath, scheduleClassesGroupedDfsJSONPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths#, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath
 from src.constants.conversion_constants import excelEngineName
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
@@ -10,7 +11,7 @@ from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJ
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 from src.utils.transl_utils import getTranslation, getTranslByPlural
 import pandas as pd
-from pandas import ExcelWriter, DataFrame, RangeIndex, CategoricalDtype, MultiIndex
+from pandas import ExcelWriter, DataFrame, RangeIndex, MultiIndex
 import numpy as np
 #import re
 import os
@@ -57,7 +58,6 @@ def createScheduleExcelFileVertical():
                 dfVertical.index = dfVertical.index.reorder_levels( [2, 0, 1] )
                 
                 # Making the 1st lvl a CategoricalDType to simplify the sorting proccess.
-                weekdaysCatDtype = CategoricalDtype(categories=weekdays, ordered=True)
                 dfVertical.index = dfVertical.index.set_levels(
                                               dfVertical.index.levels[0].astype(weekdaysCatDtype), level=0
                                           )

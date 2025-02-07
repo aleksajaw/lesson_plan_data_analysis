@@ -1,7 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 #from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import excelEngineName, draftSheetName
-from src.constants.schedule_structures_constants import excelMargin, excelDistance
+from src.constants.excel_constants import excelMargin, excelDistance
 from pandas import ExcelWriter, DataFrame
 from openpyxl import load_workbook#, Workbook, worksheet
 from openpyxl.cell.cell import MergedCell as openpyxlMergedCell

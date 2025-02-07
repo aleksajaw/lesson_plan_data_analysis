@@ -1,6 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 #from src.constants.paths_constants import scheduleClassesExcelPath
-from src.constants.schedule_structures_constants import excelMargin, excelFontSize, excelRangeStartCol, excelRangeStartRow, defRowNamesLen, defColNamesLen#, timeIndexNames, dayAndAttrNames
+from src.constants.excel_constants import excelMargin, excelFontSize, excelRangeStartCol, excelRangeStartRow
+from src.constants.schedule_structures_constants import defRowNamesLen, defColNamesLen#, timeIndexNames, dayAndAttrNames
 #from pandas import ExcelWriter
 #from openpyxl import load_workbook, Workbook, worksheet
 from openpyxl.styles import Alignment as openpyxlAlignment

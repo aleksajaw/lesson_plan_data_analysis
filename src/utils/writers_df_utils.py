@@ -1,6 +1,6 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
-from src.constants.schedule_structures_constants import excelMargin #, excelDistance
+from src.constants.excel_constants import excelMargin #, excelDistance
 from converters_utils import delInvalidChars, convertObjOfDfsToJSON, correctDfContent #, convertToDf, convertToObjOfDfs,
 from excel_utils import countInnerCoords
 from excel_styles_utils import autoFormatScheduleExcel, autoFormatOverviewExcel#, autoFormatExcelCellSizes, autoFormatScheduleExcelCellStyles, 

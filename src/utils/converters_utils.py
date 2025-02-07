@@ -1,7 +1,8 @@
 from error_utils import handleErrorMsg, getTraceback
 #from src.constants.paths_constants import scheduleClassesExcelPath
-from src.constants.conversion_constants import draftSheetName, JSONIndentValue#, excelEngineName, 
-from src.constants.schedule_structures_constants import dfColNameTuples, dfColNameArrays, timeIndexNames, dayAndAttrNames, colsWithNumbersNameTuples, colsWithNumbersNameArrays#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el, excelMargin
+from src.constants.conversion_constants import draftSheetName, JSONIndentValue#, excelEngineName
+#from src.constants.excel_constants import excelMargin
+from src.constants.schedule_structures_constants import dfColNameTuples, dfColNameArrays, timeIndexNames, dayAndAttrNames, colsWithNumbersNameTuples, colsWithNumbersNameArrays#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el
 import json
 import re
 from pandas import DataFrame, MultiIndex, Series, Index#, read_excel

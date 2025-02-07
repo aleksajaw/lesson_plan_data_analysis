@@ -1,6 +1,7 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths, allScheduleOverviewResourcesByDaysExcelPaths, allScheduleGroupedOverviewResourcesByDaysExcelPaths, allScheduleOverviewResourcesByDaysDfsJSONPaths, allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths,allScheduleOverviewResourcesByHoursExcelPaths, allScheduleGroupedOverviewResourcesByHoursExcelPaths, allScheduleOverviewResourcesByHoursDfsJSONPaths, allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths
-from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, sumCellsInRowsColName, sumCellsInColsRowName, sumCellsInRowsColName
+from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName
+from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal
 from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, createListFromVals#, convertValToPercentage
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfs
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
@@ -99,11 +100,11 @@ def createOverviewsWithResourcesBy(overviewKey):
                     mainColNames = [tempDf.columns.names[0]]   if overviewKey == 'days'   else tempDf.columns.names
                     overviewColNames = mainColNames + ['Typ danych']
 
-                    maxPercentage = 'nie dotyczy'#convertValToPercentage(1)
+                    maxPercentage = notApplicableVal#convertValToPercentage(1)
                     
                     for col in tempDf.columns:
-                        quantityColName = createTupleFromVals(col, 'Ilość')
-                        #quantityColName = createListFromVals(col, 'Ilość')
+                        quantityColName = createTupleFromVals(col, amountColName)
+                        #quantityColName = createListFromVals(col, amountColName)
 
                         newDf[quantityColName] = tempDf[col]
                         newDf.columns = MultiIndex.from_tuples(tuples=newDf.columns, names=overviewColNames)
@@ -117,11 +118,11 @@ def createOverviewsWithResourcesBy(overviewKey):
                             #lastCellInCol = newDf.loc[(newDf.index==sumCellsInColsRowName), quantityColName]
                             lastCellInCol = newDf.loc[newDf.index[-1], quantityColName]
 
-                            partOfDayColName = createTupleFromVals(col, 'Udział w dniu')
-                            #partOfDayColName = createListFromVals(col, 'Udział w dniu')
+                            percOfDayColName = createTupleFromVals(col, percOfDayColName)
+                            #percOfDayColName = createListFromVals(col, percOfDayColName)
 
-                            newDf.loc[newDf.index[:-1], partOfDayColName] = divisionResultAsPercentage(colWithoutLastRow, lastCellInCol)
-                            newDf.loc[sumCellsInColsRowNameTuple, partOfDayColName] = maxPercentage   if lastCellInCol   else 'brak zajęć'
+                            newDf.loc[newDf.index[:-1], percOfDayColName] = divisionResultAsPercentage(colWithoutLastRow, lastCellInCol)
+                            newDf.loc[sumCellsInColsRowNameTuple, percOfDayColName] = maxPercentage   if lastCellInCol   else noLessonsVal
                             
                             sumValCol = tempDf[sumCellsInRowsColName]
                         
@@ -129,11 +130,11 @@ def createOverviewsWithResourcesBy(overviewKey):
                             sumValCol = tempDf.loc[sumCellsInColsRowNameTuple, sumCellsInRowsColName]
                         
                         
-                        partOfWeekColName = createTupleFromVals(col, 'Udział w tygodniu')
-                        #partOfWeekColName = createListFromVals(col, 'Udział w tygodniu')
-                        newDf[partOfWeekColName] = divisionResultAsPercentage(newDf[quantityColName], sumValCol)                    
+                        percOfWeekColName = createTupleFromVals(col, percOfWeekColName)
+                        #percOfWeekColName = createListFromVals(col, percOfWeekColName)
+                        newDf[percOfWeekColName] = divisionResultAsPercentage(newDf[quantityColName], sumValCol)                    
 
-                    #newDf.loc[(newDf.index==sumCellsInColsRowName), partOfWeekColName] = maxPercentage
+                    #newDf.loc[(newDf.index==sumCellsInColsRowName), percOfWeekColName] = maxPercentage
                     newDf.loc[newDf.index[-1], newDf.columns[-1]] = maxPercentage
 
 
@@ -144,6 +145,7 @@ def createOverviewsWithResourcesBy(overviewKey):
 
 
             writerForListOfObjsWithMultipleDfsToJSONAndExcel(overviewDfsJSONPaths[overviewKey][i], overviewExcelPaths[overviewKey][i], overviewDfs, False)
+
 
     except Exception as e:
         msgText = handleErrorMsg('Error while creating the overviews of schedules.', getTraceback(e))
