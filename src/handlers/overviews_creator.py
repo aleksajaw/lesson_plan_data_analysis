@@ -3,19 +3,19 @@ from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allSch
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName
 from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal
 from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, createListFromVals#, convertValToPercentage
-from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfs
+from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfObjLists
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
-from pandas import  MultiIndex, DataFrame#, Series
-#import numpy as np
+from pandas import  MultiIndex, DataFrame, IndexSlice#, Series
+import numpy as np
 import os
 
 
 
 def createScheduleOverviews():
     createOverviewsWithResourcesBy('days')
-    createOverviewsWithResourcesBy('hours')    
-    #readMultiDfsJSONAsObjOfDfs(allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths[0])
+    createOverviewsWithResourcesBy('hours')
+    createOverviewMain()
 
 
 
@@ -151,3 +151,66 @@ def createOverviewsWithResourcesBy(overviewKey):
         msgText = handleErrorMsg('Error while creating the overviews of schedules.', getTraceback(e))
     
     if msgText: print(msgText)
+
+
+
+def createOverviewMain():
+    msgText=''
+
+    objOfMultiDfs = readMultiDfsJSONAsObjOfDfObjLists(allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths[0])
+    lastDfRows = {}
+    
+    try:
+        for sheetName, dfObjList in objOfMultiDfs.items():
+          lastDfRows[sheetName] = {
+                                     'day_sums'  : [],
+                                     'day_perc'  : {
+                                         'max' : [],
+                                         'min' : []
+                                     },
+                                     'week_perc' : {
+                                         'max' : [],
+                                         'min' : []
+                                     }
+                                  }
+          
+          for dfObj in dfObjList:
+              df = dfObj['df']
+
+              lastDfRowDaySums  = df.loc[df.index[-1], IndexSlice[:, :, amountColName]]
+
+              lastDfRowsDayPercMax = df.xs(percOfDayColName, level=2, axis=1).iloc[:-1, :-1].apply(
+                                                                                                     lambda col: ( col.replace(f'%','', regex=True) ).astype( float ).nlargest( 3, keep='all' )
+                                                                                                  ).fillna('-')
+              lastDfRowsDayPercMin = df.xs(percOfDayColName, level=2, axis=1).iloc[:-1, :-1].apply(
+                                                                                                     lambda col: ( col.replace(f'%','', regex=True) ).astype( float ).nsmallest( 3, keep='all' )
+                                                                                                  ).fillna('-')
+
+
+              lastDfRowsWeekPercMax = df.xs(percOfWeekColName, level=2, axis=1).iloc[:-1, :-1].apply(
+                                                                                                       lambda row: ( row.replace(f'%','', regex=True) ).astype( float ).replace([0.0], np.nan).nlargest( 3, keep='all' ),
+                                                                                                       axis=1
+                                                                                                    ).fillna('-')
+              lastDfRowsWeekPercMin = df.xs(percOfWeekColName, level=2, axis=1).iloc[:-1, :-1].apply(
+                                                                                                       lambda row: ( row.replace(f'%','', regex=True)).astype( float ).nsmallest( 3, keep='all' ),
+                                                                                                       axis=1
+                                                                                                    ).fillna('-')
+              
+              lastDfRows[sheetName]['day_sums'].append( lastDfRowDaySums )
+
+              lastDfRows[sheetName]['day_perc']['max'].append( lastDfRowsDayPercMax )
+              lastDfRows[sheetName]['day_perc']['min'].append( lastDfRowsDayPercMin )
+
+              lastDfRows[sheetName]['week_perc']['max'].append( lastDfRowsWeekPercMax )
+              lastDfRows[sheetName]['week_perc']['min'].append( lastDfRowsWeekPercMin )
+              
+              print('\n\n\n\n\n\n', sheetName)
+              print(list(lastDfRows.values())[0]['week_perc']['max'])
+
+
+    except Exception as e:
+        msgText = handleErrorMsg('Error while reading JSON file with Data Frames as object with Data Frames.', getTraceback(e))
+    
+    if msgText: print(msgText)
+
+    #return objOfDfs
