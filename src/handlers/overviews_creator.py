@@ -1,7 +1,7 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths, allScheduleOverviewResourcesByDaysExcelPaths, allScheduleGroupedOverviewResourcesByDaysExcelPaths, allScheduleOverviewResourcesByDaysDfsJSONPaths, allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths,allScheduleOverviewResourcesByHoursExcelPaths, allScheduleGroupedOverviewResourcesByHoursExcelPaths, allScheduleOverviewResourcesByHoursDfsJSONPaths, allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths
-from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, timeIndexNames
-from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName
+from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, timeIndexNames, dfRowNrAndTimeTuples, weekdaysLen
+from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName
 from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, convertValToPercentage, convertToRounded
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfObjLists
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
@@ -13,9 +13,10 @@ import os
 
 
 def createScheduleOverviews():
-    createOverviewsWithResourcesBy('days')
-    createOverviewsWithResourcesBy('hours')
-    createOverviewMain()
+    #createOverviewsWithResourcesBy('days')
+    #createOverviewsWithResourcesBy('hours')
+    #createOverviewMain()
+    createOverviewMainIntro()
 
 
 
@@ -279,3 +280,25 @@ def getMainWeekPercWithMean(overviewKey, lastDfRow, lastDfRowColNames):
     dfWeekPerc.columns = pd.MultiIndex.from_tuples([(nrOfOccurrColName, col)   for col in dfWeekPerc.columns])
 
     return dfWeekPerc
+
+
+
+def createOverviewMainIntro():
+    colList = [dataTypeColName, amountColName, percOfDayColName, percOfWeekColName]
+    lessonsAmount = 10
+    data = {
+            'Typ': [
+                'Jednostka jednej godziny w planie*',
+                'Wykorzystane godz. lekcyjne w planie',
+                'Wszystkie możliwe godziny w planie dnia',
+                'Jednostka jednego dnia w planie',
+                'Wykorzystane dni w planie',
+                'Wszystkie możliwe dni w planie tygodnia'
+            ],
+            amountColName     : [ 1, lessonsAmount, len(dfRowNrAndTimeTuples), 1, 5, weekdaysLen ],
+            percOfDayColName  : [ divisionResultAsPercentage( 1, len(dfRowNrAndTimeTuples) ), divisionResultAsPercentage( lessonsAmount, len(dfRowNrAndTimeTuples) ) ] + [notApplicableVal]*4,
+            percOfWeekColName : [ divisionResultAsPercentage( 1, len(dfRowNrAndTimeTuples)*weekdaysLen ), divisionResultAsPercentage( lessonsAmount, len(dfRowNrAndTimeTuples)*weekdaysLen ), notApplicableVal,  divisionResultAsPercentage( 1, weekdaysLen ), divisionResultAsPercentage( 5, weekdaysLen ), notApplicableVal ]
+        }
+    dfTemp = DataFrame(data)
+    dfTemp.columns = pd.MultiIndex.from_tuples([(introColName, col)   for col in colList])
+    print(dfTemp)
