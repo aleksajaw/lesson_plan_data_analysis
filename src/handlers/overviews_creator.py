@@ -1,8 +1,8 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths, allScheduleOverviewResourcesByDaysExcelPaths, allScheduleGroupedOverviewResourcesByDaysExcelPaths, allScheduleOverviewResourcesByDaysDfsJSONPaths, allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths,allScheduleOverviewResourcesByHoursExcelPaths, allScheduleGroupedOverviewResourcesByHoursExcelPaths, allScheduleOverviewResourcesByHoursDfsJSONPaths, allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName
-from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal
-from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, createListFromVals#, convertValToPercentage
+from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, overviewColIndexLastLvlName
+from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfObjLists
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
@@ -47,18 +47,22 @@ def createOverviewsWithResourcesBy(overviewKey):
 
                     # Create the proper Series object with the chosen column for the 2nd level of the columns.
                     # level=1   is equal   df.columns.names[1]
-                    dfBySpecificColsGroup = df.xs(key=colName, level=1, axis=1).astype(str).replace('', pd.NA)
+                    dfBySpecificColsGroup = ( df.xs(key=colName, level=1, axis=1)
+                                                .astype(str).replace('', pd.NA) )
 
                     if overviewKey == 'hours':
                         # Transposed DataFrame to get indexes as columns.
                         dfBySpecificColsGroup = dfBySpecificColsGroup.T
 
                     # Count the value occurrences there.
-                    uniqueValFromColsLvl2Counter = dfBySpecificColsGroup.apply( lambda col: col.dropna().value_counts().astype(int) ).fillna(0)
+                    uniqueValFromColsLvl2Counter = ( dfBySpecificColsGroup.apply(lambda col: col.dropna()
+                                                                                                .value_counts()
+                                                                                                .astype(int)).fillna(0) )
 
                     if overviewKey == 'hours':
                         # Group indexes (multiple lessons at same time).
-                        uniqueValFromColsLvl2Counter = uniqueValFromColsLvl2Counter.groupby(level=dfBySpecificColsGroup.columns.names, axis=1).sum()
+                        uniqueValFromColsLvl2Counter = ( uniqueValFromColsLvl2Counter.groupby(level=dfBySpecificColsGroup.columns.names, axis=1)
+                                                                                     .sum() )
 
 
                     # Create a new col with the sum of values in the row(s).
@@ -67,19 +71,21 @@ def createOverviewsWithResourcesBy(overviewKey):
 
                     # Create a new row with the sum of values in the col.
                     sumCellsInColsRowNameTuple = (sumCellsInColsRowName, len(uniqueValFromColsLvl2Counter.index))
-                    rowForSumEntireCols = uniqueValFromColsLvl2Counter.sum(axis=0).to_frame(name=sumCellsInColsRowNameTuple).T
-
+                    rowForSumEntireCols = ( uniqueValFromColsLvl2Counter.sum(axis=0)
+                                                                        .to_frame(name=sumCellsInColsRowNameTuple)
+                                                                        .T )
 
                     # Create a new MultiIndex for rows.
-                    for singleElInCol in uniqueValFromColsLvl2Counter.index:
+                    indexGroupName = colName
+                    for singleIndex in uniqueValFromColsLvl2Counter.index:
                         
-                        if singleElInCol.isdigit():
-                            singleElInCol = int(singleElInCol)
+                        if singleIndex.isdigit():
+                            singleIndex = int(singleIndex)
                         
-                        elif singleElInCol == noGroupMarker:
-                            singleElInCol = wholeClassGroupName
+                        elif singleIndex == noGroupMarker:
+                            singleIndex = wholeClassGroupName
                         
-                        singleElIndexTuple = (colName, singleElInCol)
+                        singleElIndexTuple = (indexGroupName, singleIndex)
                         newIndex.append(singleElIndexTuple)
                         #singleElIndexArray = [colName, singleElInCol]
                         #newIndex.append(singleElIndexArray)
@@ -90,7 +96,7 @@ def createOverviewsWithResourcesBy(overviewKey):
 
                     # Complete the data and concatenate with the existing data.
                     uniqueValFromColsLvl2Counter.index = newIndex
-                    newIndexSorted = sorted(uniqueValFromColsLvl2Counter.index, key=lambda x: customSorting(x))
+                    newIndexSorted = sorted( uniqueValFromColsLvl2Counter.index, key=lambda x: customSorting(x) )
                     uniqueValFromColsLvl2Counter = uniqueValFromColsLvl2Counter.loc[ newIndexSorted ]
                     uniqueValFromColsLvl2Counter = pd.concat([uniqueValFromColsLvl2Counter, rowForSumEntireCols])
                     
@@ -98,13 +104,13 @@ def createOverviewsWithResourcesBy(overviewKey):
                     newDf = DataFrame(index=tempDf.index).rename_axis(axis=0, mapper=['Typ grupy', 'Element grupy'])
                     
                     mainColNames = [tempDf.columns.names[0]]   if overviewKey == 'days'   else tempDf.columns.names
-                    overviewColNames = mainColNames + ['Typ danych']
+                    overviewColNames = mainColNames + [overviewColIndexLastLvlName]
 
                     maxPercentage = notApplicableVal#convertValToPercentage(1)
                     
                     for col in tempDf.columns:
-                        quantityColName = createTupleFromVals(col, amountColName)
-                        #quantityColName = createListFromVals(col, amountColName)
+                        quantityColName = createTupleFromVals([col, amountColName])
+                        #quantityColName = createListFromVals([col, amountColName])
 
                         newDf[quantityColName] = tempDf[col]
                         newDf.columns = MultiIndex.from_tuples(tuples=newDf.columns, names=overviewColNames)
@@ -118,11 +124,12 @@ def createOverviewsWithResourcesBy(overviewKey):
                             #lastCellInCol = newDf.loc[(newDf.index==sumCellsInColsRowName), quantityColName]
                             lastCellInCol = newDf.loc[newDf.index[-1], quantityColName]
 
-                            percOfDayColName = createTupleFromVals(col, percOfDayColName)
-                            #percOfDayColName = createListFromVals(col, percOfDayColName)
+                            percOfDayColNameTuple = createTupleFromVals([col, percOfDayColName])
+                            #percOfDayColNameTuple = createListFromVals([col, percOfDayColName])
 
-                            newDf.loc[newDf.index[:-1], percOfDayColName] = divisionResultAsPercentage(colWithoutLastRow, lastCellInCol)
-                            newDf.loc[sumCellsInColsRowNameTuple, percOfDayColName] = maxPercentage   if lastCellInCol   else noLessonsVal
+                            newDf.loc[newDf.index[:-1], percOfDayColNameTuple] = divisionResultAsPercentage(colWithoutLastRow, lastCellInCol)
+
+                            newDf.loc[sumCellsInColsRowNameTuple, percOfDayColNameTuple] = maxPercentage   if lastCellInCol   else noLessonsVal
                             
                             sumValCol = tempDf[sumCellsInRowsColName]
                         
@@ -130,16 +137,12 @@ def createOverviewsWithResourcesBy(overviewKey):
                             sumValCol = tempDf.loc[sumCellsInColsRowNameTuple, sumCellsInRowsColName]
                         
                         
-                        percOfWeekColName = createTupleFromVals(col, percOfWeekColName)
-                        #percOfWeekColName = createListFromVals(col, percOfWeekColName)
-                        newDf[percOfWeekColName] = divisionResultAsPercentage(newDf[quantityColName], sumValCol)                    
+                        percOfWeekColNameTuple = createTupleFromVals([col, percOfWeekColName])
+                        #percOfWeekColNameTuple = createListFromVals([col, percOfWeekColName])
+                        newDf[percOfWeekColNameTuple] = divisionResultAsPercentage(newDf[quantityColName], sumValCol)
 
-                    #newDf.loc[(newDf.index==sumCellsInColsRowName), percOfWeekColName] = maxPercentage
+                    #newDf.loc[(newDf.index==sumCellsInColsRowName), percOfWeekColNameTuple] = maxPercentage
                     newDf.loc[newDf.index[-1], newDf.columns[-1]] = maxPercentage
-
-
-                    #newDf.columns = MultiIndex.from_tuples(newDf.columns)
-
 
                     overviewDfs[sheetName].append(newDf)
 

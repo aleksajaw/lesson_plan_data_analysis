@@ -216,7 +216,9 @@ def buildOwnersTypeScheduleBasedOnCol(targetDict, baseDf, ownersType, newColValu
     newMainColName = getTranslation(newMainColKey)
             
     # get the list of teachers/classrooms/subjects inside the timetable
-    group = baseDf.xs(newScheduleOwner, axis=1, level=1).stack(sort=False).unique()
+    group = ( baseDf.xs(newScheduleOwner, axis=1, level=1)
+                    .stack(sort=False)
+                    .unique() )
     group = filterNumpyNdarray(group)
 
     if len(group):
@@ -275,10 +277,12 @@ def buildOwnersTypeScheduleBasedOnCol(targetDict, baseDf, ownersType, newColValu
                 # only if current value is not NaN in numeric arrays,
                 #   None or NaN in object arrays,
                 #   NaT in datetimelike
-                elRows.loc[:,(weekdays, newMainColName)] = elRows.loc[:, (weekdays, newMainColName)].map( lambda x: newColValue   if pd.notna(x)
-                                                                                                                                  else x )
+                elRows.loc[:,(weekdays, newMainColName)] = ( elRows.loc[:, (weekdays, newMainColName)]
+                                                                   .map( lambda x: newColValue   if pd.notna(x)
+                                                                                                 else x ) )
 
-                elRows = elRows.groupby(level=[0,1], sort=False).first()
+                elRows = ( elRows.groupby(level=[0,1], sort=False)
+                                 .first() )
                 #indexLength = len(elRows.index)
                 #elRows.insert(loc=0, column=timeIndexNames[1], value=lessonTimePeriods[:indexLength])
 
@@ -318,8 +322,13 @@ def createScheduleGroupedOwnerObjOfDfs(dataToEnter):
         df = objOfDfs[listName]
 
         # indices & their columns
-        df['group_No.']          = (df.groupby('names_base', sort=False).ngroup() + 1).astype(str) + '.'
-        df['names_in_group_No.'] = (df.groupby('names_base', sort=False).cumcount() + 1).astype(str) + '.'
+        df['group_No.']          = ( (df.groupby('names_base', sort=False)
+                                        .ngroup() + 1)
+                                        .astype(str) + '.' )
+        
+        df['names_in_group_No.'] = ( (df.groupby('names_base', sort=False)
+                                        .cumcount() + 1)
+                                        .astype(str) + '.' )
         
         df.set_index(keys=['group_No.', 'names_base', 'names_in_group_No.'], inplace=True)
         objOfDfs[listName] = df
@@ -348,7 +357,8 @@ def createObjForDfRowsColoring(dfWithRowsToColor, keyColToGroupBy='group_No.', s
         dfReset = df.reset_index()
         # Create a temporary numeric index to simplify row counting.
         dfReset['idx_temp'] = dfReset.index + 1
-        groupedRows = dfReset.groupby(keyColToGroupBy, sort=False)['idx_temp'].apply(list).to_dict()
+        groupedRows = ( dfReset.groupby(keyColToGroupBy, sort=False)['idx_temp']
+                               .apply(list).to_dict() )
         
         groupedRowsFiltered = {}
         
