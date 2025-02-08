@@ -3,6 +3,7 @@ timeIndexNames = ['Nr','Godz']
 dayTimeIndexNames = ['Dzień', 'Nr', 'Godz']
 dayAndAttrNames = ['Dzień', 'Atrybuty']
 weekdays = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek']
+weekdaysLen = len(weekdays)
 lessonAttrs4el = ['przedmiot', 'grupa', 'nauczyciel', 'sala']
 lessonAttrs5el = ['przedmiot', 'grupa', 'nauczyciel', 'klasa', 'sala']
 dfRowNrs = [
