@@ -3,6 +3,7 @@ from error_utils import handleErrorMsg, getTraceback
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
 from src.constants.excel_constants import excelMargin
 from src.constants.schedule_structures_constants import timeIndexNames, dayAndAttrNames, dfColWeekDayNameTuples5el, dfColWeekDayNameTuples4el, dfColWeekDayNameArrays5el, dfColWeekDayNameArrays4el
+from src.constants.overview_constants import overviewsByDaysColIndexNames, overviewsByHoursColIndexNames
 from pandas import read_excel, MultiIndex, DataFrame, IndexSlice
 import json
 
@@ -89,7 +90,8 @@ def readMultiDfsJSONAsObjOfDfObjLists(JSONFilePath):
               objTemp = dfObj.copy()
 
               dfTemp = json.loads(objTemp['df'])
-              dfTemp = DataFrame( index=MultiIndex.from_tuples(dfTemp['index']), columns=MultiIndex.from_tuples(dfTemp['columns']), data=dfTemp['data'] )
+              indexNames = overviewsByDaysColIndexNames   if len(dfTemp['columns'][0]) == len(overviewsByDaysColIndexNames)   else overviewsByHoursColIndexNames
+              dfTemp = DataFrame( index=MultiIndex.from_tuples(dfTemp['index']), columns=MultiIndex.from_tuples(dfTemp['columns'], names=indexNames), data=dfTemp['data'] )
               
               objTemp['df'] = dfTemp
 
