@@ -301,13 +301,13 @@ def main():
         
         #turnOffFutureWarnings()
 
-        classesData = getClassesDataFromSchoolWebPage()
+        '''classesData = getClassesDataFromSchoolWebPage()
 
         if classesData:
             loadClassesDataVariables(classesData)
             createOrEditMainExcelFile()
-            createScheduleExcelFiles(getClassesDataDfs())
-            createScheduleOverviews()
+            createScheduleExcelFiles(getClassesDataDfs())'''
+        createScheduleOverviews()
             #openScheduleFilesWithDefApps()
             #openOverviewFilesWithDefApps()
 
