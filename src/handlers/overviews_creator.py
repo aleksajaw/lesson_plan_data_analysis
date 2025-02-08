@@ -1,8 +1,8 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths, allScheduleOverviewResourcesByDaysExcelPaths, allScheduleGroupedOverviewResourcesByDaysExcelPaths, allScheduleOverviewResourcesByDaysDfsJSONPaths, allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths,allScheduleOverviewResourcesByHoursExcelPaths, allScheduleGroupedOverviewResourcesByHoursExcelPaths, allScheduleOverviewResourcesByHoursDfsJSONPaths, allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths
-from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName
-from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, overviewColIndexLastLvlName
-from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals
+from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, timeIndexNames
+from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName
+from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, convertValToPercentage, convertToRounded
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfObjLists
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
@@ -157,7 +157,7 @@ def createOverviewsWithResourcesBy(overviewKey):
 
 
 
-def createOverviewMain():
+def createOverviewMain(overviewKey=''):
     msgText=''
 
     objOfMultiDfs = readMultiDfsJSONAsObjOfDfObjLists(allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths[0])
@@ -165,50 +165,36 @@ def createOverviewMain():
     
     try:
         for sheetName, dfObjList in objOfMultiDfs.items():
-          lastDfRows[sheetName] = {
-                                     'day_sums'  : [],
-                                     'day_perc'  : {
-                                         'max' : [],
-                                         'min' : []
-                                     },
-                                     'week_perc' : {
-                                         'max' : [],
-                                         'min' : []
-                                     }
-                                  }
+            lastDfRows[sheetName] = {  'week_perc' : {
+                                         'days' : [],
+                                         'hours': []
+                                       }  }
           
-          for dfObj in dfObjList:
-              df = dfObj['df']
+            for dfObj in dfObjList:
+                
+                df = dfObj['df']
+                lastDfRow = df.loc[df.index[-1]]
 
-              lastDfRowDaySums  = df.loc[df.index[-1], IndexSlice[:, :, amountColName]]
+                try:
+                    lastDfRowDaySums = lastDfRow.loc[IndexSlice[:, :, amountColName]]
+                except:
+                    lastDfRowDaySums = lastDfRow.loc[IndexSlice[:, amountColName]]
 
-              lastDfRowsDayPercMax = df.xs(percOfDayColName, level=2, axis=1).iloc[:-1, :-1].apply(
-                                                                                                     lambda col: ( col.replace(f'%','', regex=True) ).astype( float ).nlargest( 3, keep='all' )
-                                                                                                  ).fillna('-')
-              lastDfRowsDayPercMin = df.xs(percOfDayColName, level=2, axis=1).iloc[:-1, :-1].apply(
-                                                                                                     lambda col: ( col.replace(f'%','', regex=True) ).astype( float ).nsmallest( 3, keep='all' )
-                                                                                                  ).fillna('-')
+                #lastDfRows[sheetName]['sums'][oKey].append( lastDfRowDaySums )
+                #lastDfRows[sheetName]['day_perc']['max'].append( getMaxInDfByColName(df, percOfDayColName) )
+                #lastDfRows[sheetName]['day_perc']['min'].append( getMinInDfByColName(df, percOfDayColName) )      
+
+                for oKey in ['hours']:
+                    lastDfRows[sheetName]['week_perc'][oKey].append( getMainWeekPercWithMean(oKey, lastDfRow, [amountColName, percOfWeekColName]) )
 
 
-              lastDfRowsWeekPercMax = df.xs(percOfWeekColName, level=2, axis=1).iloc[:-1, :-1].apply(
-                                                                                                       lambda row: ( row.replace(f'%','', regex=True) ).astype( float ).replace([0.0], np.nan).nlargest( 3, keep='all' ),
-                                                                                                       axis=1
-                                                                                                    ).fillna('-')
-              lastDfRowsWeekPercMin = df.xs(percOfWeekColName, level=2, axis=1).iloc[:-1, :-1].apply(
-                                                                                                       lambda row: ( row.replace(f'%','', regex=True)).astype( float ).nsmallest( 3, keep='all' ),
-                                                                                                       axis=1
-                                                                                                    ).fillna('-')
-              
-              lastDfRows[sheetName]['day_sums'].append( lastDfRowDaySums )
+                for x in list(lastDfRows.values()):
 
-              lastDfRows[sheetName]['day_perc']['max'].append( lastDfRowsDayPercMax )
-              lastDfRows[sheetName]['day_perc']['min'].append( lastDfRowsDayPercMin )
+                    for y in x['week_perc'].values():
 
-              lastDfRows[sheetName]['week_perc']['max'].append( lastDfRowsWeekPercMax )
-              lastDfRows[sheetName]['week_perc']['min'].append( lastDfRowsWeekPercMin )
-              
-              print('\n\n\n\n\n\n', sheetName)
-              print(list(lastDfRows.values())[0]['week_perc']['max'])
+                        print(sheetName)
+                        print(y)
+
 
 
     except Exception as e:
@@ -217,3 +203,79 @@ def createOverviewMain():
     if msgText: print(msgText)
 
     #return objOfDfs
+
+
+
+def getMaxInDfByColName(df, colName):
+    return ( df.xs(colName, level=-1, axis=1)
+               .iloc[:-1, :-1]
+               .apply( lambda col: col.replace('%','', regex=True).astype(float)
+                                      .nlargest(3, keep='all') )
+               .fillna('-') )
+
+
+
+def getMinInDfByColName(df, colName):
+    return ( df.xs(colName, level=-1, axis=1)
+               .iloc[:-1, :-1]
+               .apply( lambda col: col.replace('%','', regex=True).astype(float)
+                                      .nsmallest(3, keep='all') )
+               .fillna('-') )
+
+
+
+def getMainWeekPercWithMean(overviewKey, lastDfRow, lastDfRowColNames):
+    lastDfRowCopy = lastDfRow.copy()
+
+    if overviewKey=='hours':
+        lastDfRowWeekPerc = ( lastDfRowCopy.loc[IndexSlice[:, :, lastDfRowColNames ] ][:-1]
+                                       .to_frame()
+                                       .T )
+        overviewDfStack = [0,1]
+
+
+    elif overviewKey=='days':
+        newIndex = []
+        i=0
+        for i, el in enumerate(lastDfRow.index[:-(1*len(lastDfRowColNames))]):
+            correctedI = i//3+1
+            newIndex.append( tuple([correctedI]) + el )
+
+        dayLength = len( lastDfRow.index.get_level_values(0).unique()[:-1] )
+
+        for el in lastDfRow.index[-(1*len(lastDfRowColNames)):]:
+            newIndex.append( (tuple([el[0], dayLength]) + el[1:]) )
+
+        lastDfRowCopy.index = MultiIndex.from_tuples(newIndex)
+        lastDfRowWeekPerc = ( lastDfRowCopy.loc[IndexSlice[:, :, lastDfRowColNames ] ][:-1]
+                                       .to_frame()
+                                       .T )
+        overviewDfStack = [0,1]
+
+
+    dfWeekPerc = ( lastDfRowWeekPerc.reset_index(drop=True)
+                                    .stack(overviewDfStack, sort=False)
+                                    .fillna(notApplicableVal)
+                                    .reset_index().drop(columns='level_0') )
+    
+
+    if overviewKey=='hours':
+        dfWeekPerc.at[ dfWeekPerc.index[-1], timeIndexNames[-1] ] = len(dfWeekPerc) - 1
+        dfWeekPerc = dfWeekPerc.set_index(timeIndexNames)
+    
+    elif overviewKey=='days':
+        dfWeekPerc.columns = overviewsMainByDaysColIndexNames + lastDfRowColNames
+        dfWeekPerc.at[ dfWeekPerc.index[-1], overviewsMainByDaysColIndexNames[1] ] = len(dfWeekPerc) - 1
+        dfWeekPerc = dfWeekPerc.set_index(overviewsMainByDaysColIndexNames)
+
+    dfWeekPercMeanVals = ( dfWeekPerc.loc[dfWeekPerc.index[:-1], lastDfRowColNames]
+                                     .replace('%','', regex=True).astype(float)
+                                     .mean() )
+    
+    dfWeekPerc.loc[ (meanColName, ''), lastDfRowColNames[0] ] = convertToRounded( dfWeekPercMeanVals[ lastDfRowColNames[0] ] )
+    dfWeekPerc.loc[ (meanColName, ''), lastDfRowColNames[1] ] =  convertValToPercentage(dfWeekPercMeanVals[ lastDfRowColNames[1] ])
+
+
+    dfWeekPerc.columns = pd.MultiIndex.from_tuples([(nrOfOccurrColName, col)   for col in dfWeekPerc.columns])
+
+    return dfWeekPerc
