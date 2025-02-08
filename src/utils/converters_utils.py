@@ -121,10 +121,13 @@ def convertDigitInStrToInt(text):
 # DataFrame column with values like
 # 3 / 4   =>   '0,75%'
 def divisionResultAsPercentage(val1, val2):
-    divisionResult = (val1 / val2).fillna(0)
+    if isinstance(val1, (int, float))   and   isinstance(val2, (int, float)):
+        divisionResult = (val1 / val2)
+    
+    else:
+        divisionResult = (val1 / val2).fillna(0)
 
     return convertDfColValToPercentage(divisionResult)
-
 
 
 
@@ -133,6 +136,9 @@ def divisionResultAsPercentage(val1, val2):
 def convertDfColValToPercentage(value):
     if isinstance(value, Series):
         return (value * 100).round(2).astype(str) + '%'
+    
+    elif isinstance(value, (int, float)):
+        return f'{round((value * 100), 2)}%'
     
     else:
         return None
@@ -148,39 +154,42 @@ def convertValToPercentage(value):
 
 
 
+def convertToRounded(value):
+    return round(value, 2)
+
+
+
 # 'example', 'example2'   =>   ('example', 'example2')
 # ('example'), 'example2'   =>   ('example', 'example2')
 # 7, 'example2'   =>   (7, 'example2')
-def createTupleFromVals(val1, val2):
-    # Check if a value is iterable or convert it to one.
-    if not isinstance(val1, tuple):
-        if not hasattr(val1, '__iter__')   or   isinstance(val1, str):
-            val1 = [val1]
+def createTupleFromVals(valList):
+    convertedValList = []
+    for val in valList:
+        # Check if a value is iterable or convert it to one.
+        if not isinstance(val, tuple):
+            if not hasattr(val, '__iter__')   or   isinstance(val, str):
+                val = [val]
+            val = tuple(val)
+
+        convertedValList.append(tuple(val))
         
-        val1 = tuple(val1)
-        
-    if not isinstance(val2, tuple):
-        if not hasattr(val2, '__iter__')   or   isinstance(val2, str):
-            val2 = [val2]
-        
-        val2 = tuple(val2)
-        
-    return val1 + val2
+    return sum(convertedValList, ())
 
 
 
 # 'example', 'example2'   =>   []'example', 'example2']
 # []'example'], 'example2'   =>   []'example', 'example2']
 # 7, 'example2'   =>   [7, 'example2']
-def createListFromVals(val1, val2):
+def createListFromVals(valList):
+    convertedValList = []
     # Check if a value is iterable or convert it to one.
-    if not isinstance(val1, list):
-         val1 = list(val1)
+    for val in valList:
+        if not isinstance(val, list):
+            val = list(val)
         
-    if not isinstance(val2, list):
-        val2 = list(val2)
-        
-    return val1 + val2
+        convertedValList = convertedValList + val
+
+    return convertedValList
 
 
 
