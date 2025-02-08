@@ -1,2 +1,0 @@
-import matplotlib
-from src.constants.paths_constants import scheduleClassesGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleTeachersGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath
