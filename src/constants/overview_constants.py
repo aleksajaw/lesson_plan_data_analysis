@@ -1,10 +1,13 @@
 from schedule_structures_constants import timeIndexNames
 introColName = 'Wstęp'
-dataTypeColName = 'Typ danych'
+
+basicTableTitleLvlName = 'Tytuł'
+
+dataTypeColsLvlName = 'Typ danych'
 dayOrderColName = 'Lp.'
 dayColName = 'Dzień'
 
-overviewColIndexLastLvlName = dataTypeColName
+overviewColIndexLastLvlName = dataTypeColsLvlName
 
 #overviewsByDaysColIndexNames = [dayOrderColName, dayColName, overviewColIndexLastLvlName]
 overviewsByDaysColIndexNames = [dayColName, overviewColIndexLastLvlName]
@@ -25,3 +28,15 @@ noLessonsVal = 'brak zajęć'
 
 nrOfOccurrColName = 'Ilość wystąpień'
 meanColName = 'Średnia'
+
+classroomTableName = ' sal'
+
+occupancyTableName = 'Obłożenie'
+classroomOccupancyTableName = occupancyTableName + classroomTableName
+
+gapsTableName = '"Okienka" w planie'
+classroomGapsTableName = gapsTableName + classroomTableName
+
+availabilityTableName = 'Dostępność'
+classroomAvailabilityTableName = availabilityTableName + classroomTableName
+
