@@ -340,7 +340,9 @@ def autoFormatExcelCellSizes(workbook, shouldPrintSuccessMsg=False):
                 
                 # loop through cells in column
                 for cell in ws[colLetter]:
-                    if cell.row > excelMargin['row']:
+                    isCellMergedHorizontally = any(cell.coordinate in merged_range   and   merged_range.min_col != merged_range.max_col   for merged_range in ws.merged_cells.ranges)
+                    
+                    if cell.row > excelMargin['row']   and   not isCellMergedHorizontally:
                         
                         try:
                             cellValueLen = len(str(cell.value))
@@ -461,7 +463,9 @@ def mergeEmptyCellsAndFormat(ws, mergedCellObj={'startRow':1, 'startCol':1, 'end
         endRow = mergedCellObj['endRow']
         endCol = mergedCellObj['endCol']
 
-        for col in range(endRow, startRow-1, -1):
+        endColTemp = -1
+        
+        for col in range(endCol, startCol-1, -1):
             cell = None
 
             for row in range(endRow, startRow, -1):
@@ -471,9 +475,11 @@ def mergeEmptyCellsAndFormat(ws, mergedCellObj={'startRow':1, 'startCol':1, 'end
                     endRow = row
                     break
             
-            if cell and not cell.value:
-                endCol = col
+            if cell and not cell.value and endColTemp<col:
+                endColTemp = col
                 break
+            
+        endCol = endColTemp
         
         ws.merge_cells( start_row=startRow,
                         start_column=startCol,
