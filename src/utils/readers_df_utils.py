@@ -53,15 +53,9 @@ def readDfsJSONAsObjOfDfs(JSONFilePath):
           dfData['index'] = MultiIndex.from_tuples(tuples=dfData['index'], names=timeIndexNames)
           #dfData['index'] = MultiIndex.from_arrays(arrays=dfData['index'], names=timeIndexNames)
 
-          try:
-              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNameTuples5el, names=dayAndAttrNames)
-              #dfData['columns'] = MultiIndex.from_arrays(arrays=dfColWeekDayNameArrays5el, names=dayAndAttrNames)
-              objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
-
-          except:
-              dfData['columns'] = MultiIndex.from_tuples(dfColWeekDayNameTuples4el, names=dayAndAttrNames)
-              #dfData['columns'] = MultiIndex.from_arrays(arrays=dfColWeekDayNameArrays4el, names=dayAndAttrNames)
-              objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
+          dfData['columns'] = MultiIndex.from_tuples(tuples=dfData['columns'], names=dayAndAttrNames)
+          #dfData['columns'] = MultiIndex.from_arrays(arrays=dfData['columns'], names=dayAndAttrNames)
+          objOfDfs[dfName] = DataFrame(data=dfData['data'], index=dfData['index'], columns=dfData['columns'])
 
 
     except Exception as e:
