@@ -163,6 +163,10 @@ def convertToRounded(value):
 # ('example'), 'example2'   =>   ('example', 'example2')
 # 7, 'example2'   =>   (7, 'example2')
 def createTupleFromVals(valList):
+    
+    if not isinstance(valList, list):
+        valList = [valList]
+    
     convertedValList = []
     for val in valList:
         # Check if a value is iterable or convert it to one.
