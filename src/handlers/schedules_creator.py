@@ -1,13 +1,15 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.excel_constants import excelMargin
+from src.constants.overview_constants import sumCellsInColsRowName, sumCellsInRowsColName, classroomOccupancyTableName, classroomGapsTableName, classroomAvailabilityTableName, basicTableTitleLvlName
 from src.constants.schedule_structures_constants import weekdays, weekdaysCatDtype#, dayAndAttrNames, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
-from src.constants.paths_constants import allOwnerTypeNames, schedulesWideAndVerticallyExcelPath, scheduleTeachersExcelPath, scheduleClassroomsExcelPath, scheduleSubjectsExcelPath, scheduleClassesGroupedExcelPath, scheduleTeachersGroupedExcelPath, scheduleClassroomsGroupedExcelPath, scheduleSubjectsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, schedulesWideAndVerticallyDfsJSONPath, scheduleClassesGroupedDfsJSONPath, scheduleTeachersGroupedDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleSubjectsGroupedDfsJSONPath, scheduleTeachersDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleSubjectsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths#, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath
+from src.constants.paths_constants import allOwnerTypeNames, classroomsName, scheduleClassroomsExcelPath, scheduleClassroomsWideAndVerticallyDfsJSONPath, scheduleClassroomsWideAndVerticallyExcelPath, schedulesWideAndVerticallyExcelPath, scheduleClassroomsBrieflyWideAndVerticallyDfsJSONPath, scheduleClassroomsBrieflyWideAndVerticallyExcelPath, scheduleClassroomsExcelPath, scheduleClassroomsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, schedulesWideAndVerticallyDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths#, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath
 from src.constants.conversion_constants import excelEngineName
-from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
+from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys, convertDigitInStrToInt, createTupleFromVals
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
 #from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
-from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel#, writerForObjOfDfsToExcel, writerForDfToExcelSheet
+from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, setNewDfColsFirstLvl, writeDfColSumToCell, combineTwoDfsWithDifferentIndices, removeDfEmptyRows, removeDuplicatedDfRows, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewSumRowsToDf, createNewMultiIndexForSumRow, completelyTransformDfToVerticalOrder
+from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForListOfObjsWithMultipleDfsToJSONAndExcel#, writerForObjOfDfsToExcel, writerForDfToExcelSheet
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 from src.utils.transl_utils import getTranslation, getTranslByPlural
 import pandas as pd
@@ -17,7 +19,7 @@ import numpy as np
 import os
 
 
-classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists = {}, {}, {}, {}, {}
+classSchedules, classroomSchedules, groupedOwnerLists = {}, {}, {}
 
 
 def createScheduleExcelFiles(classSchedulesDfs):
@@ -39,10 +41,10 @@ def createScheduleExcelFileVertical():
 
     try:
         newObjOfDfs = {}
-        sheetNames = [ getTranslByPlural(ownerTypeName, True)   for ownerTypeName in allOwnerTypeNames ]
+        sheetNames = [ getTranslByPlural(ownerTypeName, True)   for ownerTypeName in [classroomsName] ]
         i = 0
 
-        for excelFilePath in allScheduleExcelPaths:
+        for excelFilePath in [scheduleClassroomsExcelPath]:
             
             objOfDfs = readExcelFileAsObjOfDfs(excelFilePath)
             newDf = DataFrame()
@@ -92,7 +94,7 @@ def createScheduleExcelFileVertical():
             newObjOfDfs[currSheetName] = newDf
             i=i+1
 
-        writerForObjOfDfsToJSONAndExcel(schedulesWideAndVerticallyDfsJSONPath, schedulesWideAndVerticallyExcelPath, newObjOfDfs)
+        writerForObjOfDfsToJSONAndExcel(scheduleClassroomsWideAndVerticallyDfsJSONPath, scheduleClassroomsWideAndVerticallyExcelPath, newObjOfDfs)
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written wide and vertically.', getTraceback(e))
@@ -102,34 +104,24 @@ def createScheduleExcelFileVertical():
 
 
 def createScheduleExcelFilesByOwnerTypes():
-    global classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
+    global classSchedules, classroomSchedules, groupedOwnerLists
     msgText=''
 
-    teacherSchedulesTemp, classroomSchedulesTemp, subjectSchedulesTemp = {}, {}, {}
+    classroomSchedulesTemp = {}
 
     try:
         for className, classDf in classSchedules.items():
             
-            buildOwnersTypeScheduleBasedOnCol(teacherSchedulesTemp, classDf, 'teachers', className)
             buildOwnersTypeScheduleBasedOnCol(classroomSchedulesTemp, classDf, 'classrooms', className)
-            buildOwnersTypeScheduleBasedOnCol(subjectSchedulesTemp, classDf, 'subjects', className)
 
-        removeLastEmptyRowsInDataFrames([teacherSchedulesTemp, classroomSchedulesTemp, subjectSchedulesTemp])
-
-        teacherSchedules   = teacherSchedulesTemp.copy()
+        removeLastEmptyRowsInDataFrames([classroomSchedulesTemp])
+        
         classroomSchedules = classroomSchedulesTemp.copy()
-        subjectSchedules   = subjectSchedulesTemp.copy()
     
         createScheduleExcelFileForOwnerLists()
 
-        teacherSchedules = convertObjKeysToDesiredOrder(teacherSchedulesTemp, getPureList(groupedOwnerLists['teachers']))
-        writerForObjOfDfsToJSONAndExcel(scheduleTeachersDfsJSONPath, scheduleTeachersExcelPath, teacherSchedules)
-
         classroomSchedules = convertObjKeysToDesiredOrder(classroomSchedulesTemp, getPureList(groupedOwnerLists['classrooms']), True)
         writerForObjOfDfsToJSONAndExcel(scheduleClassroomsDfsJSONPath, scheduleClassroomsExcelPath, classroomSchedules)
-
-        subjectSchedules = convertObjKeysToDesiredOrder(subjectSchedulesTemp, getPureList(groupedOwnerLists['subjects']))
-        writerForObjOfDfsToJSONAndExcel(scheduleSubjectsDfsJSONPath, scheduleSubjectsExcelPath, subjectSchedules)
         
         
     except Exception as e:
@@ -140,14 +132,11 @@ def createScheduleExcelFilesByOwnerTypes():
 
 
 def createScheduleExcelFileForOwnerLists():
-    global classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
+    global classroomSchedules, groupedOwnerLists
     msgText=''
 
     try:
-        ownerLists = { 'classes'   :  getListOfKeys(classSchedules),
-                       'teachers'  :  getListOfKeys(teacherSchedules),
-                       'classrooms':  getListOfKeys(classroomSchedules),
-                       'subjects'  :  getListOfKeys(subjectSchedules) }
+        ownerLists = { 'classrooms':  getListOfKeys(classroomSchedules)}
         
         groupedOwnerLists = createScheduleGroupedOwnerObjOfDfs(ownerLists)
         
@@ -163,14 +152,11 @@ def createScheduleExcelFileForOwnerLists():
 
 
 def createScheduleExcelFilesByGroupedOwnerLists():
-    global classSchedules, teacherSchedules, classroomSchedules, subjectSchedules, groupedOwnerLists
+    global classroomSchedules
     msgText=''
 
     try:
-        fullConstructAndWriteScheduleByGroup('classes', classSchedules, scheduleClassesGroupedDfsJSONPath, scheduleClassesGroupedExcelPath)
-        fullConstructAndWriteScheduleByGroup('teachers', teacherSchedules, scheduleTeachersGroupedDfsJSONPath, scheduleTeachersGroupedExcelPath)
         fullConstructAndWriteScheduleByGroup('classrooms', classroomSchedules, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsGroupedExcelPath)
-        fullConstructAndWriteScheduleByGroup('subjects', subjectSchedules, scheduleSubjectsGroupedDfsJSONPath, scheduleSubjectsGroupedExcelPath)
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the schedule Excel files by grouped owner lists.', getTraceback(e))
