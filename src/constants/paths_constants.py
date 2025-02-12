@@ -182,6 +182,7 @@ byHoursSuffix = '-by-hours'
 byDaysSuffix = '-by-days'
 wideSuffix = '_wide'
 verticallySuffix = '_vertically'
+brieflySuffix = '_briefly'
 
 
 
@@ -218,12 +219,17 @@ allScheduleBaseNames = [ scheduleClassesBaseName,
 
 # For all the schedules wide and vertically
 schedulesWideAndVerticallyBaseName = schedulesBaseName + wideSuffix + verticallySuffix
+# For the classrooms wide and vertically
+scheduleClassroomsWideAndVerticallyBaseName = scheduleClassroomsBaseName + wideSuffix + verticallySuffix
+# For the classrooms briefly wide and vertically
+scheduleClassroomsBrieflyWideAndVerticallyBaseName = scheduleClassroomsBaseName + brieflySuffix + wideSuffix + verticallySuffix
 
 # For the classes vertically
 scheduleClassesVerticallyBaseName = scheduleClassesBaseName + verticallySuffix
 
 # For the classrooms grouped overview for the resources vertically
 scheduleClassroomsGroupedOverviewResourcesVerticallyBaseName  = scheduleClassroomsBaseName + overviewSuffix + resourcesSuffix + verticallySuffix + extExcel
+
 
 
 ##  3.3. BASIC GROUPED  ##
@@ -430,6 +436,11 @@ allScheduleExcelNames = [ scheduleClassesExcelName,
 
 # For all the schedules wide and vertically
 schedulesWideAndVerticallyExcelName = schedulesWideAndVerticallyBaseName + extExcel
+# For the classrooms wide and vertically
+scheduleClassroomsWideAndVerticallyExcelName = scheduleClassroomsWideAndVerticallyBaseName + extExcel
+
+# For the classrooms briefly wide and vertically
+scheduleClassroomsBrieflyWideAndVerticallyExcelName = scheduleClassroomsBrieflyWideAndVerticallyBaseName + extExcel
 
 # For the classes vertically
 scheduleClassesVerticallyExcelName = scheduleClassesVerticallyBaseName + extExcel
@@ -663,6 +674,11 @@ scheduleListsOwnersGroupedDfsJSONName = dfsPrefix + schedulePartOfPrefix + 'list
 
 # For all the schedules wide and vertically
 schedulesWideAndVerticallyDfsJSONName = dfsPrefix + schedulesWideAndVerticallyBaseName + extJSON
+# For the classrooms wide and vertically
+scheduleClassroomsWideAndVerticallyDfsJSONName = dfsPrefix + scheduleClassroomsWideAndVerticallyBaseName + extJSON
+
+# For the classrooms briefly wide and vertically
+scheduleClassroomsBrieflyWideAndVerticallyDfsJSONName = dfsPrefix + scheduleClassroomsBrieflyWideAndVerticallyBaseName + extJSON
 
 
 
@@ -831,6 +847,11 @@ allScheduleExcelPaths = [ scheduleClassesExcelPath,
 
 # For all the schedules wide and vertically
 schedulesWideAndVerticallyExcelPath = os.path.join(documentsPath, schedulesWideAndVerticallyExcelName)
+# For the classrooms wide and vertically
+scheduleClassroomsWideAndVerticallyExcelPath = os.path.join(documentsPath, scheduleClassroomsWideAndVerticallyExcelName)
+
+# For the classrooms briefly wide and vertically
+scheduleClassroomsBrieflyWideAndVerticallyExcelPath = os.path.join(documentsPath, scheduleClassroomsBrieflyWideAndVerticallyExcelName)
 
 # For the classes vertically
 scheduleClassesVerticallyExcelPath = os.path.join(documentsPrototypesPath, scheduleClassesVerticallyExcelName)
@@ -1062,6 +1083,11 @@ allScheduleDfsJSONPaths = [ scheduleClassesDfsJSONPath,
 
 # For all the schedules written wide and vertically
 schedulesWideAndVerticallyDfsJSONPath = os.path.join(processingFilesJSONPath, schedulesWideAndVerticallyDfsJSONName)
+# For the classrooms written wide and vertically
+scheduleClassroomsWideAndVerticallyDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassroomsWideAndVerticallyDfsJSONName)
+
+# For the classrooms written briefly wide and vertically
+scheduleClassroomsBrieflyWideAndVerticallyDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassroomsBrieflyWideAndVerticallyDfsJSONName)
 
 
 
