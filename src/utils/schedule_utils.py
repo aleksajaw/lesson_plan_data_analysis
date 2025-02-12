@@ -149,7 +149,7 @@ def createGroupsInListByPrefix(data, splitDelimiter = '-', replaceDelimiters = [
     try:
         groupList = []
 
-        # only leave the part before the first '-' and cut '.r' and 'r_' out
+        # retain only the part before the first '-' and remove '.r' and 'r_'
         for item in data:
             itemAdded = False
 
