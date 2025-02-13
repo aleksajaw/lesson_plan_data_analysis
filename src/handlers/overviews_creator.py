@@ -1,7 +1,7 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import allScheduleGroupedDfsJSONPaths, allScheduleDfsJSONPaths, allScheduleOverviewResourcesExcelPaths, allScheduleGroupedOverviewResourcesExcelPaths, allScheduleOverviewResourcesDfsJSONPaths, allScheduleGroupedOverviewResourcesDfsJSONPaths, allScheduleOverviewResourcesByDaysExcelPaths, allScheduleGroupedOverviewResourcesByDaysExcelPaths, allScheduleOverviewResourcesByDaysDfsJSONPaths, allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths,allScheduleOverviewResourcesByHoursExcelPaths, allScheduleGroupedOverviewResourcesByHoursExcelPaths, allScheduleOverviewResourcesByHoursDfsJSONPaths, allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths
+from src.constants.paths_constants import scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONPath, scheduleClassroomsOverviewResourcesByDaysExcelPath, scheduleClassroomsGroupedOverviewResourcesByDaysExcelPath, scheduleClassroomsOverviewResourcesByHoursExcelPath, scheduleClassroomsGroupedOverviewResourcesByHoursExcelPath, scheduleClassroomsOverviewResourcesByDaysDfsJSONPath, scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONPath, scheduleClassroomsOverviewResourcesByHoursDfsJSONPath
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, timeIndexNames, dfRowNrAndTimeTuples, weekdaysLen
-from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName
+from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColsLvlName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName
 from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, convertValToPercentage, convertToRounded
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfObjLists
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
@@ -13,9 +13,9 @@ import os
 
 
 def createScheduleOverviews():
-    #createOverviewsWithResourcesBy('days')
-    #createOverviewsWithResourcesBy('hours')
-    #createOverviewMain()
+    createOverviewsWithResourcesBy('days')
+    createOverviewsWithResourcesBy('hours')
+    createOverviewMain()
     createOverviewMainIntro()
 
 
@@ -24,13 +24,13 @@ def createOverviewsWithResourcesBy(overviewKey):
     msgText=''
     
     try:
-        overviewExcelPaths   = { 'days'  : allScheduleOverviewResourcesByDaysExcelPaths + allScheduleGroupedOverviewResourcesByDaysExcelPaths,
-                                 'hours' : allScheduleOverviewResourcesByHoursExcelPaths + allScheduleGroupedOverviewResourcesByHoursExcelPaths }
-        overviewDfsJSONPaths = { 'days'  : allScheduleOverviewResourcesByDaysDfsJSONPaths + allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths,
-                                 'hours' : allScheduleOverviewResourcesByHoursDfsJSONPaths + allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths }
+        overviewExcelPaths   = { 'days'  : [ scheduleClassroomsOverviewResourcesByDaysExcelPath, scheduleClassroomsGroupedOverviewResourcesByDaysExcelPath ],
+                                 'hours' : [ scheduleClassroomsOverviewResourcesByHoursExcelPath, scheduleClassroomsGroupedOverviewResourcesByHoursExcelPath ] }
+        overviewDfsJSONPaths = { 'days'  : [ scheduleClassroomsOverviewResourcesByDaysDfsJSONPath, scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONPath ],
+                                 'hours' : [ scheduleClassroomsOverviewResourcesByHoursDfsJSONPath, scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONPath ] }
 
         i=-1
-        for filePath in ( allScheduleDfsJSONPaths + allScheduleGroupedDfsJSONPaths ):
+        for filePath in [ scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath ]:
             i=i+1
             fileContent = readDfsJSONAsObjOfDfs(filePath)
             
@@ -161,7 +161,7 @@ def createOverviewsWithResourcesBy(overviewKey):
 def createOverviewMain(overviewKey=''):
     msgText=''
 
-    objOfMultiDfs = readMultiDfsJSONAsObjOfDfObjLists(allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths[0])
+    objOfMultiDfs = readMultiDfsJSONAsObjOfDfObjLists(scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONPath)
     lastDfRows = {}
     
     try:
@@ -189,12 +189,12 @@ def createOverviewMain(overviewKey=''):
                     lastDfRows[sheetName]['week_perc'][oKey].append( getMainWeekPercWithMean(oKey, lastDfRow, [amountColName, percOfWeekColName]) )
 
 
-                for x in list(lastDfRows.values()):
+                '''for x in list(lastDfRows.values()):
 
                     for y in x['week_perc'].values():
 
                         print(sheetName)
-                        print(y)
+                        print(y)'''
 
 
 
@@ -284,7 +284,7 @@ def getMainWeekPercWithMean(overviewKey, lastDfRow, lastDfRowColNames):
 
 
 def createOverviewMainIntro():
-    colList = [dataTypeColName, amountColName, percOfDayColName, percOfWeekColName]
+    colList = [dataTypeColsLvlName, amountColName, percOfDayColName, percOfWeekColName]
     lessonsAmount = 10
     data = {
             'Typ': [
