@@ -16,7 +16,7 @@ def createNewMultiIndexWithNewFirstLvl(df, newFirstLvlVal, newLvlName='', isColu
 
 
 
-def createNewMultiIndexForSumRow(indexNames, firstLvlVal, secondLvlVal='', thirdLvlVal=sumCellsInColsRowName):
+def createNewMultiIndexForSumRow(indexNames, firstLvlVal, secondLvlVal=sumCellsInColsRowName, thirdLvlVal=''):
     return MultiIndex.from_tuples(tuples=[firstLvlVal + (secondLvlVal, thirdLvlVal)], names=indexNames)
 
 
@@ -36,7 +36,7 @@ def addNewSumColToDf(df, sumColName=sumCellsInRowsColName):
 
 
 def addNewSumRowsToDf(df, isRowIndexFirstLvlADay=True, sumRowName=sumCellsInColsRowName):
-    newMultiIndexRows = MultiIndex.from_tuples([(day, '', sumRowName)   for day in df.index.get_level_values(0).unique()], names=df.index.names)
+    newMultiIndexRows = MultiIndex.from_tuples([(day, sumRowName, '')   for day in df.index.get_level_values(0).unique()], names=df.index.names)
     sumRows = pd.DataFrame(data=[[np.nan] * len(df.columns)], index=newMultiIndexRows, columns=df.columns)
     df = pd.concat([df, sumRows])
 
@@ -44,6 +44,37 @@ def addNewSumRowsToDf(df, isRowIndexFirstLvlADay=True, sumRowName=sumCellsInCols
         df = setDfLvlAsType(df, weekdaysCatDtype, sortingType='index', lvlNr=0)
 
     return df
+
+
+
+def setGroupCounterInDfSumRowIndex(df, sumRowName=sumCellsInColsRowName):
+    counterList = []
+
+    for groupName in df.index.get_level_values(0).unique():
+        counterList.append(countNonEmptyRowsInGroup(df, groupName))
+
+    newTuples = []
+    i=0
+
+    for (idxLvl1, idxLvl2, idxLvl3) in df.index:
+        
+        if idxLvl2 == sumRowName:
+            tupleTemp = (idxLvl1, idxLvl2, counterList[i])
+            i = i+1
+        else:
+            tupleTemp = (idxLvl1, idxLvl2, idxLvl3)
+
+        newTuples.append(tupleTemp)
+
+    df.index = pd.MultiIndex.from_tuples(newTuples, names=df.index.names)
+
+    return df
+
+
+
+def countNonEmptyRowsInGroup(df, groupName):
+    isRowEmptyMask = df.isna().all(axis=1) | (df == '').all(axis=1)
+    return df[~(isRowEmptyMask)].loc[groupName][:-1].sum(axis=1).gt(0).sum()
 
 
 
