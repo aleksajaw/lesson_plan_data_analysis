@@ -249,3 +249,22 @@ def openFileWithDefApp(filePath):
 
     except Exception as e:
         print(f"Failed to open file for User: {getTraceback(e)}")
+
+
+
+def extendFileNameInPath(filePath, strToAdd):
+    baseName, ext = os.path.splitext(filePath)
+    newBaseName = baseName + strToAdd
+    newFileName = newBaseName + ext
+    dirPath = os.path.dirname(filePath)
+
+    return os.path.join(dirPath + newFileName)
+
+
+
+def extendFileName(fileName, strToAdd):
+    baseName, ext = os.path.splitext(fileName)
+    newBaseName = baseName + strToAdd
+    newFileName = newBaseName + ext
+
+    return newFileName
