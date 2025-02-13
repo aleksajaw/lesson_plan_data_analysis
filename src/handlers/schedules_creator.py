@@ -8,7 +8,7 @@ from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPur
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
 #from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
-from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, setNewDfColsFirstLvl, writeDfColSumToCell, combineTwoDfsWithDifferentIndices, removeDfEmptyRows, removeDuplicatedDfRows, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewSumRowsToDf, createNewMultiIndexForSumRow, completelyTransformDfToVerticalOrder
+from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, setNewDfColsFirstLvl, writeDfColSumToCell, combineTwoDfsWithDifferentIndices, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewSumRowsToDf, createNewMultiIndexForSumRow, completelyTransformDfToVerticalOrder
 from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForListOfObjsWithMultipleDfsToJSONAndExcel#, writerForObjOfDfsToExcel, writerForDfToExcelSheet
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 from src.utils.transl_utils import getTranslation, getTranslByPlural
@@ -66,7 +66,7 @@ def createScheduleExcelFilesVertical():
                 newDfBriefly = retainOnlyFirstCellsInDfGroups(newDf.copy())
 
                 # Convert the col names from str to int and add a title for the table (DataFrame). 
-                newMultiIndexCols = createNewMultiIndexWithNewFirstLvl(newDfBriefly, classroomOccupancyTableName, basicTableTitleLvlName, convertIndex=True)
+                newMultiIndexCols = createNewMultiIndexWithNewFirstLvl(newDfBriefly, classroomOccupancyTableName, basicTableTitleLvlName)
                 newDfBriefly.columns = newMultiIndexCols
 
                 newDfBriefly = convertDfValsToCounters(newDfBriefly, lvlList=[0,1,2], retainOnlyLastRows=True)

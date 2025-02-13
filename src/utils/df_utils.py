@@ -7,7 +7,7 @@ import numpy as np
 
 
 
-def createNewMultiIndexWithNewFirstLvl(df, newFirstLvlVal, newLvlName='', isColumns=True, convertIndex=False):
+def createNewMultiIndexWithNewFirstLvl(df, newFirstLvlVal, newLvlName='', isColumns=True, convertIndex=True):
     indexBase = df.columns   if isColumns   else df.index
 
     colsData = [convertDigitInStrToInt(col)   for col in indexBase]   if convertIndex   else indexBase
@@ -87,8 +87,13 @@ def removeDfEmptyRows(df):
 
 
 
-def removeDuplicatedDfRows(df, keepType='first'):
-    df = df[~df.index.duplicated(keep=keepType)]#.fillna('-')
+def removeDuplicatedDfRows(df, keepType='first', checkEmptiness=True):
+    if checkEmptiness:
+        isRowEmptyMask = df.isna().all(axis=1) | (df == '').all(axis=1)
+        df = df[~(isRowEmptyMask   &   df.index.duplicated(keep=keepType))]#.fillna('-')
+
+    else:
+        df = df[~df.index.duplicated(keep=keepType)]#.fillna('-')
 
     return df
 
@@ -100,7 +105,7 @@ def convertDfValsToCounters(df, lvlList=[0], retainOnlyLastRows=True):
              .cumsum() )
     
     if retainOnlyLastRows:
-        df = removeDuplicatedDfRows(df, keepType='last')
+        df = removeDuplicatedDfRows(df, keepType='last', checkEmptiness=False)
     
     return df
 
@@ -168,4 +173,6 @@ def completelyTransformDfToVerticalOrder(df, dfName, newDfLvlName):
     # Add the parent value for the class columns.
     df.columns = createNewMultiIndexWithNewFirstLvl(df, dfName, newDfLvlName.capitalize())
 
+    #df = removeDfEmptyRows(df)
+    df = removeDuplicatedDfRows(df)
     return df
