@@ -30,17 +30,18 @@ def createScheduleExcelFiles(classSchedulesDfs):
     classSchedules = classSchedulesDfs.copy()
 
     createScheduleExcelFilesByOwnerTypes()
-    createScheduleExcelFileVertical()
+    createScheduleExcelFilesVertical()
     #createScheduleExcelFileForOwnerLists()
     createScheduleExcelFilesByGroupedOwnerLists()
 
 
 
-def createScheduleExcelFileVertical():
+def createScheduleExcelFilesVertical():
     msgText=''
 
     try:
         newObjOfDfs = {}
+        newObjOfDfsBriefly = {}
         sheetNames = [ getTranslByPlural(ownerTypeName, True)   for ownerTypeName in [classroomsName] ]
         i = 0
 
@@ -50,51 +51,92 @@ def createScheduleExcelFileVertical():
             newDf = DataFrame()
             currSheetName = sheetNames[i]
 
+
             # Get the 1st DataFrame in the list
-            for dfKey, df in objOfDfs.items():
+            # dfKey is here a name of for example class, classroom, teacher
+            for dfName, df in objOfDfs.items():
                 
-                # Transform DataFrame into a vertical order where column names become the 1st level of the MultiIndex for the rows. 
-                dfVertical = df.stack( level=0, dropna=False)
+                # Transform DataFrame into a vertical order where column names become the 1st level of the MultiIndex for the rows.
+                dfVertical = completelyTransformDfToVerticalOrder(df, dfName, currSheetName)
                 
-                # Correct the order of the levels in the hierarchy.
-                dfVertical.index = dfVertical.index.reorder_levels( [2, 0, 1] )
-                
-                # Making the 1st lvl a CategoricalDType to simplify the sorting proccess.
-                dfVertical.index = dfVertical.index.set_levels(
-                                              dfVertical.index.levels[0].astype(weekdaysCatDtype), level=0
-                                          )
-                
-                # Sort the values in the row index levels, except the last row (it is not needed). 
-                dfVertical = dfVertical.sort_values(dfVertical.index.names[:-1])
-
-                # Add the parent name for the class columns.
-                dfVertical.columns = MultiIndex.from_product([[dfKey], dfVertical.columns], names=[currSheetName.capitalize()]+dfVertical.columns.names)
-                
-                # Remove empty rows.
-                dfVertical = dfVertical[~(dfVertical == '').all(axis=1)]
-
-                if not newDf.empty:
                 # THE IMPORTANT WAY TO COMBINE TWO DATAFRAMES WHICH DIFFER IN INDICES.
+                newDf = combineTwoDfsWithDifferentIndices(newDf, dfVertical)   if not newDf.empty   else dfVertical
 
-                    # Create a new column named 'idx_temp' containing the numeric index.
-                    newDf['idx_temp']      = newDf.groupby(newDf.index).cumcount()
-                    dfVertical['idx_temp'] = dfVertical.groupby(dfVertical.index).cumcount()
+                # Prepare the DataFrame to retain only the count values. (Remove the redundant cells.)
+                newDfBriefly = retainOnlyFirstCellsInDfGroups(newDf.copy())
 
-                    # Set the column 'idx_temp' as an extra lvl of the current DataFrame index.
-                    newDf      = newDf.set_index(['idx_temp'], append=True)
-                    dfVertical = dfVertical.set_index(['idx_temp'], append=True)
-                    # Combine two DataFrames along the columns axis
-                    # and then remove the 'idx_temp' level from the MultiIndex, completely removing it from the columns.
-                    merged = pd.concat([newDf, dfVertical], axis=1).reset_index(level=['idx_temp'], drop=True)
-                    newDf = merged.sort_index()
+                # Convert the col names from str to int and add a title for the table (DataFrame). 
+                newMultiIndexCols = createNewMultiIndexWithNewFirstLvl(newDfBriefly, classroomOccupancyTableName, basicTableTitleLvlName, convertIndex=True)
+                newDfBriefly.columns = newMultiIndexCols
+
+                newDfBriefly = convertDfValsToCounters(newDfBriefly, lvlList=[0,1,2], retainOnlyLastRows=True)
+                newDfBriefly = addNewSumRowsToDf(newDfBriefly, isRowIndexFirstLvlADay=True)
+
+                
+                newDfBrieflyGaps = newDfBriefly.copy()
+                newDfBrieflyAvailability = convertDfValsToBinaryStates(newDfBriefly.copy())
+
+
+                for col in newDfBriefly.columns:
                     
-                else:
-                    newDf = dfVertical
+                    for dayName in newDfBriefly.index.get_level_values(0).unique():
+                        
+                        colData = newDfBrieflyGaps.xs(dayName, level=0)[col]
+                        (firstValidIdx, lastValidIdx) = getDfValidIndices(colData)
+
+                        dayName = createTupleFromVals(dayName)
+
+                        keySum = createNewMultiIndexForSumRow(newDfBriefly.index.names, dayName, '', sumCellsInColsRowName)
+
+
+                        if firstValidIdx is not None   and   lastValidIdx is not None:
+                            
+                            (firstIndex, lastIndex) = (dayName + firstValidIdx, dayName + lastValidIdx)
+
+                            newDfBrieflyGaps.loc[firstIndex:lastIndex, col] = convertDfValsToBinaryStates(newDfBrieflyGaps.loc[firstIndex:lastIndex, col])
+                        
+                            newDfBriefly = writeDfColSumToCell(newDfBriefly, keySum, col, None, firstIndex, lastIndex)
+                            newDfBrieflyGaps = writeDfColSumToCell(newDfBrieflyGaps, keySum, col, None, firstIndex, lastIndex)
+                        
+
+                        else:
+                          newDfBriefly = writeDfColSumToCell(newDfBriefly, keySum, col, 0.0)
+                          newDfBrieflyGaps = writeDfColSumToCell(newDfBrieflyGaps, keySum, col, 0.0)
+
+                          newDfBrieflyAvailability = writeDfColSumToCell(newDfBrieflyAvailability, keySum, col, 0.0, None, None, dayName)
+
+
+                newDfBriefly = addNewSumColToDf(newDfBriefly)
+
+                newDfBrieflyAvailability = setNewDfColsFirstLvl(newDfBrieflyAvailability, classroomAvailabilityTableName)
+                newDfBrieflyAvailability = addNewSumColToDf(newDfBrieflyAvailability)
+
+                newDfBrieflyGaps = setNewDfColsFirstLvl(newDfBrieflyGaps, classroomGapsTableName)
+                newDfBrieflyGaps = addNewSumColToDf(newDfBrieflyGaps)
+
+                # Number of classes assigned to rooms at specific hours during the day
+                #print(newDfBriefly)
+                
+                # Number of hours per room on a daily basis
+                #print(newDfBriefly.groupby(axis=0, level=0).sum())
+                
+                # Number of rooms occupied per hour throughout the day
+                #print(newDfBriefly.sum(axis=1))
+                
+                # Number of rooms occupied for specific hours across the week
+                #print(newDfBriefly.groupby(axis=0, level=[1,2]).sum())
+                
+                # Number of hours per room across the week
+                #print(newDfBriefly.sum(axis=0))
+
 
             newObjOfDfs[currSheetName] = newDf
+            newObjOfDfsBriefly[currSheetName] = [newDfBriefly, newDfBrieflyAvailability, newDfBrieflyGaps]
+
             i=i+1
 
         writerForObjOfDfsToJSONAndExcel(scheduleClassroomsWideAndVerticallyDfsJSONPath, scheduleClassroomsWideAndVerticallyExcelPath, newObjOfDfs)
+        writerForListOfObjsWithMultipleDfsToJSONAndExcel(scheduleClassroomsBrieflyWideAndVerticallyDfsJSONPath, scheduleClassroomsBrieflyWideAndVerticallyExcelPath, newObjOfDfsBriefly)
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written wide and vertically.', getTraceback(e))
