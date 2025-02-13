@@ -8,7 +8,7 @@ from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPur
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
 #from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
-from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, setNewDfColsFirstLvl, writeDfColSumToCell, combineTwoDfsWithDifferentIndices, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewSumRowsToDf, createNewMultiIndexForSumRow, completelyTransformDfToVerticalOrder
+from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, setNewDfColsFirstLvl, writeDfColSumToCell, combineTwoDfsWithDifferentIndices, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewSumRowsToDf, createNewMultiIndexForSumRow, completelyTransformDfToVerticalOrder, setGroupCounterInDfSumRowIndex
 from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForListOfObjsWithMultipleDfsToJSONAndExcel#, writerForObjOfDfsToExcel, writerForDfToExcelSheet
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 from src.utils.transl_utils import getTranslation, getTranslByPlural
@@ -86,7 +86,7 @@ def createScheduleExcelFilesVertical():
 
                         dayName = createTupleFromVals(dayName)
 
-                        keySum = createNewMultiIndexForSumRow(newDfBriefly.index.names, dayName, '', sumCellsInColsRowName)
+                        keySum = createNewMultiIndexForSumRow(newDfBriefly.index.names, dayName, sumCellsInColsRowName, '')
 
 
                         if firstValidIdx is not None   and   lastValidIdx is not None:
@@ -104,6 +104,11 @@ def createScheduleExcelFilesVertical():
                           newDfBrieflyGaps = writeDfColSumToCell(newDfBrieflyGaps, keySum, col, 0.0)
 
                           newDfBrieflyAvailability = writeDfColSumToCell(newDfBrieflyAvailability, keySum, col, 0.0, None, None, dayName)
+
+
+                newDfBriefly = setGroupCounterInDfSumRowIndex(newDfBriefly)
+                newDfBrieflyGaps = setGroupCounterInDfSumRowIndex(newDfBrieflyGaps)
+                newDfBrieflyAvailability = setGroupCounterInDfSumRowIndex(newDfBrieflyAvailability)
 
 
                 newDfBriefly = addNewSumColToDf(newDfBriefly)
