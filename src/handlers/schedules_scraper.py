@@ -190,6 +190,9 @@ def scrapeClassTables():
                             for partNr, part in enumerate(partsOfLine):
                                 currColWithLinePartColNr = currColNr + partNr
 
+                                if isinstance(part, str)   and   currColNr <= colsNrReservedForRowMultiIndex:
+                                    part = part.replace(' ', '')
+
                                 # then update the value of that column   &   inner column counter.
                                 classRows[currRowWithLinesTotalNr][currColWithLinePartColNr] = part
 
