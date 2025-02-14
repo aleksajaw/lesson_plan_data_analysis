@@ -11,6 +11,7 @@ def createNewMultiIndexWithNewFirstLvl(df, newFirstLvlVal, newLvlName='', isColu
     indexBase = df.columns   if isColumns   else df.index
 
     colsData = [convertDigitInStrToInt(col)   for col in indexBase]   if convertIndex   else indexBase
+    newFirstLvlVal = convertDigitInStrToInt(newFirstLvlVal)   if convertIndex   else newFirstLvlVal
 
     return MultiIndex.from_product([[newFirstLvlVal], colsData], names=[newLvlName]+indexBase.names)
 
