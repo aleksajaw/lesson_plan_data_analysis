@@ -2,7 +2,7 @@ from error_utils import handleErrorMsg, getTraceback
 #from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import draftSheetName, JSONIndentValue#, excelEngineName
 #from src.constants.excel_constants import excelMargin
-from src.constants.schedule_structures_constants import dfColNameTuples, dfColNameArrays, timeIndexNames, dayAndAttrNames, colsWithNumbersNameTuples, colsWithNumbersNameArrays#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el
+from src.constants.schedule_structures_constants import dfColName3elTuples, dfColName4elTuples, dfColName5elTuples, dfColNameArrays, timeIndexNames, dayAndAttrNames, colsWithNumbersNameTuples, colsWithNumbersNameArrays#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el
 import json
 import re
 from pandas import DataFrame, MultiIndex, Series, Index#, read_excel
@@ -22,9 +22,20 @@ def convertToDf(dataToConvert):
         #    dataToConvert = {}
         
         df = DataFrame(dataToConvert[1:])
+
+        dfColsLen = df.shape[1]
+
         # Multi-dimensional column names.
-        df.columns = MultiIndex.from_tuples(tuples=dfColNameTuples, names=dayAndAttrNames)
-        #df.columns = MultiIndex.from_arrays(arrays=dfColNameArrays, names=dayAndAttrNames)
+        if dfColsLen == len(dfColName4elTuples):
+            df.columns = MultiIndex.from_tuples(tuples=dfColName4elTuples, names=dayAndAttrNames)
+            #df.columns = MultiIndex.from_arrays(arrays=dfColNameArrays, names=dayAndAttrNames)
+        
+        elif dfColsLen == len(dfColName3elTuples):
+            df.columns = MultiIndex.from_tuples(tuples=dfColName3elTuples, names=dayAndAttrNames)
+            
+        elif dfColsLen == len(dfColName5elTuples):
+            
+            df.columns = MultiIndex.from_tuples(tuples=dfColName5elTuples, names=dayAndAttrNames)
 
         df = correctDfContent(df)
         
@@ -115,7 +126,7 @@ def convertFloatToInt(value):
 
 # '1'   =>   1
 def convertDigitInStrToInt(text):
-    return int(text)   if str.isdigit(text)   else text
+    return int(text)   if isinstance(text, str)   and   str.isdigit(text)   else text
 
 
 # DataFrame column with values like
