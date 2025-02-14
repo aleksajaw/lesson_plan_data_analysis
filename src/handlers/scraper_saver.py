@@ -72,4 +72,6 @@ def createOrEditMainExcelFile():
 
 
 def getClassesDataDfs():
+    global classesDataDfs
+
     return classesDataDfs
