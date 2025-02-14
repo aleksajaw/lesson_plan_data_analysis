@@ -8,3 +8,4 @@ from schedules_scraper import *
 from scraper_saver import *
 from schedules_creator import *
 from files_opener import *
+from tasks_manager import *
