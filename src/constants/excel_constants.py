@@ -4,7 +4,7 @@ excelMargin = { 'row' : 1,
                 'col' : 1 }
 
 
-excelDistance = { 'row' : 1,
+excelDistance = { 'row' : 2,
                   'col' : 1 }
 
 excelRangeStartCol = excelMargin['col'] + 1
