@@ -1,10 +1,13 @@
-from src.constants.scraper_constants import planURL, driverLocationStates, scraperFindKeys, scraperPresenceLocators
+#from src.constants.scraper_constants import planURL, driverLocationStates, scraperFindKeys, scraperPresenceLocators
+from src.constants.scraper_constants import driverLocationStates, scraperFindKeys
 from src.constants.schedule_structures_constants import timeIndexNames, noGroupMarker
 from src.utils.converters_utils import splitHTMLAndRemoveTags, delInvalidChars, convertObjKeysToDesiredOrder
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 driver = None
 wait = None
@@ -16,7 +19,7 @@ classesData = {}
 classList = []
 
 
-def initSchedulePageDriver():
+def initSchedulePageDriver(schoolWebInfo):
     
     global driver, wait, currDriverLocation, listFrame, planFrame
     msgText=''
@@ -25,19 +28,22 @@ def initSchedulePageDriver():
     try:
         driver = webdriver.Chrome()
         wait = WebDriverWait(driver, 10)
+        driver.set_window_size(1920, 1080)
 
-        driver.get(planURL)
-        currDriverLocation = driverLocationStates[0]
+        driver.get(schoolWebInfo['planURL']['full'])
+        
+        if schoolWebInfo['useDOMFrames']:
+            currDriverLocation = driverLocationStates[0]
 
-        listFrame = driver.find_element(*scraperPresenceLocators['list'])
-        planFrame = driver.find_element(*scraperPresenceLocators['plan'])
+            listFrame = driver.find_element(*schoolWebInfo['scheduleLinksInfo']['selectorParent'])
+            planFrame = driver.find_element(*schoolWebInfo['planInfo']['selector'])
 
-        driver.switch_to.frame(listFrame)
-        currDriverLocation = driverLocationStates[1]
+            driver.switch_to.frame(listFrame)
+            currDriverLocation = driverLocationStates[1]
     
     except Exception as e:
         noErrors = False
-        msgText = handleErrorMsg(f'\nError while initializing Web Driver and its elements for {planURL}.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while initializing Web Driver and its elements for {schoolWebInfo['schoolURL']}.', getTraceback(e))
 
     if msgText: print(msgText)  
 
@@ -45,58 +51,87 @@ def initSchedulePageDriver():
 
 
 
-def scrapeAndSetClassList():
+def scrapeAndSetClassList(schoolWebInfo):
 
     global driver, classList
     msgText=''
     noErrors = True
     
     try:
-        classList = driver.find_elements(*scraperFindKeys['classList'])
+        classList = driver.find_elements(*schoolWebInfo['scheduleLinksInfo']['selector'])
 
     except Exception as e:
         noErrors = False
-        msgText = handleErrorMsg(f'\nError while scraping and setting the class list for the schedules for {planURL}.', getTraceback(e))
-    if msgText: print(msgText)  
+        msgText = handleErrorMsg(f'\nError while scraping and setting the class list for the schedules for {schoolWebInfo['schoolURL']}.', getTraceback(e))
+
+    if msgText: print(msgText)
     
     return noErrors
 
 
 
-def scrapeClassTables():
+def scrapeClassTables(schoolWebInfo):
     
-    global classList, wait, driver, currDriverLocation, driverLocationStates, classesData
+    global classList, wait, driver, currDriverLocation, classesData
     msgText=''
     noErrors = True
 
     try:
         colsNrReservedForRowMultiIndex = len(timeIndexNames)
-        emptyCellDefaultCols = ['','','','']
+        emptyCellDefaultCols = []
 
-        for link in classList:
-        # To quickly check the scraping loop:
-        # comment out the above code
-        # and uncomment one of the two options below.
-        #for link in classList[:4]:
-        #for link in [classList[0]]:
+        for linkNr in range(len(classList)):
+            
+            # Wait for the body to be ready.
+            wait.until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
 
             ###   SCRAPER   START   ###
+            link = classList[linkNr]
+
             # Go to the list frame.
-            if(currDriverLocation!=driverLocationStates[1]):
-                wait.until(EC.presence_of_element_located(scraperPresenceLocators[driverLocationStates[1]]))
+            if( schoolWebInfo['useDOMFrames']   and   currDriverLocation!=driverLocationStates[1] ):
+                wait.until( EC.visibility_of_element_located(schoolWebInfo['scheduleLinksInfo']['selectorParent']))
                 driver.switch_to.frame(listFrame)
                 currDriverLocation = driverLocationStates[1]
+            
+            elif not schoolWebInfo['useDOMFrames']:
+                href = link.get_attribute('href')
 
-            link.click()
+                # Use only links that lead to the concrete schedules, not the main page for the schedules - skip them.
+                if len(href) <= len(schoolWebInfo['planURL']['full']):
+                    continue
+            
+                #wait.until( EC.visibility_of_element_located( (By.XPATH, '//a[@href="' + href + '""]') ) )
+
+            try:
+                link.click()
+
+            except:
+                if not schoolWebInfo['useDOMFrames']:
+                    # Scroll the page to the footer to see the desired link to click.
+                    footerEl = driver.find_element(By.XPATH, "//footer")
+                    driver.execute_script("arguments[0].scrollIntoView(true);", footerEl)
+                    
+                time.sleep(1)
+                link.click()
+            
+
+            if not schoolWebInfo['useDOMFrames']:
+                # Update the list of links to click after the page reloads.
+                classList = driver.find_elements(*schoolWebInfo['scheduleLinksInfo']['selector'])
+                link = classList[linkNr]
+
             schoolClassName = link.text
 
-            driver.switch_to.default_content()
-            currDriverLocation = driverLocationStates[0]
+            if schoolWebInfo['useDOMFrames']:
+                driver.switch_to.default_content()
+                currDriverLocation = driverLocationStates[0]
 
-            # Go to the plan frame.
-            wait.until( EC.presence_of_element_located(scraperPresenceLocators[driverLocationStates[2]]) )
-            driver.switch_to.frame(planFrame)
-            currDriverLocation = driverLocationStates[2]
+                # Go to the plan frame.
+                wait.until( EC.visibility_of_element_located(schoolWebInfo['planInfo']['selector']) )
+
+                driver.switch_to.frame(planFrame)
+                currDriverLocation = driverLocationStates[2]
             
             # Get main data.
             table = driver.find_element(*scraperFindKeys['table'])
@@ -109,6 +144,15 @@ def scrapeClassTables():
 
             # Counters for the loop below.
             currRowNr = 0
+
+            # Find the default column number   and   assign correct value to the empty cell variable.
+            if not len(emptyCellDefaultCols):
+                exampleLessonCell = table.find_elements(By.XPATH, ".//td[.//span]")[colsNrReservedForRowMultiIndex + 1]
+                exampleLessonElList = exampleLessonCell.find_elements(By.XPATH, ".//span[not(descendant::span)]")
+                lessonElListLen = len(exampleLessonElList)
+                emptyCellDefaultCols = [''] * ( 4   if lessonElListLen % 3 == 0   else
+                                                3   if lessonElListLen % 2 == 0   else 0 )
+
 
             # Loop through the rows in the table.
             for row in rows:
@@ -211,6 +255,12 @@ def scrapeClassTables():
                         maxColInRowCounter = max(maxColInRowCounter, colsInCellLineCounter)
                         linesInRowCounter += 1
 
+                    # Keep the correct column number, even if there are no values in the cells.
+                    if not len(cellContent):
+                        # Add an empty cell.
+                        classRows[currRowWithLinesTotalNr].extend(emptyCellDefaultCols)
+                        colsInCellLineCounter += len(emptyCellDefaultCols)
+                        
 
                     # Add missing columns for time indices
                     # to rows with more than 1 line. This means that
@@ -247,7 +297,8 @@ def scrapeClassTables():
             #print(classRows)
             classesData[delInvalidChars(schoolClassName)] = classRows
 
-            driver.switch_to.parent_frame()
+            if schoolWebInfo['useDOMFrames']:
+                driver.switch_to.parent_frame()
     
         classesData = convertObjKeysToDesiredOrder(classesData, sorted(classesData.keys()))
 
@@ -255,8 +306,9 @@ def scrapeClassTables():
         driver.quit()
 
     except Exception as e:
+        driver.quit()
         noErrors = False
-        msgText = handleErrorMsg(f'\nError while scrapping the schedules from {planURL}.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while scrapping the schedules from {schoolWebInfo['schoolURL']}.', getTraceback(e))
 
     if msgText: print(msgText)     
 
@@ -264,22 +316,22 @@ def scrapeClassTables():
 
 
 
-def scrapeSchoolWebPage():
+def scrapeSchoolWebPage(schoolWebInfo):
 
-    noErrors = initSchedulePageDriver()
+    noErrors = initSchedulePageDriver(schoolWebInfo)
     
     if noErrors:
-        noErrors = scrapeAndSetClassList()
+        noErrors = scrapeAndSetClassList(schoolWebInfo)
 
     if noErrors:
-        noErrors = scrapeClassTables()
+        noErrors = scrapeClassTables(schoolWebInfo)
 
 
 
-def getClassesDataFromSchoolWebPage():
+def getClassesDataFromSchoolWebPage(schoolWebInfo):
     
     global classesData
 
-    scrapeSchoolWebPage()
+    scrapeSchoolWebPage(schoolWebInfo)
 
     return classesData
