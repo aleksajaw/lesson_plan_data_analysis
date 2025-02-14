@@ -1,6 +1,6 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.conversion_constants import excelEngineName, JSONIndentValue
-from src.constants.excel_constants import excelMargin #, excelDistance
+from src.constants.excel_constants import excelMargin, excelDistance
 from converters_utils import delInvalidChars, convertObjOfDfsToJSON, correctDfContent #, convertToDf, convertToObjOfDfs,
 from excel_utils import countInnerCoords
 from excel_styles_utils import autoFormatScheduleExcel, autoFormatOverviewExcel#, autoFormatExcelCellSizes, autoFormatScheduleExcelCellStyles, 
@@ -197,7 +197,7 @@ def writeListOfObjsWithMultipleDfsToJSON(multiDfsJSONFilePath, listOfObjsWithMul
 
 
 
-def writerForListOfObjsWithMultipleDfsToJSONAndExcel(multiDfsJSONFilePath, excelFilePath, objsWithMultipleDfs, doesNeedFormatStyle=True, writingDirection='row'):
+def writerForListOfObjsWithMultipleDfsToJSONAndExcel(multiDfsJSONFilePath, excelFilePath, objsWithMultipleDfs, doesNeedFormatStyle=True, writingDirection='row', dfsInRowLimit=None):
     msgText = ''
 
     try:
@@ -209,12 +209,34 @@ def writerForListOfObjsWithMultipleDfsToJSONAndExcel(multiDfsJSONFilePath, excel
             innerCoords = { 'row': 0,
                             'col': 0 }
 
-            for df in sheetDfs:
+            dfInLineCounter = 0
+            isDirectionRow = writingDirection == 'row'
+            writingDirectionConverted = writingDirection
+            useDfsLimit = dfsInRowLimit is not None   and   isDirectionRow
+
+            for df in sheetDfs:                
+
+                # Move the DataFrame to the next line if needed.
+                if len(listOfObjsWithMultipleDfs[sheetName]):
+                    if useDfsLimit:
+                        if dfInLineCounter % dfsInRowLimit == 0:
+                          writingDirectionConverted = 'col'
+                          innerCoords = { 'row': innerCoords['row'] + excelDistance['row'],
+                                          'col': 0 }
+
+                        elif writingDirectionConverted != 'row':
+                            writingDirectionConverted = 'row'
+                      
+                    
+                    innerCoords = countInnerCoords(df, writingDirectionConverted, innerCoords)
+                
+
                 listOfObjsWithMultipleDfs[sheetName].append( { 'startrow' : innerCoords['row'],
                                                                'startcol' : innerCoords['col'],
                                                                'df'       : correctDfContent(df, True) } )
                 
-                innerCoords = countInnerCoords(df, writingDirection, innerCoords)
+                if useDfsLimit:
+                    dfInLineCounter = dfInLineCounter+1
         
 
         if writeListOfObjsWithMultipleDfsToJSON(multiDfsJSONFilePath, listOfObjsWithMultipleDfs):
