@@ -292,25 +292,10 @@ def setupEnvironment(forceReinstall=False, endHere=False):
 
 def main():
     if addAllOfTheProjectDirs():
-    
-        from src.handlers.schedules_scraper import getClassesDataFromSchoolWebPage
-        from src.handlers.scraper_saver import loadClassesDataVariables, createOrEditMainExcelFile, getClassesDataDfs
-        from src.handlers.schedules_creator import createScheduleExcelFiles
-        from src.handlers.files_opener import openScheduleFilesWithDefApps, openOverviewFilesWithDefApps
-        from src.handlers.overviews_creator import createScheduleOverviews
-        
+        from src.handlers.tasks_manager import scrapeSchoolWebs
         #turnOffFutureWarnings()
-
-        classesData = getClassesDataFromSchoolWebPage()
-
-        if classesData:
-            loadClassesDataVariables(classesData)
-            createOrEditMainExcelFile()
-            createScheduleExcelFiles(getClassesDataDfs())
-            createScheduleOverviews()
-            #openScheduleFilesWithDefApps()
-            #openOverviewFilesWithDefApps()
-
+        
+        scrapeSchoolWebs()
 
 
 def chooseStart(args):
