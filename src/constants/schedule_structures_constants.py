@@ -52,6 +52,13 @@ dfRowIndexNameTuples = [
     ('Nr', ''),
     ('Godz', '')
 ]
+dfColWeekDayNameTuples3el = [
+    ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'grupa'), ('Poniedziałek', 'sala'),
+    ('Wtorek', 'przedmiot'), ('Wtorek', 'grupa'), ('Wtorek', 'sala'),
+    ('Środa', 'przedmiot'), ('Środa', 'grupa'), ('Środa', 'sala'),
+    ('Czwartek', 'przedmiot'), ('Czwartek', 'grupa'), ('Czwartek', 'sala'),
+    ('Piątek', 'przedmiot'), ('Piątek', 'grupa'), ('Piątek', 'sala')
+]
 dfColWeekDayNameTuples4el = [
     ('Poniedziałek', 'przedmiot'), ('Poniedziałek', 'grupa'), ('Poniedziałek', 'nauczyciel'), ('Poniedziałek', 'sala'),
     ('Wtorek', 'przedmiot'), ('Wtorek', 'grupa'), ('Wtorek', 'nauczyciel'), ('Wtorek', 'sala'),
@@ -66,7 +73,9 @@ dfColWeekDayNameTuples5el = [
     ('Czwartek', 'przedmiot'), ('Czwartek', 'grupa'), ('Czwartek', 'nauczyciel'), ('Czwartek', 'klasa'), ('Czwartek', 'sala'),
     ('Piątek', 'przedmiot'), ('Piątek', 'grupa'), ('Piątek', 'nauczyciel'), ('Piątek', 'klasa'), ('Piątek', 'sala')
 ]
-dfColNameTuples = dfRowIndexNameTuples + dfColWeekDayNameTuples4el
+dfColName3elTuples = dfRowIndexNameTuples + dfColWeekDayNameTuples3el
+dfColName4elTuples = dfRowIndexNameTuples + dfColWeekDayNameTuples4el
+dfColName5elTuples = dfRowIndexNameTuples + dfColWeekDayNameTuples5el
 
 dfRowIndexNameArrays = [
                           ['Nr', 'Godz'],
