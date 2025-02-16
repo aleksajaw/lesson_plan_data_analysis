@@ -1,6 +1,7 @@
 from error_utils import handleErrorMsg, getTraceback
 #from src.constants.paths_constants import scheduleClassesExcelPath
 from src.constants.conversion_constants import draftSheetName, JSONIndentValue#, excelEngineName
+from src.constants.overview_constants import calcRowAndColNames
 #from src.constants.excel_constants import excelMargin
 from src.constants.schedule_structures_constants import dfColName3elTuples, dfColName4elTuples, dfColName5elTuples, dfColNameArrays, timeIndexNames, dayAndAttrNames, colsWithNumbersNameTuples, colsWithNumbersNameArrays#, dfColWeekDayNamesTuples4el, dfColWeekDayNamesTuples5el
 import json
@@ -97,9 +98,14 @@ def correctDfContent(df, forceCorrect=False):
 def correctValsInColsWithNumbers(df, forceCorrect=False):
     #if df is None:
     #    df = DataFrame
+
+    #dfColsToCorrectList = df.select_dtypes(include=['object', 'float']).columns.tolist()
     
-    dfColsToCorrectList = df.select_dtypes(include=['object', 'float']).columns.tolist()
-    
+    dfColsToCorrectList = [
+        col for col in df.select_dtypes(include=['object', 'float']).columns
+        if not any(name in calcRowAndColNames for name in col)
+    ]
+        
     if len(dfColsToCorrectList):
         colsList = dfColsToCorrectList   if forceCorrect   else colsWithNumbersNameTuples
         #colsList = dfColsToCorrectList   if forceCorrect   else colsWithNumbersNameArrays
