@@ -31,6 +31,7 @@ def initSchedulePageDriver(schoolWebInfo):
         driver.set_window_size(1920, 1080)
 
         driver.get(schoolWebInfo['planURL']['full'])
+        driver.maximize_window()
         
         if schoolWebInfo['useDOMFrames']:
             currDriverLocation = driverLocationStates[0]
@@ -84,8 +85,8 @@ def scrapeClassTables(schoolWebInfo):
             
             if not schoolWebInfo['useDOMFrames']:
                 # Wait for the body to be ready.
-                wait.until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
-
+                WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
+            
             ###   SCRAPER   START   ###
             link = classList[linkNr]
 
@@ -113,7 +114,7 @@ def scrapeClassTables(schoolWebInfo):
                     footerEl = driver.find_element(By.XPATH, "//footer")
                     driver.execute_script("arguments[0].scrollIntoView(true);", footerEl)
                     
-                    time.sleep(1.5)
+                time.sleep(1.5)
                 link.click()
             
 
