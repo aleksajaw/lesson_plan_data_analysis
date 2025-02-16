@@ -1,19 +1,19 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.excel_constants import excelMargin
-from src.constants.overview_constants import sumCellsInColsRowName, sumCellsInRowsColName, classroomOccupancyTableName, classroomGapsTableName, classroomAvailabilityTableName, basicTableTitleLvlName
-from src.constants.schedule_structures_constants import weekdays, weekdaysCatDtype#, dayAndAttrNames, timeIndexNames, dfRowIndexNamesTuples, dfRowNrAndTimeTuples
-from src.constants.paths_constants import allOwnerTypeNames, classroomsName, scheduleClassroomsExcelPath, scheduleClassroomsWideAndVerticallyDfsJSONPath, scheduleClassroomsWideAndVerticallyExcelPath, schedulesWideAndVerticallyExcelPath, scheduleClassroomsBrieflyWideAndVerticallyDfsJSONPath, scheduleClassroomsBrieflyWideAndVerticallyExcelPath, scheduleClassroomsExcelPath, scheduleClassroomsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, schedulesWideAndVerticallyDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleListsOwnersGroupedJSONPath, allScheduleExcelPaths#, testExcelPath, testJSONPath, scheduleClassesVerticallyExcelPath
+from src.constants.schedule_structures_constants import weekdays
+from src.constants.paths_constants import classroomsName, scheduleClassroomsExcelPath, scheduleClassroomsWideAndVertDfsJSONPath, scheduleClassroomsWideAndVertExcelPath, scheduleClassroomsExcelPath, scheduleClassroomsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
-from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys, convertDigitInStrToInt, createTupleFromVals
+from src.handlers.overviews_creator import createOverviewsWithLessonsByNrs
+from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
 #from src.utils.files_utils import createFileNameWithNr
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
-from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, setNewDfColsFirstLvl, writeDfColSumToCell, combineTwoDfsWithDifferentIndices, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewSumRowsToDf, createNewMultiIndexForSumRow, completelyTransformDfToVerticalOrder, setGroupCounterInDfSumRowIndex
-from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForListOfObjsWithMultipleDfsToJSONAndExcel#, writerForObjOfDfsToExcel, writerForDfToExcelSheet
+from src.utils.df_utils import combineTwoDfsWithDifferentIndices, completelyTransformDfToVerticalOrder
+from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 from src.utils.transl_utils import getTranslation, getTranslByPlural
 import pandas as pd
-from pandas import ExcelWriter, DataFrame, RangeIndex, MultiIndex
+from pandas import ExcelWriter, DataFrame, RangeIndex
 import numpy as np
 #import re
 import os
@@ -30,121 +30,54 @@ def createScheduleExcelFiles(classSchedulesDfs):
     classSchedules = classSchedulesDfs.copy()
 
     createScheduleExcelFilesByOwnerTypes()
-    createScheduleExcelFilesVertical()
+    createScheduleExcelFileVertical()
     #createScheduleExcelFileForOwnerLists()
     createScheduleExcelFilesByGroupedOwnerLists()
 
 
 
-def createScheduleExcelFilesVertical():
+def createScheduleExcelFileVertical():
     msgText=''
 
     try:
         newObjOfDfs = {}
-        newObjOfDfsBriefly = {}
         sheetNames = [ getTranslByPlural(ownerTypeName, True)   for ownerTypeName in [classroomsName] ]
         i = 0
 
         for excelFilePath in [scheduleClassroomsExcelPath]:
             
             objOfDfs = readExcelFileAsObjOfDfs(excelFilePath)
-            newDf = DataFrame()
+            newDfBasic = DataFrame()
             currSheetName = sheetNames[i]
 
-
+            #for day in weekdays:
+            #    newObjOfDfs[currSheetName + ' - ' + day] = []
+            
             # Get the 1st DataFrame in the list
             # dfKey is here a name of for example class, classroom, teacher
             for dfName, df in objOfDfs.items():
                 
                 # Transform DataFrame into a vertical order where column names become the 1st level of the MultiIndex for the rows.
-                dfVertical = completelyTransformDfToVerticalOrder(df, dfName, currSheetName)
+                dfVert = completelyTransformDfToVerticalOrder(df, dfName, currSheetName)
                 
                 # THE IMPORTANT WAY TO COMBINE TWO DATAFRAMES WHICH DIFFER IN INDICES.
-                newDf = combineTwoDfsWithDifferentIndices(newDf, dfVertical)   if not newDf.empty   else dfVertical
+                newDfBasic = combineTwoDfsWithDifferentIndices(newDfBasic, dfVert)   if not newDfBasic.empty   else dfVert
 
-                # Prepare the DataFrame to retain only the count values. (Remove the redundant cells.)
-                newDfBriefly = retainOnlyFirstCellsInDfGroups(newDf.copy())
+            newDfBasicByDays = {day: newDfBasic.xs(day, level=0, drop_level=False)   for day in newDfBasic.index.get_level_values(0).unique()}
 
-                # Convert the col names from str to int and add a title for the table (DataFrame). 
-                newMultiIndexCols = createNewMultiIndexWithNewFirstLvl(newDfBriefly, classroomOccupancyTableName, basicTableTitleLvlName)
-                newDfBriefly.columns = newMultiIndexCols
-
-                newDfBriefly = convertDfValsToCounters(newDfBriefly, lvlList=[0,1,2], retainOnlyLastRows=True)
-                newDfBriefly = addNewSumRowsToDf(newDfBriefly, isRowIndexFirstLvlADay=True)
-
-                
-                newDfBrieflyGaps = newDfBriefly.copy()
-                newDfBrieflyAvailability = convertDfValsToBinaryStates(newDfBriefly.copy())
-
-
-                for col in newDfBriefly.columns:
-                    
-                    for dayName in newDfBriefly.index.get_level_values(0).unique():
-                        
-                        colData = newDfBrieflyGaps.xs(dayName, level=0)[col]
-                        (firstValidIdx, lastValidIdx) = getDfValidIndices(colData)
-
-                        dayName = createTupleFromVals(dayName)
-
-                        keySum = createNewMultiIndexForSumRow(newDfBriefly.index.names, dayName, sumCellsInColsRowName, '')
-
-
-                        if firstValidIdx is not None   and   lastValidIdx is not None:
-                            
-                            (firstIndex, lastIndex) = (dayName + firstValidIdx, dayName + lastValidIdx)
-
-                            newDfBrieflyGaps.loc[firstIndex:lastIndex, col] = convertDfValsToBinaryStates(newDfBrieflyGaps.loc[firstIndex:lastIndex, col])
-                        
-                            newDfBriefly = writeDfColSumToCell(newDfBriefly, keySum, col, None, firstIndex, lastIndex)
-                            newDfBrieflyGaps = writeDfColSumToCell(newDfBrieflyGaps, keySum, col, None, firstIndex, lastIndex)
-                        
-
-                        else:
-                          newDfBriefly = writeDfColSumToCell(newDfBriefly, keySum, col, 0.0)
-                          newDfBrieflyGaps = writeDfColSumToCell(newDfBrieflyGaps, keySum, col, 0.0)
-
-                          newDfBrieflyAvailability = writeDfColSumToCell(newDfBrieflyAvailability, keySum, col, 0.0, None, None, dayName)
-
-
-                newDfBriefly = setGroupCounterInDfSumRowIndex(newDfBriefly)
-                newDfBrieflyGaps = setGroupCounterInDfSumRowIndex(newDfBrieflyGaps)
-                newDfBrieflyAvailability = setGroupCounterInDfSumRowIndex(newDfBrieflyAvailability)
-
-
-                newDfBriefly = addNewSumColToDf(newDfBriefly)
-
-                newDfBrieflyAvailability = setNewDfColsFirstLvl(newDfBrieflyAvailability, classroomAvailabilityTableName)
-                newDfBrieflyAvailability = addNewSumColToDf(newDfBrieflyAvailability)
-
-                newDfBrieflyGaps = setNewDfColsFirstLvl(newDfBrieflyGaps, classroomGapsTableName)
-                newDfBrieflyGaps = addNewSumColToDf(newDfBrieflyGaps)
-
-                # Number of classes assigned to rooms at specific hours during the day
-                #print(newDfBriefly)
-                
-                # Number of hours per room on a daily basis
-                #print(newDfBriefly.groupby(axis=0, level=0).sum())
-                
-                # Number of rooms occupied per hour throughout the day
-                #print(newDfBriefly.sum(axis=1))
-                
-                # Number of rooms occupied for specific hours across the week
-                #print(newDfBriefly.groupby(axis=0, level=[1,2]).sum())
-                
-                # Number of hours per room across the week
-                #print(newDfBriefly.sum(axis=0))
-
-
-            newObjOfDfs[currSheetName] = newDf
-            newObjOfDfsBriefly[currSheetName] = [newDfBriefly, newDfBrieflyAvailability, newDfBrieflyGaps]
+            # Save sheets.
+            for day in weekdays:
+                #newObjOfDfs[currSheetName + ' - ' + day].append( newDfBasicByDays[day] )
+                newObjOfDfs[currSheetName + ' - ' + day] = newDfBasicByDays[day]
 
             i=i+1
 
-        writerForObjOfDfsToJSONAndExcel(scheduleClassroomsWideAndVerticallyDfsJSONPath, scheduleClassroomsWideAndVerticallyExcelPath, newObjOfDfs)
-        writerForListOfObjsWithMultipleDfsToJSONAndExcel(scheduleClassroomsBrieflyWideAndVerticallyDfsJSONPath, scheduleClassroomsBrieflyWideAndVerticallyExcelPath, newObjOfDfsBriefly)
+
+        writerForObjOfDfsToJSONAndExcel(scheduleClassroomsWideAndVertDfsJSONPath, scheduleClassroomsWideAndVertExcelPath, newObjOfDfs)
+        createOverviewsWithLessonsByNrs(newObjOfDfs)
 
     except Exception as e:
-        msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written wide and vertically.', getTraceback(e))
+        msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written in wide and vertical format.', getTraceback(e))
 
     if msgText: print(msgText)
 
