@@ -15,8 +15,8 @@ overviewsByHoursColIndexNames = timeIndexNames + [overviewColIndexLastLvlName]
 
 overviewsMainByDaysColIndexNames = [dayOrderColName, dayColName]#, overviewColIndexLastLvlName]
 
-sumCellsInRowsColName = 'Razem'
-sumCellsInColsRowName = 'Razem'
+sumColName = 'Razem'
+sumRowName = 'Razem'
 
 amountColName = 'Ilość'
 percOfDayColName = 'Udział w dniu'
@@ -28,6 +28,11 @@ noLessonsVal = 'brak zajęć'
 
 nrOfOccurrColName = 'Ilość wystąpień'
 meanColName = 'Średnia'
+meanRowName = 'Średnia'
+
+nrOfClassesPerHourName = 'ilość zajęć na godz.'
+
+calcRowAndColNames = ['Średnia', 'Suma']
 
 classroomTableName = ' sal'
 
