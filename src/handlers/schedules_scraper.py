@@ -82,8 +82,9 @@ def scrapeClassTables(schoolWebInfo):
 
         for linkNr in range(len(classList)):
             
-            # Wait for the body to be ready.
-            wait.until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
+            if not schoolWebInfo['useDOMFrames']:
+                # Wait for the body to be ready.
+                wait.until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
 
             ###   SCRAPER   START   ###
             link = classList[linkNr]
@@ -112,7 +113,7 @@ def scrapeClassTables(schoolWebInfo):
                     footerEl = driver.find_element(By.XPATH, "//footer")
                     driver.execute_script("arguments[0].scrollIntoView(true);", footerEl)
                     
-                time.sleep(1)
+                    time.sleep(1.5)
                 link.click()
             
 
