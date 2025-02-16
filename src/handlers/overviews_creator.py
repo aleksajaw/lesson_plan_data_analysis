@@ -14,9 +14,9 @@ import os
 
 
 
-def createScheduleOverviews():
-    createOverviewsWithResourcesAllocBy('days')
-    createOverviewsWithResourcesAllocBy('hours')
+def createScheduleOverviews(schoolWebInfo):
+    createOverviewsWithResourcesAllocBy('days', schoolWebInfo)
+    createOverviewsWithResourcesAllocBy('hours', schoolWebInfo)
     createOverviewMain()
     createOverviewMainIntro()
 
@@ -135,7 +135,7 @@ def createOverviewsWithLessonsByNrs(objOfDfs):
 
 
 
-def createOverviewsWithResourcesAllocBy(overviewKey):
+def createOverviewsWithResourcesAllocBy(overviewKey, schoolWebInfo):
     msgText=''
     
     try:
@@ -148,7 +148,8 @@ def createOverviewsWithResourcesAllocBy(overviewKey):
         for filePath in [ scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath ]:
             i=i+1
             fileContent = readDfsJSONAsObjOfDfs(filePath)
-            
+
+            # It is needed to transform the fn to doesn't repeat read the file.
             overviewDfs = {}
 
             for sheetName, df in fileContent.items():

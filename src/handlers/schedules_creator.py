@@ -22,21 +22,21 @@ import os
 classSchedules, classroomSchedules, groupedOwnerLists = {}, {}, {}
 
 
-def createScheduleExcelFiles(classSchedulesDfs):
+def createScheduleExcelFiles(classSchedulesDfs, schoolWebInfo):
     global classSchedules
     #if classSchedulesDfs is None:
     #    classSchedulesDfs = {}
     
     classSchedules = classSchedulesDfs.copy()
 
-    createScheduleExcelFilesByOwnerTypes()
-    createScheduleExcelFileVertical()
+    createScheduleExcelFilesByOwnerTypes(schoolWebInfo)
+    createScheduleExcelFileVertical(schoolWebInfo)
     #createScheduleExcelFileForOwnerLists()
-    createScheduleExcelFilesByGroupedOwnerLists()
+    createScheduleExcelFilesByGroupedOwnerLists(schoolWebInfo)
 
 
 
-def createScheduleExcelFileVertical():
+def createScheduleExcelFileVertical(schoolWebInfo):
     msgText=''
 
     try:
@@ -83,7 +83,7 @@ def createScheduleExcelFileVertical():
 
 
 
-def createScheduleExcelFilesByOwnerTypes():
+def createScheduleExcelFilesByOwnerTypes(schoolWebInfo):
     global classSchedules, classroomSchedules, groupedOwnerLists
     msgText=''
 
@@ -131,7 +131,7 @@ def createScheduleExcelFileForOwnerLists():
 
 
 
-def createScheduleExcelFilesByGroupedOwnerLists():
+def createScheduleExcelFilesByGroupedOwnerLists(schoolWebInfo):
     global classroomSchedules
     msgText=''
 

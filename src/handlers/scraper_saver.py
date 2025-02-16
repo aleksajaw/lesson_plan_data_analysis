@@ -27,7 +27,7 @@ def loadClassesDataVariables(classesData):
 
 
 
-def createOrEditMainExcelFile():
+def createOrEditMainExcelFile(schoolWebInfo):
     
     global classesDataJSON, classesDataDfs, classesDataDfsJSON
 

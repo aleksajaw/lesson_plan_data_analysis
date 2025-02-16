@@ -5,6 +5,8 @@ from src.handlers.files_opener import openScheduleFilesWithDefApps, openOverview
 from src.handlers.overviews_creator import createScheduleOverviews
 from src.constants.scraper_constants import schoolsWebInfo
 
+
+
 def scrapeSchoolWebs():
     
     for schoolWebInfo in [schoolsWebInfo['lojagiellonczyk']]:
@@ -13,8 +15,8 @@ def scrapeSchoolWebs():
 
         if classesData:
             loadClassesDataVariables(classesData)
-            createOrEditMainExcelFile()
-            createScheduleExcelFiles(getClassesDataDfs())
-            createScheduleOverviews()
+            createOrEditMainExcelFile(schoolWebInfo)
+            createScheduleExcelFiles(getClassesDataDfs(), schoolWebInfo)
+            createScheduleOverviews(schoolWebInfo)
             #openScheduleFilesWithDefApps()
             #openOverviewFilesWithDefApps()
