@@ -27,12 +27,14 @@
           ##  3.3. BASIC GROUPED
           ##  3.4. OVERVIEW
           ##  3.5. OVERVIEW [BASIC GROUPED]
-          ##  3.6. OVERVIEW FOR RESOURCES
-          ##  3.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES
-          ##  3.8. OVERVIEW RESOURCES BY DAYS
-          ##  3.9. OVERVIEW [BASIC GROUPED] RESOURCES BY DAYS
-          ##  3.10. OVERVIEW FOR RESOURCES BY HOURS
-          ##  3.11. OVERVIEW [BASIC GROUPED] RESOURCES BY HOURS
+          ##  3.6. OVERVIEW FOR LESSONS BY NUMBERS
+          ##  3.7. OVERVIEW [BASIC GROUPED] FOR LESSONS BY NUMBERS
+          ##  3.8. OVERVIEW FOR RESOURCE ALLOCATION
+          ##  3.9. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION
+          ##  3.10. OVERVIEW RESOURCE ALLOCATION BY DAYS
+          ##  3.11. OVERVIEW [BASIC GROUPED] RESOURCE ALLOCATION BY DAYS
+          ##  3.12. OVERVIEW FOR RESOURCE ALLOCATION BY HOURS
+          ##  3.13. OVERVIEW [BASIC GROUPED] RESOURCE ALLOCATION BY HOURS
 
 
 
@@ -45,17 +47,20 @@
           ##  4.1.3. BASIC GROUPED
           ##  4.1.4. OVERVIEW
           ##  4.1.5. OVERVIEW [BASIC GROUPED]
-          ##  4.1.6. OVERVIEW FOR RESOURCES
-          ##  4.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES
-          ##  4.1.8. OVERVIEW FOR RESOURCES BY DAYS
-          ##  4.1.9. OVERVIEW [BASIC GROUPED] RESOURCES BY DAYS
-          ##  4.1.10. OVERVIEW FOR RESOURCES BY HOURS
-          ##  4.1.11. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY HOURS
+          ##  4.1.6. OVERVIEW FOR RESOURCE ALLOCATION
+          ##  4.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION
+          ##  4.1.8. OVERVIEW FOR RESOURCE ALLOCATION BY NUMBERS
+          ##  4.1.9. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY NUMBERS
+          ##  4.1.10. OVERVIEW FOR RESOURCE ALLOCATION BY DAYS
+          ##  4.1.11. OVERVIEW [BASIC GROUPED] RESOURCE ALLOCATION BY DAYS
+          ##  4.1.12. OVERVIEW FOR RESOURCE ALLOCATION BY HOURS
+          ##  4.1.13. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY HOURS
 
 
         ###   4.2. JSON   ###
 
           ##  4.2.1. BASIC MAIN
+          ##  4.2.2  BASIC EXTRA
 
 
         ###   4.3 JSON with DataFrames   ###
@@ -76,12 +81,14 @@
           ##  5.1.3. BASIC GROUPED
           ##  5.1.4. OVERVIEW
           ##  5.1.5. OVERVIEW [BASIC GROUPED]
-          ##  5.1.6. OVERVIEW FOR RESOURCES
-          ##  5.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES
-          ##  5.1.8. OVERVIEW FOR RESOURCES BY DAYS
-          ##  5.1.9. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY DAYS
-          ##  5.1.10. OVERVIEW FOR RESOURCES BY HOURS
-          ##  5.1.11. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY HOURS
+          ##  5.1.6. OVERVIEW FOR RESOURCE ALLOCATION
+          ##  5.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION
+          ##  5.1.8. OVERVIEW FOR RESOURCE ALLOCATION BY NUMBERS
+          ##  5.1.9. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY NUMBERS
+          ##  5.1.10. OVERVIEW FOR RESOURCE ALLOCATION BY DAYS
+          ##  5.1.11. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY DAYS
+          ##  5.1.12. OVERVIEW FOR RESOURCE ALLOCATION BY HOURS
+          ##  5.1.13. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY HOURS
 
 
         ###   5.2. JSON   ###
@@ -95,12 +102,14 @@
           ##  5.3.2. BASIC
           ##  5.3.3. BASIC EXTRA
           ##  5.3.4. BASIC GROUPED
-          ##  5.3.5. OVERVIEW FOR RESOURCES
-          ##  5.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES
-          ##  5.3.7. OVERVIEW FOR RESOURCES BY DAYS
-          ##  5.3.8. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY DAYS
-          ##  5.3.9. OVERVIEW FOR RESOURCES BY HOURS
-          ##  5.3.10. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY HOURS
+          ##  5.3.5. OVERVIEW FOR RESOURCE ALLOCATION
+          ##  5.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION
+          ##  5.3.7. OVERVIEW FOR RESOURCE ALLOCATION BY NUMBERS
+          ##  5.3.8. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY NUMBERS
+          ##  5.3.9. OVERVIEW FOR RESOURCE ALLOCATION BY DAYS
+          ##  5.3.10. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY DAYS
+          ##  5.3.11. OVERVIEW FOR RESOURCE ALLOCATION BY HOURS
+          ##  5.3.12. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY HOURS
 
 
 ###########################################################################
@@ -176,13 +185,14 @@ multiDfsPrefix = 'multi-dfs_'
 schedulePrefixMain = scheduleName + '_'
 schedulePartOfPrefix = scheduleName + '-'
 groupedSuffix = '-grouped'
-overviewSuffix = '_overview'
-resourcesSuffix = '_resources'
+overviewSuffix = '_OV'
+resourceAllocSuffix = '_resource-alloc'
 byHoursSuffix = '-by-hours'
 byDaysSuffix = '-by-days'
 wideSuffix = '_wide'
-verticallySuffix = '_vertically'
+verticalSuffix = '_vertical'
 brieflySuffix = '_briefly'
+byNumbersSuffix = '_lessons-by-numbers'
 
 
 
@@ -217,18 +227,14 @@ allScheduleBaseNames = [ scheduleClassesBaseName,
 
 ##  3.2. BASIC EXTRA  ##
 
-# For all the schedules wide and vertically
-schedulesWideAndVerticallyBaseName = schedulesBaseName + wideSuffix + verticallySuffix
-# For the classrooms wide and vertically
-scheduleClassroomsWideAndVerticallyBaseName = scheduleClassroomsBaseName + wideSuffix + verticallySuffix
-# For the classrooms briefly wide and vertically
-scheduleClassroomsBrieflyWideAndVerticallyBaseName = scheduleClassroomsBaseName + brieflySuffix + wideSuffix + verticallySuffix
+# For all the schedules in wide and vertical format
+schedulesWideAndVertBaseName = schedulesBaseName + wideSuffix + verticalSuffix
 
-# For the classes vertically
-scheduleClassesVerticallyBaseName = scheduleClassesBaseName + verticallySuffix
+# For the classrooms in wide and vertical format
+scheduleClassroomsWideAndVertBaseName = scheduleClassroomsBaseName + wideSuffix + verticalSuffix
 
-# For the classrooms grouped overview for the resources vertically
-scheduleClassroomsGroupedOverviewResourcesVerticallyBaseName  = scheduleClassroomsBaseName + overviewSuffix + resourcesSuffix + verticallySuffix + extExcel
+# For the classes vertical
+scheduleClassesVertBaseName = scheduleClassesBaseName + verticalSuffix
 
 
 
@@ -289,117 +295,131 @@ allScheduleGroupedOverviewBaseNames = [ scheduleClassesGroupedOverviewBaseName,
 
 
 
-##  3.6. OVERVIEW FOR RESOURCES  ##
+##  3.6. OVERVIEW FOR RESOURCE ALLOCATION  ##
 
 # For the classes overview for the resources
-scheduleClassesOverviewResourcesBaseName = scheduleClassesOverviewBaseName + resourcesSuffix
+scheduleClassesResourceAllocBaseName = scheduleClassesOverviewBaseName + resourceAllocSuffix
 # For the teachers overview for the resources
-scheduleTeachersOverviewResourcesBaseName = scheduleTeachersOverviewBaseName + resourcesSuffix
+scheduleTeachersResourceAllocBaseName = scheduleTeachersOverviewBaseName + resourceAllocSuffix
 # For the classrooms overview for the resources
-scheduleClassroomsOverviewResourcesBaseName = scheduleClassroomsOverviewBaseName + resourcesSuffix
+scheduleClassroomsResourceAllocBaseName = scheduleClassroomsOverviewBaseName + resourceAllocSuffix
 # For the subjects overview for the resources
-scheduleSubjectsOverviewResourcesBaseName = scheduleSubjectsOverviewBaseName + resourcesSuffix
+scheduleSubjectsResourceAllocBaseName = scheduleSubjectsOverviewBaseName + resourceAllocSuffix
 
 # For all of the above
-allScheduleOverviewResourcesBaseNames = [ scheduleClassesOverviewResourcesBaseName,
-                                          scheduleTeachersOverviewResourcesBaseName,
-                                          scheduleClassroomsOverviewResourcesBaseName,
-                                          scheduleSubjectsOverviewResourcesBaseName ]
+allScheduleResourceAllocBaseNames = [ scheduleClassesResourceAllocBaseName,
+                                      scheduleTeachersResourceAllocBaseName,
+                                      scheduleClassroomsResourceAllocBaseName,
+                                      scheduleSubjectsResourceAllocBaseName ]
 
 
 
-##  3.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
+##  3.7. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION  ##
 
 # For the classes grouped overview for the resources
-scheduleClassesGroupedOverviewResourcesBaseName = scheduleClassesGroupedOverviewBaseName + resourcesSuffix
+scheduleClassesGroupedResourceAllocBaseName = scheduleClassesGroupedOverviewBaseName + resourceAllocSuffix
 # For the teachers grouped overview for the resources
-scheduleTeachersGroupedOverviewResourcesBaseName = scheduleTeachersGroupedOverviewBaseName + resourcesSuffix
+scheduleTeachersGroupedResourceAllocBaseName = scheduleTeachersGroupedOverviewBaseName + resourceAllocSuffix
 # For the classrooms grouped overview for the resources
-scheduleClassroomsGroupedOverviewResourcesBaseName = scheduleClassroomsGroupedOverviewBaseName + resourcesSuffix
+scheduleClassroomsGroupedResourceAllocBaseName = scheduleClassroomsGroupedOverviewBaseName + resourceAllocSuffix
 # For the subjects grouped overview for the resources
-scheduleSubjectsGroupedOverviewResourcesBaseName = scheduleSubjectsGroupedOverviewBaseName + resourcesSuffix
+scheduleSubjectsGroupedResourceAllocBaseName = scheduleSubjectsGroupedOverviewBaseName + resourceAllocSuffix
 
 # For all of the above
-allScheduleGroupedOverviewResourcesBaseNames = [ scheduleClassesGroupedOverviewResourcesBaseName,
-                                                 scheduleTeachersGroupedOverviewResourcesBaseName,
-                                                 scheduleClassroomsGroupedOverviewResourcesBaseName,
-                                                 scheduleSubjectsGroupedOverviewResourcesBaseName ]
+allScheduleGroupedResourceAllocBaseNames = [ scheduleClassesGroupedResourceAllocBaseName,
+                                             scheduleTeachersGroupedResourceAllocBaseName,
+                                             scheduleClassroomsGroupedResourceAllocBaseName,
+                                             scheduleSubjectsGroupedResourceAllocBaseName ]
 
 
 
-##  3.8. OVERVIEW BY DAYS  ##
+##  3.8. OVERVIEW FOR LESSONS BY NUMBERS  ##
 
-# For the classes overview for the resources grouped by days
-scheduleClassesOverviewResourcesByDaysBaseName = scheduleClassesOverviewResourcesBaseName + byDaysSuffix
-# For the teachers overview for the resources grouped by days
-scheduleTeachersOverviewResourcesByDaysBaseName = scheduleTeachersOverviewResourcesBaseName + byDaysSuffix
-# For the classrooms overview for the resources grouped by days
-scheduleClassroomsOverviewResourcesByDaysBaseName = scheduleClassroomsOverviewResourcesBaseName + byDaysSuffix
-# For the subjects overview for the resources grouped by days
-scheduleSubjectsOverviewResourcesByDaysBaseName = scheduleSubjectsOverviewResourcesBaseName + byDaysSuffix
-
-# For all of the above
-allScheduleOverviewResourcesByDaysBaseNames = [ scheduleClassesOverviewResourcesByDaysBaseName,
-                                                scheduleTeachersOverviewResourcesByDaysBaseName,
-                                                scheduleClassroomsOverviewResourcesByDaysBaseName,
-                                                scheduleSubjectsOverviewResourcesByDaysBaseName ]
+# For the classrooms in wide and vertical format, by the numbers
+scheduleClassroomsWideAndVertOverviewByNumbersBaseName = scheduleClassroomsBaseName + wideSuffix + verticalSuffix + overviewSuffix + byNumbersSuffix
 
 
 
-##  3.9. OVERVIEW [BASIC GROUPED] BY DAYS  ##
+##  3.9. OVERVIEW BASIC GROUPED] FOR LESSONS BY NUMBERS  ##
 
-# For the classes grouped overview for the resources grouped by days
-scheduleClassesGroupedOverviewResourcesByDaysBaseName = scheduleClassesGroupedOverviewResourcesBaseName + byDaysSuffix
-# For the teachers grouped overview for the resources grouped by days
-scheduleTeachersGroupedOverviewResourcesByDaysBaseName = scheduleTeachersGroupedOverviewResourcesBaseName + byDaysSuffix
-# For the classrooms grouped overview for the resources grouped by days
-scheduleClassroomsGroupedOverviewResourcesByDaysBaseName = scheduleClassroomsGroupedOverviewResourcesBaseName + byDaysSuffix
-# For the subjects grouped overview for the resources grouped by days
-scheduleSubjectsGroupedOverviewResourcesByDaysBaseName = scheduleSubjectsGroupedOverviewResourcesBaseName + byDaysSuffix
+# For the classrooms in wide and vertical format, by the numbers
+scheduleClassroomsGroupedWideAndVertOverviewByNumbersBaseName = scheduleClassroomsBaseName + groupedSuffix + wideSuffix + verticalSuffix + overviewSuffix + byNumbersSuffix
+
+
+
+##  3.10. OVERVIEW FOR RESOURCE ALLOCATION BY DAYS  ##
+
+# For the classes overview for the resource allocation by days
+scheduleClassesResourceAllocByDaysBaseName = scheduleClassesResourceAllocBaseName + byDaysSuffix
+# For the teachers overview for the resource allocation by days
+scheduleTeachersResourceAllocByDaysBaseName = scheduleTeachersResourceAllocBaseName + byDaysSuffix
+# For the classrooms overview for the resource allocation by days
+scheduleClassroomsResourceAllocByDaysBaseName = scheduleClassroomsResourceAllocBaseName + byDaysSuffix
+# For the subjects overview for the resource allocation by days
+scheduleSubjectsResourceAllocByDaysBaseName = scheduleSubjectsResourceAllocBaseName + byDaysSuffix
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByDaysBaseNames = [ scheduleClassesGroupedOverviewResourcesByDaysBaseName,
-                                                       scheduleTeachersGroupedOverviewResourcesByDaysBaseName,
-                                                       scheduleClassroomsGroupedOverviewResourcesByDaysBaseName,
-                                                       scheduleSubjectsGroupedOverviewResourcesByDaysBaseName ]
+allScheduleResourceAllocByDaysBaseNames = [ scheduleClassesResourceAllocByDaysBaseName,
+                                            scheduleTeachersResourceAllocByDaysBaseName,
+                                            scheduleClassroomsResourceAllocByDaysBaseName,
+                                            scheduleSubjectsResourceAllocByDaysBaseName ]
 
 
 
-##  3.10. OVERVIEW BY HOURS  ##
+##  3.11. OVERVIEW [BASIC GROUPED] BY DAYS  ##
 
-# For the classes overview for the resources grouped by hours
-scheduleClassesOverviewResourcesByHoursBaseName = scheduleClassesOverviewResourcesBaseName + byHoursSuffix
-# For the teachers overview for the resources grouped by hours
-scheduleTeachersOverviewResourcesByHoursBaseName = scheduleTeachersOverviewResourcesBaseName + byHoursSuffix
-# For the classrooms overview for the resources grouped by hours
-scheduleClassroomsOverviewResourcesByHoursBaseName = scheduleClassroomsOverviewResourcesBaseName + byHoursSuffix
-# For the subjects overview for the resources grouped by hours
-scheduleSubjectsOverviewResourcesByHoursBaseName = scheduleSubjectsOverviewResourcesBaseName + byHoursSuffix
-
-# For all of the above
-allScheduleOverviewResourcesByHoursBaseNames = [ scheduleClassesOverviewResourcesByHoursBaseName,
-                                                 scheduleTeachersOverviewResourcesByHoursBaseName,
-                                                 scheduleClassroomsOverviewResourcesByHoursBaseName,
-                                                 scheduleSubjectsOverviewResourcesByHoursBaseName ]
-
-
-
-##  3.11. OVERVIEW [BASIC GROUPED] BY HOURS  ##
-
-# For the classes grouped overview for the resources grouped by hours
-scheduleClassesGroupedOverviewResourcesByHoursBaseName = scheduleClassesGroupedOverviewResourcesBaseName + byHoursSuffix
-# For the teachers grouped overview for the resources grouped by hours
-scheduleTeachersGroupedOverviewResourcesByHoursBaseName = scheduleTeachersGroupedOverviewResourcesBaseName + byHoursSuffix
-# For the classrooms grouped overview for the resources grouped by hours
-scheduleClassroomsGroupedOverviewResourcesByHoursBaseName = scheduleClassroomsGroupedOverviewResourcesBaseName + byHoursSuffix
-# For the subjects grouped overview for the resources grouped by hours
-scheduleSubjectsGroupedOverviewResourcesByHoursBaseName = scheduleSubjectsGroupedOverviewResourcesBaseName + byHoursSuffix
+# For the classes grouped overview for the resource allocation by days
+scheduleClassesGroupedResourceAllocByDaysBaseName = scheduleClassesGroupedResourceAllocBaseName + byDaysSuffix
+# For the teachers grouped overview for the resource allocation by days
+scheduleTeachersGroupedResourceAllocByDaysBaseName = scheduleTeachersGroupedResourceAllocBaseName + byDaysSuffix
+# For the classrooms grouped overview for the resource allocation by days
+scheduleClassroomsGroupedResourceAllocByDaysBaseName = scheduleClassroomsGroupedResourceAllocBaseName + byDaysSuffix
+# For the subjects grouped overview for the resource allocation by days
+scheduleSubjectsGroupedResourceAllocByDaysBaseName = scheduleSubjectsGroupedResourceAllocBaseName + byDaysSuffix
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByHoursBaseNames = [ scheduleClassesGroupedOverviewResourcesByHoursBaseName,
-                                                        scheduleTeachersGroupedOverviewResourcesByHoursBaseName,
-                                                        scheduleClassroomsGroupedOverviewResourcesByHoursBaseName,
-                                                        scheduleSubjectsGroupedOverviewResourcesByHoursBaseName ]
+allScheduleGroupedResourceAllocByDaysBaseNames = [ scheduleClassesGroupedResourceAllocByDaysBaseName,
+                                                   scheduleTeachersGroupedResourceAllocByDaysBaseName,
+                                                   scheduleClassroomsGroupedResourceAllocByDaysBaseName,
+                                                   scheduleSubjectsGroupedResourceAllocByDaysBaseName ]
+
+
+
+##  3.12. OVERVIEW BY HOURS  ##
+
+# For the classes overview for the resource allocation by hours
+scheduleClassesResourceAllocByHoursBaseName = scheduleClassesResourceAllocBaseName + byHoursSuffix
+# For the teachers overview for the resource allocation by hours
+scheduleTeachersResourceAllocByHoursBaseName = scheduleTeachersResourceAllocBaseName + byHoursSuffix
+# For the classrooms overview for the resource allocation by hours
+scheduleClassroomsResourceAllocByHoursBaseName = scheduleClassroomsResourceAllocBaseName + byHoursSuffix
+# For the subjects overview for the resource allocation by hours
+scheduleSubjectsResourceAllocByHoursBaseName = scheduleSubjectsResourceAllocBaseName + byHoursSuffix
+
+# For all of the above
+allScheduleResourceAllocByHoursBaseNames = [ scheduleClassesResourceAllocByHoursBaseName,
+                                             scheduleTeachersResourceAllocByHoursBaseName,
+                                             scheduleClassroomsResourceAllocByHoursBaseName,
+                                             scheduleSubjectsResourceAllocByHoursBaseName ]
+
+
+
+##  3.13. OVERVIEW [BASIC GROUPED] BY HOURS  ##
+
+# For the classes grouped overview for the resource allocation by hours
+scheduleClassesGroupedResourceAllocByHoursBaseName = scheduleClassesGroupedResourceAllocBaseName + byHoursSuffix
+# For the teachers grouped overview for the resource allocation by hours
+scheduleTeachersGroupedResourceAllocByHoursBaseName = scheduleTeachersGroupedResourceAllocBaseName + byHoursSuffix
+# For the classrooms grouped overview for the resource allocation by hours
+scheduleClassroomsGroupedResourceAllocByHoursBaseName = scheduleClassroomsGroupedResourceAllocBaseName + byHoursSuffix
+# For the subjects grouped overview for the resource allocation by hours
+scheduleSubjectsGroupedResourceAllocByHoursBaseName = scheduleSubjectsGroupedResourceAllocBaseName + byHoursSuffix
+
+# For all of the above
+allScheduleGroupedResourceAllocByHoursBaseNames = [ scheduleClassesGroupedResourceAllocByHoursBaseName,
+                                                    scheduleTeachersGroupedResourceAllocByHoursBaseName,
+                                                    scheduleClassroomsGroupedResourceAllocByHoursBaseName,
+                                                    scheduleSubjectsGroupedResourceAllocByHoursBaseName ]
 
 
 
@@ -434,22 +454,18 @@ allScheduleExcelNames = [ scheduleClassesExcelName,
 
 ##  4.1.2. BASIC EXTRA  ##
 
-# For all the schedules wide and vertically
-schedulesWideAndVerticallyExcelName = schedulesWideAndVerticallyBaseName + extExcel
-# For the classrooms wide and vertically
-scheduleClassroomsWideAndVerticallyExcelName = scheduleClassroomsWideAndVerticallyBaseName + extExcel
-
-# For the classrooms briefly wide and vertically
-scheduleClassroomsBrieflyWideAndVerticallyExcelName = scheduleClassroomsBrieflyWideAndVerticallyBaseName + extExcel
-
-# For the classes vertically
-scheduleClassesVerticallyExcelName = scheduleClassesVerticallyBaseName + extExcel
-
-# For the classrooms grouped overview for the resources vertically
-scheduleClassroomsGroupedOverviewResourcesVerticallyExcelName  = scheduleClassroomsGroupedOverviewResourcesVerticallyBaseName + extExcel
-
 # For the lists of schedule owners
 scheduleListsOwnersGroupedExcelName = schedulePartOfPrefix + 'lists_owners' + groupedSuffix + extExcel
+
+
+# For all the schedules in wide and vertical format
+schedulesWideAndVertExcelName = schedulesWideAndVertBaseName + extExcel
+
+# For the classrooms in wide and vertical format
+scheduleClassroomsWideAndVertExcelName = scheduleClassroomsWideAndVertBaseName + extExcel
+
+# For the classes vertical
+scheduleClassesVertExcelName = scheduleClassesVertBaseName + extExcel
 
 
 
@@ -510,117 +526,131 @@ allScheduleGroupedOverviewExcelNames = [ scheduleClassesGroupedOverviewExcelName
 
 
 
-##  4.1.6. OVERVIEW FOR RESOURCES  ##
+##  4.1.6. OVERVIEW FOR RESOURCE ALLOCATION  ##
 
 # For the classes overview for the resources
-scheduleClassesOverviewResourcesExcelName = scheduleClassesOverviewResourcesBaseName + extExcel
+scheduleClassesResourceAllocExcelName = scheduleClassesResourceAllocBaseName + extExcel
 # For the teachers overview for the resources
-scheduleTeachersOverviewResourcesExcelName = scheduleTeachersOverviewResourcesBaseName + extExcel
+scheduleTeachersResourceAllocExcelName = scheduleTeachersResourceAllocBaseName + extExcel
 # For the classrooms overview for the resources
-scheduleClassroomsOverviewResourcesExcelName = scheduleClassroomsOverviewResourcesBaseName + extExcel
+scheduleClassroomsResourceAllocExcelName = scheduleClassroomsResourceAllocBaseName + extExcel
 # For the subjects overview for the resources
-scheduleSubjectsOverviewResourcesExcelName = scheduleSubjectsOverviewResourcesBaseName + extExcel
+scheduleSubjectsResourceAllocExcelName = scheduleSubjectsResourceAllocBaseName + extExcel
 
 # For all of the above
-allScheduleOverviewResourcesExcelNames = [ scheduleClassesOverviewResourcesExcelName,
-                                           scheduleTeachersOverviewResourcesExcelName,
-                                           scheduleClassroomsOverviewResourcesExcelName,
-                                           scheduleSubjectsOverviewResourcesExcelName ]
+allScheduleResourceAllocExcelNames = [ scheduleClassesResourceAllocExcelName,
+                                       scheduleTeachersResourceAllocExcelName,
+                                       scheduleClassroomsResourceAllocExcelName,
+                                       scheduleSubjectsResourceAllocExcelName ]
 
 
 
-##  4.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
+##  4.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION  ##
 
 # For the classes grouped overview for the resources
-scheduleClassesGroupedOverviewResourcesExcelName = scheduleClassesGroupedOverviewResourcesBaseName + extExcel
+scheduleClassesGroupedResourceAllocExcelName = scheduleClassesGroupedResourceAllocBaseName + extExcel
 # For the teachers grouped overview for the resources
-scheduleTeachersGroupedOverviewResourcesExcelName = scheduleTeachersGroupedOverviewResourcesBaseName + extExcel
+scheduleTeachersGroupedResourceAllocExcelName = scheduleTeachersGroupedResourceAllocBaseName + extExcel
 # For the classrooms grouped overview for the resources
-scheduleClassroomsGroupedOverviewResourcesExcelName = scheduleClassroomsGroupedOverviewResourcesBaseName + extExcel
+scheduleClassroomsGroupedResourceAllocExcelName = scheduleClassroomsGroupedResourceAllocBaseName + extExcel
 # For the subjects grouped overview for the resources
-scheduleSubjectsGroupedOverviewResourcesExcelName = scheduleSubjectsGroupedOverviewResourcesBaseName + extExcel
+scheduleSubjectsGroupedResourceAllocExcelName = scheduleSubjectsGroupedResourceAllocBaseName + extExcel
 
 # For all of the above
-allScheduleGroupedOverviewResourcesExcelNames = [ scheduleClassesGroupedOverviewResourcesExcelName,
-                                                  scheduleTeachersGroupedOverviewResourcesExcelName,
-                                                  scheduleClassroomsGroupedOverviewResourcesExcelName,
-                                                  scheduleSubjectsGroupedOverviewResourcesExcelName ]
+allScheduleGroupedResourceAllocExcelNames = [ scheduleClassesGroupedResourceAllocExcelName,
+                                              scheduleTeachersGroupedResourceAllocExcelName,
+                                              scheduleClassroomsGroupedResourceAllocExcelName,
+                                              scheduleSubjectsGroupedResourceAllocExcelName ]
 
 
 
-##  4.1.8. OVERVIEW FOR RESOURCES BY DAYS  ##
+##  4.1.8. OVERVIEW FOR RESOURCE ALLOCATION BY NUMBERS  ##
 
-# For the classes overview for the resources grouped by days
-scheduleClassesOverviewResourcesByDaysExcelName = scheduleClassesOverviewResourcesByDaysBaseName + extExcel
-# For the teachers overview for the resources grouped by days
-scheduleTeachersOverviewResourcesByDaysExcelName = scheduleTeachersOverviewResourcesByDaysBaseName + extExcel
-# For the classrooms overview for the resources grouped by days
-scheduleClassroomsOverviewResourcesByDaysExcelName = scheduleClassroomsOverviewResourcesByDaysBaseName + extExcel
-# For the subjects overview for the resources grouped by days
-scheduleSubjectsOverviewResourcesByDaysExcelName = scheduleSubjectsOverviewResourcesByDaysBaseName + extExcel
-
-# For all of the above
-allScheduleOverviewResourcesByDaysExcelNames = [ scheduleClassesOverviewResourcesByDaysExcelName,
-                                                 scheduleTeachersOverviewResourcesByDaysExcelName,
-                                                 scheduleClassroomsOverviewResourcesByDaysExcelName,
-                                                 scheduleSubjectsOverviewResourcesByDaysExcelName ]
+# For the classrooms in wide and vertical format, by the numbers
+scheduleClassroomsWideAndVertOverviewByNumbersExcelName = scheduleClassroomsWideAndVertOverviewByNumbersBaseName + extExcel
 
 
 
-##  4.1.9. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY DAYS  ##
+##  4.1.9. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY NUMBERS  ##
 
-# For the classes grouped overview for the resources grouped by days
-scheduleClassesGroupedOverviewResourcesByDaysExcelName = scheduleClassesGroupedOverviewResourcesByDaysBaseName + extExcel
-# For the teachers grouped overview for the resources grouped by days
-scheduleTeachersGroupedOverviewResourcesByDaysExcelName = scheduleTeachersGroupedOverviewResourcesByDaysBaseName + extExcel
-# For the classrooms grouped overview for the resources grouped by days
-scheduleClassroomsGroupedOverviewResourcesByDaysExcelName = scheduleClassroomsGroupedOverviewResourcesByDaysBaseName + extExcel
-# For the subjects grouped overview for the resources grouped by days
-scheduleSubjectsGroupedOverviewResourcesByDaysExcelName = scheduleSubjectsGroupedOverviewResourcesByDaysBaseName + extExcel
+# For the classrooms in wide and vertical format, by the numbers
+scheduleClassroomsGroupedWideAndVertOverviewByNumbersExcelName = scheduleClassroomsGroupedWideAndVertOverviewByNumbersBaseName + extExcel
+
+
+
+##  4.1.10. OVERVIEW FOR RESOURCE ALLOCATION BY DAYS  ##
+
+# For the classes overview for the resource allocation by days
+scheduleClassesResourceAllocByDaysExcelName = scheduleClassesResourceAllocByDaysBaseName + extExcel
+# For the teachers overview for the resource allocation by days
+scheduleTeachersResourceAllocByDaysExcelName = scheduleTeachersResourceAllocByDaysBaseName + extExcel
+# For the classrooms overview for the resource allocation by days
+scheduleClassroomsResourceAllocByDaysExcelName = scheduleClassroomsResourceAllocByDaysBaseName + extExcel
+# For the subjects overview for the resource allocation by days
+scheduleSubjectsResourceAllocByDaysExcelName = scheduleSubjectsResourceAllocByDaysBaseName + extExcel
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByDaysExcelNames = [ scheduleClassesGroupedOverviewResourcesByDaysExcelName,
-                                                        scheduleTeachersGroupedOverviewResourcesByDaysExcelName,
-                                                        scheduleClassroomsGroupedOverviewResourcesByDaysExcelName,
-                                                        scheduleSubjectsGroupedOverviewResourcesByDaysExcelName ]
+allScheduleResourceAllocByDaysExcelNames = [ scheduleClassesResourceAllocByDaysExcelName,
+                                             scheduleTeachersResourceAllocByDaysExcelName,
+                                             scheduleClassroomsResourceAllocByDaysExcelName,
+                                             scheduleSubjectsResourceAllocByDaysExcelName ]
 
 
 
-##  4.1.10. OVERVIEW FOR RESOURCES BY HOURS ##
+##  4.1.11. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY DAYS  ##
 
-# For the classes overview for the resources grouped by hours
-scheduleClassesOverviewResourcesByHoursExcelName = scheduleClassesOverviewResourcesByHoursBaseName + extExcel
-# For the teachers overview for the resources grouped by hours
-scheduleTeachersOverviewResourcesByHoursExcelName = scheduleTeachersOverviewResourcesByHoursBaseName + extExcel
-# For the classrooms overview for the resources grouped by hours
-scheduleClassroomsOverviewResourcesByHoursExcelName = scheduleClassroomsOverviewResourcesByHoursBaseName + extExcel
-# For the subjects overview for the resources grouped by hours
-scheduleSubjectsOverviewResourcesByHoursExcelName = scheduleSubjectsOverviewResourcesByHoursBaseName + extExcel
-
-# For all of the above
-allScheduleOverviewResourcesByHoursExcelNames = [ scheduleClassesOverviewResourcesByHoursExcelName,
-                                                  scheduleTeachersOverviewResourcesByHoursExcelName,
-                                                  scheduleClassroomsOverviewResourcesByHoursExcelName,
-                                                  scheduleSubjectsOverviewResourcesByHoursExcelName ]
-
-
-
-##  4.1.11. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY HOURS  ##
-
-# For the classes grouped overview for the resources grouped by hours
-scheduleClassesGroupedOverviewResourcesByHoursExcelName = scheduleClassesGroupedOverviewResourcesByHoursBaseName + extExcel
-# For the teachers grouped overview for the resources grouped by hours
-scheduleTeachersGroupedOverviewResourcesByHoursExcelName = scheduleTeachersGroupedOverviewResourcesByHoursBaseName + extExcel
-# For the classrooms grouped overview for the resources grouped by hours
-scheduleClassroomsGroupedOverviewResourcesByHoursExcelName = scheduleClassroomsGroupedOverviewResourcesByHoursBaseName + extExcel
-# For the subjects grouped overview for the resources grouped by hours
-scheduleSubjectsGroupedOverviewResourcesByHoursExcelName = scheduleSubjectsGroupedOverviewResourcesByHoursBaseName + extExcel
+# For the classes grouped overview for the resource allocation by days
+scheduleClassesGroupedResourceAllocByDaysExcelName = scheduleClassesGroupedResourceAllocByDaysBaseName + extExcel
+# For the teachers grouped overview for the resource allocation by days
+scheduleTeachersGroupedResourceAllocByDaysExcelName = scheduleTeachersGroupedResourceAllocByDaysBaseName + extExcel
+# For the classrooms grouped overview for the resource allocation by days
+scheduleClassroomsGroupedResourceAllocByDaysExcelName = scheduleClassroomsGroupedResourceAllocByDaysBaseName + extExcel
+# For the subjects grouped overview for the resource allocation by days
+scheduleSubjectsGroupedResourceAllocByDaysExcelName = scheduleSubjectsGroupedResourceAllocByDaysBaseName + extExcel
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByHoursExcelNames = [ scheduleClassesGroupedOverviewResourcesByHoursExcelName,
-                                                         scheduleTeachersGroupedOverviewResourcesByHoursExcelName,
-                                                         scheduleClassroomsGroupedOverviewResourcesByHoursExcelName,
-                                                         scheduleSubjectsGroupedOverviewResourcesByHoursExcelName ]
+allScheduleGroupedResourceAllocByDaysExcelNames = [ scheduleClassesGroupedResourceAllocByDaysExcelName,
+                                                    scheduleTeachersGroupedResourceAllocByDaysExcelName,
+                                                    scheduleClassroomsGroupedResourceAllocByDaysExcelName,
+                                                    scheduleSubjectsGroupedResourceAllocByDaysExcelName ]
+
+
+
+##  4.1.12. OVERVIEW FOR RESOURCE ALLOCATION BY HOURS ##
+
+# For the classes overview for the resource allocation by hours
+scheduleClassesResourceAllocByHoursExcelName = scheduleClassesResourceAllocByHoursBaseName + extExcel
+# For the teachers overview for the resource allocation by hours
+scheduleTeachersResourceAllocByHoursExcelName = scheduleTeachersResourceAllocByHoursBaseName + extExcel
+# For the classrooms overview for the resource allocation by hours
+scheduleClassroomsResourceAllocByHoursExcelName = scheduleClassroomsResourceAllocByHoursBaseName + extExcel
+# For the subjects overview for the resource allocation by hours
+scheduleSubjectsResourceAllocByHoursExcelName = scheduleSubjectsResourceAllocByHoursBaseName + extExcel
+
+# For all of the above
+allScheduleResourceAllocByHoursExcelNames = [ scheduleClassesResourceAllocByHoursExcelName,
+                                              scheduleTeachersResourceAllocByHoursExcelName,
+                                              scheduleClassroomsResourceAllocByHoursExcelName,
+                                              scheduleSubjectsResourceAllocByHoursExcelName ]
+
+
+
+##  4.1.13. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY HOURS  ##
+
+# For the classes grouped overview for the resource allocation by hours
+scheduleClassesGroupedResourceAllocByHoursExcelName = scheduleClassesGroupedResourceAllocByHoursBaseName + extExcel
+# For the teachers grouped overview for the resource allocation by hours
+scheduleTeachersGroupedResourceAllocByHoursExcelName = scheduleTeachersGroupedResourceAllocByHoursBaseName + extExcel
+# For the classrooms grouped overview for the resource allocation by hours
+scheduleClassroomsGroupedResourceAllocByHoursExcelName = scheduleClassroomsGroupedResourceAllocByHoursBaseName + extExcel
+# For the subjects grouped overview for the resource allocation by hours
+scheduleSubjectsGroupedResourceAllocByHoursExcelName = scheduleSubjectsGroupedResourceAllocByHoursBaseName + extExcel
+
+# For all of the above
+allScheduleGroupedResourceAllocByHoursExcelNames = [ scheduleClassesGroupedResourceAllocByHoursExcelName,
+                                                     scheduleTeachersGroupedResourceAllocByHoursExcelName,
+                                                     scheduleClassroomsGroupedResourceAllocByHoursExcelName,
+                                                     scheduleSubjectsGroupedResourceAllocByHoursExcelName ]
 
 
 
@@ -672,13 +702,12 @@ allScheduleDfsJSONNames = [ scheduleClassesDfsJSONName,
 # For the list of the schedule owners
 scheduleListsOwnersGroupedDfsJSONName = dfsPrefix + schedulePartOfPrefix + 'lists_owners' + groupedSuffix + extJSON
 
-# For all the schedules wide and vertically
-schedulesWideAndVerticallyDfsJSONName = dfsPrefix + schedulesWideAndVerticallyBaseName + extJSON
-# For the classrooms wide and vertically
-scheduleClassroomsWideAndVerticallyDfsJSONName = dfsPrefix + scheduleClassroomsWideAndVerticallyBaseName + extJSON
 
-# For the classrooms briefly wide and vertically
-scheduleClassroomsBrieflyWideAndVerticallyDfsJSONName = dfsPrefix + scheduleClassroomsBrieflyWideAndVerticallyBaseName + extJSON
+# For all the schedules in wide and vertical format
+schedulesWideAndVertDfsJSONName = dfsPrefix + schedulesWideAndVertBaseName + extJSON
+
+# For the classrooms in wide and vertical format
+scheduleClassroomsWideAndVertDfsJSONName = dfsPrefix + scheduleClassroomsWideAndVertBaseName + extJSON
 
 
 
@@ -701,116 +730,130 @@ allScheduleGroupedDfsJSONNames = [ scheduleClassesGroupedDfsJSONName,
 
 
 
-##  4.3.5. OVERVIEW FOR RESOURCES  ##
+##  4.3.5. OVERVIEW FOR RESOURCE ALLOCATION  ##
 
 # For the classes overview for the resources
-scheduleClassesOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleClassesOverviewResourcesBaseName + extJSON
+scheduleClassesResourceAllocDfsJSONName = multiDfsPrefix + scheduleClassesResourceAllocBaseName + extJSON
 # For the teachers overview for the resources
-scheduleTeachersOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleTeachersOverviewResourcesBaseName + extJSON
+scheduleTeachersResourceAllocDfsJSONName = multiDfsPrefix + scheduleTeachersResourceAllocBaseName + extJSON
 # For the classrooms overview for the resources
-scheduleClassroomsOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleClassroomsOverviewResourcesBaseName + extJSON
+scheduleClassroomsResourceAllocDfsJSONName = multiDfsPrefix + scheduleClassroomsResourceAllocBaseName + extJSON
 # For the subjects overview for the resources
-scheduleSubjectsOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleSubjectsOverviewResourcesBaseName + extJSON
+scheduleSubjectsResourceAllocDfsJSONName = multiDfsPrefix + scheduleSubjectsResourceAllocBaseName + extJSON
 
 # For all of the above
-allScheduleOverviewResourcesDfsJSONNames = [ scheduleClassesOverviewResourcesDfsJSONName,
-                                             scheduleTeachersOverviewResourcesDfsJSONName,
-                                             scheduleClassroomsOverviewResourcesDfsJSONName,
-                                             scheduleSubjectsOverviewResourcesDfsJSONName ]
+allScheduleResourceAllocDfsJSONNames = [ scheduleClassesResourceAllocDfsJSONName,
+                                         scheduleTeachersResourceAllocDfsJSONName,
+                                         scheduleClassroomsResourceAllocDfsJSONName,
+                                         scheduleSubjectsResourceAllocDfsJSONName ]
 
 
 
-##  4.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
+##  4.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION  ##
 
 # For the classes grouped overview for the resources
-scheduleClassesGroupedOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleClassesGroupedOverviewResourcesBaseName + extJSON
+scheduleClassesGroupedResourceAllocDfsJSONName = multiDfsPrefix + scheduleClassesGroupedResourceAllocBaseName + extJSON
 # For the teachers grouped overview for the resources
-scheduleTeachersGroupedOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleTeachersGroupedOverviewResourcesBaseName + extJSON
+scheduleTeachersGroupedResourceAllocDfsJSONName = multiDfsPrefix + scheduleTeachersGroupedResourceAllocBaseName + extJSON
 # For the classrooms grouped overview for the resources
-scheduleClassroomsGroupedOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleClassroomsGroupedOverviewResourcesBaseName + extJSON
+scheduleClassroomsGroupedResourceAllocDfsJSONName = multiDfsPrefix + scheduleClassroomsGroupedResourceAllocBaseName + extJSON
 # For the subjects grouped overview for the resources
-scheduleSubjectsGroupedOverviewResourcesDfsJSONName = multiDfsPrefix + scheduleSubjectsGroupedOverviewResourcesBaseName + extJSON
+scheduleSubjectsGroupedResourceAllocDfsJSONName = multiDfsPrefix + scheduleSubjectsGroupedResourceAllocBaseName + extJSON
 
 # For all of the above
-allScheduleGroupedOverviewResourcesDfsJSONNames = [ scheduleClassesGroupedOverviewResourcesDfsJSONName,
-                                                    scheduleTeachersGroupedOverviewResourcesDfsJSONName,
-                                                    scheduleClassroomsGroupedOverviewResourcesDfsJSONName,
-                                                    scheduleSubjectsGroupedOverviewResourcesDfsJSONName ]
+allScheduleGroupedResourceAllocDfsJSONNames = [ scheduleClassesGroupedResourceAllocDfsJSONName,
+                                                scheduleTeachersGroupedResourceAllocDfsJSONName,
+                                                scheduleClassroomsGroupedResourceAllocDfsJSONName,
+                                                scheduleSubjectsGroupedResourceAllocDfsJSONName ]
 
 
 
-##  4.3.7. OVERVIEW FOR RESOURCES BY DAYS  ##
+##  4.3.7. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY NUMBERS  ##
 
-# For the classes overview for the resources grouped by days
-scheduleClassesOverviewResourcesByDaysDfsJSONName = multiDfsPrefix + scheduleClassesOverviewResourcesByDaysBaseName + extJSON
-# For the teachers overview for the resources grouped by days
-scheduleTeachersOverviewResourcesByDaysDfsJSONName = multiDfsPrefix + scheduleTeachersOverviewResourcesByDaysBaseName + extJSON
-# For the classrooms overview for the resources grouped by days
-scheduleClassroomsOverviewResourcesByDaysDfsJSONName = multiDfsPrefix + scheduleClassroomsOverviewResourcesByDaysBaseName + extJSON
-# For the subjects overview for the resources grouped by days
-scheduleSubjectsOverviewResourcesByDaysDfsJSONName = multiDfsPrefix + scheduleSubjectsOverviewResourcesByDaysBaseName + extJSON
-
-# For all of the above
-allScheduleOverviewResourcesByDaysDfsJSONNames = [ scheduleClassesOverviewResourcesByDaysDfsJSONName,
-                                                   scheduleTeachersOverviewResourcesByDaysDfsJSONName,
-                                                   scheduleClassroomsOverviewResourcesByDaysDfsJSONName,
-                                                   scheduleSubjectsOverviewResourcesByDaysDfsJSONName ]
+# For the classrooms in wide and vertical format, by the numbers
+scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONName = multiDfsPrefix + scheduleClassroomsWideAndVertOverviewByNumbersBaseName + extJSON
 
 
 
-##  4.3.8. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY DAYS  ##
+##  4.3.8. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY NUMBERS  ##
 
-# For the classes grouped overview for the resources grouped by days
-scheduleClassesGroupedOverviewResourcesByDaysDfsJSONName = multiDfsPrefix + scheduleClassesGroupedOverviewResourcesByDaysBaseName + extJSON
-# For the teachers grouped overview for the resources grouped by days
-scheduleTeachersGroupedOverviewResourcesByDaysDfsJSONName = multiDfsPrefix + scheduleTeachersGroupedOverviewResourcesByDaysBaseName + extJSON
-# For the classrooms grouped overview for the resources grouped by days
-scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONName = multiDfsPrefix + scheduleClassroomsGroupedOverviewResourcesByDaysBaseName + extJSON
-# For the subjects grouped overview for the resources grouped by days
-scheduleSubjectsGroupedOverviewResourcesByDaysDfsJSONName = multiDfsPrefix + scheduleSubjectsGroupedOverviewResourcesByDaysBaseName + extJSON
+# For the classrooms in wide and vertical format, by the numbers
+scheduleClassroomsGroupedWideAndVertOverviewByNumbersDfsJSONName = multiDfsPrefix + scheduleClassroomsGroupedWideAndVertOverviewByNumbersBaseName + extJSON
+
+
+
+##  4.3.9. OVERVIEW FOR RESOURCE ALLOCATION BY DAYS  ##
+
+# For the classes overview for the resource allocation by days
+scheduleClassesResourceAllocByDaysDfsJSONName = multiDfsPrefix + scheduleClassesResourceAllocByDaysBaseName + extJSON
+# For the teachers overview for the resource allocation by days
+scheduleTeachersResourceAllocByDaysDfsJSONName = multiDfsPrefix + scheduleTeachersResourceAllocByDaysBaseName + extJSON
+# For the classrooms overview for the resource allocation by days
+scheduleClassroomsResourceAllocByDaysDfsJSONName = multiDfsPrefix + scheduleClassroomsResourceAllocByDaysBaseName + extJSON
+# For the subjects overview for the resource allocation by days
+scheduleSubjectsResourceAllocByDaysDfsJSONName = multiDfsPrefix + scheduleSubjectsResourceAllocByDaysBaseName + extJSON
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByDaysDfsJSONNames = [ scheduleClassesGroupedOverviewResourcesByDaysDfsJSONName,
-                                                          scheduleTeachersGroupedOverviewResourcesByDaysDfsJSONName,
-                                                          scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONName,
-                                                          scheduleSubjectsGroupedOverviewResourcesByDaysDfsJSONName ]
-
-
-##  4.3.9. OVERVIEW FOR RESOURCES BY HOURS  ##
-
-# For the classes overview for the resources grouped by hours
-scheduleClassesOverviewResourcesByHoursDfsJSONName = multiDfsPrefix + scheduleClassesOverviewResourcesByHoursBaseName + extJSON
-# For the teachers overview for the resources grouped by hours
-scheduleTeachersOverviewResourcesByHoursDfsJSONName = multiDfsPrefix + scheduleTeachersOverviewResourcesByHoursBaseName + extJSON
-# For the classrooms overview for the resources grouped by hours
-scheduleClassroomsOverviewResourcesByHoursDfsJSONName = multiDfsPrefix + scheduleClassroomsOverviewResourcesByHoursBaseName + extJSON
-# For the subjects overview for the resources grouped by hours
-scheduleSubjectsOverviewResourcesByHoursDfsJSONName = multiDfsPrefix + scheduleSubjectsOverviewResourcesByHoursBaseName + extJSON
-
-# For all of the above
-allScheduleOverviewResourcesByHoursDfsJSONNames = [ scheduleClassesOverviewResourcesByHoursDfsJSONName,
-                                                    scheduleTeachersOverviewResourcesByHoursDfsJSONName,
-                                                    scheduleClassroomsOverviewResourcesByHoursDfsJSONName,
-                                                    scheduleSubjectsOverviewResourcesByHoursDfsJSONName ]
+allScheduleResourceAllocByDaysDfsJSONNames = [ scheduleClassesResourceAllocByDaysDfsJSONName,
+                                               scheduleTeachersResourceAllocByDaysDfsJSONName,
+                                               scheduleClassroomsResourceAllocByDaysDfsJSONName,
+                                               scheduleSubjectsResourceAllocByDaysDfsJSONName ]
 
 
 
-##  4.3.10. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY HOURS  ##
+##  4.3.10. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY DAYS  ##
 
-# For the classes grouped overview for the resources grouped by hours
-scheduleClassesGroupedOverviewResourcesByHoursDfsJSONName = multiDfsPrefix + scheduleClassesGroupedOverviewResourcesByHoursBaseName + extJSON
-# For the teachers grouped overview for the resources grouped by hours
-scheduleTeachersGroupedOverviewResourcesByHoursDfsJSONName = multiDfsPrefix + scheduleTeachersGroupedOverviewResourcesByHoursBaseName + extJSON
-# For the classrooms grouped overview for the resources grouped by hours
-scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONName = multiDfsPrefix + scheduleClassroomsGroupedOverviewResourcesByHoursBaseName + extJSON
-# For the subjects grouped overview for the resources grouped by hours
-scheduleSubjectsGroupedOverviewResourcesByHoursDfsJSONName = multiDfsPrefix + scheduleSubjectsGroupedOverviewResourcesByHoursBaseName + extJSON
+# For the classes grouped overview for the resource allocation by days
+scheduleClassesGroupedResourceAllocByDaysDfsJSONName = multiDfsPrefix + scheduleClassesGroupedResourceAllocByDaysBaseName + extJSON
+# For the teachers grouped overview for the resource allocation by days
+scheduleTeachersGroupedResourceAllocByDaysDfsJSONName = multiDfsPrefix + scheduleTeachersGroupedResourceAllocByDaysBaseName + extJSON
+# For the classrooms grouped overview for the resource allocation by days
+scheduleClassroomsGroupedResourceAllocByDaysDfsJSONName = multiDfsPrefix + scheduleClassroomsGroupedResourceAllocByDaysBaseName + extJSON
+# For the subjects grouped overview for the resource allocation by days
+scheduleSubjectsGroupedResourceAllocByDaysDfsJSONName = multiDfsPrefix + scheduleSubjectsGroupedResourceAllocByDaysBaseName + extJSON
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByHoursDfsJSONNames = [ scheduleClassesGroupedOverviewResourcesByHoursDfsJSONName,
-                                                           scheduleTeachersGroupedOverviewResourcesByHoursDfsJSONName,
-                                                           scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONName,
-                                                           scheduleSubjectsGroupedOverviewResourcesByHoursDfsJSONName ]
+allScheduleGroupedResourceAllocByDaysDfsJSONNames = [ scheduleClassesGroupedResourceAllocByDaysDfsJSONName,
+                                                      scheduleTeachersGroupedResourceAllocByDaysDfsJSONName,
+                                                      scheduleClassroomsGroupedResourceAllocByDaysDfsJSONName,
+                                                      scheduleSubjectsGroupedResourceAllocByDaysDfsJSONName ]
+
+
+##  4.3.11. OVERVIEW FOR RESOURCE ALLOCATION BY HOURS  ##
+
+# For the classes overview for the resource allocation by hours
+scheduleClassesResourceAllocByHoursDfsJSONName = multiDfsPrefix + scheduleClassesResourceAllocByHoursBaseName + extJSON
+# For the teachers overview for the resource allocation by hours
+scheduleTeachersResourceAllocByHoursDfsJSONName = multiDfsPrefix + scheduleTeachersResourceAllocByHoursBaseName + extJSON
+# For the classrooms overview for the resource allocation by hours
+scheduleClassroomsResourceAllocByHoursDfsJSONName = multiDfsPrefix + scheduleClassroomsResourceAllocByHoursBaseName + extJSON
+# For the subjects overview for the resource allocation by hours
+scheduleSubjectsResourceAllocByHoursDfsJSONName = multiDfsPrefix + scheduleSubjectsResourceAllocByHoursBaseName + extJSON
+
+# For all of the above
+allScheduleResourceAllocByHoursDfsJSONNames = [ scheduleClassesResourceAllocByHoursDfsJSONName,
+                                                scheduleTeachersResourceAllocByHoursDfsJSONName,
+                                                scheduleClassroomsResourceAllocByHoursDfsJSONName,
+                                                scheduleSubjectsResourceAllocByHoursDfsJSONName ]
+
+
+
+##  4.3.12. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY HOURS  ##
+
+# For the classes grouped overview for the resource allocation by hours
+scheduleClassesGroupedResourceAllocByHoursDfsJSONName = multiDfsPrefix + scheduleClassesGroupedResourceAllocByHoursBaseName + extJSON
+# For the teachers grouped overview for the resource allocation by hours
+scheduleTeachersGroupedResourceAllocByHoursDfsJSONName = multiDfsPrefix + scheduleTeachersGroupedResourceAllocByHoursBaseName + extJSON
+# For the classrooms grouped overview for the resource allocation by hours
+scheduleClassroomsGroupedResourceAllocByHoursDfsJSONName = multiDfsPrefix + scheduleClassroomsGroupedResourceAllocByHoursBaseName + extJSON
+# For the subjects grouped overview for the resource allocation by hours
+scheduleSubjectsGroupedResourceAllocByHoursDfsJSONName = multiDfsPrefix + scheduleSubjectsGroupedResourceAllocByHoursBaseName + extJSON
+
+# For all of the above
+allScheduleGroupedResourceAllocByHoursDfsJSONNames = [ scheduleClassesGroupedResourceAllocByHoursDfsJSONName,
+                                                       scheduleTeachersGroupedResourceAllocByHoursDfsJSONName,
+                                                       scheduleClassroomsGroupedResourceAllocByHoursDfsJSONName,
+                                                       scheduleSubjectsGroupedResourceAllocByHoursDfsJSONName ]
 
 
 
@@ -845,23 +888,18 @@ allScheduleExcelPaths = [ scheduleClassesExcelPath,
 
 ##  5.1.2. BASIC EXTRA  ##
 
-# For all the schedules wide and vertically
-schedulesWideAndVerticallyExcelPath = os.path.join(documentsPath, schedulesWideAndVerticallyExcelName)
-# For the classrooms wide and vertically
-scheduleClassroomsWideAndVerticallyExcelPath = os.path.join(documentsPath, scheduleClassroomsWideAndVerticallyExcelName)
-
-# For the classrooms briefly wide and vertically
-scheduleClassroomsBrieflyWideAndVerticallyExcelPath = os.path.join(documentsPath, scheduleClassroomsBrieflyWideAndVerticallyExcelName)
-
-# For the classes vertically
-scheduleClassesVerticallyExcelPath = os.path.join(documentsPrototypesPath, scheduleClassesVerticallyExcelName)
-
-# For the classrooms grouped overview for the resources vertically
-scheduleClassroomsGroupedOverviewResourcesVerticallyExcelPath =  os.path.join(documentsPrototypesPath, scheduleClassroomsGroupedOverviewResourcesVerticallyExcelName)
-
-
 # For schedule lists with grouped owners
 scheduleListsOwnersGroupedExcelPath =  os.path.join(processingFilesExcelPath, scheduleListsOwnersGroupedExcelName)
+
+
+# For all the schedules in wide and vertical format
+schedulesWideAndVertExcelPath = os.path.join(documentsPath, schedulesWideAndVertExcelName)
+
+# For the classrooms in wide and vertical format
+scheduleClassroomsWideAndVertExcelPath = os.path.join(documentsPath, scheduleClassroomsWideAndVertExcelName)
+
+# For the classes vertical
+scheduleClassesVertExcelPath = os.path.join(documentsPrototypesPath, scheduleClassesVertExcelName)
 
 
 
@@ -922,115 +960,130 @@ allScheduleGroupedOverviewExcelPaths = [ #scheduleClassesGroupedOverviewExcelPat
 
 
 
-##  5.1.6. OVERVIEW FOR RESOURCES  ##
+##  5.1.6. OVERVIEW FOR RESOURCE ALLOCATION  ##
 
 # For the classes overview for the resources
-scheduleClassesOverviewResourcesExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassesOverviewResourcesExcelName)
+scheduleClassesResourceAllocExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassesResourceAllocExcelName)
 # For the teachers overview for the resources
-scheduleTeachersOverviewResourcesExcelPath =  os.path.join(documentsOverviewsPath, scheduleTeachersOverviewResourcesExcelName)
+scheduleTeachersResourceAllocExcelPath =  os.path.join(documentsOverviewsPath, scheduleTeachersResourceAllocExcelName)
 # For the classrooms overview for the resources
-scheduleClassroomsOverviewResourcesExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassroomsOverviewResourcesExcelName)
+scheduleClassroomsResourceAllocExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassroomsResourceAllocExcelName)
 # For the subjects overview for the resources
-scheduleSubjectsOverviewResourcesExcelPath =  os.path.join(documentsOverviewsPath, scheduleSubjectsOverviewResourcesExcelName)
+scheduleSubjectsResourceAllocExcelPath =  os.path.join(documentsOverviewsPath, scheduleSubjectsResourceAllocExcelName)
 
 # For all of the above
-allScheduleOverviewResourcesExcelPaths = [ scheduleClassesOverviewResourcesExcelPath,
-                                           scheduleTeachersOverviewResourcesExcelPath,
-                                           scheduleClassroomsOverviewResourcesExcelPath,
-                                           scheduleSubjectsOverviewResourcesExcelPath ]
+allScheduleResourceAllocExcelPaths = [ scheduleClassesResourceAllocExcelPath,
+                                       scheduleTeachersResourceAllocExcelPath,
+                                       scheduleClassroomsResourceAllocExcelPath,
+                                       scheduleSubjectsResourceAllocExcelPath ]
 
 
 
-##  5.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
+##  5.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION  ##
 
 # For the classes grouped overview for the resources
-scheduleClassesGroupedOverviewResourcesExcelPath = os.path.join(documentsOverviewsGroupedPath, scheduleClassesGroupedOverviewResourcesExcelName)
+scheduleClassesGroupedResourceAllocExcelPath = os.path.join(documentsOverviewsGroupedPath, scheduleClassesGroupedResourceAllocExcelName)
 # For the teachers grouped overview for the resources
-scheduleTeachersGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleTeachersGroupedOverviewResourcesExcelName)
+scheduleTeachersGroupedResourceAllocExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleTeachersGroupedResourceAllocExcelName)
 # For the classrooms grouped overview for the resources
-scheduleClassroomsGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleClassroomsGroupedOverviewResourcesExcelName)
+scheduleClassroomsGroupedResourceAllocExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleClassroomsGroupedResourceAllocExcelName)
 # For the subjects grouped overview for the resources
-scheduleSubjectsGroupedOverviewResourcesExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleSubjectsGroupedOverviewResourcesExcelName)
+scheduleSubjectsGroupedResourceAllocExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleSubjectsGroupedResourceAllocExcelName)
 
 # For all of the above
-allScheduleGroupedOverviewResourcesExcelPaths = [ scheduleClassesGroupedOverviewResourcesExcelPath,
-                                                  scheduleTeachersGroupedOverviewResourcesExcelPath,
-                                                  scheduleClassroomsGroupedOverviewResourcesExcelPath,
-                                                  scheduleSubjectsGroupedOverviewResourcesExcelPath ]
-
-
-##  5.1.8. OVERVIEW FOR RESOURCES BY DAYS  ##
-
-# For the classes overview for the resources grouped by days
-scheduleClassesOverviewResourcesByDaysExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassesOverviewResourcesByDaysExcelName)
-# For the teachers overview for the resources grouped by days
-scheduleTeachersOverviewResourcesByDaysExcelPath =  os.path.join(documentsOverviewsPath, scheduleTeachersOverviewResourcesByDaysExcelName)
-# For the classrooms overview for the resources grouped by days
-scheduleClassroomsOverviewResourcesByDaysExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassroomsOverviewResourcesByDaysExcelName)
-# For the subjects overview for the resources grouped by days
-scheduleSubjectsOverviewResourcesByDaysExcelPath =  os.path.join(documentsOverviewsPath, scheduleSubjectsOverviewResourcesByDaysExcelName)
-
-# For all of the above
-allScheduleOverviewResourcesByDaysExcelPaths = [ scheduleClassesOverviewResourcesByDaysExcelPath,
-                                                 scheduleTeachersOverviewResourcesByDaysExcelPath,
-                                                 scheduleClassroomsOverviewResourcesByDaysExcelPath,
-                                                 scheduleSubjectsOverviewResourcesByDaysExcelPath ]
+allScheduleGroupedResourceAllocExcelPaths = [ scheduleClassesGroupedResourceAllocExcelPath,
+                                              scheduleTeachersGroupedResourceAllocExcelPath,
+                                              scheduleClassroomsGroupedResourceAllocExcelPath,
+                                              scheduleSubjectsGroupedResourceAllocExcelPath ]
 
 
 
-##  5.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY DAYS  ##
+##  5.1.8. OVERVIEW FOR RESOURCE ALLOCATION BY NUMBERS  ##
 
-# For the classes grouped overview for the resources grouped by days
-scheduleClassesGroupedOverviewResourcesByDaysExcelPath = os.path.join(documentsOverviewsGroupedPath, scheduleClassesGroupedOverviewResourcesByDaysExcelName)
-# For the teachers grouped overview for the resources grouped by days
-scheduleTeachersGroupedOverviewResourcesByDaysExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleTeachersGroupedOverviewResourcesByDaysExcelName)
-# For the classrooms grouped overview for the resources grouped by days
-scheduleClassroomsGroupedOverviewResourcesByDaysExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleClassroomsGroupedOverviewResourcesByDaysExcelName)
-# For the subjects grouped overview for the resources grouped by days
-scheduleSubjectsGroupedOverviewResourcesByDaysExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleSubjectsGroupedOverviewResourcesByDaysExcelName)
+# For the classrooms in wide and vertical format, by the numbers
+scheduleClassroomsWideAndVertOverviewByNumbersExcelPath = os.path.join(documentsOverviewsPath, scheduleClassroomsWideAndVertOverviewByNumbersExcelName)
+
+
+
+##  5.1.9. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY NUMBERS  ##
+
+# For the classrooms grouped overview for the resources vertically
+scheduleClassroomsGroupedWideAndVertOverviewExcelPath =  os.path.join(documentsPrototypesPath, scheduleClassroomsGroupedWideAndVertOverviewByNumbersExcelName)
+
+
+
+##  5.1.10. OVERVIEW FOR RESOURCE ALLOCATION BY DAYS  ##
+
+# For the classes overview for the resource allocation by days
+scheduleClassesResourceAllocByDaysExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassesResourceAllocByDaysExcelName)
+# For the teachers overview for the resource allocation by days
+scheduleTeachersResourceAllocByDaysExcelPath =  os.path.join(documentsOverviewsPath, scheduleTeachersResourceAllocByDaysExcelName)
+# For the classrooms overview for the resource allocation by days
+scheduleClassroomsResourceAllocByDaysExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassroomsResourceAllocByDaysExcelName)
+# For the subjects overview for the resource allocation by days
+scheduleSubjectsResourceAllocByDaysExcelPath =  os.path.join(documentsOverviewsPath, scheduleSubjectsResourceAllocByDaysExcelName)
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByDaysExcelPaths = [ scheduleClassesGroupedOverviewResourcesByDaysExcelPath,
-                                                        scheduleTeachersGroupedOverviewResourcesByDaysExcelPath,
-                                                        scheduleClassroomsGroupedOverviewResourcesByDaysExcelPath,
-                                                        scheduleSubjectsGroupedOverviewResourcesByDaysExcelPath ]
-
-
-##  5.1.6. OVERVIEW FOR RESOURCES BY HOURS  ##
-
-# For the classes overview for the resources grouped by hours
-scheduleClassesOverviewResourcesByHoursExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassesOverviewResourcesByHoursExcelName)
-# For the teachers overview for the resources grouped by hours
-scheduleTeachersOverviewResourcesByHoursExcelPath =  os.path.join(documentsOverviewsPath, scheduleTeachersOverviewResourcesByHoursExcelName)
-# For the classrooms overview for the resources grouped by hours
-scheduleClassroomsOverviewResourcesByHoursExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassroomsOverviewResourcesByHoursExcelName)
-# For the subjects overview for the resources grouped by hours
-scheduleSubjectsOverviewResourcesByHoursExcelPath =  os.path.join(documentsOverviewsPath, scheduleSubjectsOverviewResourcesByHoursExcelName)
-
-# For all of the above
-allScheduleOverviewResourcesByHoursExcelPaths = [ scheduleClassesOverviewResourcesByHoursExcelPath,
-                                                  scheduleTeachersOverviewResourcesByHoursExcelPath,
-                                                  scheduleClassroomsOverviewResourcesByHoursExcelPath,
-                                                  scheduleSubjectsOverviewResourcesByHoursExcelPath ]
+allScheduleResourceAllocByDaysExcelPaths = [ scheduleClassesResourceAllocByDaysExcelPath,
+                                             scheduleTeachersResourceAllocByDaysExcelPath,
+                                             scheduleClassroomsResourceAllocByDaysExcelPath,
+                                             scheduleSubjectsResourceAllocByDaysExcelPath ]
 
 
 
-##  5.1.7. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY HOURS  ##
+##  5.1.11. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY DAYS  ##
 
-# For the classes grouped overview for the resources grouped by hours
-scheduleClassesGroupedOverviewResourcesByHoursExcelPath = os.path.join(documentsOverviewsGroupedPath, scheduleClassesGroupedOverviewResourcesByHoursExcelName)
-# For the teachers grouped overview for the resources grouped by hours
-scheduleTeachersGroupedOverviewResourcesByHoursExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleTeachersGroupedOverviewResourcesByHoursExcelName)
-# For the classrooms grouped overview for the resources grouped by hours
-scheduleClassroomsGroupedOverviewResourcesByHoursExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleClassroomsGroupedOverviewResourcesByHoursExcelName)
-# For the subjects grouped overview for the resources grouped by hours
-scheduleSubjectsGroupedOverviewResourcesByHoursExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleSubjectsGroupedOverviewResourcesByHoursExcelName)
+# For the classes grouped overview for the resource allocation by days
+scheduleClassesGroupedResourceAllocByDaysExcelPath = os.path.join(documentsOverviewsGroupedPath, scheduleClassesGroupedResourceAllocByDaysExcelName)
+# For the teachers grouped overview for the resource allocation by days
+scheduleTeachersGroupedResourceAllocByDaysExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleTeachersGroupedResourceAllocByDaysExcelName)
+# For the classrooms grouped overview for the resource allocation by days
+scheduleClassroomsGroupedResourceAllocByDaysExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleClassroomsGroupedResourceAllocByDaysExcelName)
+# For the subjects grouped overview for the resource allocation by days
+scheduleSubjectsGroupedResourceAllocByDaysExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleSubjectsGroupedResourceAllocByDaysExcelName)
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByHoursExcelPaths = [ scheduleClassesGroupedOverviewResourcesByHoursExcelPath,
-                                                         scheduleTeachersGroupedOverviewResourcesByHoursExcelPath,
-                                                         scheduleClassroomsGroupedOverviewResourcesByHoursExcelPath,
-                                                         scheduleSubjectsGroupedOverviewResourcesByHoursExcelPath ]
+allScheduleGroupedResourceAllocByDaysExcelPaths = [ scheduleClassesGroupedResourceAllocByDaysExcelPath,
+                                                    scheduleTeachersGroupedResourceAllocByDaysExcelPath,
+                                                    scheduleClassroomsGroupedResourceAllocByDaysExcelPath,
+                                                    scheduleSubjectsGroupedResourceAllocByDaysExcelPath ]
+
+
+##  5.1.12. OVERVIEW FOR RESOURCE ALLOCATION BY HOURS  ##
+
+# For the classes overview for the resource allocation by hours
+scheduleClassesResourceAllocByHoursExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassesResourceAllocByHoursExcelName)
+# For the teachers overview for the resource allocation by hours
+scheduleTeachersResourceAllocByHoursExcelPath =  os.path.join(documentsOverviewsPath, scheduleTeachersResourceAllocByHoursExcelName)
+# For the classrooms overview for the resource allocation by hours
+scheduleClassroomsResourceAllocByHoursExcelPath =  os.path.join(documentsOverviewsPath, scheduleClassroomsResourceAllocByHoursExcelName)
+# For the subjects overview for the resource allocation by hours
+scheduleSubjectsResourceAllocByHoursExcelPath =  os.path.join(documentsOverviewsPath, scheduleSubjectsResourceAllocByHoursExcelName)
+
+# For all of the above
+allScheduleResourceAllocByHoursExcelPaths = [ scheduleClassesResourceAllocByHoursExcelPath,
+                                              scheduleTeachersResourceAllocByHoursExcelPath,
+                                              scheduleClassroomsResourceAllocByHoursExcelPath,
+                                              scheduleSubjectsResourceAllocByHoursExcelPath ]
+
+
+
+##  5.1.13. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY HOURS  ##
+
+# For the classes grouped overview for the resource allocation by hours
+scheduleClassesGroupedResourceAllocByHoursExcelPath = os.path.join(documentsOverviewsGroupedPath, scheduleClassesGroupedResourceAllocByHoursExcelName)
+# For the teachers grouped overview for the resource allocation by hours
+scheduleTeachersGroupedResourceAllocByHoursExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleTeachersGroupedResourceAllocByHoursExcelName)
+# For the classrooms grouped overview for the resource allocation by hours
+scheduleClassroomsGroupedResourceAllocByHoursExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleClassroomsGroupedResourceAllocByHoursExcelName)
+# For the subjects grouped overview for the resource allocation by hours
+scheduleSubjectsGroupedResourceAllocByHoursExcelPath =  os.path.join(documentsOverviewsGroupedPath, scheduleSubjectsGroupedResourceAllocByHoursExcelName)
+
+# For all of the above
+allScheduleGroupedResourceAllocByHoursExcelPaths = [ scheduleClassesGroupedResourceAllocByHoursExcelPath,
+                                                     scheduleTeachersGroupedResourceAllocByHoursExcelPath,
+                                                     scheduleClassroomsGroupedResourceAllocByHoursExcelPath,
+                                                     scheduleSubjectsGroupedResourceAllocByHoursExcelPath ]
 
 
 
@@ -1045,6 +1098,10 @@ testJSONPath = os.path.join(processingFilesJSONPath, testJSONName)
 
 # For the pure scraped classes
 scheduleClassesBaseJSONPath =  os.path.join(processingFilesJSONPath, scheduleClassesBaseJSONName)
+
+
+
+## 5.2.2. BASIC EXTRA
 
 # For the schedule lists with the grouped owners
 scheduleListsOwnersGroupedJSONPath =  os.path.join(processingFilesJSONPath, scheduleListsOwnersGroupedDfsJSONName)
@@ -1081,13 +1138,11 @@ allScheduleDfsJSONPaths = [ scheduleClassesDfsJSONPath,
 
 ##  5.3.3. BASIC EXTRA  ##
 
-# For all the schedules written wide and vertically
-schedulesWideAndVerticallyDfsJSONPath = os.path.join(processingFilesJSONPath, schedulesWideAndVerticallyDfsJSONName)
-# For the classrooms written wide and vertically
-scheduleClassroomsWideAndVerticallyDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassroomsWideAndVerticallyDfsJSONName)
+# For all the schedules written in wide and vertical format
+schedulesWideAndVertDfsJSONPath = os.path.join(processingFilesJSONPath, schedulesWideAndVertDfsJSONName)
 
-# For the classrooms written briefly wide and vertically
-scheduleClassroomsBrieflyWideAndVerticallyDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassroomsBrieflyWideAndVerticallyDfsJSONName)
+# For the classrooms written in wide and vertical format
+scheduleClassroomsWideAndVertDfsJSONPath = os.path.join(processingFilesJSONPath, scheduleClassroomsWideAndVertDfsJSONName)
 
 
 
@@ -1110,113 +1165,125 @@ allScheduleGroupedDfsJSONPaths = [ scheduleClassesGroupedDfsJSONPath,
 
 
 
-##  5.3.5. OVERVIEW FOR RESOURCES  ##
+##  5.3.5. OVERVIEW FOR RESOURCE ALLOCATION  ##
 
 # For the classes overview for the resources
-scheduleClassesOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassesOverviewResourcesDfsJSONName)
+scheduleClassesResourceAllocDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassesResourceAllocDfsJSONName)
 # For the teachers overview for the resources
-scheduleTeachersOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleTeachersOverviewResourcesDfsJSONName)
+scheduleTeachersResourceAllocDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleTeachersResourceAllocDfsJSONName)
 # For the classrooms overview for the resources
-scheduleClassroomsOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassroomsOverviewResourcesDfsJSONName)
+scheduleClassroomsResourceAllocDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassroomsResourceAllocDfsJSONName)
 # For the subjects overview for the resources
-scheduleSubjectsOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleSubjectsOverviewResourcesDfsJSONName)
+scheduleSubjectsResourceAllocDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleSubjectsResourceAllocDfsJSONName)
 
 # For all of the above
-allScheduleOverviewResourcesDfsJSONPaths = [ scheduleClassesOverviewResourcesDfsJSONPath,
-                                             scheduleTeachersOverviewResourcesDfsJSONPath,
-                                             scheduleClassroomsOverviewResourcesDfsJSONPath,
-                                             scheduleSubjectsOverviewResourcesDfsJSONPath ]
+allScheduleResourceAllocDfsJSONPaths = [ scheduleClassesResourceAllocDfsJSONPath,
+                                         scheduleTeachersResourceAllocDfsJSONPath,
+                                         scheduleClassroomsResourceAllocDfsJSONPath,
+                                         scheduleSubjectsResourceAllocDfsJSONPath ]
 
 
 
-##  5.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCES  ##
+##  5.3.6. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION  ##
 
 # For the classes grouped overview for the resources
-scheduleClassesGroupedOverviewResourcesDfsJSONPath = os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassesGroupedOverviewResourcesDfsJSONName)
+scheduleClassesGroupedResourceAllocDfsJSONPath = os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassesGroupedResourceAllocDfsJSONName)
 # For the teachers grouped overview for the resources
-scheduleTeachersGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleTeachersGroupedOverviewResourcesDfsJSONName)
+scheduleTeachersGroupedResourceAllocDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleTeachersGroupedResourceAllocDfsJSONName)
 # For the classrooms grouped overview for the resources
-scheduleClassroomsGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassroomsGroupedOverviewResourcesDfsJSONName)
+scheduleClassroomsGroupedResourceAllocDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassroomsGroupedResourceAllocDfsJSONName)
 # For the subjects grouped overview for the resources
-scheduleSubjectsGroupedOverviewResourcesDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleSubjectsGroupedOverviewResourcesDfsJSONName)
+scheduleSubjectsGroupedResourceAllocDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleSubjectsGroupedResourceAllocDfsJSONName)
 
 # For all of the above
-allScheduleGroupedOverviewResourcesDfsJSONPaths = [ scheduleClassesGroupedOverviewResourcesDfsJSONPath,
-                                                    scheduleTeachersGroupedOverviewResourcesDfsJSONPath,
-                                                    scheduleClassroomsGroupedOverviewResourcesDfsJSONPath,
-                                                    scheduleSubjectsGroupedOverviewResourcesDfsJSONPath ]
+allScheduleGroupedResourceAllocDfsJSONPaths = [ scheduleClassesGroupedResourceAllocDfsJSONPath,
+                                                scheduleTeachersGroupedResourceAllocDfsJSONPath,
+                                                scheduleClassroomsGroupedResourceAllocDfsJSONPath,
+                                                scheduleSubjectsGroupedResourceAllocDfsJSONPath ]
 
 
 
-##  5.3.7. OVERVIEW FOR RESOURCES BY DAYS  ##
+##  5.3.7. OVERVIEW FOR RESOURCE ALLOCATION BY NUMBERS  ##
 
-# For the classes overview for the resources grouped by days
-scheduleClassesOverviewResourcesByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassesOverviewResourcesByDaysDfsJSONName)
-# For the teachers overview for the resources grouped by days
-scheduleTeachersOverviewResourcesByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleTeachersOverviewResourcesByDaysDfsJSONName)
-# For the classrooms overview for the resources grouped by days
-scheduleClassroomsOverviewResourcesByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassroomsOverviewResourcesByDaysDfsJSONName)
-# For the subjects overview for the resources grouped by days
-scheduleSubjectsOverviewResourcesByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleSubjectsOverviewResourcesByDaysDfsJSONName)
-
-# For all of the above
-allScheduleOverviewResourcesByDaysDfsJSONPaths = [ scheduleClassesOverviewResourcesByDaysDfsJSONPath,
-                                                   scheduleTeachersOverviewResourcesByDaysDfsJSONPath,
-                                                   scheduleClassroomsOverviewResourcesByDaysDfsJSONPath,
-                                                   scheduleSubjectsOverviewResourcesByDaysDfsJSONPath ]
+scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath = os.path.join(processingFilesJSONOverviewsPath, scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONName)
 
 
 
-##  5.3.8. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY DAYS  ##
+##  5.3.8. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION  BY NUMBERS  ##
 
-# For the classes grouped overview for the resources grouped by days
-scheduleClassesGroupedOverviewResourcesByDaysDfsJSONPath = os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassesGroupedOverviewResourcesByDaysDfsJSONName)
-# For the teachers grouped overview for the resources grouped by days
-scheduleTeachersGroupedOverviewResourcesByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleTeachersGroupedOverviewResourcesByDaysDfsJSONName)
-# For the classrooms grouped overview for the resources grouped by days
-scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONName)
-# For the subjects grouped overview for the resources grouped by days
-scheduleSubjectsGroupedOverviewResourcesByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleSubjectsGroupedOverviewResourcesByDaysDfsJSONName)
+scheduleClassroomsGroupedWideAndVertOverviewByNumbersDfsJSONPath = os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassroomsGroupedWideAndVertOverviewByNumbersDfsJSONName)
+
+
+
+##  5.3.9. OVERVIEW FOR RESOURCE ALLOCATION BY DAYS  ##
+
+# For the classes overview for the resource allocation by days
+scheduleClassesResourceAllocByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassesResourceAllocByDaysDfsJSONName)
+# For the teachers overview for the resource allocation by days
+scheduleTeachersResourceAllocByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleTeachersResourceAllocByDaysDfsJSONName)
+# For the classrooms overview for the resource allocation by days
+scheduleClassroomsResourceAllocByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassroomsResourceAllocByDaysDfsJSONName)
+# For the subjects overview for the resource allocation by days
+scheduleSubjectsResourceAllocByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleSubjectsResourceAllocByDaysDfsJSONName)
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByDaysDfsJSONPaths = [ scheduleClassesGroupedOverviewResourcesByDaysDfsJSONPath,
-                                                          scheduleTeachersGroupedOverviewResourcesByDaysDfsJSONPath,
-                                                          scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONPath,
-                                                          scheduleSubjectsGroupedOverviewResourcesByDaysDfsJSONPath ]
-
-
-##  5.3.9. OVERVIEW FOR RESOURCES BY HOURS  ##
-
-# For the classes overview for the resources grouped by hours
-scheduleClassesOverviewResourcesByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassesOverviewResourcesByHoursDfsJSONName)
-# For the teachers overview for the resources grouped by hours
-scheduleTeachersOverviewResourcesByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleTeachersOverviewResourcesByHoursDfsJSONName)
-# For the classrooms overview for the resources grouped by hours
-scheduleClassroomsOverviewResourcesByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassroomsOverviewResourcesByHoursDfsJSONName)
-# For the subjects overview for the resources grouped by hours
-scheduleSubjectsOverviewResourcesByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleSubjectsOverviewResourcesByHoursDfsJSONName)
-
-# For all of the above
-allScheduleOverviewResourcesByHoursDfsJSONPaths = [ scheduleClassesOverviewResourcesByHoursDfsJSONPath,
-                                             scheduleTeachersOverviewResourcesByHoursDfsJSONPath,
-                                             scheduleClassroomsOverviewResourcesByHoursDfsJSONPath,
-                                             scheduleSubjectsOverviewResourcesByHoursDfsJSONPath ]
+allScheduleResourceAllocByDaysDfsJSONPaths = [ scheduleClassesResourceAllocByDaysDfsJSONPath,
+                                               scheduleTeachersResourceAllocByDaysDfsJSONPath,
+                                               scheduleClassroomsResourceAllocByDaysDfsJSONPath,
+                                               scheduleSubjectsResourceAllocByDaysDfsJSONPath ]
 
 
 
-##  5.3.10. OVERVIEW [BASIC GROUPED] FOR RESOURCES BY HOURS  ##
+##  5.3.10. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY DAYS  ##
 
-# For the classes grouped overview for the resources grouped by hours
-scheduleClassesGroupedOverviewResourcesByHoursDfsJSONPath = os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassesGroupedOverviewResourcesByHoursDfsJSONName)
-# For the teachers grouped overview for the resources grouped by hours
-scheduleTeachersGroupedOverviewResourcesByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleTeachersGroupedOverviewResourcesByHoursDfsJSONName)
-# For the classrooms grouped overview for the resources grouped by hours
-scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONName)
-# For the subjects grouped overview for the resources grouped by hours
-scheduleSubjectsGroupedOverviewResourcesByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleSubjectsGroupedOverviewResourcesByHoursDfsJSONName)
+# For the classes grouped overview for the resource allocation by days
+scheduleClassesGroupedResourceAllocByDaysDfsJSONPath = os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassesGroupedResourceAllocByDaysDfsJSONName)
+# For the teachers grouped overview for the resource allocation by days
+scheduleTeachersGroupedResourceAllocByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleTeachersGroupedResourceAllocByDaysDfsJSONName)
+# For the classrooms grouped overview for the resource allocation by days
+scheduleClassroomsGroupedResourceAllocByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassroomsGroupedResourceAllocByDaysDfsJSONName)
+# For the subjects grouped overview for the resource allocation by days
+scheduleSubjectsGroupedResourceAllocByDaysDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleSubjectsGroupedResourceAllocByDaysDfsJSONName)
 
 # For all of the above
-allScheduleGroupedOverviewResourcesByHoursDfsJSONPaths = [ scheduleClassesGroupedOverviewResourcesByHoursDfsJSONPath,
-                                                           scheduleTeachersGroupedOverviewResourcesByHoursDfsJSONPath,
-                                                           scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONPath,
-                                                           scheduleSubjectsGroupedOverviewResourcesByHoursDfsJSONPath ]
+allScheduleGroupedResourceAllocByDaysDfsJSONPaths = [ scheduleClassesGroupedResourceAllocByDaysDfsJSONPath,
+                                                      scheduleTeachersGroupedResourceAllocByDaysDfsJSONPath,
+                                                      scheduleClassroomsGroupedResourceAllocByDaysDfsJSONPath,
+                                                      scheduleSubjectsGroupedResourceAllocByDaysDfsJSONPath ]
+
+
+##  5.3.11. OVERVIEW FOR RESOURCE ALLOCATION BY HOURS  ##
+
+# For the classes overview for the resource allocation by hours
+scheduleClassesResourceAllocByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassesResourceAllocByHoursDfsJSONName)
+# For the teachers overview for the resource allocation by hours
+scheduleTeachersResourceAllocByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleTeachersResourceAllocByHoursDfsJSONName)
+# For the classrooms overview for the resource allocation by hours
+scheduleClassroomsResourceAllocByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleClassroomsResourceAllocByHoursDfsJSONName)
+# For the subjects overview for the resource allocation by hours
+scheduleSubjectsResourceAllocByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsPath, scheduleSubjectsResourceAllocByHoursDfsJSONName)
+
+# For all of the above
+allScheduleResourceAllocByHoursDfsJSONPaths = [ scheduleClassesResourceAllocByHoursDfsJSONPath,
+                                                scheduleTeachersResourceAllocByHoursDfsJSONPath,
+                                                scheduleClassroomsResourceAllocByHoursDfsJSONPath,
+                                                scheduleSubjectsResourceAllocByHoursDfsJSONPath ]
+
+
+
+##  5.3.12. OVERVIEW [BASIC GROUPED] FOR RESOURCE ALLOCATION BY HOURS  ##
+
+# For the classes grouped overview for the resource allocation by hours
+scheduleClassesGroupedResourceAllocByHoursDfsJSONPath = os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassesGroupedResourceAllocByHoursDfsJSONName)
+# For the teachers grouped overview for the resource allocation by hours
+scheduleTeachersGroupedResourceAllocByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleTeachersGroupedResourceAllocByHoursDfsJSONName)
+# For the classrooms grouped overview for the resource allocation by hours
+scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleClassroomsGroupedResourceAllocByHoursDfsJSONName)
+# For the subjects grouped overview for the resource allocation by hours
+scheduleSubjectsGroupedResourceAllocByHoursDfsJSONPath =  os.path.join(processingFilesJSONOverviewsGroupedPath, scheduleSubjectsGroupedResourceAllocByHoursDfsJSONName)
+
+# For all of the above
+allScheduleGroupedResourceAllocByHoursDfsJSONPaths = [ scheduleClassesGroupedResourceAllocByHoursDfsJSONPath,
+                                                       scheduleTeachersGroupedResourceAllocByHoursDfsJSONPath,
+                                                       scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath,
+                                                       scheduleSubjectsGroupedResourceAllocByHoursDfsJSONPath ]
