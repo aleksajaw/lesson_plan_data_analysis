@@ -1,33 +1,148 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
-from src.constants.paths_constants import scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONPath, scheduleClassroomsOverviewResourcesByDaysExcelPath, scheduleClassroomsGroupedOverviewResourcesByDaysExcelPath, scheduleClassroomsOverviewResourcesByHoursExcelPath, scheduleClassroomsGroupedOverviewResourcesByHoursExcelPath, scheduleClassroomsOverviewResourcesByDaysDfsJSONPath, scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONPath, scheduleClassroomsOverviewResourcesByHoursDfsJSONPath
+from src.constants.paths_constants import scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath, scheduleClassroomsResourceAllocByDaysExcelPath, scheduleClassroomsGroupedResourceAllocByDaysExcelPath, scheduleClassroomsResourceAllocByHoursExcelPath, scheduleClassroomsGroupedResourceAllocByHoursExcelPath, scheduleClassroomsResourceAllocByDaysDfsJSONPath, scheduleClassroomsGroupedResourceAllocByDaysDfsJSONPath, scheduleClassroomsResourceAllocByHoursDfsJSONPath, scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath, scheduleClassroomsWideAndVertOverviewByNumbersExcelPath
 from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, timeIndexNames, dfRowNrAndTimeTuples, weekdaysLen
-from src.constants.overview_constants import sumCellsInRowsColName, sumCellsInColsRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColsLvlName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName
+from src.constants.overview_constants import sumColName, sumRowName, meanRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColsLvlName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName, nrOfClassesPerHourName, classroomOccupancyTableName, classroomGapsTableName, classroomAvailabilityTableName, basicTableTitleLvlName
+from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, addNewMeanColToDf, setNewDfColsTitle, writeDfColSumToCell, writeDfColMeanToCell, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewCalcRowsToDf, createNewMultiIndexForSumRow, setGroupCounterInDfSumRowIndex
+from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, convertValToPercentage, convertToRounded
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfObjLists
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
-from pandas import  MultiIndex, DataFrame, IndexSlice#, Series
+from pandas import  MultiIndex, DataFrame, IndexSlice
 import numpy as np
 import os
 
 
 
 def createScheduleOverviews():
-    createOverviewsWithResourcesBy('days')
-    createOverviewsWithResourcesBy('hours')
+    createOverviewsWithResourcesAllocBy('days')
+    createOverviewsWithResourcesAllocBy('hours')
     createOverviewMain()
     createOverviewMainIntro()
 
 
 
-def createOverviewsWithResourcesBy(overviewKey):
+def createOverviewsWithLessonsByNrs(objOfDfs):
+    msgText=''
+
+    try:
+        newObjOfDfsByNumbers = {}
+
+        # Get the 1st DataFrame in the list
+        # dfKey is here a name of for example class, classroom, teacher
+        for dfName, newDfBasic in objOfDfs.items():
+            
+            newObjOfDfsByNumbers[dfName] = []
+            
+            # Prepare the DataFrame to retain only the count values. (Remove the redundant cells.)
+            newDfByNumbers = retainOnlyFirstCellsInDfGroups(newDfBasic.copy())
+
+            # Convert the col names from str to int and add a title for the table (DataFrame). 
+            newMultiIndexCols = createNewMultiIndexWithNewFirstLvl(newDfByNumbers, classroomOccupancyTableName, basicTableTitleLvlName)
+            newDfByNumbers.columns = newMultiIndexCols
+
+            newDfByNumbers = convertDfValsToCounters(newDfByNumbers, lvlList=[0,1,2], retainOnlyLastRows=True)
+            newDfByNumbers = addNewCalcRowsToDf(newDfByNumbers, sumRowName, isRowIndexFirstLvlADay=True)
+            newDfByNumbers = addNewCalcRowsToDf(newDfByNumbers, meanRowName, nrOfClassesPerHourName, isRowIndexFirstLvlADay=True)
+            
+
+            newDfByNumbersGaps = newDfByNumbers.copy()
+            newDfByNumbersAvailability = convertDfValsToBinaryStates(newDfByNumbers.copy())
+
+
+            for col in newDfByNumbers.columns:
+                
+                for dayName in newDfByNumbers.index.get_level_values(0).unique():
+
+                    colData = newDfByNumbersGaps.xs(dayName, level=0)[col]
+                    (firstValidIdx, lastValidIdx) = getDfValidIndices(colData)
+
+                    dayName = createTupleFromVals(dayName)
+
+                    sumKey = createNewMultiIndexForSumRow(newDfByNumbers.index.names, dayName, sumRowName, '')
+                    meanKey = createNewMultiIndexForSumRow(newDfByNumbers.index.names, dayName, meanRowName, nrOfClassesPerHourName)
+
+
+                    newDfByNumbersAvailability = writeDfColSumToCell(newDfByNumbersAvailability, sumKey, col, firstLvlRowMultiIndex=dayName)
+                    newDfByNumbersAvailability = writeDfColMeanToCell(newDfByNumbersAvailability, meanKey, col, firstLvlRowMultiIndex=dayName)
+
+
+                    if firstValidIdx is not None   and   lastValidIdx is not None:
+                        
+                        (firstIndex, lastIndex) = (dayName + firstValidIdx, dayName + lastValidIdx)
+
+                        newDfByNumbersGaps.loc[firstIndex:lastIndex, col] = convertDfValsToBinaryStates(newDfByNumbersGaps.loc[firstIndex:lastIndex, col])
+                    
+                        newDfByNumbers = writeDfColSumToCell(newDfByNumbers, sumKey, col, firstValidIndex=firstIndex, lastValidIndex=lastIndex)
+                        newDfByNumbers = writeDfColMeanToCell(newDfByNumbers, meanKey, col, firstLvlRowMultiIndex=dayName)
+
+                        newDfByNumbersGaps = writeDfColSumToCell(newDfByNumbersGaps, sumKey, col, firstValidIndex=firstIndex, lastValidIndex=lastIndex)
+                        newDfByNumbersGaps = writeDfColMeanToCell(newDfByNumbersGaps, meanKey, col, firstLvlRowMultiIndex=dayName)
+
+
+                    else:
+                        newDfByNumbers = writeDfColSumToCell(newDfByNumbers, sumKey, col, newVal=0.0)
+                        newDfByNumbers = writeDfColMeanToCell(newDfByNumbers, meanKey, col, newVal=0.0)
+
+                        newDfByNumbersGaps = writeDfColSumToCell(newDfByNumbersGaps, sumKey, col, newVal=0.0)
+                        newDfByNumbersGaps = writeDfColMeanToCell(newDfByNumbersGaps, meanKey, col, newVal=0.0)
+
+
+            newDfByNumbers = setGroupCounterInDfSumRowIndex(newDfByNumbers)
+            newDfByNumbersGaps = setGroupCounterInDfSumRowIndex(newDfByNumbersGaps)
+            newDfByNumbersAvailability = setGroupCounterInDfSumRowIndex(newDfByNumbersAvailability)
+
+
+            newDfByNumbers = addNewSumColToDf(newDfByNumbers)
+            newDfByNumbers = addNewMeanColToDf(newDfByNumbers)
+
+            newDfByNumbersAvailability = setNewDfColsTitle(newDfByNumbersAvailability, classroomAvailabilityTableName)
+            newDfByNumbersAvailability = addNewSumColToDf(newDfByNumbersAvailability)
+            newDfByNumbersAvailability = addNewMeanColToDf(newDfByNumbersAvailability)
+
+            newDfByNumbersGaps = setNewDfColsTitle(newDfByNumbersGaps, classroomGapsTableName)
+            newDfByNumbersGaps = addNewSumColToDf(newDfByNumbersGaps)
+            newDfByNumbersGaps = addNewMeanColToDf(newDfByNumbersGaps)
+
+
+            # Number of classes assigned to rooms at specific hours during the day
+            #print(newDfByNumbers)
+            
+            # Number of hours per room on a daily basis
+            #print(newDfByNumbers.groupby(axis=0, level=0).sum())
+            
+            # Number of rooms occupied per hour throughout the day
+            #print(newDfByNumbers.sum(axis=1))
+            
+            # Number of rooms occupied for specific hours across the week
+            #print(newDfByNumbers.groupby(axis=0, level=[1,2]).sum())
+            
+            # Number of hours per room across the week
+            #print(newDfByNumbers.sum(axis=0))
+
+
+            newObjOfDfsByNumbers[dfName].extend([newDfByNumbers, newDfByNumbersAvailability, newDfByNumbersGaps])
+
+        dfsByNumbersInLineLimit = len( newObjOfDfsByNumbers[ next(iter(newObjOfDfsByNumbers)) ] )
+
+
+        writerForListOfObjsWithMultipleDfsToJSONAndExcel(scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath, scheduleClassroomsWideAndVertOverviewByNumbersExcelPath, newObjOfDfsByNumbers, dfsInRowLimit=dfsByNumbersInLineLimit)
+
+    except Exception as e:
+        msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written in wide and vertical format.', getTraceback(e))
+
+    if msgText: print(msgText)
+
+
+
+def createOverviewsWithResourcesAllocBy(overviewKey):
     msgText=''
     
     try:
-        overviewExcelPaths   = { 'days'  : [ scheduleClassroomsOverviewResourcesByDaysExcelPath, scheduleClassroomsGroupedOverviewResourcesByDaysExcelPath ],
-                                 'hours' : [ scheduleClassroomsOverviewResourcesByHoursExcelPath, scheduleClassroomsGroupedOverviewResourcesByHoursExcelPath ] }
-        overviewDfsJSONPaths = { 'days'  : [ scheduleClassroomsOverviewResourcesByDaysDfsJSONPath, scheduleClassroomsGroupedOverviewResourcesByDaysDfsJSONPath ],
-                                 'hours' : [ scheduleClassroomsOverviewResourcesByHoursDfsJSONPath, scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONPath ] }
+        overviewExcelPaths   = { 'days'  : [ scheduleClassroomsResourceAllocByDaysExcelPath, scheduleClassroomsGroupedResourceAllocByDaysExcelPath ],
+                                 'hours' : [ scheduleClassroomsResourceAllocByHoursExcelPath, scheduleClassroomsGroupedResourceAllocByHoursExcelPath ] }
+        overviewDfsJSONPaths = { 'days'  : [ scheduleClassroomsResourceAllocByDaysDfsJSONPath, scheduleClassroomsGroupedResourceAllocByDaysDfsJSONPath ],
+                                 'hours' : [ scheduleClassroomsResourceAllocByHoursDfsJSONPath, scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath ] }
 
         i=-1
         for filePath in [ scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath ]:
@@ -67,13 +182,13 @@ def createOverviewsWithResourcesBy(overviewKey):
 
 
                     # Create a new col with the sum of values in the row(s).
-                    uniqueValFromColsLvl2Counter[sumCellsInRowsColName] = uniqueValFromColsLvl2Counter.sum(axis=1)
+                    uniqueValFromColsLvl2Counter[sumColName] = uniqueValFromColsLvl2Counter.sum(axis=1)
 
 
                     # Create a new row with the sum of values in the col.
-                    sumCellsInColsRowNameTuple = (sumCellsInColsRowName, len(uniqueValFromColsLvl2Counter.index))
+                    sumRowNameTuple = (sumRowName, len(uniqueValFromColsLvl2Counter.index))
                     rowForSumEntireCols = ( uniqueValFromColsLvl2Counter.sum(axis=0)
-                                                                        .to_frame(name=sumCellsInColsRowNameTuple)
+                                                                        .to_frame(name=sumRowNameTuple)
                                                                         .T )
 
                     # Create a new MultiIndex for rows.
@@ -118,11 +233,11 @@ def createOverviewsWithResourcesBy(overviewKey):
                         #newDf.columns = MultiIndex.from_arrays(arrays=newDf.columns, names=overviewColNames)
 
 
-                        if sumCellsInRowsColName not in col:
-                            #colWithoutLastRow = newDf.loc[(newDf.index!=sumCellsInColsRowName), quantityColName]
+                        if sumColName not in col:
+                            #colWithoutLastRow = newDf.loc[(newDf.index!=sumRowName), quantityColName]
                             colWithoutLastRow = newDf.loc[newDf.index[:-1], quantityColName]
                             
-                            #lastCellInCol = newDf.loc[(newDf.index==sumCellsInColsRowName), quantityColName]
+                            #lastCellInCol = newDf.loc[(newDf.index==sumRowName), quantityColName]
                             lastCellInCol = newDf.loc[newDf.index[-1], quantityColName]
 
                             percOfDayColNameTuple = createTupleFromVals([col, percOfDayColName])
@@ -130,19 +245,19 @@ def createOverviewsWithResourcesBy(overviewKey):
 
                             newDf.loc[newDf.index[:-1], percOfDayColNameTuple] = divisionResultAsPercentage(colWithoutLastRow, lastCellInCol)
 
-                            newDf.loc[sumCellsInColsRowNameTuple, percOfDayColNameTuple] = maxPercentage   if lastCellInCol   else noLessonsVal
+                            newDf.loc[sumRowNameTuple, percOfDayColNameTuple] = maxPercentage   if lastCellInCol   else noLessonsVal
                             
-                            sumValCol = tempDf[sumCellsInRowsColName]
+                            sumValCol = tempDf[sumColName]
                         
                         else:
-                            sumValCol = tempDf.loc[sumCellsInColsRowNameTuple, sumCellsInRowsColName]
+                            sumValCol = tempDf.loc[sumRowNameTuple, sumColName]
                         
                         
                         percOfWeekColNameTuple = createTupleFromVals([col, percOfWeekColName])
                         #percOfWeekColNameTuple = createListFromVals([col, percOfWeekColName])
                         newDf[percOfWeekColNameTuple] = divisionResultAsPercentage(newDf[quantityColName], sumValCol)
 
-                    #newDf.loc[(newDf.index==sumCellsInColsRowName), percOfWeekColNameTuple] = maxPercentage
+                    #newDf.loc[(newDf.index==sumRowName), percOfWeekColNameTuple] = maxPercentage
                     newDf.loc[newDf.index[-1], newDf.columns[-1]] = maxPercentage
 
                     overviewDfs[sheetName].append(newDf)
@@ -161,7 +276,7 @@ def createOverviewsWithResourcesBy(overviewKey):
 def createOverviewMain(overviewKey=''):
     msgText=''
 
-    objOfMultiDfs = readMultiDfsJSONAsObjOfDfObjLists(scheduleClassroomsGroupedOverviewResourcesByHoursDfsJSONPath)
+    objOfMultiDfs = readMultiDfsJSONAsObjOfDfObjLists(scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath)
     lastDfRows = {}
     
     try:
