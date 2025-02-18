@@ -69,9 +69,4 @@ def createOrEditMainExcelFile(schoolWebInfo):
     compareAndUpdateFile(scheduleClassesDfsJSONPath, classesDataDfsJSON)
     compareAndUpdateFile(scheduleClassesBaseJSONPath, classesDataJSON)
 
-
-
-def getClassesDataDfs():
-    global classesDataDfs
-
     return classesDataDfs

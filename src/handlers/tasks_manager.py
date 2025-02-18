@@ -1,5 +1,5 @@
 from src.handlers.schedules_scraper import getClassesDataFromSchoolWebPage
-from src.handlers.scraper_saver import loadClassesDataVariables, createOrEditMainExcelFile, getClassesDataDfs
+from src.handlers.scraper_saver import loadClassesDataVariables, createOrEditMainExcelFile
 from src.handlers.schedules_creator import createScheduleExcelFiles
 from src.handlers.files_opener import openScheduleFilesWithDefApps, openOverviewFilesWithDefApps
 from src.handlers.overviews_creator import createScheduleOverviews
@@ -15,8 +15,8 @@ def scrapeSchoolWebs():
 
         if classesData:
             loadClassesDataVariables(classesData)
-            createOrEditMainExcelFile(schoolWebInfo)
-            createScheduleExcelFiles(getClassesDataDfs(), schoolWebInfo)
-            createScheduleOverviews(schoolWebInfo)
+            classesDataDfs = createOrEditMainExcelFile(schoolWebInfo)
+            globalSchedules = createScheduleExcelFiles(classesDataDfs, schoolWebInfo)
+            createScheduleOverviews(globalSchedules, schoolWebInfo)
             #openScheduleFilesWithDefApps()
             #openOverviewFilesWithDefApps()

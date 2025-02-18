@@ -14,11 +14,11 @@ import os
 
 
 
-def createScheduleOverviews(schoolWebInfo):
-    createOverviewsWithResourcesAllocBy('days', schoolWebInfo)
-    createOverviewsWithResourcesAllocBy('hours', schoolWebInfo)
-    createOverviewMain()
-    createOverviewMainIntro()
+def createScheduleOverviews(globalSchedules, schoolWebInfo):
+    createOverviewsWithResourcesAllocBy(globalSchedules, 'days', schoolWebInfo)
+    createOverviewsWithResourcesAllocBy(globalSchedules, 'hours', schoolWebInfo)
+    #createOverviewMain()
+    #createOverviewMainIntro()
 
 
 
@@ -135,7 +135,7 @@ def createOverviewsWithLessonsByNrs(objOfDfs):
 
 
 
-def createOverviewsWithResourcesAllocBy(overviewKey, schoolWebInfo):
+def createOverviewsWithResourcesAllocBy(globalSchedules, overviewKey, schoolWebInfo):
     msgText=''
     
     try:
@@ -145,14 +145,17 @@ def createOverviewsWithResourcesAllocBy(overviewKey, schoolWebInfo):
                                  'hours' : [ scheduleClassroomsResourceAllocByHoursDfsJSONPath, scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath ] }
 
         i=-1
-        for filePath in [ scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedDfsJSONPath ]:
+        filteredGlobalSchedules = { key: value   for key, value in globalSchedules.items()   if 'classroom' in key}
+
+        for scheduleType, objOfDfs in filteredGlobalSchedules.items():
+        #for filePath in [ ]:
             i=i+1
-            fileContent = readDfsJSONAsObjOfDfs(filePath)
+            #fileContent = readDfsJSONAsObjOfDfs(filePath)
 
             # It is needed to transform the fn to doesn't repeat read the file.
             overviewDfs = {}
 
-            for sheetName, df in fileContent.items():
+            for sheetName, df in objOfDfs.items():
                 
                 newDf = {}
                 dfColLvl2Names = df.columns.get_level_values(1).unique()

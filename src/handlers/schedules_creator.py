@@ -33,6 +33,9 @@ def createScheduleExcelFiles(classSchedulesDfs, schoolWebInfo):
     createScheduleExcelFileVertical(schoolWebInfo)
     #createScheduleExcelFileForOwnerLists()
     createScheduleExcelFilesByGroupedOwnerLists(schoolWebInfo)
+    return { 'classSchedules'            : classSchedules,
+             'classroomSchedules'        : classroomSchedules,
+             'classroomGroupedSchedules' : classroomGroupedSchedules }
 
 
 
