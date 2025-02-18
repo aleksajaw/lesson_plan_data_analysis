@@ -1,14 +1,15 @@
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.schedule_structures_constants import weekdays, timeIndexNames, dayAndAttrNames, dfColWeekDayNameTuples4el, dfColWeekDayNameTuples5el, dfColWeekDayNameArrays4el, dfColWeekDayNameArrays5el, lessonTimePeriods
+from converters_utils import correctDfContent
 from excel_utils import dropnaInDfByAxis
 import pandas as pd
-#from pandas import DataFrame
+from pandas import DataFrame
 import numpy as np
 import re
 
 
 
-def concatAndFilterScheduleDataFrames(df1, df2, addNewCol=False, newColName='', newColVal=''):
+def concatAndFilterScheduleDataFrames(df1, df2, addNewCol=False, newColName=None, newColVal=None):
     msgText = ''
     newDf = None
 
@@ -24,9 +25,7 @@ def concatAndFilterScheduleDataFrames(df1, df2, addNewCol=False, newColName='', 
         #   To retain the old behavior, exclude the relevant entries before the concat operation.
         #df1 = dropnaInDfByAxis(df1, 1)
         df2 = dropnaInDfByAxis(df2, 1)
-        newDf = pd.concat([df1, df2], sort=False).reset_index()
-        newDf.set_index(keys=timeIndexNames, inplace=True)
-        newDf = newDf.sort_index(level=0)
+        newDf = pd.concat([df1, df2], sort=False).sort_index(level=0)
         
         newDf = filterAndConvertScheduleDataFrames(newDf, addNewCol, newColName, newColVal)
 
@@ -40,15 +39,14 @@ def concatAndFilterScheduleDataFrames(df1, df2, addNewCol=False, newColName='', 
         
 
 
-def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName='', newColVal=''):
-    newDfFiltered = []
+def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName=None, newColVal=None):
+    newDf = []
     msgText = ''
     
     try:
         #if df is None:
         #    df = DataFrame
         
-        newDf = df.copy()
         rowsFiltered = []
 
         prepareNewColVal = addNewCol   and   newColName   and   newColVal
@@ -59,15 +57,14 @@ def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName='', newCo
         timeKey2 = timeIndexNames[1]
 
         # iterate through rows (time indices)
-        for (lessonNr, time), row in newDf.groupby(timeIndexNames, sort=False):
-            rowFrame = row
+        for (lessonNr, time), rowFrame in df.groupby(timeIndexNames, sort=False):
             singleRowBase = {}
             singleRowBase[timeKey1] = int(lessonNr)
             singleRowBase[timeKey2] = time
 
             innerRows = []
 
-            for col in newDf.columns:
+            for col in df.columns:
                 booleanMask = rowFrame[col] != ''
                 nonEmptyValues = [x   for x in rowFrame[col][booleanMask]   if pd.notna(x)]
 
@@ -113,32 +110,28 @@ def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName='', newCo
                             doesDayHaveInnerCol = (col[0], newColName) in r
 
                             if doesRowHaveDay   and   not doesDayHaveInnerCol:
-                                innerRows[index][(col[0], newColName)] = (newColVal   if not newColVal.isdigit()
-                                                                                      else int(newColVal))
+                                innerRows[index][(col[0], newColName)] = newColVal
 
             for r in innerRows:
                 rowsFiltered.append(r.copy())
 
-
-        if addNewCol or ( len(newDf.columns.get_level_values(0).unique()) < len(weekdays) ):
+        if addNewCol   or   ( len(df.columns.get_level_values(0).unique()) < len(weekdays) ):
 
             columnsVal = pd.MultiIndex.from_tuples(colDayNameTuples, names=dayAndAttrNames)
             #columnsVal = pd.MultiIndex.from_arrays(arrays=colDayNameArrays, names=dayAndAttrNames)
         
         else:
-            columnsVal = newDf.columns
+            columnsVal = df.columns
 
-        newDfFiltered = pd.DataFrame(rowsFiltered)
-        newDfFiltered = newDfFiltered.reset_index()
-        newDfFiltered.set_index(keys=timeIndexNames, inplace=True)
-        newDfFiltered = newDfFiltered.reindex(columns=columnsVal, fill_value=np.nan)
+        newDf = correctDfContent( DataFrame(rowsFiltered).set_index(timeIndexNames)
+                                                         .reindex(columns=columnsVal) )
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while filtering and converting schedule Data Frames for Excel worksheet.', getTraceback(e))
         
     if msgText: print(msgText)
     
-    return newDfFiltered
+    return newDf
 
 
 
