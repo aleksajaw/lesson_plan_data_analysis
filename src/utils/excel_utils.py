@@ -130,7 +130,7 @@ def removeLastEmptyRowsInDataFrames(elToBeFiltered):
             if len(singleWorksheet.items()):
                 for sheetName, sheetVal in singleWorksheet.items():
                     #lastNonEmptyRow = int(sheetVal.dropna(how='all').index[-1][0])
-                    singleWorksheet[sheetName] = sheetVal.loc[:sheetVal.last_valid_index()]
+                    singleWorksheet[sheetName] = sheetVal.loc[:sheetVal.last_valid_index()].fillna('')
     
     except Exception as e:
         msgText = handleErrorMsg('\nError while removing last empty rows in Excel worksheet.', getTraceback(e))
