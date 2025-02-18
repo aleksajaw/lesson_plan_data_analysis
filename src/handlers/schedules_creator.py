@@ -19,11 +19,11 @@ import numpy as np
 import os
 
 
-classSchedules, classroomSchedules, groupedOwnerLists = {}, {}, {}
+classSchedules, classroomSchedules, classroomGroupedSchedules, groupedOwnerLists = {}, {}, {}, {}
 
 
 def createScheduleExcelFiles(classSchedulesDfs, schoolWebInfo):
-    global classSchedules
+    global classSchedules, classroomSchedules, classroomGroupedSchedules
     #if classSchedulesDfs is None:
     #    classSchedulesDfs = {}
     
@@ -37,6 +37,7 @@ def createScheduleExcelFiles(classSchedulesDfs, schoolWebInfo):
 
 
 def createScheduleExcelFileVertical(schoolWebInfo):
+    global classroomSchedules
     msgText=''
 
     try:
@@ -46,7 +47,8 @@ def createScheduleExcelFileVertical(schoolWebInfo):
 
         for excelFilePath in [scheduleClassroomsExcelPath]:
             
-            objOfDfs = readExcelFileAsObjOfDfs(excelFilePath)
+            #objOfDfs = readExcelFileAsObjOfDfs(excelFilePath)
+            objOfDfs = classroomSchedules.copy()
             newDfBasic = DataFrame()
             currSheetName = sheetNames[i]
 
@@ -132,11 +134,11 @@ def createScheduleExcelFileForOwnerLists():
 
 
 def createScheduleExcelFilesByGroupedOwnerLists(schoolWebInfo):
-    global classroomSchedules
+    global classroomSchedules, classroomGroupedSchedules
     msgText=''
 
     try:
-        fullConstructAndWriteScheduleByGroup('classrooms', classroomSchedules, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsGroupedExcelPath)
+        classroomGroupedSchedules = fullConstructAndWriteScheduleByGroup('classrooms', classroomSchedules, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsGroupedExcelPath)
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the schedule Excel files by grouped owner lists.', getTraceback(e))
@@ -149,12 +151,11 @@ def fullConstructAndWriteScheduleByGroup(ownersType, schedulesObj, dfsJSONFilePa
     global groupedOwnerLists
     msgText=''
 
+    schedulesByGroups = {}
     try:
         #if schedulesObj is None:
         #    schedulesObj = {}
-        
-        schedulesByGroups = {}
-        concatAndFilterSingleGroupListDataFrames(ownersType, schedulesObj, groupedOwnerLists[ownersType], schedulesByGroups)
+        schedulesByGroups = concatAndFilterSingleGroupListDataFrames(ownersType, schedulesObj, groupedOwnerLists[ownersType])
 
         writerForObjOfDfsToJSONAndExcel(dfsJSONFilePath, excelFilePath, schedulesByGroups)
 
@@ -163,6 +164,8 @@ def fullConstructAndWriteScheduleByGroup(ownersType, schedulesObj, dfsJSONFilePa
         msgText = handleErrorMsg(f'\nError while constructing the {ownersType} schedules by grouped owner list and writing them to the Excel file.', getTraceback(e))
     
     if msgText: print(msgText)
+
+    return schedulesByGroups
 
 
 
@@ -385,14 +388,12 @@ def writeGroupListsToExcelAndFormat(objOfDfs):
 
 
 
-def concatAndFilterSingleGroupListDataFrames(ownersType, sheetsForOwnerTypes, ownersList, newDf, addNewCol=True):
+def concatAndFilterSingleGroupListDataFrames(ownersType, sheetsForOwnerTypes, ownersList, addNewCol=True):
     #if sheetsForOwnerTypes is None:
     #    sheetsForOwnerTypes = {}
     #if ownersList is None:
     #    ownersList = DataFrame
-    #if newDf is None:
-    #    newDf = DataFrame
-    
+    objOfDfs = {}
     newColName = getTranslByPlural(ownersType)
     
     ownersPureGroupedList = getPureGroupedList(ownersList)
@@ -402,7 +403,7 @@ def concatAndFilterSingleGroupListDataFrames(ownersType, sheetsForOwnerTypes, ow
         
         # get elements like 'ang.r', '101' etc.
         for el in groupList:
-            x = newDf[str(groupName)]   if str(groupName) in newDf.keys()   else None
+            x = objOfDfs[str(groupName)]   if str(groupName) in objOfDfs.keys()   else None
             y = sheetsForOwnerTypes[str(el)].copy()
 
             if isinstance(x, DataFrame):
@@ -414,15 +415,15 @@ def concatAndFilterSingleGroupListDataFrames(ownersType, sheetsForOwnerTypes, ow
                 x = dropnaInDfByAxis(x, 1)
                 #y = dropnaInDfByAxis(y, 1)
                 if addNewCol:
-                    newDf[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColName, str(el))
+                    objOfDfs[str(groupName)] = concatAndFilterScheduleDataFrames(x, y, True, newColName, str(el))
                 else:
-                    newDf[str(groupName)] = concatAndFilterScheduleDataFrames(x, y)
+                    objOfDfs[str(groupName)] = concatAndFilterScheduleDataFrames(x, y)
                     
             else:
                 if addNewCol:
-                    newDf[str(groupName)] = filterAndConvertScheduleDataFrames(y, True, newColName, str(el))
+                    objOfDfs[str(groupName)] = filterAndConvertScheduleDataFrames(y, True, newColName, str(el))
                 else:
-                    newDf[str(groupName)] = y
+                    objOfDfs[str(groupName)] = y
                     
     
-    return newDf
+    return objOfDfs
