@@ -41,6 +41,8 @@ def convertToDf(dataToConvert):
         df = correctDfContent(df)
         
         df.set_index(keys=timeIndexNames, inplace=True)
+        # Prevents errors when accessing .levels, such as 'ghost' values in the indexes.
+        df.columns = df.columns.remove_unused_levels()
             
     except Exception as e:
         msgText = handleErrorMsg('\nError while converting data do DataFrame.', getTraceback(e))
