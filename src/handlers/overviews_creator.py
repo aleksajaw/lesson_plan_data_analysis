@@ -4,7 +4,7 @@ from src.constants.schedule_structures_constants import noGroupMarker, wholeClas
 from src.constants.overview_constants import sumColName, sumRowName, meanRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColsLvlName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName, nrOfClassesPerHourName, classroomOccupancyTableName, classroomGapsTableName, classroomAvailabilityTableName, basicTableTitleLvlName
 from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, addNewMeanColToDf, setNewDfColsTitle, writeDfColSumToCell, writeDfColMeanToCell, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewCalcRowsToDf, createNewMultiIndexForSumRow, setGroupCounterInDfSumRowIndex
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
-from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, convertValToPercentage, convertToRounded
+from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, convertValToPercentage, convertToRounded, convertDigitInStrToInt
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfObjLists
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
@@ -199,10 +199,9 @@ def createOverviewsWithResourcesAllocBy(globalSchedules, overviewKey, schoolWebI
                     indexGroupName = colName
                     for singleIndex in uniqueValFromColsLvl2Counter.index:
                         
-                        if singleIndex.isdigit():
-                            singleIndex = int(singleIndex)
+                        singleIndex = convertDigitInStrToInt(singleIndex)
                         
-                        elif singleIndex == noGroupMarker:
+                        if singleIndex == noGroupMarker:
                             singleIndex = wholeClassGroupName
                         
                         singleElIndexTuple = (indexGroupName, singleIndex)
