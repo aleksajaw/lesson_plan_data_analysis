@@ -18,7 +18,7 @@ def createDraftSheet(excelFilePath):
             draftDf.to_excel(writer, sheet_name=draftSheetName, startrow=excelMargin['row'], startcol=excelMargin['col'], merge_cells=True)
 
     except Exception as e:
-        msgText = handleErrorMsg('\nError while creating draft sheet for Excel file.', getTraceback(e))
+        msgText = handleErrorMsg(f'\nError while creating draft sheet for Excel file with path {excelFilePath}.', getTraceback(e))
 
     if msgText: print(msgText)
 
@@ -49,7 +49,7 @@ def delDraftIfNecessary(workbook, excelFilePath):
 
 
         except Exception as e:
-            msgText = handleErrorMsg('\nUnable to open the Excel file to check and delete the draft sheet.', getTraceback(e))
+            msgText = handleErrorMsg(f'\nUnable to open the Excel file in {excelFilePath} to check and delete the draft sheet.', getTraceback(e))
     
     if msgText: print(msgText)
     
