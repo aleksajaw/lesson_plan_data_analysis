@@ -12,9 +12,24 @@ from pandas import ExcelWriter
 import os
 
 
+currSchoolWebInfo = None
 classesDataJSON = ''
 classesDataDfs = None
 classesDataDfsJSON = ''
+
+
+def setCurrSchoolWebInfo(schoolWebInfo):
+    global currSchoolWebInfo
+
+    currSchoolWebInfo = schoolWebInfo
+
+
+
+def getCurrSchoolWebInfo():
+    global currSchoolWebInfo
+
+    return currSchoolWebInfo
+
 
 
 def loadClassesDataVariables(classesData):
