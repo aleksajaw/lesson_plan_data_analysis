@@ -1,6 +1,6 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath, scheduleClassroomsResourceAllocByDaysExcelPath, scheduleClassroomsGroupedResourceAllocByDaysExcelPath, scheduleClassroomsResourceAllocByHoursExcelPath, scheduleClassroomsGroupedResourceAllocByHoursExcelPath, scheduleClassroomsResourceAllocByDaysDfsJSONPath, scheduleClassroomsGroupedResourceAllocByDaysDfsJSONPath, scheduleClassroomsResourceAllocByHoursDfsJSONPath, scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath, scheduleClassroomsWideAndVertOverviewByNumbersExcelPath
-from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, timeIndexNames, dfRowNrAndTimeTuples, weekdaysLen
+from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, timeIndexNames, dfRowNrAndTimeTuples, weekdaysLen, classGroupsOwnerName
 from src.constants.overview_constants import sumColName, sumRowName, meanRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColsLvlName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName, nrOfClassesPerHourName, classroomOccupancyTableName, classroomGapsTableName, classroomAvailabilityTableName, basicTableTitleLvlName
 from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, addNewMeanColToDf, setNewDfColsTitle, writeDfColSumToCell, writeDfColMeanToCell, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewCalcRowsToDf, createNewMultiIndexForSumRow, setGroupCounterInDfSumRowIndex
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
@@ -201,7 +201,7 @@ def createOverviewsWithResourcesAllocBy(globalSchedules, overviewKey, schoolWebI
                         
                         singleIndex = convertDigitInStrToInt(singleIndex)
                         
-                        if singleIndex == noGroupMarker:
+                        if singleIndex == noGroupMarker   and   indexGroupName == classGroupsOwnerName:
                             singleIndex = wholeClassGroupName
                         
                         singleElIndexTuple = (indexGroupName, singleIndex)
