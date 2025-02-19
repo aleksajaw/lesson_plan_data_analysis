@@ -3,70 +3,75 @@ from selenium.webdriver.common.by import By
 
 
 ###   INITIAL VARIABLES   ###
-schoolsWebInfo = { 'zamkowa15': {
-                        'schoolURL': 'https://zamkowa15.edu.pl',
-                        'planURL': {
-                            'partial': '/plan/plan.html',
-                            'full': 'https://zamkowa15.edu.pl/plan/plan.html'
-                        },
-                        'useDOMFrames': True,
-                        'scheduleLinksInfo': {
-                            'selector': (By.CSS_SELECTOR, 'a[target="plan"]'),
-                            'selectorParent': (By.NAME, 'list')
-                        },
-                        'planInfo': {
-                            'selector': (By.NAME, 'plan'),
-                            'selectorParent': ''
-                        }
+schoolsWebInfo = [  {
+                       'title'     : 'zamkowa15',
+                       'schoolURL' : 'https://zamkowa15.edu.pl',
+                       'planURL'   : {
+                           'partial' : '/plan/plan.html',
+                           'full'    : 'https://zamkowa15.edu.pl/plan/plan.html'
+                       },
+                       'useDOMFrames' : True,
+                       'scheduleLinksInfo' : {
+                           'selector'       : (By.CSS_SELECTOR, 'a[target="plan"]'),
+                           'selectorParent' : (By.NAME, 'list')
+                       },
+                       'planInfo' : {
+                           'selector'       : (By.NAME, 'plan'),
+                           'selectorParent' : ''
+                       }
                     },
-                    'mechaniksieradz': {
-                        'schoolURL': 'https://www.mechaniksieradz.edu.pl',
-                        'planURL': {
-                            'partial': '/DANE/Plan/Uczen/biezacy/',
-                            'full': 'https://www.mechaniksieradz.edu.pl/DANE/Plan/Uczen/biezacy/'
-                        },
-                        'useDOMFrames': True,
-                        'scheduleLinksInfo': {
-                            'selector': (By.CSS_SELECTOR, 'a[target="plan"]'),
-                            'selectorParent': (By.NAME, 'list')
-                        },
-                        'planInfo': {
-                            'selector': (By.NAME, 'plan'),
-                            'selectorParent': ''
-                        }
+                    {
+                       'title'     : 'mechaniksieradz',
+                       'schoolURL' : 'https://www.mechaniksieradz.edu.pl',
+                       'planURL'   : {
+                           'partial' : '/DANE/Plan/Uczen/biezacy/',
+                           'full'    : 'https://www.mechaniksieradz.edu.pl/DANE/Plan/Uczen/biezacy/'
+                       },
+                       'useDOMFrames' : True,
+                       'scheduleLinksInfo' : {
+                           'selector'       : (By.CSS_SELECTOR, 'a[target="plan"]'),
+                           'selectorParent' : (By.NAME, 'list')
+                       },
+                       'planInfo' : {
+                           'selector'       : (By.NAME, 'plan'),
+                           'selectorParent' : ''
+                       }
                     },
-                    'zeromski': {
-                        'schoolURL': 'https://zeromski.edu.pl',
-                        'planURL': {
-                            'partial': '/plany/',
-                            'full': 'https://zeromski.edu.pl/plany/'
-                        },
-                        'useDOMFrames': True,
-                        'scheduleLinksInfo': {
-                            'selector': (By.CSS_SELECTOR, 'a[target="plan"]'),
-                            'selectorParent': (By.NAME, 'list')
-                        },
-                        'planInfo': {
-                            'selector': (By.NAME, 'plan'),
-                            'selectorParent': ''
-                        }
+                    {
+                       'title'     : 'zeromski',
+                       'schoolURL' : 'https://zeromski.edu.pl',
+                       'planURL' : {
+                           'partial' : '/plany/',
+                           'full'    : 'https://zeromski.edu.pl/plany/'
+                       },
+                       'useDOMFrames' : True,
+                       'scheduleLinksInfo' : {
+                           'selector'       : (By.CSS_SELECTOR, 'a[target="plan"]'),
+                           'selectorParent' : (By.NAME, 'list')
+                       },
+                       'planInfo' : {
+                           'selector' : (By.NAME, 'plan'),
+                           'selectorParent' : ''
+                       }
                     },
-                    'lojagiellonczyk': {
-                        'schoolURL': 'https://lojagiellonczyk.pl',
-                        'planURL': {
-                            'partial': '/dla-uczniow/plan-lekcji/',
-                            'full': 'https://lojagiellonczyk.pl/dla-uczniow/plan-lekcji/'
-                        },
-                        'useDOMFrames': False,
-                        'scheduleLinksInfo': {
-                            'selector': (By.XPATH, "//a[contains(@href, '/dla-uczniow/plan-lekcji/')]"),
-                            'selectorParent': ''
-                        },
-                        'planInfo': {
-                            'selector':'',
-                            'selectorParent': ''
-                        }
-                    } }
+                    {
+                       'title'     : 'lojagiellonczyk',
+                       'schoolURL' : 'https://lojagiellonczyk.pl',
+                       'planURL' : {
+                           'partial' : '/dla-uczniow/plan-lekcji/',
+                           'full'    : 'https://lojagiellonczyk.pl/dla-uczniow/plan-lekcji/'
+                       },
+                       'useDOMFrames' : False,
+                       'scheduleLinksInfo' : {
+                           'selector'       : (By.XPATH, "//a[contains(@href, '/dla-uczniow/plan-lekcji/')]"),
+                           'selectorParent' : ''
+                       },
+                       'planInfo' : {
+                           'selector'       :'',
+                           'selectorParent' : ''
+                       }
+                    }
+                 ]
 
 #schoolURL, partPlanURL = schoolAndPlanURLs[0]
 #planURL = schoolURL + partPlanURL
