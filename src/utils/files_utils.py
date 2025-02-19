@@ -255,7 +255,7 @@ def openFileWithDefApp(filePath):
 def extendFilePathWithCurrSchoolTitle(filePath):
     from src.handlers.scraper_saver import currSchoolWebInfo
 
-    return extendFileNameInPath(filePath, '_' + currSchoolWebInfo['title'])
+    return extendFileNameInPath(filePath, '_' + currSchoolWebInfo['title'])   if currSchoolWebInfo['title']   else filePath
 
 
 
@@ -269,10 +269,10 @@ def extendFileNameInPath(filePath, strToAdd):
 
 
 
-def extendFileNameWithCurrSchoolTitle(filePath):
+def extendFileNameWithCurrSchoolTitle(fileName):
     from src.handlers.scraper_saver import currSchoolWebInfo
 
-    return extendFileName(filePath, '_' + currSchoolWebInfo['title'])
+    return extendFileName(fileName, '_' + currSchoolWebInfo['title'])   if currSchoolWebInfo['title']   else fileName
 
 
 
