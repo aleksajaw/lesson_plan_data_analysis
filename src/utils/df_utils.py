@@ -1,4 +1,3 @@
-from converters_utils import convertDigitInStrToInt
 from constants.overview_constants import sumColName, sumRowName, meanRowName, meanColName, notApplicableVal, notAvailableVal
 from src.constants.schedule_structures_constants import weekdaysCatDtype
 import pandas as pd
@@ -8,6 +7,8 @@ import numpy as np
 
 
 def createNewMultiIndexWithNewFirstLvl(df, newFirstLvlVal, newLvlName='', isColumns=True, convertIndex=True):
+    from src.utils.converters_utils import convertDigitInStrToInt
+    
     indexBase = df.columns   if isColumns   else df.index
 
     colsData = [convertDigitInStrToInt(col)   for col in indexBase]   if convertIndex   else indexBase
