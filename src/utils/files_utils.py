@@ -252,13 +252,27 @@ def openFileWithDefApp(filePath):
 
 
 
+def extendFilePathWithCurrSchoolTitle(filePath):
+    from src.handlers.scraper_saver import currSchoolWebInfo
+
+    return extendFileNameInPath(filePath, '_' + currSchoolWebInfo['title'])
+
+
+
 def extendFileNameInPath(filePath, strToAdd):
     baseName, ext = os.path.splitext(filePath)
     newBaseName = baseName + strToAdd
     newFileName = newBaseName + ext
     dirPath = os.path.dirname(filePath)
 
-    return os.path.join(dirPath + newFileName)
+    return os.path.join(dirPath, newFileName)
+
+
+
+def extendFileNameWithCurrSchoolTitle(filePath):
+    from src.handlers.scraper_saver import currSchoolWebInfo
+
+    return extendFileName(filePath, '_' + currSchoolWebInfo['title'])
 
 
 
