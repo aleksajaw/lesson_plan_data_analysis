@@ -5,6 +5,7 @@ from src.constants.overview_constants import sumColName, sumRowName, meanRowName
 from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, addNewMeanColToDf, setNewDfColsTitle, writeDfColSumToCell, writeDfColMeanToCell, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewCalcRowsToDf, createNewMultiIndexForSumRow, setGroupCounterInDfSumRowIndex
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, convertValToPercentage, convertToRounded, convertDigitInStrToInt
+from src.utils.files_utils import extendFilePathWithCurrSchoolTitle
 from src.utils.readers_df_utils import readDfsJSONAsObjOfDfs, readMultiDfsJSONAsObjOfDfObjLists
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 import pandas as pd
@@ -126,7 +127,9 @@ def createOverviewsWithLessonsByNrs(objOfDfs):
         dfsByNumbersInLineLimit = len( newObjOfDfsByNumbers[ next(iter(newObjOfDfsByNumbers)) ] )
 
 
-        writerForListOfObjsWithMultipleDfsToJSONAndExcel(scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath, scheduleClassroomsWideAndVertOverviewByNumbersExcelPath, newObjOfDfsByNumbers, dfsInRowLimit=dfsByNumbersInLineLimit)
+        writerForListOfObjsWithMultipleDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath),
+                                                          extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertOverviewByNumbersExcelPath),
+                                                          newObjOfDfsByNumbers, dfsInRowLimit=dfsByNumbersInLineLimit )
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written in wide and vertical format.', getTraceback(e))
@@ -266,7 +269,9 @@ def createOverviewsWithResourcesAllocBy(globalSchedules, overviewKey, schoolWebI
                     overviewDfs[sheetName].append(newDf)
 
 
-            writerForListOfObjsWithMultipleDfsToJSONAndExcel(overviewDfsJSONPaths[overviewKey][i], overviewExcelPaths[overviewKey][i], overviewDfs, False)
+            writerForListOfObjsWithMultipleDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(overviewDfsJSONPaths[overviewKey][i]),
+                                                              extendFilePathWithCurrSchoolTitle(overviewExcelPaths[overviewKey][i]),
+                                                              overviewDfs, False)
 
 
     except Exception as e:

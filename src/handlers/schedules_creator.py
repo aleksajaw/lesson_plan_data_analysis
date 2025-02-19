@@ -6,7 +6,7 @@ from src.constants.conversion_constants import excelEngineName
 from src.handlers.overviews_creator import createOverviewsWithLessonsByNrs
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
-#from src.utils.files_utils import createFileNameWithNr
+from src.utils.files_utils import extendFilePathWithCurrSchoolTitle
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
 from src.utils.df_utils import combineTwoDfsWithDifferentIndices, completelyTransformDfToVerticalOrder
 from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel
@@ -78,7 +78,9 @@ def createScheduleExcelFileVertical(schoolWebInfo):
             i=i+1
 
 
-        writerForObjOfDfsToJSONAndExcel(scheduleClassroomsWideAndVertDfsJSONPath, scheduleClassroomsWideAndVertExcelPath, newObjOfDfs)
+        writerForObjOfDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertDfsJSONPath),
+                                         extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertExcelPath),
+                                         newObjOfDfs )
         createOverviewsWithLessonsByNrs(newObjOfDfs)
 
     except Exception as e:
@@ -106,7 +108,9 @@ def createScheduleExcelFilesByOwnerTypes(schoolWebInfo):
         createScheduleExcelFileForOwnerLists()
 
         classroomSchedules = convertObjKeysToDesiredOrder(classroomSchedulesTemp, getPureList(groupedOwnerLists['classrooms']), True)
-        writerForObjOfDfsToJSONAndExcel(scheduleClassroomsDfsJSONPath, scheduleClassroomsExcelPath, classroomSchedules)
+        writerForObjOfDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(scheduleClassroomsDfsJSONPath),
+                                         extendFilePathWithCurrSchoolTitle(scheduleClassroomsExcelPath),
+                                         classroomSchedules)
         
         
     except Exception as e:
@@ -125,7 +129,7 @@ def createScheduleExcelFileForOwnerLists():
         
         groupedOwnerLists = createScheduleGroupedOwnerObjOfDfs(ownerLists)
         
-        if writeObjOfDfsToJSON(scheduleListsOwnersGroupedJSONPath, groupedOwnerLists):
+        if writeObjOfDfsToJSON( extendFilePathWithCurrSchoolTitle(scheduleListsOwnersGroupedJSONPath), groupedOwnerLists ):
             writeGroupListsToExcelAndFormat(groupedOwnerLists)
     
 
@@ -141,7 +145,9 @@ def createScheduleExcelFilesByGroupedOwnerLists(schoolWebInfo):
     msgText=''
 
     try:
-        classroomGroupedSchedules = fullConstructAndWriteScheduleByGroup('classrooms', classroomSchedules, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsGroupedExcelPath)
+        classroomGroupedSchedules = fullConstructAndWriteScheduleByGroup( 'classrooms', classroomSchedules,
+                                                                          extendFilePathWithCurrSchoolTitle(scheduleClassroomsGroupedDfsJSONPath),
+                                                                          extendFilePathWithCurrSchoolTitle(scheduleClassroomsGroupedExcelPath) )
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the schedule Excel files by grouped owner lists.', getTraceback(e))
@@ -158,7 +164,7 @@ def fullConstructAndWriteScheduleByGroup(ownersType, schedulesObj, dfsJSONFilePa
     try:
         schedulesByGroups = concatAndFilterSingleGroupListDataFrames(ownersType, schedulesObj, groupedOwnerLists[ownersType])
 
-        writerForObjOfDfsToJSONAndExcel(dfsJSONFilePath, excelFilePath, schedulesByGroups)
+        writerForObjOfDfsToJSONAndExcel( dfsJSONFilePath, excelFilePath, schedulesByGroups)
 
 
     except Exception as e:
@@ -248,11 +254,11 @@ def buildOwnersTypeScheduleBasedOnCol(targetDict, baseDf, ownersType, newColValu
                     #   None or NaN in object arrays,
                     #   NaT in datetimelike
                     elRows.loc[:,(weekdays, newMainColName)] = ( elRows.loc[:, (weekdays, newMainColName)]
-                                                                      .map( lambda x: newColValue   if pd.notna(x)
-                                                                                                    else x ) )
+                                                                       .map( lambda x: newColValue   if pd.notna(x)
+                                                                                                     else x ) )
 
                     elRows = ( elRows.groupby(level=[0,1], sort=False)
-                                    .first() )
+                                     .first() )
                     #indexLength = len(elRows.index)
                     #elRows.insert(loc=0, column=timeIndexNames[1], value=lessonTimePeriods[:indexLength])
 
