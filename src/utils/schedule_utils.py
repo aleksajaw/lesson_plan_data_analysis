@@ -61,9 +61,9 @@ def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName=None, new
             colsDiff = [ item   for item in colDayNameTuples
                                 if item[1] not in df.columns.get_level_values(1).unique()
                                    and   item[1] != newColName ]
-            
-            colDayNameTuples = [colTuple   for colTuple in colDayNameTuples
-                                           if colTuple not in colsDiff]
+            if len(colsDiff):
+                colDayNameTuples = [colTuple   for colTuple in colDayNameTuples
+                                               if colTuple not in colsDiff]
 
 
         #colDayNameArrays = dfColWeekDayNameArrays5el   if addNewCol   else dfColWeekDayNameArrays4el
