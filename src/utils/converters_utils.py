@@ -32,8 +32,11 @@ def convertToDf(dataToConvert):
             #df.columns = MultiIndex.from_arrays(arrays=dfColNameArrays, names=dayAndAttrNames)
         
         elif dfColsLen == len(dfColName3elTuples):
+            # Organize existing data.
             df.columns = MultiIndex.from_tuples(tuples=dfColName3elTuples, names=dayAndAttrNames)
-            
+            # Make room for missing data.
+            df = df.reindex(columns=MultiIndex.from_tuples(tuples=dfColName4elTuples, names=dayAndAttrNames))
+
         elif dfColsLen == len(dfColName5elTuples):
             
             df.columns = MultiIndex.from_tuples(tuples=dfColName5elTuples, names=dayAndAttrNames)
@@ -43,7 +46,12 @@ def convertToDf(dataToConvert):
         df.set_index(keys=timeIndexNames, inplace=True)
         # Prevents errors when accessing .levels, such as 'ghost' values in the indexes.
         df.columns = df.columns.remove_unused_levels()
-            
+        
+        if dfColsLen == len(dfColName3elTuples):
+            from src.utils.df_utils import fillMissingValsInColRowPairs
+            # Fill empty cells with the default missing value where a column group in the row is not null.
+            df = fillMissingValsInColRowPairs(df)
+
     except Exception as e:
         msgText = handleErrorMsg('\nError while converting data do DataFrame.', getTraceback(e))
 
