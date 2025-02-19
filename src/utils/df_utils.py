@@ -1,5 +1,5 @@
 from converters_utils import convertDigitInStrToInt
-from constants.overview_constants import sumColName, sumRowName, meanRowName, meanColName, notApplicableVal
+from constants.overview_constants import sumColName, sumRowName, meanRowName, meanColName, notApplicableVal, notAvailableVal
 from src.constants.schedule_structures_constants import weekdaysCatDtype
 import pandas as pd
 from pandas import MultiIndex
@@ -108,6 +108,18 @@ def setGroupCounterInDfSumRowIndex(df, sumRowName=sumRowName):
 
 def getDfValidIndices(df):
     return (df.first_valid_index(), df.last_valid_index())
+
+
+
+def fillMissingValsInColRowPairs(df, missingFill=notAvailableVal):
+    # Fill missing values in column-row pairs, ensuring that empty cells within grouped column structures are replaced with a specified value.
+    for group in df.columns.get_level_values(0).unique():
+        mask = df[group].ne('').any(axis=1)
+        
+        for col in df[group].columns:
+            df.loc[mask, (group, col)] = df.loc[mask, (group, col)].replace('', np.nan).fillna(missingFill)
+
+    return df
 
 
 
