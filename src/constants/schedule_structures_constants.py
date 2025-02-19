@@ -130,6 +130,7 @@ colsWithNumbersNameArrays = [
 
 noGroupMarker = '-'
 wholeClassGroupName = 'cała klasa'
+classGroupsOwnerName = 'grupa'
 
 defRowNamesLen = len(timeIndexNames)
 defColNamesLen = len(dayAndAttrNames)

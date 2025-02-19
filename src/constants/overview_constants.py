@@ -24,6 +24,7 @@ percOfWeekColName = 'Udział w tygodniu'
 
 #notApplicableVal = 'nie dotyczy'
 notApplicableVal = 'N/A'
+notAvailableVal = 'N/A'
 noLessonsVal = 'brak zajęć'
 
 nrOfOccurrColName = 'Ilość wystąpień'
