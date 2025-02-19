@@ -51,7 +51,21 @@ def filterAndConvertScheduleDataFrames(df, addNewCol=False, newColName=None, new
 
         prepareNewColVal = addNewCol   and   newColName   and   newColVal
 
-        colDayNameTuples = dfColWeekDayNameTuples5el   if addNewCol   else dfColWeekDayNameTuples4el
+        colDayNameTuples = dfColWeekDayNameTuples5el   if addNewCol   else df.columns
+
+
+        if len(colDayNameTuples) != len(df.columns):
+            # Reduce some columns in colDayNameTuples
+            # if they are not going to be added   and   do not exist in the current DataFrame's columns.
+            # For example, some schedules may not have 'teacher' column.
+            colsDiff = [ item   for item in colDayNameTuples
+                                if item[1] not in df.columns.get_level_values(1).unique()
+                                   and   item[1] != newColName ]
+            
+            colDayNameTuples = [colTuple   for colTuple in colDayNameTuples
+                                           if colTuple not in colsDiff]
+
+
         #colDayNameArrays = dfColWeekDayNameArrays5el   if addNewCol   else dfColWeekDayNameArrays4el
         timeKey1 = timeIndexNames[0]
         timeKey2 = timeIndexNames[1]
