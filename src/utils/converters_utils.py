@@ -353,12 +353,12 @@ def convertObjKeysToDesiredOrder(obj, listOfOrderedKeys, convertToStr=False):
 
 
 # Filter nd.array
-def filterNumpyNdarray(arr, elToDel=''):
+def filterNumpyNdarray(arr, elToDel='', arrIsStr=False):
     #if arr is None:
     #    arr = np.ndarray
     
     # convert values to string
-    arrAsStr = arr.astype(str)
+    arrAsStr = arr   if arrIsStr   else arr.astype(str)
     filteredArrAsStr = arrAsStr[ arrAsStr != elToDel]
     # remove specific value
     #sortedArr = np.sort( arrAsStr[ arrAsStr != elToDel] )
