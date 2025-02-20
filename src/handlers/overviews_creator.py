@@ -284,7 +284,7 @@ def createOverviewsWithResourcesAllocBy(globalSchedules, overviewKey, schoolWebI
 def createOverviewMain(overviewKey=''):
     msgText=''
 
-    objOfMultiDfs = readMultiDfsJSONAsObjOfDfObjLists(scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath)
+    objOfMultiDfs = readMultiDfsJSONAsObjOfDfObjLists( extendFilePathWithCurrSchoolTitle(scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath) )
     lastDfRows = {}
     
     try:
@@ -397,7 +397,7 @@ def getMainWeekPercWithMean(overviewKey, lastDfRow, lastDfRowColNames):
                                      .mean() )
     
     dfWeekPerc.loc[ (meanColName, ''), lastDfRowColNames[0] ] = convertToRounded( dfWeekPercMeanVals[ lastDfRowColNames[0] ] )
-    dfWeekPerc.loc[ (meanColName, ''), lastDfRowColNames[1] ] =  convertValToPercentage(dfWeekPercMeanVals[ lastDfRowColNames[1] ])
+    dfWeekPerc.loc[ (meanColName, ''), lastDfRowColNames[1] ] = convertValToPercentage(dfWeekPercMeanVals[ lastDfRowColNames[1] ])
 
 
     dfWeekPerc.columns = pd.MultiIndex.from_tuples([(nrOfOccurrColName, col)   for col in dfWeekPerc.columns])
