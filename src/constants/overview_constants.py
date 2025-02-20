@@ -19,7 +19,10 @@ sumColName = 'Razem'
 sumRowName = 'Razem'
 
 amountColName = 'Ilość'
+
 percOfDayColName = 'Udział w dniu'
+percOfDayRowName = 'Udział w dniu'
+
 percOfWeekColName = 'Udział w tygodniu'
 
 #notApplicableVal = 'nie dotyczy'
@@ -33,7 +36,7 @@ meanRowName = 'Średnia'
 
 nrOfClassesPerHourName = 'ilość zajęć na godz.'
 
-calcRowAndColNames = ['Średnia', 'Suma']
+calcRowAndColNames = ['Średnia', 'Suma', 'Udział w dniu']
 
 classroomTableName = ' sal'
 
