@@ -169,6 +169,7 @@ def completelyTransformDfToVerticalOrder(df, dfName, newDfLvlName):
 
     #df = removeDfEmptyRows(df)
     df = removeDuplicatedDfRows(df)
+
     return df
 
 
@@ -201,9 +202,9 @@ def combineTwoDfsWithDifferentIndices(df1, df2):
 
     # Combine two DataFrames along the columns axis
     # and then remove the 'idx_temp' level from the MultiIndex, completely removing it from the columns.
-    merged = pd.concat([df1, df2], axis=1).reset_index(level=['idx_temp'], drop=True)
-
-    return merged.sort_index()
+    merged = ( pd.concat([df1, df2], axis=1).reset_index(level=['idx_temp'], drop=True)
+                                            .sort_index() )    
+    return merged
 
 
 
@@ -216,11 +217,22 @@ def removeDfEmptyRows(df):
 
 def removeDuplicatedDfRows(df, keepType='first', checkEmptiness=True):
     if checkEmptiness:
-        isRowEmptyMask = df.isna().all(axis=1) | (df == '').all(axis=1)
-        df = df[~(isRowEmptyMask   &   df.index.duplicated(keep=keepType))]#.fillna('-')
+        # Check which rows are empty (contain only NaN or empty strings).
+        isRowEmptyMask = df.isna().all(axis=1) | df.eq('').all(axis=1)
 
-    else:
-        df = df[~df.index.duplicated(keep=keepType)]#.fillna('-')
+        # Check which indices appear more than once.
+        duplicatedRows = df.index.duplicated(keep=False)
+        
+        # Create a mask that will be used to remove the rows that are both empty and duplicates.
+        isRowEmptyAndDuplicatedMask = (isRowEmptyMask   &   duplicatedRows)
+        
+        # Filter the DataFrame using the mask.
+        df = df.loc[~isRowEmptyAndDuplicatedMask]#.fillna('-')
+
+    elif keepType is not None:
+        # Check which indices appear more than once, but by default, mark duplicated index rows except for the first occurrence.
+        duplicatedRows = df.index.duplicated(keep=keepType)
+        df = df[~duplicatedRows]#.fillna('-')
 
     return df
 
