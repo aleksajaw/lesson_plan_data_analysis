@@ -46,12 +46,15 @@ def createScheduleExcelFileVertical(schoolWebInfo):
     try:
         newObjOfDfs = {}
         sheetNames = [ getTranslByPlural(ownerTypeName, True)   for ownerTypeName in [classroomsName] ]
+        allScheduleWideAndVertDfsJSONPaths = [ scheduleClassroomsWideAndVertDfsJSONPath ]
+        allScheduleWideAndVertExcelPaths   = [ scheduleClassroomsWideAndVertExcelPath ]
+
         i = 0
 
-        for excelFilePath in [scheduleClassroomsExcelPath]:
-            
+        #for excelFilePath in [extendFilePathWithCurrSchoolTitle(scheduleClassroomsExcelPath)]:
+        for objOfDfs in [classroomSchedules]:   
             #objOfDfs = readExcelFileAsObjOfDfs(excelFilePath)
-            objOfDfs = classroomSchedules.copy()
+            #objOfDfs = classroomSchedules.copy()
             newDfBasic = DataFrame()
             currSheetName = sheetNames[i]
 
@@ -75,13 +78,13 @@ def createScheduleExcelFileVertical(schoolWebInfo):
                 #newObjOfDfs[currSheetName + ' - ' + day].append( newDfBasicByDays[day] )
                 newObjOfDfs[currSheetName + ' - ' + day] = newDfBasicByDays[day]
 
-            i=i+1
 
-
-        writerForObjOfDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertDfsJSONPath),
-                                         extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertExcelPath),
+        writerForObjOfDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(allScheduleWideAndVertDfsJSONPaths[i]),
+                                         extendFilePathWithCurrSchoolTitle(allScheduleWideAndVertExcelPaths[i]),
                                          newObjOfDfs )
         createOverviewsWithLessonsByNrs(newObjOfDfs)
+        
+        #i=i+1
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while creating the Excel file with all the schedules written in wide and vertical format.', getTraceback(e))
@@ -385,7 +388,7 @@ def writeGroupListsToExcelAndFormat(objOfDfs):
         #if objOfDfs is None:
         #    objOfDfs = {}
 
-        excelFilePath = scheduleListsOwnersGroupedExcelPath
+        excelFilePath = extendFilePathWithCurrSchoolTitle(scheduleListsOwnersGroupedExcelPath)
         sheetGroups={}
         
         with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:
