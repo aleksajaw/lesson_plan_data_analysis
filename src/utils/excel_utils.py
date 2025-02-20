@@ -147,10 +147,10 @@ def dropnaInDfByAxis(el, axis=-1, both=True):
     try:
         #if el is None:
         #    el = DataFrame
-        
-        axisList = [axis   if (axis>=0 and not both)   else 0,1]
-        for axis in axisList:
-            el = el.dropna(axis=axis, how='all')
+        axisList = [axis]   if (axis >= 0 and not both)   else [0, 1]  
+
+        for ax in axisList:
+            el = el.dropna(axis=ax, how='all')
 
     except Exception as e:
         msgText = handleErrorMsg('\nError while dropping the NA values in the both axis of Data Frame.', getTraceback(e))
