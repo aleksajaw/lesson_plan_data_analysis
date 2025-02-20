@@ -1,4 +1,4 @@
-from src.handlers.schedules_scraper import getClassesDataFromSchoolWebPage
+from src.handlers.schedules_scraper import getClassesDataFromSchoolWebPage, resetGlobalClassesData
 from src.handlers.scraper_saver import setCurrSchoolWebInfo, loadClassesDataVariables, createOrEditMainExcelFile
 from src.handlers.schedules_creator import createScheduleExcelFiles
 from src.handlers.files_opener import openScheduleFilesWithDefApps, openOverviewFilesWithDefApps
@@ -21,3 +21,5 @@ def scrapeSchoolWebs():
             createScheduleOverviews(globalSchedules, schoolWebInfo)
             #openScheduleFilesWithDefApps()
             #openOverviewFilesWithDefApps()
+        
+        resetGlobalClassesData()

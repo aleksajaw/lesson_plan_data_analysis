@@ -19,6 +19,13 @@ classesData = {}
 classList = []
 
 
+def resetGlobalClassesData():
+    global classesData
+
+    classesData = {}
+
+
+
 def initSchedulePageDriver(schoolWebInfo):
     
     global driver, wait, currDriverLocation, listFrame, planFrame
