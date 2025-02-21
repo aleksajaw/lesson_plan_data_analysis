@@ -208,6 +208,15 @@ def combineTwoDfsWithDifferentIndices(df1, df2):
 
 
 
+def removeDfUnnamedCols(df):
+    unnamedCols = df.columns.get_level_values(0).str.contains('Unnamed', na=False)
+    if unnamedCols.any():
+        df = df.loc[:, ~unnamedCols]
+
+    return df
+
+
+
 def removeDfEmptyRows(df):
     df = df[~(df == '').all(axis=1)]
 

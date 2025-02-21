@@ -4,6 +4,7 @@ from src.constants.conversion_constants import excelEngineName, JSONIndentValue
 from src.constants.excel_constants import excelMargin
 from src.constants.schedule_structures_constants import timeIndexNames, dayAndAttrNames, dfColWeekDayNameTuples5el, dfColWeekDayNameTuples4el, dfColWeekDayNameArrays5el, dfColWeekDayNameArrays4el
 from src.constants.overview_constants import overviewsByDaysColIndexNames, overviewsByHoursColIndexNames
+from df_utils import removeDfUnnamedCols
 from pandas import read_excel, MultiIndex, DataFrame, IndexSlice
 import json
 
@@ -20,10 +21,7 @@ def readExcelFileAsObjOfDfs(excelFilePath):
                                     header=[excelMargin['row'], excelMargin['row']+1], index_col=[excelMargin['col'], excelMargin['col']+1])
 
             for sheetName, df in excelData.items():
-                unnamedColIndices = [col   for i, col in enumerate(df.columns)   if 'Unnamed' in str(col[0])]
-
-                if len(unnamedColIndices):
-                    excelData[sheetName] = df.drop(unnamedColIndices, axis=1)
+                excelData[sheetName] = removeDfUnnamedCols(df)
 
             dataToConvert = excelData
 
@@ -115,10 +113,7 @@ def readExcelAsDfsJSON(excelFilePath):
                                     header=[excelMargin['row'], excelMargin['row']+1], index_col=[excelMargin['col'], excelMargin['col']+1])
 
             for sheetName, df in excelData.items():
-                unnamedColIndices = [col   for i, col in enumerate(df.columns)   if 'Unnamed' in str(col[0])]
-                if len(unnamedColIndices):
-                    df = df.drop(unnamedColIndices, axis=1)
-
+                df = removeDfUnnamedCols(df)
                 dataToConvert[sheetName] = df.to_json(orient='split')
 
 
