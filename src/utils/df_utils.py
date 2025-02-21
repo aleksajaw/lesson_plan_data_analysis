@@ -68,6 +68,14 @@ def setNewDfColsTitle(df, newFirstLvlVal):
 
 
 # Making the 1st lvl a concrete data type (for example CategoricalDType) to simplify the sorting proccess.
+#
+# REMINDER:
+# If a CategoricalDType or a similar structure is used for the index or columns of a DataFrame,
+# it will not be recommended to use df.levels[0] instead of df.get_level_values(0).unique(), because
+# the former returns all possible values of the CategoricalDType, not just the unique ones present in the data.
+#
+# Below is the last and probably the only opportunity to use df.levels[0] in that program
+# that does not present any opportunities for problems.
 def setDfLvlAsType(df, dataType, sortingType='', lvlNr=0, isIndex=True):
     if isIndex:
         df.index = df.index.set_levels( df.index.levels[0].astype(dataType), level=lvlNr)

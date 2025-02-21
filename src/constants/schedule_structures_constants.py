@@ -136,4 +136,8 @@ defRowNamesLen = len(timeIndexNames)
 defColNamesLen = len(dayAndAttrNames)
 
 from pandas import CategoricalDtype
+# REMINDER:
+# If a CategoricalDType or a similar structure is used for the index or columns of a DataFrame,
+# it is not recommended to use .levels[0] instead of .get_level_values(0).unique(), because
+# the former returns all possible values of the CategoricalDType, not just the unique ones present in the data.
 weekdaysCatDtype = CategoricalDtype(categories=weekdays, ordered=True)
