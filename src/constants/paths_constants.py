@@ -863,7 +863,7 @@ allScheduleGroupedResourceAllocByHoursDfsJSONNames = [ scheduleClassesGroupedRes
 ###    5.1 Excel   ###
 
 ##  5.1.0 TEST  ##
-testExcelPath = os.path.join(processingFilesExcelPath, testExcelName)
+testExcelPath = os.path.join(documentsPrototypesPath, testExcelName)
 
 
 
