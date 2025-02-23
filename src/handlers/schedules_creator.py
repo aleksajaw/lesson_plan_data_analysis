@@ -74,10 +74,10 @@ def createScheduleExcelFileVertical(schoolWebInfo):
             newDfBasicByDays = {day: newDfBasic.xs(day, level=0, drop_level=False)   for day in newDfBasic.index.get_level_values(0).unique()}
 
             # Save sheets.
-            for day in weekdays:
+            #for day in weekdays:
                 #newObjOfDfs[currSheetName + ' - ' + day].append( newDfBasicByDays[day] )
-                newObjOfDfs[currSheetName + ' - ' + day] = newDfBasicByDays[day]
-
+            #    newObjOfDfs[currSheetName + ' - ' + day] = newDfBasicByDays[day]
+            newObjOfDfs[currSheetName] = newDfBasic
 
         writerForObjOfDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(allScheduleWideAndVertDfsJSONPaths[i]),
                                          extendFilePathWithCurrSchoolTitle(allScheduleWideAndVertExcelPaths[i]),
