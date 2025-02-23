@@ -35,36 +35,39 @@ def addNewCalcRowsToDf(df, calcRowName, lastIndexLvl='', isRowIndexFirstLvlADay=
 
 
 
-def addNewSumColToDf(df, sumColName=sumColName):
+def addNewSumColToDf(df):
     #excludedIndices = [meanRowName]
     sumColTuple = (df.columns.get_level_values(0)[0], sumColName)
-    meanColTuple = (df.index.get_level_values(0)[0], meanColName)
+    meanRowTuple = (df.index.get_level_values(0)[0], meanColName)
 
     df[sumColTuple] = df.sum(axis=1)
 
-    df.loc[meanColTuple, sumColTuple] = notApplicableVal
+    df.loc[meanRowTuple, sumColTuple] = notApplicableVal
 
     return df
 
 
 
-def addNewMeanColToDf(df, meanColName=meanColName):
+def addNewMeanColToDf(df):
     #excludedIndices = [sumRowName, meanRowName]
     excludedCols = [sumColName]
-    meanColTuple = (df.columns.get_level_values(0)[0], meanColName)
+    notExcludedColsMask = ~df.columns.get_level_values(1).isin(excludedCols)
 
-    df[meanColTuple] = ( df.drop(columns=excludedCols, level=1, axis=1).fillna(0.0)
-                           .mean(axis=1).round(2) )
+    tableTitle = df.columns.get_level_values(0)[0]
+
+    df[(tableTitle, meanColName)] = df.loc[:, notExcludedColsMask].fillna(0.0).mean(axis=1).round(2)
+
+    return df
 
 
 
 def addNewPercColToDf(df):
     from converters_utils import divisionResultAsPercentage
     excludedIndices = [meanRowName, percOfDayRowName]
-    isIndexExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
+    notExcludedIndicesMask = ~df.index.get_level_values(1).isin(excludedIndices)
 
     tableTitle = df.columns.get_level_values(0)[0]
-    sumSeries = df.loc[:, (tableTitle, sumColName)].loc[isIndexExcludedMask]
+    sumSeries = df.loc[:, (tableTitle, sumColName)].loc[notExcludedIndicesMask]
     
     percOfDayRowTuple = (tableTitle, percOfDayColName)
     df[percOfDayRowTuple] = divisionResultAsPercentage(sumSeries, sumSeries.iloc[-1])
@@ -158,7 +161,11 @@ def writeDfColMeanToCell(df, meanKey, col, newVal=None, firstValidIndex=None, la
         df.loc[meanKey, col] = df.loc[firstValidIndex:lastValidIndex, col].fillna(0.0).mean().round(2)
         
     elif firstLvlRowMultiIndex is not None:
-        df.loc[meanKey, col] = df.loc[firstLvlRowMultiIndex, col].drop(index=excludedIndices).fillna(0.0).mean().round(2)
+        chosenCol = df.loc[firstLvlRowMultiIndex, col]
+
+        notExcludedIndicesMask = ~chosenCol.index.get_level_values(1).isin(excludedIndices)
+        
+        df.loc[meanKey, col] = chosenCol[notExcludedIndicesMask].fillna(0.0).mean().round(2)
     
     return df
 
@@ -174,8 +181,11 @@ def writeDfColSumToCell(df, sumKey, col, newVal=None, firstValidIndex=None, last
         df.loc[sumKey, col] = df.loc[firstValidIndex:lastValidIndex, col].sum(skipna=True)
         
     elif firstLvlRowMultiIndex is not None:
+        chosenCol = df.loc[firstLvlRowMultiIndex, col]
+
+        notExcludedIndicesMask = ~chosenCol.index.get_level_values(1).isin(excludedIndices)
         
-        df.loc[sumKey, col] = df.loc[firstLvlRowMultiIndex, col].drop(index=excludedIndices).fillna(0.0).sum(skipna=True)
+        df.loc[sumKey, col] = chosenCol[notExcludedIndicesMask].sum(skipna=True)
     
     return df
 
@@ -233,9 +243,10 @@ def combineTwoDfsWithDifferentIndices(df1, df2):
 
 
 def removeDfUnnamedCols(df):
-    unnamedCols = df.columns.get_level_values(0).str.contains('Unnamed', na=False)
-    if unnamedCols.any():
-        df = df.loc[:, ~unnamedCols]
+    if not df.empty:
+        unnamedCols = df.columns.get_level_values(0).str.contains('Unnamed', na=False)
+        if unnamedCols.any():
+            df = df.loc[:, ~unnamedCols]
 
     return df
 
@@ -252,20 +263,13 @@ def removeDuplicatedDfRows(df, keepType='first', checkEmptiness=True):
     if checkEmptiness:
         # Check which rows are empty (contain only NaN or empty strings).
         isRowEmptyMask = df.isna().all(axis=1) | df.eq('').all(axis=1)
-
-        # Check which indices appear more than once.
-        duplicatedRows = df.index.duplicated(keep=False)
-        
-        # Create a mask that will be used to remove the rows that are both empty and duplicates.
-        isRowEmptyAndDuplicatedMask = (isRowEmptyMask   &   duplicatedRows)
-        
-        # Filter the DataFrame using the mask.
-        df = df.loc[~isRowEmptyAndDuplicatedMask]#.fillna('-')
+                
+        # Filter the DataFrame using the mask that removes the rows that are both empty and duplicates (which means indices appear more than once).
+        df = df[~(isRowEmptyMask   &   df.index.duplicated(keep=False))]#.fillna('-')
 
     elif keepType is not None:
         # Check which indices appear more than once, but by default, mark duplicated index rows except for the first occurrence.
-        duplicatedRows = df.index.duplicated(keep=keepType)
-        df = df[~duplicatedRows]#.fillna('-')
+        df = df[~df.index.duplicated(keep=keepType)]#.fillna('-')
 
     return df
 
@@ -279,10 +283,12 @@ def retainOnlyFirstCellsInDfGroups(df, axisNr=1, lvlNr=0):
 
 
 def countNonEmptyRowsInGroup(df, groupName):
-    isRowEmptyMask = df.isna().all(axis=1) | (df == '').all(axis=1)
     excludedIndices = [sumRowName, meanRowName]
+    notExcludedIndicesMask = ~df.index.get_level_values(1).isin(excludedIndices)
 
-    return df[~(isRowEmptyMask)].loc[groupName].drop(index=excludedIndices).sum(axis=1).gt(0).sum()
+    sumColTuple = (df.columns.get_level_values(0)[0], sumColName)
+
+    return df[notExcludedIndicesMask].loc[groupName, sumColTuple].gt(0).sum()
 
 
 
