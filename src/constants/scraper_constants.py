@@ -4,9 +4,10 @@ from selenium.webdriver.common.by import By
 
 ###   INITIAL VARIABLES   ###
 schoolsWebInfo = [  {
-                       'title'     : 'zamkowa15',
-                       'schoolURL' : 'https://zamkowa15.edu.pl',
-                       'planURL'   : {
+                       'title'      : 'zamkowa15',
+                       'schoolName' : 'Powiatowy Zespół Szkół nr 2 im. Marii Dąbrowskiej w Sieradzu',
+                       'schoolURL'  : 'https://zamkowa15.edu.pl',
+                       'planURL'    : {
                            'partial' : '/plan/plan.html',
                            'full'    : 'https://zamkowa15.edu.pl/plan/plan.html'
                        },
@@ -21,9 +22,10 @@ schoolsWebInfo = [  {
                        }
                     },
                     {
-                       'title'     : 'mechaniksieradz',
-                       'schoolURL' : 'https://www.mechaniksieradz.edu.pl',
-                       'planURL'   : {
+                       'title'      : 'mechaniksieradz',
+                       'schoolName' : 'Powiatowy Zespół Szkół nr 1 w Sieradzu',
+                       'schoolURL'  : 'https://www.mechaniksieradz.edu.pl',
+                       'planURL'    : {
                            'partial' : '/DANE/Plan/Uczen/biezacy/',
                            'full'    : 'https://www.mechaniksieradz.edu.pl/DANE/Plan/Uczen/biezacy/'
                        },
@@ -38,9 +40,10 @@ schoolsWebInfo = [  {
                        }
                     },
                     {
-                       'title'     : 'zeromski',
-                       'schoolURL' : 'https://zeromski.edu.pl',
-                       'planURL' : {
+                       'title'      : 'zeromski',
+                       'schoolName' : 'II LICEUM OGÓLNOKSZTAŁCĄCE Z ODDZIAŁAMI DWUJĘZYCZNYMI IM. STEFANA ŻEROMSKIEGO W SIERADZU',
+                       'schoolURL'  : 'https://zeromski.edu.pl',
+                       'planURL'    : {
                            'partial' : '/plany/',
                            'full'    : 'https://zeromski.edu.pl/plany/'
                        },
@@ -55,9 +58,10 @@ schoolsWebInfo = [  {
                        }
                     },
                     {
-                       'title'     : 'lojagiellonczyk',
-                       'schoolURL' : 'https://lojagiellonczyk.pl',
-                       'planURL' : {
+                       'title'      : 'lojagiellonczyk',
+                       'schoolName' : 'I Liceum Ogólnokształcące im. Kazimierza Jagiellończyka w Sieradzu',
+                       'schoolURL'  : 'https://lojagiellonczyk.pl',
+                       'planURL'    : {
                            'partial' : '/dla-uczniow/plan-lekcji/',
                            'full'    : 'https://lojagiellonczyk.pl/dla-uczniow/plan-lekcji/'
                        },
