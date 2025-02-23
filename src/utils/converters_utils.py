@@ -148,20 +148,30 @@ def convertDigitInStrToInt(text):
 # DataFrame column with values like
 # 3 / 4   =>   '0,75%'
 def divisionResultAsPercentage(val1, val2):
-    if isinstance(val1, (int, float))   and   isinstance(val2, (int, float)):
-        divisionResult = (val1 / val2)
-    
-    else:
-        divisionResult = (val1 / val2).fillna(0)
+    try:
+        areValsNumbers = isinstance(val1, (int, float))   and   isinstance(val2, (int, float))
+        isVal1SeriesOrDataFrame = isinstance(val1, (Series, DataFrame))
 
-    return convertDfColValToPercentage(divisionResult)
+        if areValsNumbers   or   isVal1SeriesOrDataFrame:
+            divisionResult = val1 / val2
+
+            if isVal1SeriesOrDataFrame:
+                divisionResult = divisionResult.fillna(0.0)
+
+        divisionResult = convertDfColValToPercentage(divisionResult)
+
+    #except Exception as e:
+    except:
+        divisionResult = None
+
+    return divisionResult
 
 
 
 # DataFrame column with values like
 # 0,75   =>   '75%'
 def convertDfColValToPercentage(value):
-    if isinstance(value, Series):
+    if isinstance(value, (DataFrame, Series)):
         return (value * 100).round(2).astype(str) + '%'
     
     elif isinstance(value, (int, float)):
