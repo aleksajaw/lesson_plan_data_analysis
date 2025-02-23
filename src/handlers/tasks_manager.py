@@ -9,6 +9,7 @@ from src.constants.scraper_constants import schoolsWebInfo
 
 def scrapeSchoolWebs():
     
+    #for schoolWebInfo in [info   for info in schoolsWebInfo   if info['title']=='lojagiellonczyk']:
     for schoolWebInfo in schoolsWebInfo:
 
         setCurrSchoolWebInfo(schoolWebInfo)
