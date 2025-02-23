@@ -1,8 +1,8 @@
 from src.utils.error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath, scheduleClassroomsResourceAllocByDaysExcelPath, scheduleClassroomsGroupedResourceAllocByDaysExcelPath, scheduleClassroomsResourceAllocByHoursExcelPath, scheduleClassroomsGroupedResourceAllocByHoursExcelPath, scheduleClassroomsResourceAllocByDaysDfsJSONPath, scheduleClassroomsGroupedResourceAllocByDaysDfsJSONPath, scheduleClassroomsResourceAllocByHoursDfsJSONPath, scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath, scheduleClassroomsWideAndVertOverviewByNumbersExcelPath
-from src.constants.schedule_structures_constants import noGroupMarker, wholeClassGroupName, timeIndexNames, dfRowNrAndTimeTuples, weekdaysLen, classGroupsOwnerName
-from src.constants.overview_constants import sumColName, sumRowName, meanRowName, amountColName, percOfDayColName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColsLvlName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName, nrOfClassesPerHourName, classroomOccupancyTableName, classroomGapsTableName, classroomAvailabilityTableName, basicTableTitleLvlName
-from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, addNewMeanColToDf, setNewDfColsTitle, writeDfColSumToCell, writeDfColMeanToCell, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewCalcRowsToDf, createNewMultiIndexForSumRow, setGroupCounterInDfSumRowIndex
+from src.constants.schedule_structures_constants import weekdays, noGroupMarker, wholeClassGroupName, timeIndexNames, dfRowNrAndTimeTuples, weekdaysLen, classGroupsOwnerName
+from src.constants.overview_constants import sumColName, sumRowName, meanRowName, amountColName, percOfDayColName, percOfDayRowName, percOfWeekColName, notApplicableVal, noLessonsVal, introColName, dataTypeColsLvlName, meanColName, nrOfOccurrColName, overviewsMainByDaysColIndexNames, overviewColIndexLastLvlName, nrOfClassesPerHourName, classroomOccupancyTableName, classroomGapsTableName, classroomAvailabilityTableName, basicTableTitleLvlName
+from src.utils.df_utils import createNewMultiIndexWithNewFirstLvl, addNewSumColToDf, addNewMeanColToDf, setNewDfColsTitle, writeDfSumOfColsToCells, writeDfMeanOfColsToCells, convertDfValsToCounters, retainOnlyFirstCellsInDfGroups, convertDfValsToBinaryStates, getDfValidIndices, addNewCalcRowsToDf, createNewMultiIndexForSumRow, setGroupCounterInDfSumRowIndex, addNewPercColToDf, writeDfColPercOfDayToCells
 from src.utils.writers_df_utils import writerForListOfObjsWithMultipleDfsToJSONAndExcel
 from src.utils.converters_utils import customSorting, divisionResultAsPercentage, createTupleFromVals, convertValToPercentage, convertToRounded, convertDigitInStrToInt
 from src.utils.files_utils import extendFilePathWithCurrSchoolTitle
@@ -28,104 +28,125 @@ def createOverviewsWithLessonsByNrs(objOfDfs):
 
     try:
         newObjOfDfsByNumbers = {}
+        newDfByNumbersAllDays = None
+        newDfByNumbersAvailabilityAllDays = None
+        newDfByNumbersGapsAllDays = None
+        
 
-        # Get the 1st DataFrame in the list
-        # dfKey is here a name of for example class, classroom, teacher
         for dfName, newDfBasic in objOfDfs.items():
             
-            newObjOfDfsByNumbers[dfName] = []
-            
-            # Prepare the DataFrame to retain only the count values. (Remove the redundant cells.)
-            newDfByNumbers = retainOnlyFirstCellsInDfGroups(newDfBasic.copy())
-
-            # Convert the col names from str to int and add a title for the table (DataFrame). 
-            newMultiIndexCols = createNewMultiIndexWithNewFirstLvl(newDfByNumbers, classroomOccupancyTableName, basicTableTitleLvlName)
-            newDfByNumbers.columns = newMultiIndexCols
-
-            newDfByNumbers = convertDfValsToCounters(newDfByNumbers, lvlList=[0,1,2], retainOnlyLastRows=True)
-            newDfByNumbers = addNewCalcRowsToDf(newDfByNumbers, sumRowName, isRowIndexFirstLvlADay=True)
-            newDfByNumbers = addNewCalcRowsToDf(newDfByNumbers, meanRowName, nrOfClassesPerHourName, isRowIndexFirstLvlADay=True)
-            
-
-            newDfByNumbersGaps = newDfByNumbers.copy()
-            newDfByNumbersAvailability = convertDfValsToBinaryStates(newDfByNumbers.copy())
+            newDfBasicByDays = {day: newDfBasic.xs(day, level=0, drop_level=False)   for day in newDfBasic.index.get_level_values(0).unique()}
 
 
-            for col in newDfByNumbers.columns:
+            for dayName, newDfBasicDay in newDfBasicByDays.items():
+                                
+                # Prepare the DataFrame to retain only the count values. (Remove the redundant cells.)
+                newDfByNumbers = retainOnlyFirstCellsInDfGroups(newDfBasicDay.copy())
+
+                # Convert the col names from str to int and add a title for the table (DataFrame). 
+                newMultiIndexCols = createNewMultiIndexWithNewFirstLvl(newDfByNumbers, classroomOccupancyTableName, basicTableTitleLvlName)
+                newDfByNumbers.columns = newMultiIndexCols
+
+                newDfByNumbers = convertDfValsToCounters(newDfByNumbers, lvlList=[0,1,2], retainOnlyLastRows=True)
                 
-                for dayName in newDfByNumbers.index.get_level_values(0).unique():
-
-                    colData = newDfByNumbersGaps.xs(dayName, level=0)[col]
-                    (firstValidIdx, lastValidIdx) = getDfValidIndices(colData)
-
-                    dayName = createTupleFromVals(dayName)
-
-                    sumKey = createNewMultiIndexForSumRow(newDfByNumbers.index.names, dayName, sumRowName, '')
-                    meanKey = createNewMultiIndexForSumRow(newDfByNumbers.index.names, dayName, meanRowName, nrOfClassesPerHourName)
-
-
-                    newDfByNumbersAvailability = writeDfColSumToCell(newDfByNumbersAvailability, sumKey, col, firstLvlRowMultiIndex=dayName)
-                    newDfByNumbersAvailability = writeDfColMeanToCell(newDfByNumbersAvailability, meanKey, col, firstLvlRowMultiIndex=dayName)
-
-
-                    if firstValidIdx is not None   and   lastValidIdx is not None:
-                        
-                        (firstIndex, lastIndex) = (dayName + firstValidIdx, dayName + lastValidIdx)
-
-                        newDfByNumbersGaps.loc[firstIndex:lastIndex, col] = convertDfValsToBinaryStates(newDfByNumbersGaps.loc[firstIndex:lastIndex, col])
+                newDfByNumbers = addNewCalcRowsToDf(newDfByNumbers, sumRowName, isRowIndexFirstLvlADay=True)
+                newDfByNumbers = addNewCalcRowsToDf(newDfByNumbers, meanRowName, nrOfClassesPerHourName, isRowIndexFirstLvlADay=True)
+                newDfByNumbers = addNewCalcRowsToDf(newDfByNumbers, percOfDayRowName, '-', isRowIndexFirstLvlADay=True)
                     
-                        newDfByNumbers = writeDfColSumToCell(newDfByNumbers, sumKey, col, firstValidIndex=firstIndex, lastValidIndex=lastIndex)
-                        newDfByNumbers = writeDfColMeanToCell(newDfByNumbers, meanKey, col, firstLvlRowMultiIndex=dayName)
+                newDfByNumbersGaps = newDfByNumbers.copy()
 
-                        newDfByNumbersGaps = writeDfColSumToCell(newDfByNumbersGaps, sumKey, col, firstValidIndex=firstIndex, lastValidIndex=lastIndex)
-                        newDfByNumbersGaps = writeDfColMeanToCell(newDfByNumbersGaps, meanKey, col, firstLvlRowMultiIndex=dayName)
+                newDfByNumbersAvailability = convertDfValsToBinaryStates(newDfByNumbers.copy())
 
 
-                    else:
-                        newDfByNumbers = writeDfColSumToCell(newDfByNumbers, sumKey, col, newVal=0.0)
-                        newDfByNumbers = writeDfColMeanToCell(newDfByNumbers, meanKey, col, newVal=0.0)
+                for col in newDfByNumbers.columns:
+                    
+                    for dayName in newDfByNumbers.index.get_level_values(0).unique():
 
-                        newDfByNumbersGaps = writeDfColSumToCell(newDfByNumbersGaps, sumKey, col, newVal=0.0)
-                        newDfByNumbersGaps = writeDfColMeanToCell(newDfByNumbersGaps, meanKey, col, newVal=0.0)
+                        colData = newDfByNumbersGaps.xs(dayName, level=0)[col]
+                        (firstValidIdx, lastValidIdx) = getDfValidIndices(colData)
 
+                        dayNameTuple = createTupleFromVals(dayName)
 
-            newDfByNumbers = setGroupCounterInDfSumRowIndex(newDfByNumbers)
-            newDfByNumbersGaps = setGroupCounterInDfSumRowIndex(newDfByNumbersGaps)
-            newDfByNumbersAvailability = setGroupCounterInDfSumRowIndex(newDfByNumbersAvailability)
-
-
-            newDfByNumbers = addNewSumColToDf(newDfByNumbers)
-            newDfByNumbers = addNewMeanColToDf(newDfByNumbers)
-
-            newDfByNumbersAvailability = setNewDfColsTitle(newDfByNumbersAvailability, classroomAvailabilityTableName)
-            newDfByNumbersAvailability = addNewSumColToDf(newDfByNumbersAvailability)
-            newDfByNumbersAvailability = addNewMeanColToDf(newDfByNumbersAvailability)
-
-            newDfByNumbersGaps = setNewDfColsTitle(newDfByNumbersGaps, classroomGapsTableName)
-            newDfByNumbersGaps = addNewSumColToDf(newDfByNumbersGaps)
-            newDfByNumbersGaps = addNewMeanColToDf(newDfByNumbersGaps)
+                        if firstValidIdx is not None   and   lastValidIdx is not None:
+                            
+                            (firstIndex, lastIndex) = (dayNameTuple + firstValidIdx, dayNameTuple + lastValidIdx)
+                            newDfByNumbersGaps.loc[firstIndex:lastIndex, col] = convertDfValsToBinaryStates(newDfByNumbersGaps.loc[firstIndex:lastIndex, col])
 
 
-            # Number of classes assigned to rooms at specific hours during the day
-            #print(newDfByNumbers)
-            
-            # Number of hours per room on a daily basis
-            #print(newDfByNumbers.groupby(axis=0, level=0).sum())
-            
-            # Number of rooms occupied per hour throughout the day
-            #print(newDfByNumbers.sum(axis=1))
-            
-            # Number of rooms occupied for specific hours across the week
-            #print(newDfByNumbers.groupby(axis=0, level=[1,2]).sum())
-            
-            # Number of hours per room across the week
-            #print(newDfByNumbers.sum(axis=0))
+                newDfByNumbers = addNewSumColToDf(newDfByNumbers)
+                newDfByNumbers = setGroupCounterInDfSumRowIndex(newDfByNumbers)
+
+                newDfByNumbers = writeDfSumOfColsToCells(newDfByNumbers)
+                newDfByNumbers = writeDfMeanOfColsToCells(newDfByNumbers)
+                newDfByNumbers = writeDfColPercOfDayToCells(newDfByNumbers)
+                
+                newDfByNumbers = addNewMeanColToDf(newDfByNumbers)
+                newDfByNumbers = addNewPercColToDf(newDfByNumbers)
 
 
-            newObjOfDfsByNumbers[dfName].extend([newDfByNumbers, newDfByNumbersAvailability, newDfByNumbersGaps])
+                newDfByNumbersAvailability = setNewDfColsTitle(newDfByNumbersAvailability, classroomAvailabilityTableName)
+                
+                newDfByNumbersAvailability = addNewSumColToDf(newDfByNumbersAvailability)
+                newDfByNumbersAvailability = setGroupCounterInDfSumRowIndex(newDfByNumbersAvailability)
+                
+                newDfByNumbersAvailability = writeDfSumOfColsToCells(newDfByNumbersAvailability)
+                newDfByNumbersAvailability = writeDfMeanOfColsToCells(newDfByNumbersAvailability)
+                newDfByNumbersAvailability = writeDfColPercOfDayToCells(newDfByNumbersAvailability)
 
-        dfsByNumbersInLineLimit = len( newObjOfDfsByNumbers[ next(iter(newObjOfDfsByNumbers)) ] )
+                newDfByNumbersAvailability = addNewMeanColToDf(newDfByNumbersAvailability)
+                newDfByNumbersAvailability = addNewPercColToDf(newDfByNumbersAvailability)
 
+
+                newDfByNumbersGaps = setNewDfColsTitle(newDfByNumbersGaps, classroomGapsTableName)
+
+                newDfByNumbersGaps = addNewSumColToDf(newDfByNumbersGaps)
+                newDfByNumbersGaps = setGroupCounterInDfSumRowIndex(newDfByNumbersGaps)
+                
+                newDfByNumbersGaps = writeDfSumOfColsToCells(newDfByNumbersGaps)
+                newDfByNumbersGaps = writeDfMeanOfColsToCells(newDfByNumbersGaps)
+                newDfByNumbersGaps = writeDfColPercOfDayToCells(newDfByNumbersGaps)
+                
+                newDfByNumbersGaps = addNewMeanColToDf(newDfByNumbersGaps)
+                newDfByNumbersGaps = addNewPercColToDf(newDfByNumbersGaps)
+
+                # Number of classes assigned to rooms at specific hours during the day
+                #print(newDfByNumbers)
+                
+                # Number of hours per room on a daily basis
+                #print(newDfByNumbers.groupby(axis=0, level=0).sum())
+                
+                # Number of rooms occupied per hour throughout the day
+                #print(newDfByNumbers.sum(axis=1))
+                
+                # Number of rooms occupied for specific hours across the week
+                #print(newDfByNumbers.groupby(axis=0, level=[1,2]).sum())
+                
+                # Number of hours per room across the week
+                #print(newDfByNumbers.sum(axis=0))
+
+                
+                if isinstance(newDfByNumbersAllDays, DataFrame):
+                    newDfByNumbersAllDays = pd.concat([newDfByNumbersAllDays, newDfByNumbers])
+                else:
+                    newDfByNumbersAllDays = newDfByNumbers
+
+                if isinstance(newDfByNumbersGapsAllDays, DataFrame):
+                    newDfByNumbersGapsAllDays = pd.concat([newDfByNumbersGapsAllDays, newDfByNumbersGaps])
+                else:
+                    newDfByNumbersGapsAllDays = newDfByNumbersGaps
+
+                if isinstance(newDfByNumbersAvailabilityAllDays, DataFrame):
+                    newDfByNumbersAvailabilityAllDays = pd.concat([newDfByNumbersAvailabilityAllDays, newDfByNumbersAvailability])
+                else:
+                    newDfByNumbersAvailabilityAllDays = newDfByNumbersAvailability
+
+
+            newObjOfDfsByNumbers[classroomOccupancyTableName] = [newDfByNumbersAllDays]
+            newObjOfDfsByNumbers[classroomGapsTableName] = [newDfByNumbersGapsAllDays]
+            newObjOfDfsByNumbers[classroomAvailabilityTableName] = [newDfByNumbersAvailabilityAllDays]
+
+        #dfsByNumbersInLineLimit = len( newObjOfDfsByNumbers[ next(iter(newObjOfDfsByNumbers)) ] )
+        dfsByNumbersInLineLimit = 1
 
         writerForListOfObjsWithMultipleDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath),
                                                           extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertOverviewByNumbersExcelPath),
