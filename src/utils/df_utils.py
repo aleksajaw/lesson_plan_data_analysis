@@ -11,10 +11,10 @@ def createNewMultiIndexWithNewFirstLvl(df, newFirstLvlVal, newLvlName='', isColu
     
     indexBase = df.columns   if isColumns   else df.index
 
-    colsData = [convertDigitInStrToInt(col)   for col in indexBase]   if convertIndex   else indexBase
+    indexData = [convertDigitInStrToInt(el)   for el in indexBase]   if convertIndex   else indexBase
     newFirstLvlVal = convertDigitInStrToInt(newFirstLvlVal)   if convertIndex   else newFirstLvlVal
 
-    return MultiIndex.from_product([[newFirstLvlVal], colsData], names=[newLvlName]+indexBase.names)
+    return MultiIndex.from_product([[newFirstLvlVal], indexData], names=[newLvlName]+indexBase.names)
 
 
 
@@ -35,45 +35,83 @@ def addNewCalcRowsToDf(df, calcRowName, lastIndexLvl='', isRowIndexFirstLvlADay=
 
 
 
-def addNewSumColToDf(df):
-    #excludedIndices = [meanRowName]
-    sumColTuple = (df.columns.get_level_values(0)[0], sumColName)
-    meanRowTuple = (df.index.get_level_values(0)[0], meanColName)
-
-    df[sumColTuple] = df.sum(axis=1)
-
-    df.loc[meanRowTuple, sumColTuple] = notApplicableVal
-
-    return df
-
-
-
-def addNewMeanColToDf(df):
-    #excludedIndices = [sumRowName, meanRowName]
-    excludedCols = [sumColName]
-    notExcludedColsMask = ~df.columns.get_level_values(1).isin(excludedCols)
-
-    tableTitle = df.columns.get_level_values(0)[0]
-
-    df[(tableTitle, meanColName)] = df.loc[:, notExcludedColsMask].fillna(0.0).mean(axis=1).round(2)
-
-    return df
-
-
-
-def addNewPercColToDf(df):
-    from converters_utils import divisionResultAsPercentage
-    excludedIndices = [meanRowName, percOfDayRowName]
-    notExcludedIndicesMask = ~df.index.get_level_values(1).isin(excludedIndices)
-
-    tableTitle = df.columns.get_level_values(0)[0]
-    sumSeries = df.loc[:, (tableTitle, sumColName)].loc[notExcludedIndicesMask]
+def addNewSumColToDf(df, groupName=''):
+    excludedIndices = [sumRowName, meanRowName, percOfDayRowName]
+    excludedCols = [sumColName, meanColName, percOfDayColName]
     
-    percOfDayRowTuple = (tableTitle, percOfDayColName)
-    df[percOfDayRowTuple] = divisionResultAsPercentage(sumSeries, sumSeries.iloc[-1])
+    tableTitle = df.columns.get_level_values(0)[0]
+    sumColTuple = (tableTitle, sumColName)
+
+    #if groupName=='':
+    indexNotExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
+    colNotExcludedMask = ~df.columns.get_level_values(1).isin(excludedCols)
+        
+    df.loc[indexNotExcludedMask, sumColTuple] = df.loc[indexNotExcludedMask, colNotExcludedMask].sum(axis=1, skipna=True)
+
+    '''else:
+        chosenDay = df.loc[groupName]
+        indexNotExcludedMask = ~chosenDay.index.get_level_values(1).isin(excludedIndices)
+        colNotExcludedMask = ~chosenDay.columns.get_level_values(1).isin(excludedCols)
+
+        df.loc[groupName].loc[indexNotExcludedMask, sumColTuple] = chosenDay.loc[indexNotExcludedMask ].sum(axis=1, skipna=True)'''
 
     for indexPart in excludedIndices:
-        df.loc[ (df.index.get_level_values(0), indexPart), percOfDayRowTuple ] = notApplicableVal
+        df.loc[ (df.index.get_level_values(0), indexPart), sumColTuple ] = notApplicableVal
+
+    return df
+
+
+
+def addNewMeanColToDf(df, groupName=''):
+    excludedIndices = [meanRowName, percOfDayRowName]
+    excludedCols = [meanColName, percOfDayColName]
+
+    tableTitle = df.columns.get_level_values(0)[0]
+    meanColTuple = (tableTitle, meanColName)
+
+    #if groupName=='':
+    indexNotExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
+    colNotExcludedMask = ~df.columns.get_level_values(1).isin(excludedCols)
+
+    df[meanColTuple] = df.loc[indexNotExcludedMask, colNotExcludedMask].fillna(0.0).mean(axis=1).round(2)
+
+    '''else:
+        chosenDay = df.loc[groupName]
+        indexNotExcludedMask = ~chosenDay.index.get_level_values(1).isin(excludedIndices)
+        colNotExcludedMask = ~chosenDay.columns.get_level_values(1).isin(excludedCols)
+
+        df.loc[groupName, meanColTuple] = df.loc[indexNotExcludedMask, colNotExcludedMask].loc[groupName].fillna(0.0).mean(axis=1).round(2)'''
+    
+    for indexPart in excludedIndices:
+        df.loc[ (df.index.get_level_values(0), indexPart), meanColTuple ] = notApplicableVal
+
+    return df
+
+
+
+def addNewPercColToDf(df, groupName=''):
+    from converters_utils import divisionResultAsPercentage
+    excludedIndices = [meanRowName, percOfDayRowName]
+
+    tableTitle = df.columns.get_level_values(0)[0]
+    percOfDayColTuple = (tableTitle, percOfDayColName)
+    sumColTuple = (tableTitle, sumColName)
+
+    #if groupName=='':
+    indexNotExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
+    sumSeries = df.loc[:, sumColTuple].loc[indexNotExcludedMask]
+    
+    df.loc[:, percOfDayColTuple] = divisionResultAsPercentage(sumSeries, sumSeries.iloc[-1])
+
+    '''else:
+        chosenDay = df.loc[groupName]
+        indexNotExcludedMask = ~chosenDay.index.get_level_values(1).isin(excludedIndices)
+        sumSeries = chosenDay.loc[indexNotExcludedMask, sumColTuple]
+    
+        df.loc[groupName, percOfDayColTuple] = divisionResultAsPercentage(sumSeries, sumSeries.iloc[-1])'''
+
+    for indexPart in excludedIndices:
+        df.loc[ (df.index.get_level_values(0), indexPart), percOfDayColTuple ] = notApplicableVal
 
     return df
 
@@ -151,41 +189,89 @@ def fillMissingValsInColRowPairs(df, missingFill=notAvailableVal):
 
 
 
-def writeDfColMeanToCell(df, meanKey, col, newVal=None, firstValidIndex=None, lastValidIndex=None, firstLvlRowMultiIndex=None):
-    excludedIndices = [sumRowName, meanRowName]
+def writeDfMeanOfColsToCells(df, multipleCols=True, meanKey=None, colKey=None, newVal=None, firstValidIndex=None, lastValidIndex=None, firstLvlRowMultiIndex=None):
+    excludedIndices = [sumRowName, meanRowName, percOfDayRowName]
+    excludedCols = [meanColName, percOfDayColName]
+    keysAreNotNone = meanKey is not None   and   colKey is not None
     
-    if newVal is not None:
-        df.loc[meanKey, col] = newVal
+    if multipleCols:
+        indexNotExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
+        colNotExcludedMask = ~df.columns.get_level_values(1).isin(excludedCols)
+        meanRowIndex = df.index[df.index.get_level_values(1) == meanRowName].tolist()[0]
 
-    elif firstValidIndex is not None   and   lastValidIndex is not None:
-        df.loc[meanKey, col] = df.loc[firstValidIndex:lastValidIndex, col].fillna(0.0).mean().round(2)
-        
-    elif firstLvlRowMultiIndex is not None:
-        chosenCol = df.loc[firstLvlRowMultiIndex, col]
-
-        notExcludedIndicesMask = ~chosenCol.index.get_level_values(1).isin(excludedIndices)
-        
-        df.loc[meanKey, col] = chosenCol[notExcludedIndicesMask].fillna(0.0).mean().round(2)
+        df.loc[meanRowIndex, colNotExcludedMask] = df.loc[indexNotExcludedMask, colNotExcludedMask].fillna(0.0).mean().round(2).values
     
+    '''elif keysAreNotNone   and   newVal is not None:
+        df.loc[meanKey, colKey] = newVal
+
+    elif keysAreNotNone   and   firstValidIndex is not None   and   lastValidIndex is not None:
+        df.loc[meanKey, colKey] = df.loc[firstValidIndex:lastValidIndex, colKey].fillna(0.0).mean().round(2)
+        
+    elif keysAreNotNone   and   firstLvlRowMultiIndex is not None:
+        chosenCol = df.loc[firstLvlRowMultiIndex, colKey]
+        indexNotExcludedMask = ~chosenCol.index.get_level_values(1).isin(excludedIndices)
+        
+        df.loc[meanKey, colKey] = chosenCol[indexNotExcludedMask].fillna(0.0).mean().round(2)'''
+
     return df
 
 
 
-def writeDfColSumToCell(df, sumKey, col, newVal=None, firstValidIndex=None, lastValidIndex=None, firstLvlRowMultiIndex=None):
-    excludedIndices = [sumRowName, meanRowName]
+def writeDfSumOfColsToCells(df, multipleCols=True, sumKey=None, colKey=None, newVal=None, firstValidIndex=None, lastValidIndex=None, firstLvlRowMultiIndex=None):
+    excludedIndices = [sumRowName, meanRowName, percOfDayRowName]
+    excludedCols = [meanColName, percOfDayColName]
+    keysAreNotNone = sumKey is not None   and   colKey is not None
 
-    if newVal is not None:
-        df.loc[sumKey, col] = newVal
+    if multipleCols:
+        indexNotExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
+        colNotExcludedMask = ~df.columns.get_level_values(1).isin(excludedCols)
+        sumRowIndex = df.index[df.index.get_level_values(1) == sumRowName].tolist()[0]
 
-    elif firstValidIndex is not None   and   lastValidIndex is not None:
-        df.loc[sumKey, col] = df.loc[firstValidIndex:lastValidIndex, col].sum(skipna=True)
+        df.loc[sumRowIndex, colNotExcludedMask] = df.loc[indexNotExcludedMask, colNotExcludedMask].sum(skipna=True).values
+
+    '''elif keysAreNotNone   and   newVal is not None:
+        df.loc[sumKey, colKey] = newVal
+
+    elif keysAreNotNone   and   firstValidIndex is not None   and   lastValidIndex is not None:
+        df.loc[sumKey, colKey] = df.loc[firstValidIndex:lastValidIndex, colKey].sum(skipna=True)
         
-    elif firstLvlRowMultiIndex is not None:
-        chosenCol = df.loc[firstLvlRowMultiIndex, col]
-
-        notExcludedIndicesMask = ~chosenCol.index.get_level_values(1).isin(excludedIndices)
+    elif keysAreNotNone   and   firstLvlRowMultiIndex is not None:
+        chosenCol = df.loc[firstLvlRowMultiIndex, colKey]
+        indexNotExcludedMask = ~chosenCol.index.get_level_values(1).isin(excludedIndices)
         
-        df.loc[sumKey, col] = chosenCol[notExcludedIndicesMask].sum(skipna=True)
+        df.loc[sumKey, colKey] = chosenCol[indexNotExcludedMask].sum(skipna=True)'''
+
+    return df
+
+
+
+def writeDfColPercOfDayToCells(df, multipleCols=True, percKey=None, colKey=None, newVal=None, firstValidIndex=None, lastValidIndex=None, firstLvlRowMultiIndex=None):
+    from src.utils.converters_utils import divisionResultAsPercentage
+    excludedCols = [meanColName, percOfDayColName]
+    keysAreNotNone = percKey is not None   and   colKey is not None
+
+    if multipleCols:
+        colNotExcludedMask = ~df.columns.get_level_values(1).isin(excludedCols)
+        percOfDayRowIndex = df.index[df.index.get_level_values(1) == percOfDayRowName].tolist()[0]
+        sumRowIndex = df.index[df.index.get_level_values(1) == sumRowName].tolist()[0]
+        sumColIndex = df.columns[df.columns.get_level_values(1) == sumColName].tolist()[0]
+
+        df.loc[percOfDayRowIndex, colNotExcludedMask] = divisionResultAsPercentage( df.loc[sumRowIndex, colNotExcludedMask],
+                                                                                    df.loc[sumRowIndex, sumColIndex] )
+        
+    '''elif keysAreNotNone   and   newVal is not None:
+        df.loc[percKey, colKey] = newVal
+
+    elif keysAreNotNone   and   firstValidIndex is not None   and   lastValidIndex is not None:
+        df.loc[percKey, colKey] = df.loc[firstValidIndex:lastValidIndex, colKey].sum(skipna=True)
+        
+    elif keysAreNotNone   and   firstLvlRowMultiIndex is not None:
+        chosenCol = df.loc[firstLvlRowMultiIndex, colKey]
+        percOfDayRowIndex = chosenCol.index[chosenCol.index.get_level_values(1) == percOfDayRowName].tolist()[0]
+        sumRowIndex = chosenCol.index[chosenCol.index.get_level_values(1) == sumRowName].tolist()[0]
+        
+        df.loc[percOfDayRowIndex, colKey] = divisionResultAsPercentage( chosenCol.loc[sumRowIndex, colNotExcludedMask],
+                                                                        chosenCol.loc[sumRowIndex, sumColIndex] )'''
     
     return df
 
@@ -283,12 +369,12 @@ def retainOnlyFirstCellsInDfGroups(df, axisNr=1, lvlNr=0):
 
 
 def countNonEmptyRowsInGroup(df, groupName):
-    excludedIndices = [sumRowName, meanRowName]
-    notExcludedIndicesMask = ~df.index.get_level_values(1).isin(excludedIndices)
+    excludedIndices = [sumRowName, meanRowName, percOfDayRowName]
+    indexNotExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
 
     sumColTuple = (df.columns.get_level_values(0)[0], sumColName)
 
-    return df[notExcludedIndicesMask].loc[groupName, sumColTuple].gt(0).sum()
+    return df[indexNotExcludedMask].loc[groupName, sumColTuple].gt(0).sum()
 
 
 
@@ -296,7 +382,11 @@ def convertDfValsToBinaryStates(df, useInt=True, useNan=True):
     emptyVal = np.nan   if useNan   else 0   if useInt   else 0.0
     filledVal = 1   if useInt   else 1.0
 
-    df = df.map(lambda val: filledVal   if pd.isna(val)   or   val in ['', 0, 0.0, None]   else emptyVal)
+    excludedIndices = [sumRowName, meanRowName, percOfDayRowName]
+    indexNotExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
+
+    df.loc[indexNotExcludedMask] = df.loc[indexNotExcludedMask].map(lambda val: filledVal   if pd.isna(val)   or   val in ['', 0, 0.0, None]
+                                                                                            else emptyVal)
 
     return df
 
