@@ -178,8 +178,7 @@ def createOverviewsWithResourcesAllocBy(globalSchedules, overviewKey, schoolWebI
                         dfBySpecificColsGroup = dfBySpecificColsGroup.T
 
                     # Count the value occurrences there.
-                    uniqueValFromColsLvl2Counter = ( dfBySpecificColsGroup.apply(lambda col: col.dropna()
-                                                                                                .value_counts()
+                    uniqueValFromColsLvl2Counter = ( dfBySpecificColsGroup.apply(lambda col: col.value_counts()
                                                                                                 .astype(int)).fillna(0) )
 
                     if overviewKey == 'hours':
@@ -377,10 +376,10 @@ def getMainWeekPercWithMean(overviewKey, lastDfRow, lastDfRowColNames):
         overviewDfStack = [0,1]
 
 
-    dfWeekPerc = ( lastDfRowWeekPerc.reset_index(drop=True)
-                                    .stack(overviewDfStack, sort=False)
-                                    .fillna(notApplicableVal)
-                                    .reset_index().drop(columns='level_0') )
+    dfWeekPerc = ( lastDfRowWeekPerc.stack(overviewDfStack, sort=False)  
+                                    .fillna(notApplicableVal)  
+                                    .reset_index()
+                                    .drop(columns='level_0', errors='ignore') )
     
 
     if overviewKey=='hours':
