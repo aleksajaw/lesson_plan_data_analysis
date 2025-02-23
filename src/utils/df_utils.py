@@ -1,4 +1,4 @@
-from constants.overview_constants import sumColName, sumRowName, meanRowName, meanColName, notApplicableVal, notAvailableVal
+from constants.overview_constants import sumColName, sumRowName, meanRowName, meanColName, percOfDayColName, percOfDayRowName, notApplicableVal, notAvailableVal
 from src.constants.schedule_structures_constants import weekdaysCatDtype
 import pandas as pd
 from pandas import MultiIndex
@@ -55,6 +55,22 @@ def addNewMeanColToDf(df, meanColName=meanColName):
 
     df[meanColTuple] = ( df.drop(columns=excludedCols, level=1, axis=1).fillna(0.0)
                            .mean(axis=1).round(2) )
+
+
+
+def addNewPercColToDf(df):
+    from converters_utils import divisionResultAsPercentage
+    excludedIndices = [meanRowName, percOfDayRowName]
+    isIndexExcludedMask = ~df.index.get_level_values(1).isin(excludedIndices)
+
+    tableTitle = df.columns.get_level_values(0)[0]
+    sumSeries = df.loc[:, (tableTitle, sumColName)].loc[isIndexExcludedMask]
+    
+    percOfDayRowTuple = (tableTitle, percOfDayColName)
+    df[percOfDayRowTuple] = divisionResultAsPercentage(sumSeries, sumSeries.iloc[-1])
+
+    for indexPart in excludedIndices:
+        df.loc[ (df.index.get_level_values(0), indexPart), percOfDayRowTuple ] = notApplicableVal
 
     return df
 
