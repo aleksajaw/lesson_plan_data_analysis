@@ -216,9 +216,7 @@ def autoFormatScheduleExcelCellStyles(workbook, dfRowIndexLen=defRowNamesLen, df
             totalRowsRange = range(excelRangeStartRow, totalRowsCount+1)
 
 
-
             colorBgOfEmptyRow(ws, range(rowIndexesLastCol+1, ws.max_column+1), row=firstRowUnderColNames, startColumn=daysFirstColList)
-
 
 
             # add MEDIUM RIGHT BORDERS
@@ -464,32 +462,41 @@ def mergeEmptyCellsAndFormat(ws, mergedCellObj={'startRow':1, 'startCol':1, 'end
         endCol = mergedCellObj['endCol']
 
         endColTemp = -1
+        endRowTemp = -1
         
         for col in range(endCol, startCol-1, -1):
             cell = None
 
-            for row in range(endRow, startRow, -1):
+            for row in range(endRow, startRow-1, -1):
                 cell = ws.cell(row=row, column=col)
+                if cell:
+                    if cell.value:
+                        endRowTemp = -1
+                        endColTemp = -1
 
-                if not cell.value:
-                    endRow = row
-                    break
-            
-            if cell and not cell.value and endColTemp<col:
-                endColTemp = col
-                break
+                    else:
+                        if endRowTemp!=row+1:
+                            endRowTemp = row
+                        if endColTemp!=col+1:
+                            endColTemp = col
             
         endCol = endColTemp
-        
-        ws.merge_cells( start_row=startRow,
-                        start_column=startCol,
-                        end_row=endRow,
-                        end_column=endCol )
+        endRow = endRowTemp
+
+        if ( startRow>0   and   startCol>0):
+            if ( endRow>=startRow   and   endCol>=startCol   and 
+               ( endRow>startRow    or   endCol>startCol) ):
+                
+                ws.merge_cells( start_row=startRow,
+                                start_column=startCol,
+                                end_row=endRow,
+                                end_column=endCol )
             
-        cell = ws.cell(row=startRow, column=startCol)
-        
-        if not cell.value:
-            cell.fill = permEmptyCellStyle
+            cell = ws.cell(row=startRow, column=startCol)
+            
+            if not cell.value:
+                cell.fill = permEmptyCellStyle
+                #formatCellBorder(cell, right='medium', bottom='medium')
 
 
     except Exception as e:
