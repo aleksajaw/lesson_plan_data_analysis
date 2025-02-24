@@ -5,7 +5,10 @@ from selenium.webdriver.common.by import By
 ###   INITIAL VARIABLES   ###
 schoolsWebInfo = [  {
                        'title'      : 'zamkowa15',
-                       'schoolName' : 'Powiatowy Zespół Szkół nr 2 im. Marii Dąbrowskiej w Sieradzu',
+                       'schoolName' : {
+                           'short'    : 'PZS nr 2',
+                           'standard' : 'PZS nr 2 im. Marii Dąbrowskiej w Sieradzu'
+                       },
                        'schoolURL'  : 'https://zamkowa15.edu.pl',
                        'planURL'    : {
                            'partial' : '/plan/plan.html',
@@ -23,7 +26,10 @@ schoolsWebInfo = [  {
                     },
                     {
                        'title'      : 'mechaniksieradz',
-                       'schoolName' : 'Powiatowy Zespół Szkół nr 1 w Sieradzu',
+                       'schoolName' : {
+                           'short'    : 'PZS nr 1',
+                           'standard' : 'PZS nr 1 w Sieradzu'
+                       },
                        'schoolURL'  : 'https://www.mechaniksieradz.edu.pl',
                        'planURL'    : {
                            'partial' : '/DANE/Plan/Uczen/biezacy/',
@@ -41,7 +47,10 @@ schoolsWebInfo = [  {
                     },
                     {
                        'title'      : 'zeromski',
-                       'schoolName' : 'II LICEUM OGÓLNOKSZTAŁCĄCE Z ODDZIAŁAMI DWUJĘZYCZNYMI IM. STEFANA ŻEROMSKIEGO W SIERADZU',
+                       'schoolName' : {
+                           'short'    : 'II LO',
+                           'standard' : 'II LO im. Stefana Żeromskiego w Sieradzu'
+                       },
                        'schoolURL'  : 'https://zeromski.edu.pl',
                        'planURL'    : {
                            'partial' : '/plany/',
@@ -59,7 +68,10 @@ schoolsWebInfo = [  {
                     },
                     {
                        'title'      : 'lojagiellonczyk',
-                       'schoolName' : 'I Liceum Ogólnokształcące im. Kazimierza Jagiellończyka w Sieradzu',
+                       'schoolName' : {
+                           'short'    : 'I LO',
+                           'standard' : 'I LO im. Kazimierza Jagiellończyka w Sieradzu'
+                       },
                        'schoolURL'  : 'https://lojagiellonczyk.pl',
                        'planURL'    : {
                            'partial' : '/dla-uczniow/plan-lekcji/',
