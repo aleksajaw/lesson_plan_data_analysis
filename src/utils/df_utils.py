@@ -346,16 +346,17 @@ def removeDfEmptyRows(df):
 
 
 def removeDuplicatedDfRows(df, keepType='first', checkEmptiness=True):
+    # The index level in this function is used due to errors with different lesson times for the same lesson number depending on the class on the scraped page.
     if checkEmptiness:
         # Check which rows are empty (contain only NaN or empty strings).
         isRowEmptyMask = df.isna().all(axis=1) | df.eq('').all(axis=1)
                 
         # Filter the DataFrame using the mask that removes the rows that are both empty and duplicates (which means indices appear more than once).
-        df = df[~(isRowEmptyMask   &   df.index.duplicated(keep=False))]#.fillna('-')
+        df = df[~(isRowEmptyMask   &   df.index.get_level_values(1).duplicated(keep=False))]#.fillna('-')
 
     elif keepType is not None:
         # Check which indices appear more than once, but by default, mark duplicated index rows except for the first occurrence.
-        df = df[~df.index.duplicated(keep=keepType)]#.fillna('-')
+        df = df[~df.index.get_level_values(1).duplicated(keep=keepType)]#.fillna('-')
 
     return df
 
