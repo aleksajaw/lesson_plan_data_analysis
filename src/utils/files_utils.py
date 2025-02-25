@@ -1,8 +1,10 @@
 import os
 import sys
 import subprocess
+import json
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import documentsPath
+from src.constants.conversion_constants import JSONIndentValue
 
 
 
@@ -92,11 +94,46 @@ def compareAndUpdateFile(filePath, dataToCompare):
 
             if str(fileContent) != str(dataToCompare):
                 file.seek(0)
-                file.write(dataToCompare)
-                # make sure to delete old redundant value
-                file.truncate()
+                try:
+                    fileContentAsDict = dict(json.loads(fileContent))
+                    dataToCompareAsDict = dict(json.loads(dataToCompare))
+                    
+                    commonKeys = list(set(fileContentAsDict) & set(dataToCompareAsDict))
+                    updatedFileContent = fileContentAsDict
+
+                    if len(commonKeys):
+                        for commonKey in commonKeys:
+                            if fileContentAsDict[commonKey] != dataToCompareAsDict[commonKey]:
+                                updatedFileContent[commonKey] = dataToCompareAsDict[commonKey]
+                                if not isFileChanged:
+                                    isFileChanged = True
+                    
+                    differentKeys = list(set(dataToCompareAsDict) - set(fileContentAsDict))
+
+                    if len(differentKeys):
+                        for key in differentKeys:
+                            updatedFileContent[key] = dataToCompareAsDict[key]
+                            if not isFileChanged:
+                                isFileChanged = True
+                    
+                    '''if 'draft_sheet' in updatedFileContent.keys()   and   'draft_sheet' not in commonKeys+differentKeys:
+                        del updatedFileContent['draft_sheet']
+                        if not isFileChanged:
+                            isFileChanged = True'''
+                    
+                    if isFileChanged:
+                        file.write(json.dumps(updatedFileContent, indent=JSONIndentValue))
+
+                except Exception as e:
+                    file.write(dataToCompare)
+                    if not isFileChanged:
+                        isFileChanged = True
+
+                    # make sure to delete old redundant value
+                    file.truncate()
+                
+            if isFileChanged:
                 msgText = f'\nUpdated with new data the {(os.path.splitext(filePath)[1][1:]).upper()} file   {os.path.basename(filePath)}.'
-                isFileChanged = True
                 
             else:
                 msgText = f'\nNothing to be updated in the {(os.path.splitext(filePath)[1][1:]).upper()} file   {os.path.basename(filePath)}.'
