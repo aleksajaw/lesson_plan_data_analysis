@@ -28,8 +28,8 @@ def autoFormatOverviewExcel(workbook, doesNeedFormatStyle=False):
     #if workbook is None:
     #    workbook = Workbook
     autoFormatExcelCellSizes(workbook)
-    if False   and   doesNeedFormatStyle:
-        autoFormatOverviewExcelCellStyles(workbook)
+    if doesNeedFormatStyle:
+        autoFormatOverviewExcelCellStyles(workbook, dfRowIndexLen=3)
 
 
 
@@ -70,9 +70,7 @@ def autoFormatOverviewExcelCellStyles(workbook, dfRowIndexLen=defRowNamesLen, df
             totalRowsRange = range(excelRangeStartRow, totalRowsCount+1)
 
 
-
             colorBgOfEmptyRow(ws, range(rowIndexesLastCol+1, ws.max_column+1), row=firstRowUnderColNames, startColumn=daysFirstColList)
-
 
 
             # add MEDIUM RIGHT BORDERS
@@ -275,6 +273,8 @@ def autoFormatScheduleExcelCellStyles(workbook, dfRowIndexLen=defRowNamesLen, df
                 for col in totalColsRangeTemp:
                     cell = ws.cell(row, column=col)
                     formatCellBorder(cell, bottom='medium')
+                    cell2 = ws.cell(row=row+1, column=col)
+                    formatCellBorder(cell2, top='medium')
 
 
 
