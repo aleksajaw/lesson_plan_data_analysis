@@ -17,13 +17,13 @@ import os
 
 def createScheduleOverviews(globalSchedules, schoolWebInfo):
     createOverviewsWithResourcesAllocBy(globalSchedules, 'days', schoolWebInfo)
-    createOverviewsWithResourcesAllocBy(globalSchedules, 'hours', schoolWebInfo)
+    #createOverviewsWithResourcesAllocBy(globalSchedules, 'hours', schoolWebInfo)
     #createOverviewMain()
     #createOverviewMainIntro()
 
 
 
-def createOverviewsWithLessonsByNrs(objOfDfs):
+def createOverviewsWithLessonsByNrs(schoolWebInfo, objOfDfs):
     msgText=''
 
     try:
@@ -141,15 +141,15 @@ def createOverviewsWithLessonsByNrs(objOfDfs):
                     newDfByNumbersAvailabilityAllDays = newDfByNumbersAvailability
 
 
-            newObjOfDfsByNumbers[classroomOccupancyTableName] = [newDfByNumbersAllDays]
-            newObjOfDfsByNumbers[classroomGapsTableName] = [newDfByNumbersGapsAllDays]
-            newObjOfDfsByNumbers[classroomAvailabilityTableName] = [newDfByNumbersAvailabilityAllDays]
+            newObjOfDfsByNumbers[schoolWebInfo['schoolName']['short'] + '-' + classroomOccupancyTableName] = [newDfByNumbersAllDays]
+            newObjOfDfsByNumbers[schoolWebInfo['schoolName']['short'] + '-' + classroomGapsTableName] = [newDfByNumbersGapsAllDays]
+            newObjOfDfsByNumbers[schoolWebInfo['schoolName']['short'] + '-' + classroomAvailabilityTableName] = [newDfByNumbersAvailabilityAllDays]
 
         #dfsByNumbersInLineLimit = len( newObjOfDfsByNumbers[ next(iter(newObjOfDfsByNumbers)) ] )
         dfsByNumbersInLineLimit = 1
 
-        writerForListOfObjsWithMultipleDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath),
-                                                          extendFilePathWithCurrSchoolTitle(scheduleClassroomsWideAndVertOverviewByNumbersExcelPath),
+        writerForListOfObjsWithMultipleDfsToJSONAndExcel( scheduleClassroomsWideAndVertOverviewByNumbersDfsJSONPath,
+                                                          scheduleClassroomsWideAndVertOverviewByNumbersExcelPath,
                                                           newObjOfDfsByNumbers, dfsInRowLimit=dfsByNumbersInLineLimit )
 
     except Exception as e:
@@ -163,10 +163,10 @@ def createOverviewsWithResourcesAllocBy(globalSchedules, overviewKey, schoolWebI
     msgText=''
     
     try:
-        overviewExcelPaths   = { 'days'  : [ scheduleClassroomsResourceAllocByDaysExcelPath, scheduleClassroomsGroupedResourceAllocByDaysExcelPath ],
-                                 'hours' : [ scheduleClassroomsResourceAllocByHoursExcelPath, scheduleClassroomsGroupedResourceAllocByHoursExcelPath ] }
-        overviewDfsJSONPaths = { 'days'  : [ scheduleClassroomsResourceAllocByDaysDfsJSONPath, scheduleClassroomsGroupedResourceAllocByDaysDfsJSONPath ],
-                                 'hours' : [ scheduleClassroomsResourceAllocByHoursDfsJSONPath, scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath ] }
+        overviewExcelPaths   = { 'days'  : [ scheduleClassroomsResourceAllocByDaysExcelPath    ],#, scheduleClassroomsGroupedResourceAllocByDaysExcelPath ],
+                                 'hours' : [ scheduleClassroomsResourceAllocByHoursExcelPath   ] }#, scheduleClassroomsGroupedResourceAllocByHoursExcelPath ] }
+        overviewDfsJSONPaths = { 'days'  : [ scheduleClassroomsResourceAllocByDaysDfsJSONPath  ],#, scheduleClassroomsGroupedResourceAllocByDaysDfsJSONPath ],
+                                 'hours' : [ scheduleClassroomsResourceAllocByHoursDfsJSONPath ] }#, scheduleClassroomsGroupedResourceAllocByHoursDfsJSONPath ] }
 
         i=-1
         filteredGlobalSchedules = { key: value   for key, value in globalSchedules.items()   if 'classroom' in key}

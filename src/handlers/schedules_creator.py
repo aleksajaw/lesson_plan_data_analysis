@@ -3,13 +3,14 @@ from src.constants.excel_constants import excelMargin
 from src.constants.schedule_structures_constants import weekdays
 from src.constants.paths_constants import classroomsName, scheduleClassroomsExcelPath, scheduleClassroomsWideAndVertDfsJSONPath, scheduleClassroomsWideAndVertExcelPath, scheduleClassroomsExcelPath, scheduleClassroomsGroupedExcelPath, scheduleListsOwnersGroupedExcelPath, scheduleClassroomsGroupedDfsJSONPath, scheduleClassroomsDfsJSONPath, scheduleListsOwnersGroupedJSONPath
 from src.constants.conversion_constants import excelEngineName
+#from src.handlers.db_creator import createScheduleDB
 from src.handlers.overviews_creator import createOverviewsWithLessonsByNrs
 from src.utils.converters_utils import getListOfKeys, filterNumpyNdarray, getPureGroupedList, getPureList, convertObjKeysToDesiredOrder, sortObjKeys
 from src.utils.excel_utils import removeLastEmptyRowsInDataFrames, dropnaInDfByAxis
 from src.utils.files_utils import extendFilePathWithCurrSchoolTitle
 from src.utils.schedule_utils import concatAndFilterScheduleDataFrames, createGroupsInListBy, filterAndConvertScheduleDataFrames
 from src.utils.df_utils import combineTwoDfsWithDifferentIndices, completelyTransformDfToVerticalOrder
-from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel
+from src.utils.writers_df_utils import writeObjOfDfsToJSON, writerForObjOfDfsToJSONAndExcel, writerForDfToExcelSheet
 from src.utils.readers_df_utils import readExcelFileAsObjOfDfs
 from src.utils.transl_utils import getTranslation, getTranslByPlural
 import pandas as pd
@@ -30,12 +31,15 @@ def createScheduleExcelFiles(classSchedulesDfs, schoolWebInfo):
     classSchedules = classSchedulesDfs.copy()
 
     createScheduleExcelFilesByOwnerTypes(schoolWebInfo)
+    #createScheduleDB(schoolWebInfo, classSchedules)
+
     createScheduleExcelFileVertical(schoolWebInfo)
     #createScheduleExcelFileForOwnerLists()
-    createScheduleExcelFilesByGroupedOwnerLists(schoolWebInfo)
+    #createScheduleExcelFilesByGroupedOwnerLists(schoolWebInfo)
+
     return { 'classSchedules'            : classSchedules,
-             'classroomSchedules'        : classroomSchedules,
-             'classroomGroupedSchedules' : classroomGroupedSchedules }
+             'classroomSchedules'        : classroomSchedules, }
+             #'classroomGroupedSchedules' : classroomGroupedSchedules }
 
 
 
@@ -71,7 +75,7 @@ def createScheduleExcelFileVertical(schoolWebInfo):
                 # THE IMPORTANT WAY TO COMBINE TWO DATAFRAMES WHICH DIFFER IN INDICES.
                 newDfBasic = combineTwoDfsWithDifferentIndices(newDfBasic, dfVert)   if not newDfBasic.empty   else dfVert
 
-            newDfBasicByDays = {day: newDfBasic.xs(day, level=0, drop_level=False)   for day in newDfBasic.index.get_level_values(0).unique()}
+            #newDfBasicByDays = {day: newDfBasic.xs(day, level=0, drop_level=False)   for day in newDfBasic.index.get_level_values(0).unique()}
 
             # Save sheets.
             #for day in weekdays:
@@ -82,7 +86,7 @@ def createScheduleExcelFileVertical(schoolWebInfo):
         writerForObjOfDfsToJSONAndExcel( extendFilePathWithCurrSchoolTitle(allScheduleWideAndVertDfsJSONPaths[i]),
                                          extendFilePathWithCurrSchoolTitle(allScheduleWideAndVertExcelPaths[i]),
                                          newObjOfDfs )
-        createOverviewsWithLessonsByNrs(newObjOfDfs)
+        createOverviewsWithLessonsByNrs(schoolWebInfo, newObjOfDfs)
         
         #i=i+1
 
