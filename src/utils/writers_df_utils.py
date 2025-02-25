@@ -11,9 +11,9 @@ import json
 
 
 
-def writeDfToExcelSheet(writer, excelFilePath, sheetName, df, innerCoords={'row':0, 'col':0}, doesWriteMsg=False):
+def writeDfToExcelSheet(writer, excelFilePath, sheetName, df, innerCoords={'row':0, 'col':0}, doesWriteMsg=False, showIndex=True, showHeader=True, mergeCells=True):
     msgText = ''
-    
+
     try:
         #if writer is None:
         #    writer = ExcelWriter
@@ -22,7 +22,8 @@ def writeDfToExcelSheet(writer, excelFilePath, sheetName, df, innerCoords={'row'
         #if innerCoords is None:
         #    innerCoords = {'row':0, 'col':0}
         
-        df.to_excel(writer, sheet_name=delInvalidChars(sheetName), startrow=excelMargin['row']+innerCoords['row'], startcol=excelMargin['col']+innerCoords['col'], merge_cells=True)
+        df.to_excel(writer, sheet_name=delInvalidChars(sheetName), merge_cells=mergeCells, index=showIndex, header=showHeader,
+                    startrow=excelMargin['row']+innerCoords['row'], startcol=excelMargin['col']+innerCoords['col'] )
 
         if doesWriteMsg:
             msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}[{sheetName}].'
@@ -34,16 +35,20 @@ def writeDfToExcelSheet(writer, excelFilePath, sheetName, df, innerCoords={'row'
 
 
 
-def writerForDfToExcelSheet(excelFilePath, df, sheetName):
+def writerForDfToExcelSheet(excelFilePath, df, sheetName, writerMode='w+', mergeCells=True, showIndex=True, showHeader=True):
     
     msgText=''
 
     try:
         #if df is None:
         #    df = DataFrame
+        if os.path.exists(excelFilePath):
+            with ExcelWriter(excelFilePath, mode=writerMode, engine=excelEngineName, if_sheet_exists='replace') as writer:       
+                writeDfToExcelSheet(writer, excelFilePath, sheetName, df, showIndex=showIndex, showHeader=showHeader, mergeCells=mergeCells)
         
-        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
-            writeDfToExcelSheet(writer, excelFilePath, sheetName, df)
+        else:
+            with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:
+                writeDfToExcelSheet(writer, excelFilePath, sheetName, df, showIndex=showIndex, showHeader=showHeader, mergeCells=mergeCells)
 
             #autoFormatScheduleExcel(writer.book, excelFilePath, doesNeedFormatStyle, doesNeedFormatSize)
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
@@ -55,7 +60,7 @@ def writerForDfToExcelSheet(excelFilePath, df, sheetName):
 
 
 
-def writeObjOfDfsToExcel(writer, excelFilePath, dataToEnter, doesWriteMsg=True):
+def writeObjOfDfsToExcel(writer, excelFilePath, dataToEnter, doesWriteMsg=True, showIndex=True, showHeader=True, mergeCells=True):
     msgText = ''
 
     try:
@@ -68,7 +73,7 @@ def writeObjOfDfsToExcel(writer, excelFilePath, dataToEnter, doesWriteMsg=True):
         groupDfs = dataToEnter
 
         for groupName in groupDfs:
-            writeDfToExcelSheet(writer, excelFilePath, groupName, groupDfs[groupName])
+            writeDfToExcelSheet(writer, excelFilePath, groupName, groupDfs[groupName], showIndex=showIndex, showHeader=showHeader, mergeCells=mergeCells)
 
         if doesWriteMsg:
             msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
@@ -80,7 +85,7 @@ def writeObjOfDfsToExcel(writer, excelFilePath, dataToEnter, doesWriteMsg=True):
 
 
 
-def writerForObjOfDfsToExcel(excelFilePath, objOfDfs, doesNeedFormatStyle=True, doesNeedFormatSize=True):
+def writerForObjOfDfsToExcel(excelFilePath, objOfDfs, doesNeedFormatStyle=True, doesNeedFormatSize=True, writerMode='a'):
     msgText=''
 
     try:
@@ -91,10 +96,18 @@ def writerForObjOfDfsToExcel(excelFilePath, objOfDfs, doesNeedFormatStyle=True, 
         dfsRowIndexLen = firstDf.index.nlevels
         dfsdefColNamesLen = firstDf.columns.nlevels
 
-        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
-            writeObjOfDfsToExcel(writer, excelFilePath, objOfDfs, False)
+        if os.path.exists(excelFilePath):
+            with ExcelWriter(excelFilePath, mode=writerMode, engine=excelEngineName, if_sheet_exists='replace') as writer:       
+                writeObjOfDfsToExcel(writer, excelFilePath, objOfDfs, False)
 
-            autoFormatScheduleExcel(writer.book, doesNeedFormatStyle, dfsRowIndexLen, dfsdefColNamesLen, doesNeedFormatSize)
+                autoFormatScheduleExcel(writer.book, doesNeedFormatStyle, dfsRowIndexLen, dfsdefColNamesLen, doesNeedFormatSize)
+        
+        else:
+            with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
+                writeObjOfDfsToExcel(writer, excelFilePath, objOfDfs, False)
+
+                autoFormatScheduleExcel(writer.book, doesNeedFormatStyle, dfsRowIndexLen, dfsdefColNamesLen, doesNeedFormatSize)
+
 
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}.'
 
@@ -121,7 +134,7 @@ def writerForObjOfDfsToJSONAndExcel(dfsJSONFilePath, excelFilePath, schedulesObj
 
 
 
-def writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, listOfObjsWithMultipleDfs):
+def writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, listOfObjsWithMultipleDfs, showIndex=True, showHeader=True,mergeCells=True):
     msgText = ''
 
     try:
@@ -135,7 +148,7 @@ def writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, listOfObjsWithM
                 dfInnerCoords = { 'row': excelDfObj['startrow'],
                                   'col': excelDfObj['startcol'] }
 
-                writeDfToExcelSheet( writer, excelFilePath, sheetName, excelDfObj['df'], dfInnerCoords )
+                writeDfToExcelSheet(writer, excelFilePath, sheetName, excelDfObj['df'], dfInnerCoords, showIndex=showIndex, showHeader=showHeader, mergeCells=mergeCells)
 
 
         msgText = f'\nThe data has been loaded into the {(os.path.splitext(excelFilePath)[1][1:]).upper()} file   {os.path.basename(excelFilePath)}'
@@ -147,17 +160,25 @@ def writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, listOfObjsWithM
 
 
 
-def writerForListOfObjsWithMultipleDfsToExcel(excelFilePath, listOfObjsWithMultipleDfs, doesNeedFormatStyle=True):
+def writerForListOfObjsWithMultipleDfsToExcel(excelFilePath, listOfObjsWithMultipleDfs, doesNeedFormatStyle=True, writerMode='a'):
     msgText=''
 
     try:
         #if listOfObjsWithMultipleDfs is None:
         #    listOfObjsWithMultipleDfs = {}
         
-        with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
-            writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, listOfObjsWithMultipleDfs)
+        if os.path.exists(excelFilePath):
+            with ExcelWriter(excelFilePath, mode=writerMode, engine=excelEngineName, if_sheet_exists='replace') as writer:       
+                writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, listOfObjsWithMultipleDfs)
 
-            autoFormatOverviewExcel(writer.book, doesNeedFormatStyle)
+                autoFormatOverviewExcel(writer.book, doesNeedFormatStyle)
+        
+        else:
+            with ExcelWriter(excelFilePath, mode='w+', engine=excelEngineName) as writer:       
+                writeListOfObjsWithMultipleDfsToExcel(writer, excelFilePath, listOfObjsWithMultipleDfs)
+
+                autoFormatOverviewExcel(writer.book, doesNeedFormatStyle)
+            
 
     except Exception as e:
         msgText = handleErrorMsg(f'\nError while loading data into the file {os.path.basename(excelFilePath)}.', getTraceback(e))
