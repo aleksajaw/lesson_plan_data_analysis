@@ -4,7 +4,7 @@ import subprocess
 import json
 from error_utils import handleErrorMsg, getTraceback
 from src.constants.paths_constants import documentsPath
-from src.constants.conversion_constants import JSONIndentValue
+from src.constants.conversion_constants import JSONIndentValue, draftSheetName
 
 
 
@@ -93,7 +93,6 @@ def compareAndUpdateFile(filePath, dataToCompare):
             fileContent = file.read()
 
             if str(fileContent) != str(dataToCompare):
-                file.seek(0)
                 try:
                     fileContentAsDict = dict(json.loads(fileContent))
                     dataToCompareAsDict = dict(json.loads(dataToCompare))
@@ -116,15 +115,17 @@ def compareAndUpdateFile(filePath, dataToCompare):
                             if not isFileChanged:
                                 isFileChanged = True
                     
-                    '''if 'draft_sheet' in updatedFileContent.keys()   and   'draft_sheet' not in commonKeys+differentKeys:
-                        del updatedFileContent['draft_sheet']
+                    if draftSheetName in updatedFileContent.keys()   and   draftSheetName not in commonKeys+differentKeys:
+                        del updatedFileContent[draftSheetName]
                         if not isFileChanged:
-                            isFileChanged = True'''
+                            isFileChanged = True
                     
                     if isFileChanged:
+                        file.seek(0)
                         file.write(json.dumps(updatedFileContent, indent=JSONIndentValue))
 
                 except Exception as e:
+                    file.seek(0)
                     file.write(dataToCompare)
                     if not isFileChanged:
                         isFileChanged = True
